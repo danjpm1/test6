@@ -113,13 +113,13 @@ export default function EngineeringConsultingPage() {
       {/* HERO */}
       <section className="relative w-full bg-black">
         <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20">
-          <h1 className="text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4.5rem] font-bold text-white tracking-tight text-right leading-tight">
+          <h1 className="font-display text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4.5rem] font-bold text-white tracking-tight text-right leading-tight">
             ENGINEERING & CONSULTING
           </h1>
         </div>
         <div className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[3/1]">
           <Image
-            src="/ConsultingPage.png"
+            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
             alt="Complex engineering project"
             fill
             className="object-cover object-center"
@@ -139,7 +139,7 @@ export default function EngineeringConsultingPage() {
             <div className="space-y-10 md:space-y-12">
               {STATS.map((stat, index) => (
                 <div key={index} className="flex items-center gap-6 sm:gap-8">
-                  <div className="text-[#c6912c] font-extrabold leading-none text-[56px] sm:text-[70px] md:text-[82px]">
+                  <div className="font-display text-[#c6912c] font-extrabold leading-none text-[56px] sm:text-[70px] md:text-[82px]">
                     <AnimatedCounter
                       end={stat.end}
                       prefix={stat.prefix}
@@ -149,7 +149,7 @@ export default function EngineeringConsultingPage() {
                     />
                   </div>
                   <div>
-                    <p className="text-[#1a1a1a] font-bold tracking-[0.2em] text-[11px] sm:text-[13px] md:text-[14px] uppercase whitespace-pre-line leading-relaxed">
+                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.2em] text-[11px] sm:text-[13px] md:text-[14px] uppercase whitespace-pre-line leading-relaxed">
                       {stat.label}
                     </p>
                   </div>
@@ -164,7 +164,7 @@ export default function EngineeringConsultingPage() {
 
             {/* RIGHT: HEADLINE */}
             <div className="lg:pl-4">
-              <h2 className="font-extrabold tracking-tight leading-[0.95] text-[44px] sm:text-[56px] md:text-[72px]">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[44px] sm:text-[56px] md:text-[72px]">
                 <span className="text-[#6b6b6b]">WHAT CAN</span>
                 <br />
                 <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
@@ -172,6 +172,50 @@ export default function EngineeringConsultingPage() {
                 <span className="text-[#6b6b6b]">DO FOR YOU?</span>
               </h2>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CONSULTING SERVICES */}
+      <section className="bg-black py-16 md:py-24">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <h2 className="font-display text-white text-center text-[32px] sm:text-[40px] md:text-[52px] tracking-tight mb-12 md:mb-16">
+            CONSULTING SERVICES
+          </h2>
+          
+          <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8">
+            {[
+              {
+                num: "01",
+                title: "ENGINEERING SOLUTIONS",
+                desc: "Technical expertise for comprehensive engineering solutions to your construction challenges."
+              },
+              {
+                num: "02", 
+                title: "SOLVING COMPLEX ISSUES",
+                desc: "Strategic problem-solving for construction disputes and technical complications."
+              },
+              {
+                num: "03",
+                title: "PERMITTING",
+                desc: "Streamlined permitting with 100% success rate to keep your project compliant."
+              },
+            ].map((service, index) => (
+              <div
+                key={index}
+                className="group flex-shrink-0 w-[85vw] sm:w-[400px] lg:w-auto snap-start bg-[#141414] rounded-3xl p-10 md:p-12 lg:p-14 transition-all duration-500 hover:bg-[#1a1a1a]"
+              >
+                <div className="font-display text-[#c6912c] text-[100px] sm:text-[120px] md:text-[140px] leading-none mb-8 transition-transform duration-500 group-hover:translate-x-2">
+                  {service.num}
+                </div>
+                <h3 className="font-display text-white text-xl sm:text-2xl md:text-[28px] mb-4 tracking-wide">
+                  {service.title}
+                </h3>
+                <p className="font-sans text-[#777] text-base sm:text-lg leading-relaxed max-w-md">
+                  {service.desc}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
