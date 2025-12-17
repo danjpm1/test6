@@ -59,7 +59,6 @@ const STATS = [
 export default function EngineeringConsultingPage() {
   const [statsVisible, setStatsVisible] = useState(false)
   const statsRef = useRef<HTMLElement>(null)
-  const lastScrollY = useRef(0)
   const hasTriggered = useRef(false)
 
   useEffect(() => {
@@ -69,35 +68,39 @@ export default function EngineeringConsultingPage() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    // Store initial scroll position after page settles
-    const initTimeout = setTimeout(() => {
-      lastScrollY.current = window.scrollY
-    }, 800)
-
-    const handleScroll = () => {
+    const checkAndTrigger = () => {
       if (hasTriggered.current) return
       
-      const currentScrollY = window.scrollY
       const element = statsRef.current
-      
-      // Only proceed if user scrolled DOWN at least 50px from initial position
-      if (currentScrollY < lastScrollY.current + 50 || !element) return
+      if (!element) return
 
-      // Check if stats section is in view
       const rect = element.getBoundingClientRect()
       const windowHeight = window.innerHeight
       
-      // Trigger when top of section is in upper 60% of viewport
-      if (rect.top < windowHeight * 0.6 && rect.bottom > 0) {
+      // Trigger when stats section top is visible in viewport
+      if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
         setStatsVisible(true)
         hasTriggered.current = true
       }
     }
 
-    window.addEventListener("scroll", handleScroll, { passive: true })
+    // Only listen to real user interactions (wheel, touch, keydown)
+    const handleUserScroll = () => {
+      // Small delay to let scroll position update
+      setTimeout(checkAndTrigger, 50)
+    }
+
+    window.addEventListener("wheel", handleUserScroll, { passive: true })
+    window.addEventListener("touchmove", handleUserScroll, { passive: true })
+    window.addEventListener("keydown", (e) => {
+      if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Space"].includes(e.key)) {
+        handleUserScroll()
+      }
+    })
+
     return () => {
-      clearTimeout(initTimeout)
-      window.removeEventListener("scroll", handleScroll)
+      window.removeEventListener("wheel", handleUserScroll)
+      window.removeEventListener("touchmove", handleUserScroll)
     }
   }, [])
 
