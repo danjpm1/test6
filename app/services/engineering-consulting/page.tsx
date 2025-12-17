@@ -177,13 +177,13 @@ export default function EngineeringConsultingPage() {
       </section>
 
       {/* CONSULTING SERVICES */}
-      <section className="bg-black py-16 md:py-24">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
-          <h2 className="font-display text-white text-center text-[32px] sm:text-[40px] md:text-[52px] tracking-tight mb-12 md:mb-16">
+      <section className="bg-black py-16 md:py-24 lg:py-32">
+        <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
+          <h2 className="font-display text-white text-center text-[32px] sm:text-[40px] md:text-[52px] tracking-tight mb-12 md:mb-20">
             CONSULTING SERVICES
           </h2>
           
-          <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8">
+          <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-6">
             {[
               {
                 num: "01",
@@ -203,15 +203,15 @@ export default function EngineeringConsultingPage() {
             ].map((service, index) => (
               <div
                 key={index}
-                className="group flex-shrink-0 w-[85vw] sm:w-[400px] lg:w-auto snap-start bg-[#141414] rounded-3xl p-10 md:p-12 lg:p-14 transition-all duration-500 hover:bg-[#1a1a1a]"
+                className="group flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-gradient-to-b from-[#1a1a1a] to-[#111] rounded-2xl p-8 sm:p-10 md:p-12 lg:p-14 border-t border-[#333] hover:border-[#c6912c]/40 transition-all duration-500"
               >
-                <div className="font-display text-[#c6912c] text-[100px] sm:text-[120px] md:text-[140px] leading-none mb-8 transition-transform duration-500 group-hover:translate-x-2">
+                <div className="font-display text-[#c6912c] text-[90px] sm:text-[110px] md:text-[130px] lg:text-[150px] leading-none mb-6 md:mb-10">
                   {service.num}
                 </div>
-                <h3 className="font-display text-white text-xl sm:text-2xl md:text-[28px] mb-4 tracking-wide">
+                <h3 className="font-display text-white text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-3 md:mb-4 tracking-wide">
                   {service.title}
                 </h3>
-                <p className="font-sans text-[#777] text-base sm:text-lg leading-relaxed max-w-md">
+                <p className="font-sans text-[#888] text-sm sm:text-base md:text-[17px] leading-relaxed">
                   {service.desc}
                 </p>
               </div>
