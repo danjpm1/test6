@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
@@ -130,7 +129,7 @@ export default function EngineeringConsultingPage() {
               ))}
             </div>
 
-            {/* RIGHT: HEADLINE + BUTTON */}
+            {/* RIGHT: HEADLINE */}
             <div className="lg:pl-8">
               <h2 className="font-extrabold tracking-tight leading-[0.95] text-[44px] sm:text-[56px] md:text-[72px]">
                 <span className="text-[#6b6b6b]">WHAT CAN</span>
@@ -139,15 +138,6 @@ export default function EngineeringConsultingPage() {
                 <br />
                 <span className="text-[#6b6b6b]">DO FOR YOU?</span>
               </h2>
-              <div className="mt-8">
-                <Link
-                  href="/projects"
-                  className="inline-flex items-center gap-3 border border-[#c6912c] px-6 py-3 text-xs sm:text-sm font-semibold tracking-[0.18em] text-[#c6912c] hover:bg-[#c6912c] hover:text-white transition-colors"
-                >
-                  VIEW OUR SUCCESS STORIES
-                  <span aria-hidden className="text-lg leading-none">›</span>
-                </Link>
-              </div>
             </div>
           </div>
         </div>
