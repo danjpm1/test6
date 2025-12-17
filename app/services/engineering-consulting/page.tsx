@@ -270,14 +270,14 @@ export default function EngineeringConsultingPage() {
               <div
                 key={index}
                 onClick={() => setSelectedService(index)}
-                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#1a1a1a] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
+                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#141414] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
               >
                 {/* Gold accent line */}
                 <div className="absolute left-0 top-10 bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
                 
                 {/* Expand icon - top right */}
-                <div className="absolute top-6 right-6 w-8 h-8 rounded-full border border-[#444] group-hover:border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
-                  <svg className="w-4 h-4 text-[#666] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute top-6 right-6 w-9 h-9 rounded-full border-2 border-[#c6912c]/50 group-hover:border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
+                  <svg className="w-4 h-4 text-[#c6912c]/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
@@ -372,7 +372,7 @@ export default function EngineeringConsultingPage() {
           </div>
 
           {/* Results Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-[#e5e5e5]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-[#c6912c]/30">
             {RESULTS.map((result, index) => (
               <div
                 key={index}
@@ -388,8 +388,8 @@ export default function EngineeringConsultingPage() {
                 <p className="font-sans text-[#777] text-base mb-6">
                   {result.shortDesc}
                 </p>
-                <div className="w-10 h-10 rounded-lg bg-[#f0f0f0] group-hover:bg-[#c6912c] flex items-center justify-center transition-colors">
-                  <svg className="w-5 h-5 text-[#999] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-11 h-11 rounded-full border-2 border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
+                  <svg className="w-5 h-5 text-[#c6912c] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </div>
