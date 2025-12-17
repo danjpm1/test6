@@ -113,7 +113,7 @@ export default function EngineeringConsultingPage() {
       {/* HERO */}
       <section className="relative w-full bg-black">
         <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20">
-          <h1 className="font-display text-[1.5rem] sm:text-[2rem] md:text-[3rem] lg:text-[4.5rem] font-bold text-white tracking-tight text-right leading-tight">
+          <h1 className="font-display text-[2.5rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] text-white tracking-tight text-right leading-tight">
             ENGINEERING & CONSULTING
           </h1>
         </div>
@@ -139,7 +139,7 @@ export default function EngineeringConsultingPage() {
             <div className="space-y-10 md:space-y-12">
               {STATS.map((stat, index) => (
                 <div key={index} className="flex items-center gap-6 sm:gap-8">
-                  <div className="font-display text-[#c6912c] font-extrabold leading-none text-[56px] sm:text-[70px] md:text-[82px]">
+                  <div className="font-display text-[#c6912c] leading-none text-[80px] sm:text-[100px] md:text-[120px]">
                     <AnimatedCounter
                       end={stat.end}
                       prefix={stat.prefix}
@@ -149,7 +149,7 @@ export default function EngineeringConsultingPage() {
                     />
                   </div>
                   <div>
-                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.2em] text-[11px] sm:text-[13px] md:text-[14px] uppercase whitespace-pre-line leading-relaxed">
+                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.2em] text-[13px] sm:text-[15px] md:text-[17px] uppercase whitespace-pre-line leading-relaxed">
                       {stat.label}
                     </p>
                   </div>
@@ -164,7 +164,7 @@ export default function EngineeringConsultingPage() {
 
             {/* RIGHT: HEADLINE */}
             <div className="lg:pl-4">
-              <h2 className="font-display tracking-tight leading-[0.95] text-[44px] sm:text-[56px] md:text-[72px]">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[60px] sm:text-[80px] md:text-[100px]">
                 <span className="text-[#6b6b6b]">WHAT CAN</span>
                 <br />
                 <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
@@ -179,7 +179,7 @@ export default function EngineeringConsultingPage() {
       {/* CONSULTING SERVICES */}
       <section className="bg-black py-16 md:py-24 lg:py-32">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
-          <h2 className="font-display text-white text-center text-[32px] sm:text-[40px] md:text-[52px] tracking-tight mb-12 md:mb-20">
+          <h2 className="font-display text-white text-center text-[36px] sm:text-[46px] md:text-[58px] tracking-tight mb-12 md:mb-20">
             CONSULTING SERVICES
           </h2>
           
@@ -208,7 +208,7 @@ export default function EngineeringConsultingPage() {
                 <div className="font-display text-[#c6912c] text-[90px] sm:text-[110px] md:text-[130px] lg:text-[150px] leading-none mb-6 md:mb-10">
                   {service.num}
                 </div>
-                <h3 className="font-display text-white text-lg sm:text-xl md:text-2xl lg:text-[26px] mb-3 md:mb-4 tracking-wide">
+                <h3 className="font-display text-white text-xl sm:text-2xl md:text-[26px] lg:text-[30px] mb-3 md:mb-4 tracking-wide">
                   {service.title}
                 </h3>
                 <p className="font-sans text-[#888] text-sm sm:text-base md:text-[17px] leading-relaxed">
