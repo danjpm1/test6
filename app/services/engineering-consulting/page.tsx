@@ -227,7 +227,7 @@ export default function EngineeringConsultingPage() {
               <div
                 key={index}
                 onClick={() => setSelectedService(index)}
-                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#0a0a0a] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
+                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#1a1a1a] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
               >
                 {/* Gold accent line */}
                 <div className="absolute left-0 top-10 bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
@@ -238,9 +238,17 @@ export default function EngineeringConsultingPage() {
                 <h3 className="font-display text-white text-2xl sm:text-[28px] md:text-[32px] mb-4 md:mb-5 tracking-wide">
                   {service.title}
                 </h3>
-                <p className="font-sans text-[#666] text-base sm:text-lg md:text-[19px] leading-relaxed">
+                <p className="font-sans text-[#666] text-base sm:text-lg md:text-[19px] leading-relaxed mb-8">
                   {service.shortDesc}
                 </p>
+                
+                {/* Learn more indicator */}
+                <div className="flex items-center gap-2 text-[#c6912c] group-hover:gap-4 transition-all duration-300">
+                  <span className="font-sans text-sm tracking-wide">Learn more</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
               </div>
             ))}
           </div>
