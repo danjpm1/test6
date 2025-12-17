@@ -133,13 +133,13 @@ export default function EngineeringConsultingPage() {
 
       {/* STATS SECTION */}
       <section ref={statsRef} className="bg-white">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-12 md:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-10 lg:gap-12 items-center">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-16 md:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
             {/* LEFT: ANIMATED STATS */}
-            <div className="space-y-10 md:space-y-12">
+            <div className="space-y-8 md:space-y-10">
               {STATS.map((stat, index) => (
                 <div key={index} className="flex items-center gap-6 sm:gap-8">
-                  <div className="font-display text-[#c6912c] leading-none text-[80px] sm:text-[100px] md:text-[120px]">
+                  <div className="font-display text-[#c6912c] leading-none text-[72px] sm:text-[90px] md:text-[110px]">
                     <AnimatedCounter
                       end={stat.end}
                       prefix={stat.prefix}
@@ -149,7 +149,7 @@ export default function EngineeringConsultingPage() {
                     />
                   </div>
                   <div>
-                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.2em] text-[13px] sm:text-[15px] md:text-[17px] uppercase whitespace-pre-line leading-relaxed">
+                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.2em] text-[12px] sm:text-[14px] md:text-[15px] uppercase whitespace-pre-line leading-relaxed">
                       {stat.label}
                     </p>
                   </div>
@@ -157,14 +157,9 @@ export default function EngineeringConsultingPage() {
               ))}
             </div>
 
-            {/* GOLDEN LINE CONNECTOR */}
-            <div className="hidden lg:flex justify-center">
-              <div className="w-[2px] h-64 bg-gradient-to-b from-transparent via-[#c6912c] to-transparent" />
-            </div>
-
-            {/* RIGHT: HEADLINE */}
-            <div className="lg:pl-4">
-              <h2 className="font-display tracking-tight leading-[0.95] text-[60px] sm:text-[80px] md:text-[100px]">
+            {/* RIGHT: HEADLINE with left border */}
+            <div className="lg:border-l-2 lg:border-[#c6912c] lg:pl-12">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[48px] sm:text-[64px] md:text-[80px]">
                 <span className="text-[#6b6b6b]">WHAT CAN</span>
                 <br />
                 <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
@@ -177,13 +172,13 @@ export default function EngineeringConsultingPage() {
       </section>
 
       {/* CONSULTING SERVICES */}
-      <section className="bg-black py-16 md:py-24 lg:py-32">
+      <section className="bg-black py-20 md:py-32">
         <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
-          <h2 className="font-display text-white text-center text-[36px] sm:text-[46px] md:text-[58px] tracking-tight mb-12 md:mb-20">
+          <h2 className="font-display text-white text-center text-[36px] sm:text-[46px] md:text-[58px] tracking-tight mb-16 md:mb-24">
             CONSULTING SERVICES
           </h2>
           
-          <div className="flex gap-5 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-6">
+          <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8">
             {[
               {
                 num: "01",
@@ -203,15 +198,18 @@ export default function EngineeringConsultingPage() {
             ].map((service, index) => (
               <div
                 key={index}
-                className="group flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-gradient-to-b from-[#1a1a1a] to-[#111] rounded-2xl p-8 sm:p-10 md:p-12 lg:p-14 border-t border-[#333] hover:border-[#c6912c]/40 transition-all duration-500"
+                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#0a0a0a] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1"
               >
-                <div className="font-display text-[#c6912c] text-[90px] sm:text-[110px] md:text-[130px] lg:text-[150px] leading-none mb-6 md:mb-10">
+                {/* Gold accent line */}
+                <div className="absolute left-0 top-10 bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
+                
+                <div className="font-display text-[#c6912c] text-[100px] sm:text-[120px] md:text-[140px] lg:text-[160px] leading-none mb-8 md:mb-10">
                   {service.num}
                 </div>
-                <h3 className="font-display text-white text-xl sm:text-2xl md:text-[26px] lg:text-[30px] mb-3 md:mb-4 tracking-wide">
+                <h3 className="font-display text-white text-2xl sm:text-[28px] md:text-[32px] mb-4 md:mb-5 tracking-wide">
                   {service.title}
                 </h3>
-                <p className="font-sans text-[#888] text-sm sm:text-base md:text-[17px] leading-relaxed">
+                <p className="font-sans text-[#666] text-base sm:text-lg md:text-[19px] leading-relaxed">
                   {service.desc}
                 </p>
               </div>
