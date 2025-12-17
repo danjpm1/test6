@@ -58,51 +58,48 @@ const STATS = [
 
 export default function EngineeringConsultingPage() {
   const [statsVisible, setStatsVisible] = useState(false)
-  const [userHasScrolled, setUserHasScrolled] = useState(false)
   const statsRef = useRef<HTMLElement>(null)
-  const initialScrollDone = useRef(false)
+  const lastScrollY = useRef(0)
+  const hasTriggered = useRef(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
-    // Mark initial scroll as done after a short delay
-    const timeout = setTimeout(() => {
-      initialScrollDone.current = true
-    }, 500)
-    return () => clearTimeout(timeout)
   }, [])
 
-  // Detect manual user scroll (not the initial auto-scroll)
   useEffect(() => {
     if (typeof window === "undefined") return
 
+    // Store initial scroll position after page settles
+    const initTimeout = setTimeout(() => {
+      lastScrollY.current = window.scrollY
+    }, 800)
+
     const handleScroll = () => {
-      if (initialScrollDone.current && !userHasScrolled) {
-        setUserHasScrolled(true)
+      if (hasTriggered.current) return
+      
+      const currentScrollY = window.scrollY
+      const element = statsRef.current
+      
+      // Only proceed if user scrolled DOWN at least 50px from initial position
+      if (currentScrollY < lastScrollY.current + 50 || !element) return
+
+      // Check if stats section is in view
+      const rect = element.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      // Trigger when top of section is in upper 60% of viewport
+      if (rect.top < windowHeight * 0.6 && rect.bottom > 0) {
+        setStatsVisible(true)
+        hasTriggered.current = true
       }
     }
 
     window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [userHasScrolled])
-
-  // Intersection observer for stats section
-  useEffect(() => {
-    const element = statsRef.current
-    if (!element || typeof window === "undefined" || !userHasScrolled) return
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setStatsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.2 }
-    )
-
-    observer.observe(element)
-    return () => observer.disconnect()
-  }, [userHasScrolled])
+    return () => {
+      clearTimeout(initTimeout)
+      window.removeEventListener("scroll", handleScroll)
+    }
+  }, [])
 
   return (
     <div className="w-full overflow-x-hidden bg-black">
