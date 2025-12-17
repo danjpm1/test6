@@ -110,7 +110,7 @@ export default function EngineeringConsultingPage() {
             {/* LEFT: ANIMATED STATS */}
             <div className="space-y-10 md:space-y-12">
               {STATS.map((stat, index) => (
-                <div key={index} className="flex items-start gap-8">
+                <div key={index} className="flex items-center gap-6 sm:gap-8">
                   <div className="text-[#c6912c] font-extrabold leading-none text-[56px] sm:text-[70px] md:text-[82px]">
                     <AnimatedCounter
                       end={stat.end}
@@ -118,8 +118,8 @@ export default function EngineeringConsultingPage() {
                       duration={2000 + index * 200}
                     />
                   </div>
-                  <div className="pt-3">
-                    <p className="text-black/90 font-semibold tracking-[0.18em] text-xs sm:text-sm whitespace-pre-line">
+                  <div>
+                    <p className="text-[#1a1a1a] font-bold tracking-[0.2em] text-[11px] sm:text-[13px] md:text-[14px] uppercase whitespace-pre-line leading-relaxed">
                       {stat.label}
                     </p>
                   </div>
