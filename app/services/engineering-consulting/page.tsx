@@ -179,17 +179,20 @@ export default function EngineeringConsultingPage() {
       setTimeout(checkAndTrigger, 50)
     }
 
-    window.addEventListener("wheel", handleUserScroll, { passive: true })
-    window.addEventListener("touchmove", handleUserScroll, { passive: true })
-    window.addEventListener("keydown", (e) => {
+    const handleKeyScroll = (e: KeyboardEvent) => {
       if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Space"].includes(e.key)) {
         handleUserScroll()
       }
-    })
+    }
+
+    window.addEventListener("wheel", handleUserScroll, { passive: true })
+    window.addEventListener("touchmove", handleUserScroll, { passive: true })
+    window.addEventListener("keydown", handleKeyScroll)
 
     return () => {
       window.removeEventListener("wheel", handleUserScroll)
       window.removeEventListener("touchmove", handleUserScroll)
+      window.removeEventListener("keydown", handleKeyScroll)
     }
   }, [])
 
