@@ -58,15 +58,37 @@ const STATS = [
 
 export default function EngineeringConsultingPage() {
   const [statsVisible, setStatsVisible] = useState(false)
+  const [userHasScrolled, setUserHasScrolled] = useState(false)
   const statsRef = useRef<HTMLElement>(null)
+  const initialScrollDone = useRef(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    // Mark initial scroll as done after a short delay
+    const timeout = setTimeout(() => {
+      initialScrollDone.current = true
+    }, 500)
+    return () => clearTimeout(timeout)
   }, [])
 
+  // Detect manual user scroll (not the initial auto-scroll)
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const handleScroll = () => {
+      if (initialScrollDone.current && !userHasScrolled) {
+        setUserHasScrolled(true)
+      }
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [userHasScrolled])
+
+  // Intersection observer for stats section
   useEffect(() => {
     const element = statsRef.current
-    if (!element || typeof window === "undefined") return
+    if (!element || typeof window === "undefined" || !userHasScrolled) return
 
     const observer = new IntersectionObserver(
       (entries) => {
@@ -75,12 +97,12 @@ export default function EngineeringConsultingPage() {
           observer.disconnect()
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     )
 
     observer.observe(element)
     return () => observer.disconnect()
-  }, [])
+  }, [userHasScrolled])
 
   return (
     <div className="w-full overflow-x-hidden bg-black">
