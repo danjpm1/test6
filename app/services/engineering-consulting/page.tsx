@@ -58,14 +58,58 @@ const STATS = [
   { end: 10, prefix: "", suffix: "+", label: "DISPUTES\nRESOLVED" },
 ]
 
+const SERVICES = [
+  {
+    num: "01",
+    title: "ENGINEERING SOLUTIONS",
+    shortDesc: "Technical expertise for comprehensive engineering solutions to your construction challenges.",
+    fullDesc: "Our engineering team brings decades of combined experience to solve your most complex construction challenges. From structural analysis to MEP coordination, we provide comprehensive solutions that ensure your project meets all technical requirements while optimizing for cost and timeline efficiency.",
+    features: ["Structural Engineering Review", "MEP Coordination", "Value Engineering", "Technical Documentation"]
+  },
+  {
+    num: "02", 
+    title: "SOLVING COMPLEX ISSUES",
+    shortDesc: "Strategic problem-solving for construction disputes and technical complications.",
+    fullDesc: "When construction projects face disputes or technical complications, our team provides expert analysis and strategic solutions. We work with all stakeholders to resolve issues efficiently, minimizing delays and protecting your investment through mediation, expert testimony, and technical consulting.",
+    features: ["Dispute Resolution", "Expert Witness Services", "Technical Analysis", "Stakeholder Mediation"]
+  },
+  {
+    num: "03",
+    title: "PERMITTING",
+    shortDesc: "Streamlined permitting with 100% success rate to keep your project compliant.",
+    fullDesc: "Navigate the complex world of construction permitting with confidence. Our 100% success rate speaks to our deep understanding of local regulations and building codes. We handle all documentation, submissions, and agency communications to keep your project moving forward without delays.",
+    features: ["Permit Application Management", "Code Compliance Review", "Agency Liaison", "Expedited Processing"]
+  },
+]
+
 export default function EngineeringConsultingPage() {
   const [statsVisible, setStatsVisible] = useState(false)
+  const [selectedService, setSelectedService] = useState<number | null>(null)
   const statsRef = useRef<HTMLElement>(null)
   const hasTriggered = useRef(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
+
+  // Handle modal escape key and body scroll
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSelectedService(null)
+    }
+    
+    if (selectedService !== null) {
+      document.body.style.overflow = "hidden"
+      window.addEventListener("keydown", handleEscape)
+    } else {
+      document.body.style.overflow = ""
+    }
+    
+    return () => {
+      document.body.style.overflow = ""
+      window.removeEventListener("keydown", handleEscape)
+    }
+  }, [selectedService])
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -179,26 +223,11 @@ export default function EngineeringConsultingPage() {
           </h2>
           
           <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8">
-            {[
-              {
-                num: "01",
-                title: "ENGINEERING SOLUTIONS",
-                desc: "Technical expertise for comprehensive engineering solutions to your construction challenges."
-              },
-              {
-                num: "02", 
-                title: "SOLVING COMPLEX ISSUES",
-                desc: "Strategic problem-solving for construction disputes and technical complications."
-              },
-              {
-                num: "03",
-                title: "PERMITTING",
-                desc: "Streamlined permitting with 100% success rate to keep your project compliant."
-              },
-            ].map((service, index) => (
+            {SERVICES.map((service, index) => (
               <div
                 key={index}
-                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#0a0a0a] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1"
+                onClick={() => setSelectedService(index)}
+                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#0a0a0a] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
               >
                 {/* Gold accent line */}
                 <div className="absolute left-0 top-10 bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
@@ -210,13 +239,66 @@ export default function EngineeringConsultingPage() {
                   {service.title}
                 </h3>
                 <p className="font-sans text-[#666] text-base sm:text-lg md:text-[19px] leading-relaxed">
-                  {service.desc}
+                  {service.shortDesc}
                 </p>
               </div>
             ))}
           </div>
         </div>
       </section>
+
+      {/* SERVICE MODAL */}
+      {selectedService !== null && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setSelectedService(null)}
+        >
+          <div 
+            className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedService(null)}
+              className="absolute top-4 right-4 w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
+            >
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Icon area */}
+            <div className="bg-[#f0f4f8] rounded-t-2xl p-12 flex items-center justify-center">
+              <div className="font-display text-[#c6912c]/30 text-[140px] sm:text-[180px] leading-none">
+                {SERVICES[selectedService].num}
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="p-8 sm:p-10">
+              <p className="font-sans text-[#c6912c] text-sm tracking-[0.2em] uppercase mb-2">
+                CONSULTING SERVICE
+              </p>
+              <h3 className="font-display text-black text-3xl sm:text-4xl mb-6">
+                {SERVICES[selectedService].title}
+              </h3>
+              <p className="font-sans text-[#555] text-base sm:text-lg leading-relaxed mb-8">
+                {SERVICES[selectedService].fullDesc}
+              </p>
+              
+              {/* Features */}
+              <div className="grid grid-cols-2 gap-3">
+                {SERVICES[selectedService].features.map((feature, idx) => (
+                  <div key={idx} className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-[#c6912c] rounded-full" />
+                    <span className="font-sans text-[#333] text-sm">{feature}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
