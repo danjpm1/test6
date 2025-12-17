@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -9,29 +9,19 @@ function AnimatedCounter({
   end,
   suffix = "",
   duration = 2000,
+  startAnimation = false,
 }: {
   end: number
   suffix?: string
   duration?: number
+  startAnimation?: boolean
 }) {
   const [count, setCount] = useState(0)
-  const [hasStarted, setHasStarted] = useState(false)
+  const hasAnimatedRef = useRef(false)
 
   useEffect(() => {
-    if (typeof window === "undefined") return
-
-    const handleScroll = () => {
-      if (!hasStarted) {
-        setHasStarted(true)
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll, { passive: true })
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [hasStarted])
-
-  useEffect(() => {
-    if (!hasStarted) return
+    if (!startAnimation || hasAnimatedRef.current) return
+    hasAnimatedRef.current = true
 
     let startTime: number | null = null
     let animationId: number
@@ -51,7 +41,7 @@ function AnimatedCounter({
 
     animationId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animationId)
-  }, [hasStarted, end, duration])
+  }, [startAnimation, end, duration])
 
   return (
     <span>
@@ -67,8 +57,29 @@ const STATS = [
 ]
 
 export default function EngineeringConsultingPage() {
+  const [statsVisible, setStatsVisible] = useState(false)
+  const statsRef = useRef<HTMLElement>(null)
+
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
+    const element = statsRef.current
+    if (!element || typeof window === "undefined") return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setStatsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    observer.observe(element)
+    return () => observer.disconnect()
   }, [])
 
   return (
@@ -97,7 +108,7 @@ export default function EngineeringConsultingPage() {
       <div className="w-full h-[2px] bg-[#D4A574]" />
 
       {/* STATS SECTION */}
-      <section className="bg-white">
+      <section ref={statsRef} className="bg-white">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 py-12 md:py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
             {/* LEFT: ANIMATED STATS */}
@@ -109,6 +120,7 @@ export default function EngineeringConsultingPage() {
                       end={stat.end}
                       suffix={stat.suffix}
                       duration={2000 + index * 200}
+                      startAnimation={statsVisible}
                     />
                   </div>
                   <div>
