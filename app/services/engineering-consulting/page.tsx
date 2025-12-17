@@ -7,11 +7,13 @@ import { Footer } from "@/components/footer"
 
 function AnimatedCounter({
   end,
+  prefix = "",
   suffix = "",
   duration = 2000,
   startAnimation = false,
 }: {
   end: number
+  prefix?: string
   suffix?: string
   duration?: number
   startAnimation?: boolean
@@ -45,15 +47,15 @@ function AnimatedCounter({
 
   return (
     <span>
-      {count.toLocaleString()}{suffix}
+      {prefix}{count.toLocaleString()}{suffix}
     </span>
   )
 }
 
 const STATS = [
-  { end: 500, suffix: "k+", label: "CLIENT SAVINGS\nSAVED" },
-  { end: 100, suffix: "%", label: "PERMITTING\nSUCCESS" },
-  { end: 10, suffix: "+", label: "CONSTRUCTION DISPUTES\nRESOLUTION" },
+  { end: 500, prefix: "$", suffix: "k+", label: "CLIENT SAVINGS" },
+  { end: 100, prefix: "", suffix: "%", label: "PERMITTING\nSUCCESS" },
+  { end: 10, prefix: "", suffix: "+", label: "DISPUTES\nRESOLVED" },
 ]
 
 export default function EngineeringConsultingPage() {
@@ -132,7 +134,7 @@ export default function EngineeringConsultingPage() {
       {/* STATS SECTION */}
       <section ref={statsRef} className="bg-white">
         <div className="mx-auto max-w-7xl px-5 sm:px-8 py-12 md:py-20">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] gap-10 lg:gap-12 items-center">
             {/* LEFT: ANIMATED STATS */}
             <div className="space-y-10 md:space-y-12">
               {STATS.map((stat, index) => (
@@ -140,6 +142,7 @@ export default function EngineeringConsultingPage() {
                   <div className="text-[#c6912c] font-extrabold leading-none text-[56px] sm:text-[70px] md:text-[82px]">
                     <AnimatedCounter
                       end={stat.end}
+                      prefix={stat.prefix}
                       suffix={stat.suffix}
                       duration={2000 + index * 200}
                       startAnimation={statsVisible}
@@ -154,8 +157,13 @@ export default function EngineeringConsultingPage() {
               ))}
             </div>
 
+            {/* GOLDEN LINE CONNECTOR */}
+            <div className="hidden lg:flex justify-center">
+              <div className="w-[2px] h-64 bg-gradient-to-b from-transparent via-[#c6912c] to-transparent" />
+            </div>
+
             {/* RIGHT: HEADLINE */}
-            <div className="lg:pl-8">
+            <div className="lg:pl-4">
               <h2 className="font-extrabold tracking-tight leading-[0.95] text-[44px] sm:text-[56px] md:text-[72px]">
                 <span className="text-[#6b6b6b]">WHAT CAN</span>
                 <br />
