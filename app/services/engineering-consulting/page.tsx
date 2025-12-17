@@ -19,7 +19,6 @@ function AnimatedCounter({
   const ref = useRef<HTMLSpanElement>(null)
   const hasAnimatedRef = useRef(false)
 
-  // Intersection Observer to detect visibility
   useEffect(() => {
     const element = ref.current
     if (!element || typeof window === "undefined") return
@@ -37,7 +36,6 @@ function AnimatedCounter({
     return () => observer.disconnect()
   }, [])
 
-  // Animation logic - runs when visible
   useEffect(() => {
     if (!isVisible || hasAnimatedRef.current) return
     hasAnimatedRef.current = true
@@ -102,7 +100,7 @@ export default function EngineeringConsultingPage() {
         </div>
       </section>
 
-      {/* GOLD LINE - Clean transition */}
+      {/* GOLD LINE */}
       <div className="w-full h-[2px] bg-[#D4A574]" />
 
       {/* STATS SECTION */}
