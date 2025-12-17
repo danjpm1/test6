@@ -307,6 +307,75 @@ export default function EngineeringConsultingPage() {
         </div>
       )}
 
+      {/* DRIVING RESULTS */}
+      <section className="bg-white py-20 md:py-32">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          {/* Header */}
+          <div className="mb-16 md:mb-24">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-[2px] bg-[#c6912c]" />
+              <p className="font-sans text-[#888] text-sm tracking-[0.25em] uppercase">
+                Our Results Speak For Us
+              </p>
+            </div>
+            <h2 className="font-display text-[36px] sm:text-[48px] md:text-[64px] leading-[0.95] tracking-tight">
+              <span className="text-[#1a1a1a]">DRIVING RESULTS</span>
+              <br />
+              <span className="text-[#1a1a1a]">THROUGH </span>
+              <span className="text-[#c6912c]">EXPERT</span>
+              <br />
+              <span className="text-[#c6912c]">CONSULTING</span>
+            </h2>
+          </div>
+
+          {/* Results Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-[#e5e5e5]">
+            {[
+              {
+                stat: "$500K+",
+                title: "SAVED IN CONSTRUCTION DISPUTES",
+                desc: "Strategic resolution that protected client investments"
+              },
+              {
+                stat: "2 WEEKS",
+                title: "PERMIT APPROVAL TIME",
+                desc: "Fast-tracked permitting for luxury residential project"
+              },
+              {
+                stat: "100%",
+                title: "COMPLIANCE ACHIEVED",
+                desc: "Full code compliance on complex multi-unit development"
+              },
+              {
+                stat: "30%",
+                title: "COST REDUCTION",
+                desc: "Value engineering without compromising quality"
+              },
+            ].map((result, index) => (
+              <div
+                key={index}
+                className="group bg-white p-8 sm:p-10 md:p-12 cursor-pointer hover:bg-[#fafafa] transition-colors"
+              >
+                <p className="font-display text-[#c6912c] text-[48px] sm:text-[56px] md:text-[64px] leading-none mb-4">
+                  {result.stat}
+                </p>
+                <h3 className="font-display text-[#1a1a1a] text-xl sm:text-2xl md:text-[26px] mb-3 tracking-wide">
+                  {result.title}
+                </h3>
+                <p className="font-sans text-[#777] text-base mb-6">
+                  {result.desc}
+                </p>
+                <div className="w-10 h-10 rounded-lg bg-[#f0f0f0] group-hover:bg-[#c6912c] flex items-center justify-center transition-colors">
+                  <svg className="w-5 h-5 text-[#999] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
