@@ -82,9 +82,49 @@ const SERVICES = [
   },
 ]
 
+const RESULTS = [
+  {
+    stat: "$500K+",
+    title: "SAVED IN CONSTRUCTION DISPUTES",
+    shortDesc: "Strategic resolution that protected client investments",
+    fullDesc: "A luxury residential project faced a complex dispute with contractors over material specifications and timeline delays. Our team conducted a thorough technical analysis, documented all discrepancies, and led mediation sessions between all parties. Through strategic negotiation and expert documentation, we resolved the dispute without litigation, saving our client over $500,000 in potential legal fees and project delays.",
+    client: "Luxury Residential Development",
+    duration: "3 months",
+    services: ["Dispute Resolution", "Technical Analysis", "Mediation"]
+  },
+  {
+    stat: "2 WEEKS",
+    title: "PERMIT APPROVAL TIME",
+    shortDesc: "Fast-tracked permitting for luxury residential project",
+    fullDesc: "When a high-end residential client needed urgent permit approval for a time-sensitive renovation, our team mobilized immediately. We prepared comprehensive documentation, coordinated directly with city officials, and addressed all compliance concerns proactively. What typically takes 8-12 weeks was accomplished in just 2 weeks, keeping the project on schedule for the client's move-in date.",
+    client: "Beverly Hills Residence",
+    duration: "2 weeks",
+    services: ["Permit Expediting", "Agency Liaison", "Documentation"]
+  },
+  {
+    stat: "100%",
+    title: "COMPLIANCE ACHIEVED",
+    shortDesc: "Full code compliance on complex multi-unit development",
+    fullDesc: "A multi-unit development project was flagged for multiple code violations during inspection, threatening to halt construction indefinitely. Our engineering team conducted a complete compliance audit, developed remediation plans for each violation, and worked closely with inspectors to verify corrections. We achieved 100% compliance across all 47 inspection points, allowing construction to resume without further delays.",
+    client: "Multi-Unit Development",
+    duration: "6 weeks",
+    services: ["Code Compliance", "Engineering Review", "Inspection Coordination"]
+  },
+  {
+    stat: "30%",
+    title: "COST REDUCTION",
+    shortDesc: "Value engineering without compromising quality",
+    fullDesc: "A commercial construction project was significantly over budget before breaking ground. Our value engineering team analyzed every aspect of the design and specifications, identifying opportunities to reduce costs while maintaining the client's vision and quality standards. Through material substitutions, design optimizations, and contractor negotiations, we reduced the total project cost by 30% — a savings of over $2 million.",
+    client: "Commercial Office Building",
+    duration: "2 months",
+    services: ["Value Engineering", "Cost Analysis", "Specification Review"]
+  },
+]
+
 export default function EngineeringConsultingPage() {
   const [statsVisible, setStatsVisible] = useState(false)
   const [selectedService, setSelectedService] = useState<number | null>(null)
+  const [selectedResult, setSelectedResult] = useState<number | null>(null)
   const statsRef = useRef<HTMLElement>(null)
   const hasTriggered = useRef(false)
 
@@ -95,10 +135,13 @@ export default function EngineeringConsultingPage() {
   // Handle modal escape key and body scroll
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSelectedService(null)
+      if (e.key === "Escape") {
+        setSelectedService(null)
+        setSelectedResult(null)
+      }
     }
     
-    if (selectedService !== null) {
+    if (selectedService !== null || selectedResult !== null) {
       document.body.style.overflow = "hidden"
       window.addEventListener("keydown", handleEscape)
     } else {
@@ -109,7 +152,7 @@ export default function EngineeringConsultingPage() {
       document.body.style.overflow = ""
       window.removeEventListener("keydown", handleEscape)
     }
-  }, [selectedService])
+  }, [selectedService, selectedResult])
 
   useEffect(() => {
     if (typeof window === "undefined") return
@@ -330,30 +373,10 @@ export default function EngineeringConsultingPage() {
 
           {/* Results Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-[1px] bg-[#e5e5e5]">
-            {[
-              {
-                stat: "$500K+",
-                title: "SAVED IN CONSTRUCTION DISPUTES",
-                desc: "Strategic resolution that protected client investments"
-              },
-              {
-                stat: "2 WEEKS",
-                title: "PERMIT APPROVAL TIME",
-                desc: "Fast-tracked permitting for luxury residential project"
-              },
-              {
-                stat: "100%",
-                title: "COMPLIANCE ACHIEVED",
-                desc: "Full code compliance on complex multi-unit development"
-              },
-              {
-                stat: "30%",
-                title: "COST REDUCTION",
-                desc: "Value engineering without compromising quality"
-              },
-            ].map((result, index) => (
+            {RESULTS.map((result, index) => (
               <div
                 key={index}
+                onClick={() => setSelectedResult(index)}
                 className="group bg-white p-8 sm:p-10 md:p-12 cursor-pointer hover:bg-[#fafafa] transition-colors"
               >
                 <p className="font-display text-[#c6912c] text-[48px] sm:text-[56px] md:text-[64px] leading-none mb-4">
@@ -363,7 +386,7 @@ export default function EngineeringConsultingPage() {
                   {result.title}
                 </h3>
                 <p className="font-sans text-[#777] text-base mb-6">
-                  {result.desc}
+                  {result.shortDesc}
                 </p>
                 <div className="w-10 h-10 rounded-lg bg-[#f0f0f0] group-hover:bg-[#c6912c] flex items-center justify-center transition-colors">
                   <svg className="w-5 h-5 text-[#999] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -375,6 +398,73 @@ export default function EngineeringConsultingPage() {
           </div>
         </div>
       </section>
+
+      {/* RESULT MODAL */}
+      {selectedResult !== null && (
+        <div 
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          onClick={() => setSelectedResult(null)}
+        >
+          <div 
+            className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Close button */}
+            <button
+              onClick={() => setSelectedResult(null)}
+              className="absolute top-4 right-4 w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
+            >
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Stat header area */}
+            <div className="bg-[#1a1a1a] rounded-t-2xl p-10 sm:p-12">
+              <p className="font-display text-[#c6912c] text-[80px] sm:text-[100px] leading-none mb-2">
+                {RESULTS[selectedResult].stat}
+              </p>
+              <h3 className="font-display text-white text-2xl sm:text-3xl tracking-wide">
+                {RESULTS[selectedResult].title}
+              </h3>
+            </div>
+
+            {/* Content */}
+            <div className="p-8 sm:p-10">
+              <p className="font-sans text-[#c6912c] text-sm tracking-[0.2em] uppercase mb-2">
+                Case Study
+              </p>
+              <p className="font-sans text-[#555] text-base sm:text-lg leading-relaxed mb-8">
+                {RESULTS[selectedResult].fullDesc}
+              </p>
+              
+              {/* Project Details */}
+              <div className="grid grid-cols-2 gap-6 mb-8">
+                <div>
+                  <p className="font-sans text-[#999] text-xs tracking-[0.15em] uppercase mb-1">Client</p>
+                  <p className="font-sans text-[#333] font-medium">{RESULTS[selectedResult].client}</p>
+                </div>
+                <div>
+                  <p className="font-sans text-[#999] text-xs tracking-[0.15em] uppercase mb-1">Duration</p>
+                  <p className="font-sans text-[#333] font-medium">{RESULTS[selectedResult].duration}</p>
+                </div>
+              </div>
+              
+              {/* Services Used */}
+              <div>
+                <p className="font-sans text-[#999] text-xs tracking-[0.15em] uppercase mb-3">Services Provided</p>
+                <div className="flex flex-wrap gap-2">
+                  {RESULTS[selectedResult].services.map((service, idx) => (
+                    <span key={idx} className="font-sans text-sm bg-[#f5f5f5] text-[#555] px-3 py-1 rounded-full">
+                      {service}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Footer />
     </div>
