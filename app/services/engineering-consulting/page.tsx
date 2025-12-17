@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -15,30 +15,23 @@ function AnimatedCounter({
   duration?: number
 }) {
   const [count, setCount] = useState(0)
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLSpanElement>(null)
-  const hasAnimatedRef = useRef(false)
+  const [hasStarted, setHasStarted] = useState(false)
 
   useEffect(() => {
-    const element = ref.current
-    if (!element || typeof window === "undefined") return
+    if (typeof window === "undefined") return
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          setIsVisible(true)
-        }
-      },
-      { threshold: 0.1 }
-    )
+    const handleScroll = () => {
+      if (!hasStarted) {
+        setHasStarted(true)
+      }
+    }
 
-    observer.observe(element)
-    return () => observer.disconnect()
-  }, [])
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [hasStarted])
 
   useEffect(() => {
-    if (!isVisible || hasAnimatedRef.current) return
-    hasAnimatedRef.current = true
+    if (!hasStarted) return
 
     let startTime: number | null = null
     let animationId: number
@@ -58,10 +51,10 @@ function AnimatedCounter({
 
     animationId = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(animationId)
-  }, [isVisible, end, duration])
+  }, [hasStarted, end, duration])
 
   return (
-    <span ref={ref}>
+    <span>
       {count.toLocaleString()}{suffix}
     </span>
   )
