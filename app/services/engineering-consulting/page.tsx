@@ -232,23 +232,22 @@ export default function EngineeringConsultingPage() {
                 {/* Gold accent line */}
                 <div className="absolute left-0 top-10 bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
                 
+                {/* Expand icon - top right */}
+                <div className="absolute top-6 right-6 w-8 h-8 rounded-full border border-[#444] group-hover:border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
+                  <svg className="w-4 h-4 text-[#666] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  </svg>
+                </div>
+                
                 <div className="font-display text-[#c6912c] text-[100px] sm:text-[120px] md:text-[140px] lg:text-[160px] leading-none mb-8 md:mb-10">
                   {service.num}
                 </div>
                 <h3 className="font-display text-white text-2xl sm:text-[28px] md:text-[32px] mb-4 md:mb-5 tracking-wide">
                   {service.title}
                 </h3>
-                <p className="font-sans text-[#666] text-base sm:text-lg md:text-[19px] leading-relaxed mb-8">
+                <p className="font-sans text-[#666] text-base sm:text-lg md:text-[19px] leading-relaxed">
                   {service.shortDesc}
                 </p>
-                
-                {/* Learn more indicator */}
-                <div className="flex items-center gap-2 text-[#c6912c] group-hover:gap-4 transition-all duration-300">
-                  <span className="font-sans text-sm tracking-wide">Learn more</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </div>
               </div>
             ))}
           </div>
