@@ -284,7 +284,7 @@ export default function EngineeringConsultingPage() {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center min-h-[70svh] sm:min-h-[80svh] px-5 sm:px-8 md:px-16 lg:px-24 py-12">
           {/* Tagline */}
-          <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-3 sm:mb-6">
+          <p className="font-sans text-[#c6912c] text-[11px] sm:text-sm tracking-[0.15em] sm:tracking-[0.3em] uppercase mb-3 sm:mb-6">
             Protect Your Investment. Solve Complex Challenges.
           </p>
 
