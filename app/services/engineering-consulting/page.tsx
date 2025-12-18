@@ -555,6 +555,34 @@ export default function EngineeringConsultingPage() {
         </div>
       )}
 
+      {/* CTA Section */}
+      <section className="py-16 sm:py-20 bg-black">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+          {/* Two CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
+            <a
+              href="/contact"
+              className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
+            >
+              Get Expert Consultation
+            </a>
+            <a
+              href="/estimator"
+              className="h-11 min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
+            >
+              AI Estimator
+            </a>
+          </div>
+
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-6">
+            Let's Solve Your <span className="text-[#c6912c]">Challenge</span>
+          </h2>
+          <p className="font-sans text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
+            From complex disputes to fast-track permitting, our team delivers results. Get in touch today.
+          </p>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
