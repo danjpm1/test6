@@ -119,12 +119,12 @@ export default function EngineeringConsultingPage() {
         {/* Content */}
         <div className="relative z-10 flex flex-col justify-center min-h-[100svh] px-5 sm:px-8 md:px-16 lg:px-24 pt-20 pb-12">
           {/* Tagline */}
-          <p className="font-sans text-[#c6912c] text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase mb-4 sm:mb-6">
+          <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-3 sm:mb-6">
             Protect Your Investment. Solve Complex Challenges.
           </p>
 
           {/* Main Headline */}
-          <h1 className="font-display text-white text-[2.5rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[1] tracking-tight mb-6 sm:mb-8">
+          <h1 className="font-display text-white text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[0.95] tracking-tight mb-6 sm:mb-8">
             CONSTRUCTION
             <br />
             <span className="text-[#c6912c]">CONSULTING</span>
@@ -132,8 +132,8 @@ export default function EngineeringConsultingPage() {
             THAT DELIVERS
           </h1>
 
-          {/* Supporting Text */}
-          <p className="font-sans text-white/70 text-base sm:text-lg md:text-xl max-w-xl mb-8 sm:mb-10 leading-relaxed">
+          {/* Supporting Text - Hidden on mobile */}
+          <p className="hidden sm:block font-sans text-white/70 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
             Expert engineering solutions, dispute resolution, and permitting services that save you time and money.
           </p>
 
@@ -141,16 +141,17 @@ export default function EngineeringConsultingPage() {
           <div className="flex flex-col sm:flex-row gap-4">
             <a
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-sm sm:text-base tracking-wide px-6 sm:px-8 py-4 rounded-lg transition-all duration-300 group"
+              className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-sm sm:text-base tracking-wide px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all duration-300 group"
             >
               GET EXPERT CONSULTATION
               <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
+            {/* Second button - Hidden on mobile */}
             <a
               href="#services"
-              className="inline-flex items-center justify-center gap-2 border border-white/30 hover:border-white/60 text-white font-sans font-medium text-sm sm:text-base tracking-wide px-6 sm:px-8 py-4 rounded-lg transition-all duration-300"
+              className="hidden sm:inline-flex items-center justify-center gap-2 border border-white/30 hover:border-white/60 text-white font-sans font-medium text-base tracking-wide px-8 py-4 rounded-lg transition-all duration-300"
             >
               VIEW SERVICES
             </a>
@@ -175,18 +176,18 @@ export default function EngineeringConsultingPage() {
           </div>
 
           {/* Stats Bar - Mobile */}
-          <div className="flex md:hidden justify-between mt-10 pt-6 border-t border-white/10">
+          <div className="flex md:hidden justify-between mt-8 pt-6 border-t border-white/10">
             <div className="text-center">
               <span className="font-display text-[#c6912c] text-2xl block">$500K+</span>
-              <span className="font-sans text-white/60 text-[10px] tracking-wider uppercase">Savings</span>
+              <span className="font-sans text-white/50 text-[9px] tracking-wider uppercase">Savings</span>
             </div>
             <div className="text-center">
               <span className="font-display text-[#c6912c] text-2xl block">100%</span>
-              <span className="font-sans text-white/60 text-[10px] tracking-wider uppercase">Success</span>
+              <span className="font-sans text-white/50 text-[9px] tracking-wider uppercase">Success</span>
             </div>
             <div className="text-center">
               <span className="font-display text-[#c6912c] text-2xl block">10+</span>
-              <span className="font-sans text-white/60 text-[10px] tracking-wider uppercase">Resolved</span>
+              <span className="font-sans text-white/50 text-[9px] tracking-wider uppercase">Resolved</span>
             </div>
           </div>
         </div>
