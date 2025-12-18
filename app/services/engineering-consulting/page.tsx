@@ -264,7 +264,7 @@ export default function EngineeringConsultingPage() {
         {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
-            src="/images/ConsultingPage.png"
+            src="/public/images/ConsultingPage.png"
             alt="Complex engineering project"
             fill
             className="object-cover object-center opacity-60"
