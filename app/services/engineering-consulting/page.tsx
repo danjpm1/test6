@@ -154,10 +154,23 @@ export default function EngineeringConsultingPage() {
     }
   }, [selectedService, selectedResult])
 
-  // Scroll-triggered animation for stats
+  // Scroll-triggered animation for stats (desktop) 
   useEffect(() => {
     if (typeof window === "undefined") return
 
+    // On mobile, trigger animation after short delay 
+    const isMobile = window.innerWidth < 768
+    if (isMobile) {
+      const mobileTimer = setTimeout(() => {
+        if (!hasTriggered.current) {
+          setStatsVisible(true)
+          hasTriggered.current = true
+        }
+      }, 800) // Start after 800ms on mobile
+      return () => clearTimeout(mobileTimer)
+    }
+
+    // On desktop, use scroll trigger
     const checkAndTrigger = () => {
       if (hasTriggered.current) return
       
@@ -212,7 +225,7 @@ export default function EngineeringConsultingPage() {
 
       {/* HERO */}
       <section className="relative w-full min-h-[70svh] sm:min-h-[80svh] bg-black">
-        {/* Background Image - Less dark */}
+        {/* Background Image */}
         <div className="absolute inset-0">
           <Image
             src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
@@ -287,8 +300,8 @@ export default function EngineeringConsultingPage() {
             </div>
 
             {/* RIGHT: HEADLINE with left border */}
-            <div className="lg:border-l-2 lg:border-[#c6912c] lg:pl-12">
-              <h2 className="font-display tracking-tight leading-[0.95] text-[36px] sm:text-[48px] md:text-[64px]">
+            <div className="border-l-2 border-[#c6912c] pl-6 sm:pl-8 lg:pl-12">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[32px] sm:text-[48px] md:text-[64px]">
                 <span className="text-[#6b6b6b]">WHAT CAN</span>
                 <br />
                 <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
