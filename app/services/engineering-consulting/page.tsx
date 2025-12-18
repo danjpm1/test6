@@ -159,10 +159,13 @@ export default function EngineeringConsultingPage() {
   const [selectedService, setSelectedService] = useState<number | null>(null)
   const [selectedResult, setSelectedResult] = useState<number | null>(null)
   const [statsVisible, setStatsVisible] = useState(false)
+  const [whyChooseVisible, setWhyChooseVisible] = useState(false)
   const [activeCard, setActiveCard] = useState(0)
   const statsRef = useRef<HTMLElement>(null)
+  const whyChooseRef = useRef<HTMLElement>(null)
   const cardsContainerRef = useRef<HTMLDivElement>(null)
   const hasTriggered = useRef(false)
+  const hasWhyChooseTriggered = useRef(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -194,31 +197,57 @@ export default function EngineeringConsultingPage() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    // On mobile, trigger animation after short delay (stats visible sooner)
+    // On mobile, trigger animations after short delays
     const isMobile = window.innerWidth < 768
     if (isMobile) {
-      const mobileTimer = setTimeout(() => {
+      const statsTimer = setTimeout(() => {
         if (!hasTriggered.current) {
           setStatsVisible(true)
           hasTriggered.current = true
         }
-      }, 800) // Start after 800ms on mobile
-      return () => clearTimeout(mobileTimer)
+      }, 800)
+      
+      const whyChooseTimer = setTimeout(() => {
+        if (!hasWhyChooseTriggered.current) {
+          setWhyChooseVisible(true)
+          hasWhyChooseTriggered.current = true
+        }
+      }, 1200)
+      
+      return () => {
+        clearTimeout(statsTimer)
+        clearTimeout(whyChooseTimer)
+      }
     }
 
     // On desktop, use scroll trigger
     const checkAndTrigger = () => {
-      if (hasTriggered.current) return
-      
-      const element = statsRef.current
-      if (!element) return
+      // Stats section
+      if (!hasTriggered.current) {
+        const element = statsRef.current
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const windowHeight = window.innerHeight
+          
+          if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
+            setStatsVisible(true)
+            hasTriggered.current = true
+          }
+        }
+      }
 
-      const rect = element.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-      
-      if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
-        setStatsVisible(true)
-        hasTriggered.current = true
+      // Why Choose section
+      if (!hasWhyChooseTriggered.current) {
+        const element = whyChooseRef.current
+        if (element) {
+          const rect = element.getBoundingClientRect()
+          const windowHeight = window.innerHeight
+          
+          if (rect.top < windowHeight * 0.8 && rect.bottom > 0) {
+            setWhyChooseVisible(true)
+            hasWhyChooseTriggered.current = true
+          }
+        }
       }
     }
 
@@ -264,7 +293,7 @@ export default function EngineeringConsultingPage() {
         {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
-            src="/ConsultingPage.png"
+            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
             alt="Complex engineering project"
             fill
             className="object-cover object-center opacity-60"
@@ -565,10 +594,10 @@ export default function EngineeringConsultingPage() {
       </section>
 
       {/* WHY CHOOSE US */}
-      <section className="bg-white py-16 sm:py-20 md:py-28">
+      <section ref={whyChooseRef} className="bg-white py-16 sm:py-20 md:py-28">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           {/* Header */}
-          <div className="text-center mb-12 sm:mb-16">
+          <div className={`text-center mb-12 sm:mb-16 transition-all duration-700 ${whyChooseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <h2 className="font-display text-[28px] sm:text-[40px] md:text-[52px] tracking-tight text-[#1a1a1a]">
               WHY CHOOSE <span className="text-[#c6912c]">ANTOVA</span>
             </h2>
@@ -577,9 +606,15 @@ export default function EngineeringConsultingPage() {
           {/* Trust badges grid */}
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
             {WHY_CHOOSE.map((item, index) => (
-              <div key={index} className="text-center p-4 sm:p-6">
+              <div 
+                key={index} 
+                className={`text-center p-4 sm:p-6 transition-all duration-700 ${whyChooseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                style={{ transitionDelay: whyChooseVisible ? `${index * 150}ms` : '0ms' }}
+              >
                 {/* Icon */}
-                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#c6912c]/10 flex items-center justify-center mx-auto mb-4 sm:mb-5">
+                <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#c6912c]/10 flex items-center justify-center mx-auto mb-4 sm:mb-5 transition-transform duration-500 ${whyChooseVisible ? 'scale-100' : 'scale-75'}`}
+                  style={{ transitionDelay: whyChooseVisible ? `${index * 150 + 200}ms` : '0ms' }}
+                >
                   {item.icon === "expertise" && (
                     <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
