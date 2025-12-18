@@ -1,9 +1,62 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+
+function AnimatedCounter({
+  end,
+  prefix = "",
+  suffix = "",
+  duration = 2000,
+  startAnimation = false,
+}: {
+  end: number
+  prefix?: string
+  suffix?: string
+  duration?: number
+  startAnimation?: boolean
+}) {
+  const [count, setCount] = useState(0)
+  const hasAnimatedRef = useRef(false)
+
+  useEffect(() => {
+    if (!startAnimation || hasAnimatedRef.current) return
+    hasAnimatedRef.current = true
+
+    let startTime: number | null = null
+    let animationId: number
+
+    const animate = (timestamp: number) => {
+      if (!startTime) startTime = timestamp
+      const elapsed = timestamp - startTime
+      const progress = Math.min(elapsed / duration, 1)
+      const easeOut = 1 - Math.pow(1 - progress, 3)
+
+      setCount(Math.floor(end * easeOut))
+
+      if (progress < 1) {
+        animationId = requestAnimationFrame(animate)
+      }
+    }
+
+    animationId = requestAnimationFrame(animate)
+    return () => cancelAnimationFrame(animationId)
+  }, [startAnimation, end, duration])
+
+  return (
+    <span>
+      {prefix}{count.toLocaleString()}{suffix}
+    </span>
+  )
+}
+
+const STATS = [
+  { end: 500, prefix: "$", suffix: "K+", label: "CLIENT SAVINGS" },
+  { end: 100, prefix: "", suffix: "%", label: "PERMITTING\nSUCCESS" },
+  { end: 10, prefix: "", suffix: "+", label: "DISPUTES\nRESOLVED" },
+]
 
 const SERVICES = [
   {
@@ -71,6 +124,9 @@ const RESULTS = [
 export default function EngineeringConsultingPage() {
   const [selectedService, setSelectedService] = useState<number | null>(null)
   const [selectedResult, setSelectedResult] = useState<number | null>(null)
+  const [statsVisible, setStatsVisible] = useState(false)
+  const statsRef = useRef<HTMLElement>(null)
+  const hasTriggered = useRef(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -97,6 +153,46 @@ export default function EngineeringConsultingPage() {
       window.removeEventListener("keydown", handleEscape)
     }
   }, [selectedService, selectedResult])
+
+  // Scroll-triggered animation for stats
+  useEffect(() => {
+    if (typeof window === "undefined") return
+
+    const checkAndTrigger = () => {
+      if (hasTriggered.current) return
+      
+      const element = statsRef.current
+      if (!element) return
+
+      const rect = element.getBoundingClientRect()
+      const windowHeight = window.innerHeight
+      
+      if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
+        setStatsVisible(true)
+        hasTriggered.current = true
+      }
+    }
+
+    const handleUserScroll = () => {
+      setTimeout(checkAndTrigger, 50)
+    }
+
+    const handleKeyScroll = (e: KeyboardEvent) => {
+      if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Space"].includes(e.key)) {
+        handleUserScroll()
+      }
+    }
+
+    window.addEventListener("wheel", handleUserScroll, { passive: true })
+    window.addEventListener("touchmove", handleUserScroll, { passive: true })
+    window.addEventListener("keydown", handleKeyScroll)
+
+    return () => {
+      window.removeEventListener("wheel", handleUserScroll)
+      window.removeEventListener("touchmove", handleUserScroll)
+      window.removeEventListener("keydown", handleKeyScroll)
+    }
+  }, [])
 
   return (
     <div className="w-full overflow-x-hidden bg-black">
@@ -137,8 +233,8 @@ export default function EngineeringConsultingPage() {
             Expert engineering solutions, dispute resolution, and permitting services that save you time and money.
           </p>
 
-          {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4">
+          {/* CTA Button */}
+          <div>
             <a
               href="/contact"
               className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-sm sm:text-base tracking-wide px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all duration-300 group"
@@ -148,47 +244,6 @@ export default function EngineeringConsultingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
-            {/* Second button - Hidden on mobile */}
-            <a
-              href="#services"
-              className="hidden sm:inline-flex items-center justify-center gap-2 border border-white/30 hover:border-white/60 text-white font-sans font-medium text-base tracking-wide px-8 py-4 rounded-lg transition-all duration-300"
-            >
-              VIEW SERVICES
-            </a>
-          </div>
-
-          {/* Stats Bar - Desktop */}
-          <div className="hidden md:flex items-center gap-8 lg:gap-12 mt-16 lg:mt-20 pt-8 border-t border-white/10">
-            <div className="flex items-center gap-3">
-              <span className="font-display text-[#c6912c] text-3xl lg:text-4xl">$500K+</span>
-              <span className="font-sans text-white/60 text-xs tracking-wider uppercase">Client<br/>Savings</span>
-            </div>
-            <div className="w-px h-10 bg-white/20" />
-            <div className="flex items-center gap-3">
-              <span className="font-display text-[#c6912c] text-3xl lg:text-4xl">100%</span>
-              <span className="font-sans text-white/60 text-xs tracking-wider uppercase">Permitting<br/>Success</span>
-            </div>
-            <div className="w-px h-10 bg-white/20" />
-            <div className="flex items-center gap-3">
-              <span className="font-display text-[#c6912c] text-3xl lg:text-4xl">10+</span>
-              <span className="font-sans text-white/60 text-xs tracking-wider uppercase">Disputes<br/>Resolved</span>
-            </div>
-          </div>
-
-          {/* Stats Bar - Mobile */}
-          <div className="flex md:hidden justify-between mt-8 pt-6 border-t border-white/10">
-            <div className="text-center">
-              <span className="font-display text-[#c6912c] text-2xl block">$500K+</span>
-              <span className="font-sans text-white/50 text-[9px] tracking-wider uppercase">Savings</span>
-            </div>
-            <div className="text-center">
-              <span className="font-display text-[#c6912c] text-2xl block">100%</span>
-              <span className="font-sans text-white/50 text-[9px] tracking-wider uppercase">Success</span>
-            </div>
-            <div className="text-center">
-              <span className="font-display text-[#c6912c] text-2xl block">10+</span>
-              <span className="font-sans text-white/50 text-[9px] tracking-wider uppercase">Resolved</span>
-            </div>
           </div>
         </div>
 
@@ -201,25 +256,42 @@ export default function EngineeringConsultingPage() {
         </div>
       </section>
 
-      {/* SERVICES INTRO */}
-      <section id="services" className="bg-white">
+      {/* STATS SECTION */}
+      <section id="services" ref={statsRef} className="bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-8 py-12 sm:py-16 md:py-24">
-          <div className="max-w-3xl">
-            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-              <div className="w-8 sm:w-12 h-[2px] bg-[#c6912c]" />
-              <p className="font-sans text-[#888] text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase">
-                Our Expertise
-              </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
+            {/* LEFT: ANIMATED STATS */}
+            <div className="space-y-6 sm:space-y-8 md:space-y-10">
+              {STATS.map((stat, index) => (
+                <div key={index} className="flex items-center gap-4 sm:gap-6">
+                  <div className="font-display text-[#c6912c] leading-none text-[48px] sm:text-[72px] md:text-[90px]">
+                    <AnimatedCounter
+                      end={stat.end}
+                      prefix={stat.prefix}
+                      suffix={stat.suffix}
+                      duration={2000 + index * 200}
+                      startAnimation={statsVisible}
+                    />
+                  </div>
+                  <div>
+                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-[12px] md:text-[14px] uppercase whitespace-pre-line leading-relaxed">
+                      {stat.label}
+                    </p>
+                  </div>
+                </div>
+              ))}
             </div>
-            <h2 className="font-display tracking-tight leading-[0.95] text-[32px] sm:text-[48px] md:text-[64px] mb-4 sm:mb-6">
-              <span className="text-[#1a1a1a]">WHAT CAN </span>
-              <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
-              <br />
-              <span className="text-[#1a1a1a]">DO FOR YOU?</span>
-            </h2>
-            <p className="font-sans text-[#666] text-base sm:text-lg md:text-xl leading-relaxed">
-              From complex engineering challenges to permit approvals, we provide the expertise that keeps your project on track and under budget.
-            </p>
+
+            {/* RIGHT: HEADLINE with left border */}
+            <div className="lg:border-l-2 lg:border-[#c6912c] lg:pl-12">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[36px] sm:text-[48px] md:text-[64px]">
+                <span className="text-[#6b6b6b]">WHAT CAN</span>
+                <br />
+                <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
+                <br />
+                <span className="text-[#6b6b6b]">DO FOR YOU?</span>
+              </h2>
+            </div>
           </div>
         </div>
       </section>
