@@ -1,62 +1,9 @@
 "use client"
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-
-function AnimatedCounter({
-  end,
-  prefix = "",
-  suffix = "",
-  duration = 2000,
-  startAnimation = false,
-}: {
-  end: number
-  prefix?: string
-  suffix?: string
-  duration?: number
-  startAnimation?: boolean
-}) {
-  const [count, setCount] = useState(0)
-  const hasAnimatedRef = useRef(false)
-
-  useEffect(() => {
-    if (!startAnimation || hasAnimatedRef.current) return
-    hasAnimatedRef.current = true
-
-    let startTime: number | null = null
-    let animationId: number
-
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp
-      const elapsed = timestamp - startTime
-      const progress = Math.min(elapsed / duration, 1)
-      const easeOut = 1 - Math.pow(1 - progress, 3)
-
-      setCount(Math.floor(end * easeOut))
-
-      if (progress < 1) {
-        animationId = requestAnimationFrame(animate)
-      }
-    }
-
-    animationId = requestAnimationFrame(animate)
-    return () => cancelAnimationFrame(animationId)
-  }, [startAnimation, end, duration])
-
-  return (
-    <span>
-      {prefix}{count.toLocaleString()}{suffix}
-    </span>
-  )
-}
-
-const STATS = [
-  { end: 500, prefix: "$", suffix: "k+", label: "CLIENT SAVINGS" },
-  { end: 100, prefix: "", suffix: "%", label: "PERMITTING\nSUCCESS" },
-  { end: 10, prefix: "", suffix: "+", label: "DISPUTES\nRESOLVED" },
-]
 
 const SERVICES = [
   {
@@ -122,11 +69,8 @@ const RESULTS = [
 ]
 
 export default function EngineeringConsultingPage() {
-  const [statsVisible, setStatsVisible] = useState(false)
   const [selectedService, setSelectedService] = useState<number | null>(null)
   const [selectedResult, setSelectedResult] = useState<number | null>(null)
-  const statsRef = useRef<HTMLElement>(null)
-  const hasTriggered = useRef(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -154,109 +98,127 @@ export default function EngineeringConsultingPage() {
     }
   }, [selectedService, selectedResult])
 
-  useEffect(() => {
-    if (typeof window === "undefined") return
-
-    const checkAndTrigger = () => {
-      if (hasTriggered.current) return
-      
-      const element = statsRef.current
-      if (!element) return
-
-      const rect = element.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-      
-      // Trigger when stats section top is visible in viewport
-      if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
-        setStatsVisible(true)
-        hasTriggered.current = true
-      }
-    }
-
-    // Only listen to real user interactions (wheel, touch, keydown)
-    const handleUserScroll = () => {
-      // Small delay to let scroll position update
-      setTimeout(checkAndTrigger, 50)
-    }
-
-    const handleKeyScroll = (e: KeyboardEvent) => {
-      if (["ArrowDown", "ArrowUp", "PageDown", "PageUp", "Space"].includes(e.key)) {
-        handleUserScroll()
-      }
-    }
-
-    window.addEventListener("wheel", handleUserScroll, { passive: true })
-    window.addEventListener("touchmove", handleUserScroll, { passive: true })
-    window.addEventListener("keydown", handleKeyScroll)
-
-    return () => {
-      window.removeEventListener("wheel", handleUserScroll)
-      window.removeEventListener("touchmove", handleUserScroll)
-      window.removeEventListener("keydown", handleKeyScroll)
-    }
-  }, [])
-
   return (
     <div className="w-full overflow-x-hidden bg-black">
       <Navbar />
 
       {/* HERO */}
-      <section className="relative w-full bg-black">
-        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-20 sm:pt-28 md:pt-20 lg:pt-24 pb-4 sm:pb-8 md:pb-16 lg:pb-20">
-          <h1 className="font-display text-[2rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] text-white tracking-tight text-right leading-[1.1]">
-            ENGINEERING & CONSULTING
-          </h1>
-        </div>
-        <div className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[3/1]">
+      <section className="relative w-full min-h-[100svh] bg-black">
+        {/* Background Image */}
+        <div className="absolute inset-0">
           <Image
             src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
             alt="Complex engineering project"
             fill
-            className="object-cover object-center"
+            className="object-cover object-center opacity-40"
             priority
           />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-10 flex flex-col justify-center min-h-[100svh] px-5 sm:px-8 md:px-16 lg:px-24 pt-20 pb-12">
+          {/* Tagline */}
+          <p className="font-sans text-[#c6912c] text-xs sm:text-sm tracking-[0.25em] sm:tracking-[0.3em] uppercase mb-4 sm:mb-6">
+            Protect Your Investment. Solve Complex Challenges.
+          </p>
+
+          {/* Main Headline */}
+          <h1 className="font-display text-white text-[2.5rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[1] tracking-tight mb-6 sm:mb-8">
+            CONSTRUCTION
+            <br />
+            <span className="text-[#c6912c]">CONSULTING</span>
+            <br />
+            THAT DELIVERS
+          </h1>
+
+          {/* Supporting Text */}
+          <p className="font-sans text-white/70 text-base sm:text-lg md:text-xl max-w-xl mb-8 sm:mb-10 leading-relaxed">
+            Expert engineering solutions, dispute resolution, and permitting services that save you time and money.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4">
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-sm sm:text-base tracking-wide px-6 sm:px-8 py-4 rounded-lg transition-all duration-300 group"
+            >
+              GET EXPERT CONSULTATION
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </a>
+            <a
+              href="#services"
+              className="inline-flex items-center justify-center gap-2 border border-white/30 hover:border-white/60 text-white font-sans font-medium text-sm sm:text-base tracking-wide px-6 sm:px-8 py-4 rounded-lg transition-all duration-300"
+            >
+              VIEW SERVICES
+            </a>
+          </div>
+
+          {/* Stats Bar - Desktop */}
+          <div className="hidden md:flex items-center gap-8 lg:gap-12 mt-16 lg:mt-20 pt-8 border-t border-white/10">
+            <div className="flex items-center gap-3">
+              <span className="font-display text-[#c6912c] text-3xl lg:text-4xl">$500K+</span>
+              <span className="font-sans text-white/60 text-xs tracking-wider uppercase">Client<br/>Savings</span>
+            </div>
+            <div className="w-px h-10 bg-white/20" />
+            <div className="flex items-center gap-3">
+              <span className="font-display text-[#c6912c] text-3xl lg:text-4xl">100%</span>
+              <span className="font-sans text-white/60 text-xs tracking-wider uppercase">Permitting<br/>Success</span>
+            </div>
+            <div className="w-px h-10 bg-white/20" />
+            <div className="flex items-center gap-3">
+              <span className="font-display text-[#c6912c] text-3xl lg:text-4xl">10+</span>
+              <span className="font-sans text-white/60 text-xs tracking-wider uppercase">Disputes<br/>Resolved</span>
+            </div>
+          </div>
+
+          {/* Stats Bar - Mobile */}
+          <div className="flex md:hidden justify-between mt-10 pt-6 border-t border-white/10">
+            <div className="text-center">
+              <span className="font-display text-[#c6912c] text-2xl block">$500K+</span>
+              <span className="font-sans text-white/60 text-[10px] tracking-wider uppercase">Savings</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[#c6912c] text-2xl block">100%</span>
+              <span className="font-sans text-white/60 text-[10px] tracking-wider uppercase">Success</span>
+            </div>
+            <div className="text-center">
+              <span className="font-display text-[#c6912c] text-2xl block">10+</span>
+              <span className="font-sans text-white/60 text-[10px] tracking-wider uppercase">Resolved</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+          <span className="font-sans text-white/40 text-[10px] tracking-widest uppercase">Scroll</span>
+          <svg className="w-5 h-5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+          </svg>
         </div>
       </section>
 
-      {/* GOLD LINE */}
-      <div className="w-full h-[2px] bg-[#D4A574]" />
-
-      {/* STATS SECTION */}
-      <section ref={statsRef} className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-10 sm:py-16 md:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
-            {/* LEFT: ANIMATED STATS */}
-            <div className="space-y-4 sm:space-y-8 md:space-y-10">
-              {STATS.map((stat, index) => (
-                <div key={index} className="flex items-center gap-4 sm:gap-8">
-                  <div className="font-display text-[#c6912c] leading-none text-[56px] sm:text-[90px] md:text-[110px]">
-                    <AnimatedCounter
-                      end={stat.end}
-                      prefix={stat.prefix}
-                      suffix={stat.suffix}
-                      duration={2000 + index * 200}
-                      startAnimation={statsVisible}
-                    />
-                  </div>
-                  <div>
-                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-[14px] md:text-[15px] uppercase whitespace-pre-line leading-relaxed">
-                      {stat.label}
-                    </p>
-                  </div>
-                </div>
-              ))}
+      {/* SERVICES INTRO */}
+      <section id="services" className="bg-white">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-12 sm:py-16 md:py-24">
+          <div className="max-w-3xl">
+            <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+              <div className="w-8 sm:w-12 h-[2px] bg-[#c6912c]" />
+              <p className="font-sans text-[#888] text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase">
+                Our Expertise
+              </p>
             </div>
-
-            {/* RIGHT: HEADLINE with left border */}
-            <div className="lg:border-l-2 lg:border-[#c6912c] lg:pl-12 pt-4 lg:pt-0">
-              <h2 className="font-display tracking-tight leading-[0.95] text-[36px] sm:text-[64px] md:text-[80px]">
-                <span className="text-[#6b6b6b]">WHAT CAN</span>
-                <br />
-                <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
-                <br />
-                <span className="text-[#6b6b6b]">DO FOR YOU?</span>
-              </h2>
-            </div>
+            <h2 className="font-display tracking-tight leading-[0.95] text-[32px] sm:text-[48px] md:text-[64px] mb-4 sm:mb-6">
+              <span className="text-[#1a1a1a]">WHAT CAN </span>
+              <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
+              <br />
+              <span className="text-[#1a1a1a]">DO FOR YOU?</span>
+            </h2>
+            <p className="font-sans text-[#666] text-base sm:text-lg md:text-xl leading-relaxed">
+              From complex engineering challenges to permit approvals, we provide the expertise that keeps your project on track and under budget.
+            </p>
           </div>
         </div>
       </section>
