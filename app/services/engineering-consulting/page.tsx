@@ -199,28 +199,16 @@ export default function EngineeringConsultingPage() {
       <Navbar />
 
       {/* HERO */}
-      <section className="relative w-full min-h-[100svh] bg-black">
-        {/* Background Image */}
-        <div className="absolute inset-0">
-          <Image
-            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
-            alt="Complex engineering project"
-            fill
-            className="object-cover object-center opacity-40"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center min-h-[100svh] px-5 sm:px-8 md:px-16 lg:px-24 pt-20 pb-12">
+      <section className="relative w-full bg-black">
+        {/* Top section with text */}
+        <div className="px-5 sm:px-8 md:px-16 lg:px-24 pt-24 sm:pt-28 md:pt-32 pb-10 sm:pb-12 md:pb-16">
           {/* Tagline */}
-          <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-3 sm:mb-6">
+          <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-3 sm:mb-5">
             Protect Your Investment. Solve Complex Challenges.
           </p>
 
           {/* Main Headline */}
-          <h1 className="font-display text-white text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[0.95] tracking-tight mb-6 sm:mb-8">
+          <h1 className="font-display text-white text-[2.5rem] sm:text-[3.5rem] md:text-[4.5rem] lg:text-[5.5rem] leading-[0.95] tracking-tight mb-5 sm:mb-6">
             CONSTRUCTION
             <br />
             <span className="text-[#c6912c]">CONSULTING</span>
@@ -229,31 +217,37 @@ export default function EngineeringConsultingPage() {
           </h1>
 
           {/* Supporting Text - Hidden on mobile */}
-          <p className="hidden sm:block font-sans text-white/70 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
+          <p className="hidden sm:block font-sans text-white/70 text-base md:text-lg max-w-lg mb-8 leading-relaxed">
             Expert engineering solutions, dispute resolution, and permitting services that save you time and money.
           </p>
 
           {/* CTA Button */}
-          <div>
-            <a
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-sm sm:text-base tracking-wide px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all duration-300 group"
-            >
-              GET EXPERT CONSULTATION
-              <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </a>
-          </div>
+          <a
+            href="/contact"
+            className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-sm sm:text-base tracking-wide px-6 sm:px-8 py-3 sm:py-4 rounded-lg transition-all duration-300 group"
+          >
+            GET EXPERT CONSULTATION
+            <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+          </a>
         </div>
 
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="font-sans text-white/40 text-[10px] tracking-widest uppercase">Scroll</span>
-          <svg className="w-5 h-5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
+        {/* Hero Image - Prominent */}
+        <div className="relative w-full aspect-[16/9] sm:aspect-[2/1] md:aspect-[21/9] lg:aspect-[3/1]">
+          <Image
+            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
+            alt="Luxury construction project"
+            fill
+            className="object-cover object-center"
+            priority
+          />
+          {/* Subtle gradient overlay */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent" />
         </div>
+
+        {/* Gold accent line */}
+        <div className="w-full h-[3px] bg-[#c6912c]" />
       </section>
 
       {/* STATS SECTION */}
