@@ -202,8 +202,8 @@ export default function EngineeringConsultingPage() {
 
       {/* HERO */}
       <section className="relative w-full bg-black">
-        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20">
-          <h1 className="font-display text-[2.5rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] text-white tracking-tight text-right leading-tight">
+        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-20 sm:pt-28 md:pt-20 lg:pt-24 pb-4 sm:pb-8 md:pb-16 lg:pb-20">
+          <h1 className="font-display text-[2rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] text-white tracking-tight text-right leading-[1.1]">
             ENGINEERING & CONSULTING
           </h1>
         </div>
@@ -223,13 +223,13 @@ export default function EngineeringConsultingPage() {
 
       {/* STATS SECTION */}
       <section ref={statsRef} className="bg-white">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 py-16 md:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-10 sm:py-16 md:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
             {/* LEFT: ANIMATED STATS */}
-            <div className="space-y-8 md:space-y-10">
+            <div className="space-y-4 sm:space-y-8 md:space-y-10">
               {STATS.map((stat, index) => (
-                <div key={index} className="flex items-center gap-6 sm:gap-8">
-                  <div className="font-display text-[#c6912c] leading-none text-[72px] sm:text-[90px] md:text-[110px]">
+                <div key={index} className="flex items-center gap-4 sm:gap-8">
+                  <div className="font-display text-[#c6912c] leading-none text-[56px] sm:text-[90px] md:text-[110px]">
                     <AnimatedCounter
                       end={stat.end}
                       prefix={stat.prefix}
@@ -239,7 +239,7 @@ export default function EngineeringConsultingPage() {
                     />
                   </div>
                   <div>
-                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.2em] text-[12px] sm:text-[14px] md:text-[15px] uppercase whitespace-pre-line leading-relaxed">
+                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-[14px] md:text-[15px] uppercase whitespace-pre-line leading-relaxed">
                       {stat.label}
                     </p>
                   </div>
@@ -248,8 +248,8 @@ export default function EngineeringConsultingPage() {
             </div>
 
             {/* RIGHT: HEADLINE with left border */}
-            <div className="lg:border-l-2 lg:border-[#c6912c] lg:pl-12">
-              <h2 className="font-display tracking-tight leading-[0.95] text-[48px] sm:text-[64px] md:text-[80px]">
+            <div className="lg:border-l-2 lg:border-[#c6912c] lg:pl-12 pt-4 lg:pt-0">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[36px] sm:text-[64px] md:text-[80px]">
                 <span className="text-[#6b6b6b]">WHAT CAN</span>
                 <br />
                 <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
@@ -262,36 +262,36 @@ export default function EngineeringConsultingPage() {
       </section>
 
       {/* CONSULTING SERVICES */}
-      <section className="bg-black py-20 md:py-32">
-        <div className="mx-auto max-w-[1400px] px-5 sm:px-8">
-          <h2 className="font-display text-white text-center text-[36px] sm:text-[46px] md:text-[58px] tracking-tight mb-16 md:mb-24">
+      <section className="bg-black py-12 sm:py-20 md:py-32">
+        <div className="mx-auto max-w-[1400px] px-4 sm:px-8">
+          <h2 className="font-display text-white text-center text-[28px] sm:text-[46px] md:text-[58px] tracking-tight mb-10 sm:mb-16 md:mb-24">
             CONSULTING SERVICES
           </h2>
           
-          <div className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8">
+          <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8">
             {SERVICES.map((service, index) => (
               <div
                 key={index}
                 onClick={() => setSelectedService(index)}
-                className="group relative flex-shrink-0 w-[85vw] sm:w-[420px] lg:w-auto snap-start bg-[#141414] rounded-2xl p-10 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
+                className="group relative flex-shrink-0 w-[75vw] sm:w-[420px] lg:w-auto snap-start bg-[#141414] rounded-xl sm:rounded-2xl p-6 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
               >
                 {/* Gold accent line */}
-                <div className="absolute left-0 top-10 bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
+                <div className="absolute left-0 top-6 bottom-6 sm:top-10 sm:bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
                 
                 {/* Expand icon - top right */}
-                <div className="absolute top-6 right-6 w-9 h-9 rounded-full border-2 border-[#c6912c]/50 group-hover:border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
-                  <svg className="w-4 h-4 text-[#c6912c]/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-[#c6912c]/50 group-hover:border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c6912c]/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
                 
-                <div className="font-display text-[#c6912c] text-[100px] sm:text-[120px] md:text-[140px] lg:text-[160px] leading-none mb-8 md:mb-10">
+                <div className="font-display text-[#c6912c] text-[72px] sm:text-[120px] md:text-[140px] lg:text-[160px] leading-none mb-4 sm:mb-8 md:mb-10">
                   {service.num}
                 </div>
-                <h3 className="font-display text-white text-2xl sm:text-[28px] md:text-[32px] mb-4 md:mb-5 tracking-wide">
+                <h3 className="font-display text-white text-lg sm:text-[28px] md:text-[32px] mb-2 sm:mb-4 md:mb-5 tracking-wide">
                   {service.title}
                 </h3>
-                <p className="font-sans text-[#666] text-base sm:text-lg md:text-[19px] leading-relaxed">
+                <p className="font-sans text-[#666] text-sm sm:text-lg md:text-[19px] leading-relaxed">
                   {service.shortDesc}
                 </p>
               </div>
@@ -303,48 +303,48 @@ export default function EngineeringConsultingPage() {
       {/* SERVICE MODAL */}
       {selectedService !== null && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm"
           onClick={() => setSelectedService(null)}
         >
           <div 
-            className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="relative bg-white rounded-xl sm:rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
               onClick={() => setSelectedService(null)}
-              className="absolute top-4 right-4 w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
             >
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
             {/* Icon area */}
-            <div className="bg-[#f0f4f8] rounded-t-2xl p-12 flex items-center justify-center">
-              <div className="font-display text-[#c6912c]/30 text-[140px] sm:text-[180px] leading-none">
+            <div className="bg-[#f0f4f8] rounded-t-xl sm:rounded-t-2xl p-8 sm:p-12 flex items-center justify-center">
+              <div className="font-display text-[#c6912c]/30 text-[100px] sm:text-[180px] leading-none">
                 {SERVICES[selectedService].num}
               </div>
             </div>
 
             {/* Content */}
-            <div className="p-8 sm:p-10">
-              <p className="font-sans text-[#c6912c] text-sm tracking-[0.2em] uppercase mb-2">
+            <div className="p-5 sm:p-10">
+              <p className="font-sans text-[#c6912c] text-xs sm:text-sm tracking-[0.2em] uppercase mb-1 sm:mb-2">
                 CONSULTING SERVICE
               </p>
-              <h3 className="font-display text-black text-3xl sm:text-4xl mb-6">
+              <h3 className="font-display text-black text-2xl sm:text-4xl mb-4 sm:mb-6">
                 {SERVICES[selectedService].title}
               </h3>
-              <p className="font-sans text-[#555] text-base sm:text-lg leading-relaxed mb-8">
+              <p className="font-sans text-[#555] text-sm sm:text-lg leading-relaxed mb-6 sm:mb-8">
                 {SERVICES[selectedService].fullDesc}
               </p>
               
               {/* Features */}
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 {SERVICES[selectedService].features.map((feature, idx) => (
                   <div key={idx} className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-[#c6912c] rounded-full" />
-                    <span className="font-sans text-[#333] text-sm">{feature}</span>
+                    <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#c6912c] rounded-full flex-shrink-0" />
+                    <span className="font-sans text-[#333] text-xs sm:text-sm">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -354,17 +354,17 @@ export default function EngineeringConsultingPage() {
       )}
 
       {/* DRIVING RESULTS */}
-      <section className="bg-white py-20 md:py-32">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <section className="bg-white py-12 sm:py-20 md:py-32">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
           {/* Header */}
-          <div className="mb-16 md:mb-24">
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-[2px] bg-[#c6912c]" />
-              <p className="font-sans text-[#888] text-sm tracking-[0.25em] uppercase">
+          <div className="mb-10 sm:mb-16 md:mb-24">
+            <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+              <div className="w-8 sm:w-12 h-[2px] bg-[#c6912c]" />
+              <p className="font-sans text-[#888] text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase">
                 Our Results Speak For Us
               </p>
             </div>
-            <h2 className="font-display text-[36px] sm:text-[48px] md:text-[64px] leading-[0.95] tracking-tight">
+            <h2 className="font-display text-[28px] sm:text-[48px] md:text-[64px] leading-[0.95] tracking-tight">
               <span className="text-[#1a1a1a]">DRIVING RESULTS</span>
               <br />
               <span className="text-[#1a1a1a]">THROUGH </span>
@@ -380,19 +380,19 @@ export default function EngineeringConsultingPage() {
               <div
                 key={index}
                 onClick={() => setSelectedResult(index)}
-                className="group bg-white p-8 sm:p-10 md:p-12 cursor-pointer hover:bg-[#fafafa] transition-colors"
+                className="group bg-white p-6 sm:p-10 md:p-12 cursor-pointer hover:bg-[#fafafa] transition-colors"
               >
-                <p className="font-display text-[#c6912c] text-[48px] sm:text-[56px] md:text-[64px] leading-none mb-4">
+                <p className="font-display text-[#c6912c] text-[40px] sm:text-[56px] md:text-[64px] leading-none mb-2 sm:mb-4">
                   {result.stat}
                 </p>
-                <h3 className="font-display text-[#1a1a1a] text-xl sm:text-2xl md:text-[26px] mb-3 tracking-wide">
+                <h3 className="font-display text-[#1a1a1a] text-base sm:text-2xl md:text-[26px] mb-2 sm:mb-3 tracking-wide">
                   {result.title}
                 </h3>
-                <p className="font-sans text-[#777] text-base mb-6">
+                <p className="font-sans text-[#777] text-sm sm:text-base mb-4 sm:mb-6">
                   {result.shortDesc}
                 </p>
-                <div className="w-11 h-11 rounded-full border-2 border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
-                  <svg className="w-5 h-5 text-[#c6912c] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full border-2 border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#c6912c] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </div>
@@ -405,60 +405,60 @@ export default function EngineeringConsultingPage() {
       {/* RESULT MODAL */}
       {selectedResult !== null && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm"
           onClick={() => setSelectedResult(null)}
         >
           <div 
-            className="relative bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+            className="relative bg-white rounded-xl sm:rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Close button */}
             <button
               onClick={() => setSelectedResult(null)}
-              className="absolute top-4 right-4 w-10 h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
+              className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
             >
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
               </svg>
             </button>
 
             {/* Stat header area */}
-            <div className="bg-[#1a1a1a] rounded-t-2xl p-10 sm:p-12">
-              <p className="font-display text-[#c6912c] text-[80px] sm:text-[100px] leading-none mb-2">
+            <div className="bg-[#1a1a1a] rounded-t-xl sm:rounded-t-2xl p-6 sm:p-12">
+              <p className="font-display text-[#c6912c] text-[56px] sm:text-[100px] leading-none mb-1 sm:mb-2">
                 {RESULTS[selectedResult].stat}
               </p>
-              <h3 className="font-display text-white text-2xl sm:text-3xl tracking-wide">
+              <h3 className="font-display text-white text-lg sm:text-3xl tracking-wide">
                 {RESULTS[selectedResult].title}
               </h3>
             </div>
 
             {/* Content */}
-            <div className="p-8 sm:p-10">
-              <p className="font-sans text-[#c6912c] text-sm tracking-[0.2em] uppercase mb-2">
+            <div className="p-5 sm:p-10">
+              <p className="font-sans text-[#c6912c] text-xs sm:text-sm tracking-[0.2em] uppercase mb-1 sm:mb-2">
                 Case Study
               </p>
-              <p className="font-sans text-[#555] text-base sm:text-lg leading-relaxed mb-8">
+              <p className="font-sans text-[#555] text-sm sm:text-lg leading-relaxed mb-6 sm:mb-8">
                 {RESULTS[selectedResult].fullDesc}
               </p>
               
               {/* Project Details */}
-              <div className="grid grid-cols-2 gap-6 mb-8">
+              <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
                 <div>
-                  <p className="font-sans text-[#999] text-xs tracking-[0.15em] uppercase mb-1">Client</p>
-                  <p className="font-sans text-[#333] font-medium">{RESULTS[selectedResult].client}</p>
+                  <p className="font-sans text-[#999] text-[10px] sm:text-xs tracking-[0.15em] uppercase mb-1">Client</p>
+                  <p className="font-sans text-[#333] text-sm sm:text-base font-medium">{RESULTS[selectedResult].client}</p>
                 </div>
                 <div>
-                  <p className="font-sans text-[#999] text-xs tracking-[0.15em] uppercase mb-1">Duration</p>
-                  <p className="font-sans text-[#333] font-medium">{RESULTS[selectedResult].duration}</p>
+                  <p className="font-sans text-[#999] text-[10px] sm:text-xs tracking-[0.15em] uppercase mb-1">Duration</p>
+                  <p className="font-sans text-[#333] text-sm sm:text-base font-medium">{RESULTS[selectedResult].duration}</p>
                 </div>
               </div>
               
               {/* Services Used */}
               <div>
-                <p className="font-sans text-[#999] text-xs tracking-[0.15em] uppercase mb-3">Services Provided</p>
-                <div className="flex flex-wrap gap-2">
+                <p className="font-sans text-[#999] text-[10px] sm:text-xs tracking-[0.15em] uppercase mb-2 sm:mb-3">Services Provided</p>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {RESULTS[selectedResult].services.map((service, idx) => (
-                    <span key={idx} className="font-sans text-sm bg-[#f5f5f5] text-[#555] px-3 py-1 rounded-full">
+                    <span key={idx} className="font-sans text-xs sm:text-sm bg-[#f5f5f5] text-[#555] px-2 sm:px-3 py-1 rounded-full">
                       {service}
                     </span>
                   ))}
