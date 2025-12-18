@@ -199,14 +199,14 @@ export default function EngineeringConsultingPage() {
 
     // Scroll trigger for both sections on all devices
     const checkAndTrigger = () => {
-      // Stats section
+      // Stats section - trigger when stats are clearly visible
       if (!hasTriggered.current) {
         const element = statsRef.current
         if (element) {
           const rect = element.getBoundingClientRect()
           const windowHeight = window.innerHeight
           
-          if (rect.top < windowHeight * 0.75 && rect.bottom > 0) {
+          if (rect.top < windowHeight * 0.4 && rect.bottom > 0) {
             setStatsVisible(true)
             hasTriggered.current = true
           }
