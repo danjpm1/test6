@@ -125,7 +125,9 @@ export default function EngineeringConsultingPage() {
   const [selectedService, setSelectedService] = useState<number | null>(null)
   const [selectedResult, setSelectedResult] = useState<number | null>(null)
   const [statsVisible, setStatsVisible] = useState(false)
+  const [activeCard, setActiveCard] = useState(0)
   const statsRef = useRef<HTMLElement>(null)
+  const cardsContainerRef = useRef<HTMLDivElement>(null)
   const hasTriggered = useRef(false)
 
   useEffect(() => {
@@ -154,11 +156,11 @@ export default function EngineeringConsultingPage() {
     }
   }, [selectedService, selectedResult])
 
-  // Scroll-triggered animation for stats (desktop) 
+  // Scroll-triggered animation for stats (desktop) / delayed trigger (mobile)
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    // On mobile, trigger animation after short delay 
+    // On mobile, trigger animation after short delay (stats visible sooner)
     const isMobile = window.innerWidth < 768
     if (isMobile) {
       const mobileTimer = setTimeout(() => {
@@ -225,7 +227,7 @@ export default function EngineeringConsultingPage() {
 
       {/* HERO */}
       <section className="relative w-full min-h-[70svh] sm:min-h-[80svh] bg-black">
-        {/* Background Image */}
+        {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
             src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
@@ -320,7 +322,17 @@ export default function EngineeringConsultingPage() {
             CONSULTING SERVICES
           </h2>
           
-          <div className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8">
+          <div 
+            ref={cardsContainerRef}
+            onScroll={(e) => {
+              const container = e.currentTarget
+              const scrollLeft = container.scrollLeft
+              const cardWidth = container.offsetWidth * 0.75 + 16 // 75vw + gap
+              const newActive = Math.round(scrollLeft / cardWidth)
+              setActiveCard(Math.min(newActive, SERVICES.length - 1))
+            }}
+            className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8"
+          >
             {SERVICES.map((service, index) => (
               <div
                 key={index}
@@ -347,6 +359,28 @@ export default function EngineeringConsultingPage() {
                   {service.shortDesc}
                 </p>
               </div>
+            ))}
+          </div>
+
+          {/* Pagination dots - mobile only */}
+          <div className="flex lg:hidden justify-center gap-2 mt-6">
+            {SERVICES.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  const container = cardsContainerRef.current
+                  if (container) {
+                    const cardWidth = container.offsetWidth * 0.75 + 16
+                    container.scrollTo({ left: cardWidth * index, behavior: 'smooth' })
+                  }
+                }}
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                  activeCard === index 
+                    ? 'bg-[#c6912c] w-6' 
+                    : 'bg-white/30 hover:bg-white/50'
+                }`}
+                aria-label={`Go to service ${index + 1}`}
+              />
             ))}
           </div>
         </div>
