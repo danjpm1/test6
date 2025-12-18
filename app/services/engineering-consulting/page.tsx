@@ -193,40 +193,27 @@ export default function EngineeringConsultingPage() {
     }
   }, [selectedService, selectedResult])
 
-  // Scroll-triggered animation for stats (desktop) / delayed trigger (mobile)
+  // Scroll-triggered animation for stats and Why Choose section
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    const isMobile = window.innerWidth < 768
-
-    // On mobile, trigger stats after short delay (visible early on mobile)
-    let statsTimer: NodeJS.Timeout
-    if (isMobile) {
-      statsTimer = setTimeout(() => {
-        if (!hasTriggered.current) {
-          setStatsVisible(true)
-          hasTriggered.current = true
-        }
-      }, 800)
-    }
-
-    // Scroll trigger for both desktop stats and Why Choose section
+    // Scroll trigger for both sections on all devices
     const checkAndTrigger = () => {
-      // Stats section (desktop only - mobile uses timer above)
-      if (!hasTriggered.current && !isMobile) {
+      // Stats section
+      if (!hasTriggered.current) {
         const element = statsRef.current
         if (element) {
           const rect = element.getBoundingClientRect()
           const windowHeight = window.innerHeight
           
-          if (rect.top < windowHeight * 0.7 && rect.bottom > 0) {
+          if (rect.top < windowHeight * 0.75 && rect.bottom > 0) {
             setStatsVisible(true)
             hasTriggered.current = true
           }
         }
       }
 
-      // Why Choose section (both mobile and desktop)
+      // Why Choose section
       if (!hasWhyChooseTriggered.current) {
         const element = whyChooseRef.current
         if (element) {
@@ -257,7 +244,6 @@ export default function EngineeringConsultingPage() {
     window.addEventListener("keydown", handleKeyScroll)
 
     return () => {
-      if (statsTimer) clearTimeout(statsTimer)
       window.removeEventListener("wheel", handleUserScroll)
       window.removeEventListener("touchmove", handleUserScroll)
       window.removeEventListener("scroll", handleUserScroll)
@@ -286,7 +272,7 @@ export default function EngineeringConsultingPage() {
         {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
-            src="/ConsultingPage.png"
+            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
             alt="Complex engineering project"
             fill
             className="object-cover object-center opacity-60"
@@ -335,8 +321,19 @@ export default function EngineeringConsultingPage() {
       <section id="services" ref={statsRef} className="bg-white">
         <div className="mx-auto max-w-7xl px-4 sm:px-8 py-12 sm:py-16 md:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
-            {/* LEFT: ANIMATED STATS */}
-            <div className="space-y-6 sm:space-y-8 md:space-y-10">
+            {/* HEADLINE - Shows first on mobile, second on desktop */}
+            <div className="order-1 lg:order-2 border-l-2 border-[#c6912c] pl-6 sm:pl-8 lg:pl-12">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[32px] sm:text-[48px] md:text-[64px]">
+                <span className="text-[#6b6b6b]">WHAT CAN</span>
+                <br />
+                <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
+                <br />
+                <span className="text-[#6b6b6b]">DO FOR YOU?</span>
+              </h2>
+            </div>
+
+            {/* ANIMATED STATS - Shows second on mobile, first on desktop */}
+            <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 md:space-y-10">
               {STATS.map((stat, index) => (
                 <div key={index} className="flex items-center gap-4 sm:gap-6">
                   <div className="font-display text-[#c6912c] leading-none text-[48px] sm:text-[72px] md:text-[90px]">
@@ -355,17 +352,6 @@ export default function EngineeringConsultingPage() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            {/* RIGHT: HEADLINE with left border */}
-            <div className="border-l-2 border-[#c6912c] pl-6 sm:pl-8 lg:pl-12">
-              <h2 className="font-display tracking-tight leading-[0.95] text-[32px] sm:text-[48px] md:text-[64px]">
-                <span className="text-[#6b6b6b]">WHAT CAN</span>
-                <br />
-                <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
-                <br />
-                <span className="text-[#6b6b6b]">DO FOR YOU?</span>
-              </h2>
             </div>
           </div>
         </div>
