@@ -90,7 +90,8 @@ const RESULTS = [
     fullDesc: "A luxury residential project faced a complex dispute with contractors over material specifications and timeline delays. Our team conducted a thorough technical analysis, documented all discrepancies, and led mediation sessions between all parties. Through strategic negotiation and expert documentation, we resolved the dispute without litigation, saving our client over $500,000 in potential legal fees and project delays.",
     client: "Luxury Residential Development",
     duration: "3 months",
-    services: ["Dispute Resolution", "Technical Analysis", "Mediation"]
+    services: ["Dispute Resolution", "Technical Analysis", "Mediation"],
+    icon: "shield"
   },
   {
     stat: "2 WEEKS",
@@ -99,7 +100,8 @@ const RESULTS = [
     fullDesc: "When a high-end residential client needed urgent permit approval for a time-sensitive renovation, our team mobilized immediately. We prepared comprehensive documentation, coordinated directly with city officials, and addressed all compliance concerns proactively. What typically takes 8-12 weeks was accomplished in just 2 weeks, keeping the project on schedule for the client's move-in date.",
     client: "Beverly Hills Residence",
     duration: "2 weeks",
-    services: ["Permit Expediting", "Agency Liaison", "Documentation"]
+    services: ["Permit Expediting", "Agency Liaison", "Documentation"],
+    icon: "clock"
   },
   {
     stat: "100%",
@@ -108,7 +110,8 @@ const RESULTS = [
     fullDesc: "A multi-unit development project was flagged for multiple code violations during inspection, threatening to halt construction indefinitely. Our engineering team conducted a complete compliance audit, developed remediation plans for each violation, and worked closely with inspectors to verify corrections. We achieved 100% compliance across all 47 inspection points, allowing construction to resume without further delays.",
     client: "Multi-Unit Development",
     duration: "6 weeks",
-    services: ["Code Compliance", "Engineering Review", "Inspection Coordination"]
+    services: ["Code Compliance", "Engineering Review", "Inspection Coordination"],
+    icon: "check"
   },
   {
     stat: "30%",
@@ -117,8 +120,39 @@ const RESULTS = [
     fullDesc: "A commercial construction project was significantly over budget before breaking ground. Our value engineering team analyzed every aspect of the design and specifications, identifying opportunities to reduce costs while maintaining the client's vision and quality standards. Through material substitutions, design optimizations, and contractor negotiations, we reduced the total project cost by 30% — a savings of over $2 million.",
     client: "Commercial Office Building",
     duration: "2 months",
-    services: ["Value Engineering", "Cost Analysis", "Specification Review"]
+    services: ["Value Engineering", "Cost Analysis", "Specification Review"],
+    icon: "trending"
   },
+]
+
+const TESTIMONIAL = {
+  quote: "Antova's engineering team saved our project. We were facing a $600K dispute that seemed impossible to resolve. Their technical expertise and negotiation skills got us to a resolution in under 3 months — without going to court.",
+  author: "Michael Chen",
+  title: "Development Director",
+  company: "Pacific Luxury Homes"
+}
+
+const WHY_CHOOSE = [
+  {
+    icon: "expertise",
+    title: "30+ Years Combined Experience",
+    desc: "Our team brings decades of construction and engineering expertise"
+  },
+  {
+    icon: "track",
+    title: "100% Permit Success Rate",
+    desc: "We've never failed to secure a permit for our clients"
+  },
+  {
+    icon: "savings",
+    title: "$2M+ Client Savings",
+    desc: "Through dispute resolution and value engineering"
+  },
+  {
+    icon: "speed",
+    title: "Fast Turnaround",
+    desc: "We move quickly without sacrificing quality"
+  }
 ]
 
 export default function EngineeringConsultingPage() {
@@ -469,6 +503,29 @@ export default function EngineeringConsultingPage() {
                 onClick={() => setSelectedResult(index)}
                 className="group bg-[#f8f8f8] p-6 sm:p-10 md:p-12 cursor-pointer hover:bg-white transition-colors"
               >
+                {/* Icon */}
+                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center mb-4 sm:mb-6">
+                  {result.icon === "shield" && (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                    </svg>
+                  )}
+                  {result.icon === "clock" && (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )}
+                  {result.icon === "check" && (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )}
+                  {result.icon === "trending" && (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                    </svg>
+                  )}
+                </div>
                 <p className="font-display text-[#c6912c] text-[40px] sm:text-[56px] md:text-[64px] leading-none mb-2 sm:mb-4">
                   {result.stat}
                 </p>
@@ -483,6 +540,69 @@ export default function EngineeringConsultingPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* TESTIMONIAL */}
+      <section className="bg-black py-16 sm:py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+          {/* Quote mark */}
+          <div className="text-[#c6912c] text-6xl sm:text-8xl font-serif leading-none mb-6">"</div>
+          
+          <blockquote className="font-sans text-white text-lg sm:text-xl md:text-2xl leading-relaxed mb-8 sm:mb-10">
+            {TESTIMONIAL.quote}
+          </blockquote>
+          
+          <div className="flex flex-col items-center">
+            <div className="w-12 h-[2px] bg-[#c6912c] mb-4" />
+            <p className="font-display text-white text-base sm:text-lg">{TESTIMONIAL.author}</p>
+            <p className="font-sans text-white/60 text-sm sm:text-base">{TESTIMONIAL.title}, {TESTIMONIAL.company}</p>
+          </div>
+        </div>
+      </section>
+
+      {/* WHY CHOOSE US */}
+      <section className="bg-white py-16 sm:py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          {/* Header */}
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="font-display text-[28px] sm:text-[40px] md:text-[52px] tracking-tight text-[#1a1a1a]">
+              WHY CHOOSE <span className="text-[#c6912c]">ANTOVA</span>
+            </h2>
+          </div>
+
+          {/* Trust badges grid */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {WHY_CHOOSE.map((item, index) => (
+              <div key={index} className="text-center p-4 sm:p-6">
+                {/* Icon */}
+                <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#c6912c]/10 flex items-center justify-center mx-auto mb-4 sm:mb-5">
+                  {item.icon === "expertise" && (
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+                    </svg>
+                  )}
+                  {item.icon === "track" && (
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+                    </svg>
+                  )}
+                  {item.icon === "savings" && (
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  )}
+                  {item.icon === "speed" && (
+                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                    </svg>
+                  )}
+                </div>
+                <h3 className="font-display text-[#1a1a1a] text-sm sm:text-lg mb-2">{item.title}</h3>
+                <p className="font-sans text-[#777] text-xs sm:text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
