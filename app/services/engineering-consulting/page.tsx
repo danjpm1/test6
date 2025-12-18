@@ -197,33 +197,23 @@ export default function EngineeringConsultingPage() {
   useEffect(() => {
     if (typeof window === "undefined") return
 
-    // On mobile, trigger animations after short delays
     const isMobile = window.innerWidth < 768
+
+    // On mobile, trigger stats after short delay (visible early on mobile)
+    let statsTimer: NodeJS.Timeout
     if (isMobile) {
-      const statsTimer = setTimeout(() => {
+      statsTimer = setTimeout(() => {
         if (!hasTriggered.current) {
           setStatsVisible(true)
           hasTriggered.current = true
         }
       }, 800)
-      
-      const whyChooseTimer = setTimeout(() => {
-        if (!hasWhyChooseTriggered.current) {
-          setWhyChooseVisible(true)
-          hasWhyChooseTriggered.current = true
-        }
-      }, 1200)
-      
-      return () => {
-        clearTimeout(statsTimer)
-        clearTimeout(whyChooseTimer)
-      }
     }
 
-    // On desktop, use scroll trigger
+    // Scroll trigger for both desktop stats and Why Choose section
     const checkAndTrigger = () => {
-      // Stats section
-      if (!hasTriggered.current) {
+      // Stats section (desktop only - mobile uses timer above)
+      if (!hasTriggered.current && !isMobile) {
         const element = statsRef.current
         if (element) {
           const rect = element.getBoundingClientRect()
@@ -236,14 +226,14 @@ export default function EngineeringConsultingPage() {
         }
       }
 
-      // Why Choose section
+      // Why Choose section (both mobile and desktop)
       if (!hasWhyChooseTriggered.current) {
         const element = whyChooseRef.current
         if (element) {
           const rect = element.getBoundingClientRect()
           const windowHeight = window.innerHeight
           
-          if (rect.top < windowHeight * 0.8 && rect.bottom > 0) {
+          if (rect.top < windowHeight * 0.85 && rect.bottom > 0) {
             setWhyChooseVisible(true)
             hasWhyChooseTriggered.current = true
           }
@@ -263,11 +253,14 @@ export default function EngineeringConsultingPage() {
 
     window.addEventListener("wheel", handleUserScroll, { passive: true })
     window.addEventListener("touchmove", handleUserScroll, { passive: true })
+    window.addEventListener("scroll", handleUserScroll, { passive: true })
     window.addEventListener("keydown", handleKeyScroll)
 
     return () => {
+      if (statsTimer) clearTimeout(statsTimer)
       window.removeEventListener("wheel", handleUserScroll)
       window.removeEventListener("touchmove", handleUserScroll)
+      window.removeEventListener("scroll", handleUserScroll)
       window.removeEventListener("keydown", handleKeyScroll)
     }
   }, [])
@@ -293,7 +286,7 @@ export default function EngineeringConsultingPage() {
         {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
-            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
+            src="/ConsultingPage.png"
             alt="Complex engineering project"
             fill
             className="object-cover object-center opacity-60"
