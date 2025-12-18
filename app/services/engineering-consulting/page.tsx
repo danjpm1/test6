@@ -199,11 +199,14 @@ export default function EngineeringConsultingPage() {
       <Navbar />
 
       {/* SERVICE HEADER */}
-      <section className="bg-black pt-20 sm:pt-24 pb-6 sm:pb-8">
+      <section className="bg-black pt-20 sm:pt-24 pb-4 sm:pb-6">
         <div className="px-5 sm:px-8 md:px-16 lg:px-24">
-          <h1 className="font-display text-white text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] tracking-tight text-right">
-            ENGINEERING & CONSULTING
-          </h1>
+          <div className="flex items-center justify-end gap-4">
+            <div className="hidden sm:block w-12 md:w-20 h-[1px] bg-[#c6912c]" />
+            <h1 className="font-display text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl tracking-wider text-right">
+              ENGINEERING & CONSULTING
+            </h1>
+          </div>
         </div>
       </section>
 
