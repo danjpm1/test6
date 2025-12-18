@@ -440,23 +440,24 @@ export default function EngineeringConsultingPage() {
       )}
 
       {/* DRIVING RESULTS */}
-      <section className="bg-white py-12 sm:py-20 md:py-32">
+      <section className="bg-[#f8f8f8] py-12 sm:py-20 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-8">
-          {/* Header */}
-          <div className="mb-10 sm:mb-16 md:mb-24">
-            <div className="flex items-center gap-3 sm:gap-4 mb-3 sm:mb-4">
+          {/* Header - Centered */}
+          <div className="text-center mb-12 sm:mb-16 md:mb-20">
+            <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
               <div className="w-8 sm:w-12 h-[2px] bg-[#c6912c]" />
               <p className="font-sans text-[#888] text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase">
                 Our Results Speak For Us
               </p>
+              <div className="w-8 sm:w-12 h-[2px] bg-[#c6912c]" />
             </div>
             <h2 className="font-display text-[28px] sm:text-[48px] md:text-[64px] leading-[0.95] tracking-tight">
               <span className="text-[#1a1a1a]">DRIVING RESULTS</span>
               <br />
               <span className="text-[#1a1a1a]">THROUGH </span>
               <span className="text-[#c6912c]">EXPERT</span>
-              <br />
-              <span className="text-[#c6912c]">CONSULTING</span>
+              <br className="sm:hidden" />
+              <span className="text-[#c6912c]"> CONSULTING</span>
             </h2>
           </div>
 
@@ -466,7 +467,7 @@ export default function EngineeringConsultingPage() {
               <div
                 key={index}
                 onClick={() => setSelectedResult(index)}
-                className="group bg-white p-6 sm:p-10 md:p-12 cursor-pointer hover:bg-[#fafafa] transition-colors"
+                className="group bg-[#f8f8f8] p-6 sm:p-10 md:p-12 cursor-pointer hover:bg-white transition-colors"
               >
                 <p className="font-display text-[#c6912c] text-[40px] sm:text-[56px] md:text-[64px] leading-none mb-2 sm:mb-4">
                   {result.stat}
