@@ -198,8 +198,17 @@ export default function EngineeringConsultingPage() {
     <div className="w-full overflow-x-hidden bg-black">
       <Navbar />
 
+      {/* SERVICE HEADER */}
+      <section className="bg-black pt-20 sm:pt-24 pb-6 sm:pb-8">
+        <div className="px-5 sm:px-8 md:px-16 lg:px-24">
+          <h1 className="font-display text-white text-[2rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] tracking-tight text-right">
+            ENGINEERING & CONSULTING
+          </h1>
+        </div>
+      </section>
+
       {/* HERO */}
-      <section className="relative w-full min-h-[100svh] bg-black">
+      <section className="relative w-full min-h-[70svh] sm:min-h-[80svh] bg-black">
         {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
@@ -213,20 +222,20 @@ export default function EngineeringConsultingPage() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center min-h-[100svh] px-5 sm:px-8 md:px-16 lg:px-24 pt-20 pb-12">
+        <div className="relative z-10 flex flex-col justify-center min-h-[70svh] sm:min-h-[80svh] px-5 sm:px-8 md:px-16 lg:px-24 py-12">
           {/* Tagline */}
           <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.2em] sm:tracking-[0.3em] uppercase mb-3 sm:mb-6">
             Protect Your Investment. Solve Complex Challenges.
           </p>
 
           {/* Main Headline */}
-          <h1 className="font-display text-white text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[0.95] tracking-tight mb-6 sm:mb-8">
+          <h2 className="font-display text-white text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[0.95] tracking-tight mb-6 sm:mb-8">
             CONSTRUCTION
             <br />
             <span className="text-[#c6912c]">CONSULTING</span>
             <br />
             THAT DELIVERS
-          </h1>
+          </h2>
 
           {/* Supporting Text - Hidden on mobile */}
           <p className="hidden sm:block font-sans text-white/80 text-lg md:text-xl max-w-xl mb-10 leading-relaxed">
@@ -245,14 +254,6 @@ export default function EngineeringConsultingPage() {
               </svg>
             </a>
           </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
-          <span className="font-sans text-white/40 text-[10px] tracking-widest uppercase">Scroll</span>
-          <svg className="w-5 h-5 text-white/40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-          </svg>
         </div>
       </section>
 
