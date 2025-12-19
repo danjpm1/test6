@@ -206,10 +206,10 @@ export default function OffersPage() {
         </section>
 
         {/* Featured Offer - Large Image */}
-        <section className="px-4 md:px-8 lg:px-12 pb-12 md:pb-16">
-          <div className="max-w-[1400px] mx-auto">
-            {/* Large Image */}
-            <div className="relative w-full aspect-[16/7] md:aspect-[21/9] rounded-lg overflow-hidden mb-8">
+        <section className="px-4 md:px-8 lg:px-12 pb-8 md:pb-12">
+          <div className="max-w-[1200px] mx-auto">
+            {/* Smaller Image like Tesla */}
+            <div className="relative w-full aspect-[16/6] md:aspect-[21/8] rounded-lg overflow-hidden mb-8">
               <img
                 src={FEATURED_OFFER.image}
                 alt="Featured offer"
@@ -268,40 +268,40 @@ export default function OffersPage() {
         {filteredSections.map((section, index) => (
           <section key={section.id} className={`py-12 md:py-20 ${index % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}`}>
             <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12">
-              <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
+              <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
                 {/* Left: Content */}
-                <div className={`${index % 2 === 1 ? 'lg:order-2' : ''}`}>
-                  <p className="text-sm text-gray-500 uppercase tracking-wider mb-2">{section.category}</p>
-                  <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-6">
+                <div className="bg-white lg:bg-transparent p-6 lg:p-8 rounded-lg">
+                  <p className="text-sm text-gray-500 mb-1">{section.category}</p>
+                  <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-5">
                     {section.title}
                   </h2>
                   
                   {/* CTA Buttons */}
-                  <div className="flex flex-wrap gap-3 mb-10">
+                  <div className="flex gap-3 mb-8">
                     <Link href="/contact">
-                      <button className="px-8 py-3 bg-black text-white text-sm font-medium rounded hover:bg-gray-800 transition-colors">
+                      <button className="px-6 py-2.5 bg-[#3b5998] text-white text-sm font-medium rounded hover:bg-[#2d4373] transition-colors">
                         Get Quote
                       </button>
                     </Link>
                     <Link href={`/services/${section.id === 'engineering' ? 'engineering-consulting' : section.id}`}>
-                      <button className="px-8 py-3 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-gray-400 transition-colors">
+                      <button className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-gray-400 transition-colors">
                         Learn More
                       </button>
                     </Link>
                   </div>
 
-                  {/* Offers List */}
-                  <div className="space-y-6">
+                  {/* Offers List - More compact */}
+                  <div className="space-y-5">
                     {section.offers.map((offer, offerIndex) => (
-                      <div key={offerIndex} className="border-t border-gray-300 pt-6">
+                      <div key={offerIndex}>
                         <div className="flex items-start gap-3">
                           <OfferIcon type={offer.icon} />
                           <div>
-                            <h3 className="font-semibold text-black text-base md:text-lg">{offer.title}</h3>
-                            <Link href={offer.link} className="text-sm text-gray-600 underline underline-offset-4 hover:text-black transition-colors">
+                            <h3 className="font-semibold text-black text-sm md:text-base leading-snug">{offer.title}</h3>
+                            <Link href={offer.link} className="text-sm text-gray-500 underline underline-offset-4 hover:text-black transition-colors">
                               {offer.linkText}
                             </Link>
-                            <p className="text-sm text-gray-500 mt-2 leading-relaxed">{offer.details}</p>
+                            <p className="text-xs text-gray-500 mt-1 leading-relaxed">{offer.details}</p>
                           </div>
                         </div>
                       </div>
@@ -309,15 +309,13 @@ export default function OffersPage() {
                   </div>
                 </div>
 
-                {/* Right: Image */}
-                <div className={`${index % 2 === 1 ? 'lg:order-1' : ''}`}>
-                  <div className="relative aspect-[4/3] rounded-lg overflow-hidden">
-                    <img
-                      src={section.image}
-                      alt={section.title}
-                      className="w-full h-full object-cover object-center"
-                    />
-                  </div>
+                {/* Right: Image (taller to match content) */}
+                <div className="rounded-lg overflow-hidden">
+                  <img
+                    src={section.image}
+                    alt={section.title}
+                    className="w-full h-full object-cover object-center min-h-[400px] lg:min-h-[500px]"
+                  />
                 </div>
               </div>
             </div>
