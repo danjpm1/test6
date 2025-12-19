@@ -162,41 +162,45 @@ interface OfferCardProps {
 
 function OfferCard({ title, description, price, image, alt, exploreHref, exploreLabel }: OfferCardProps) {
   return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
-      <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
-        <img
-          src={image || "/placeholder.svg"}
-          alt={alt}
-          className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 text-transparent"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
+    <Link href={exploreHref} className="block">
+      <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
+        <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
+          <img
+            src={image || "/placeholder.svg"}
+            alt={alt}
+            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 text-transparent"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
 
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
-          <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
-          <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
-          <div className="flex gap-3 pt-2">
-            <Link href={exploreHref} scroll={true}>
+          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
+            <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
+            <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
+            <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
+            <div className="flex gap-3 pt-2">
               <Button
                 size="sm"
                 className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all"
+                onClick={(e) => e.stopPropagation()}
               >
                 {exploreLabel}
               </Button>
-            </Link>
-            <Link href="/contact" scroll={true}>
               <Button
                 size="sm"
                 variant="outline"
                 className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent"
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  window.location.href = "/contact"
+                }}
               >
                 Get Quote
               </Button>
-            </Link>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </Link>
   )
 }
 
@@ -364,9 +368,11 @@ export default function AntovaBuilders() {
 
       <section className="py-20 lg:py-28 bg-black">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-16 text-left text-white">
-            Get your offer now.
-          </h2>
+          <Link href="/offers">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-16 text-left text-white hover:text-[#c6912c] transition-colors cursor-pointer">
+              Get your offer now.
+            </h2>
+          </Link>
 
           <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
             {OFFER_CARDS.map((card) => (
