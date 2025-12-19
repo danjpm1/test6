@@ -368,11 +368,24 @@ export default function AntovaBuilders() {
 
       <section className="py-20 lg:py-28 bg-black">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
-          <Link href="/offers">
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-16 text-left text-white hover:text-[#c6912c] transition-colors cursor-pointer">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-16">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-left text-white">
               Get your offer now.
             </h2>
-          </Link>
+            <Link href="/offers">
+              <button className="flex items-center gap-2 px-6 py-3 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-sm rounded transition-all hover:scale-105">
+                <span>View All Offers</span>
+                <svg 
+                  className="w-4 h-4" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+            </Link>
+          </div>
 
           <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
             {OFFER_CARDS.map((card) => (
