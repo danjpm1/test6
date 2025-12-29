@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
+import Image from "next/image"
 
 const SCROLL_THRESHOLD = 50
 const SERVICE_CARDS_THRESHOLD = 0.5
@@ -134,7 +135,13 @@ function ServiceCard({ title, image, alt, href }: ServiceCardProps) {
   return (
     <Link href={href}>
       <div className="group relative overflow-hidden rounded-xl cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.02] aspect-[4/3]">
-        <img src={image || "/placeholder.svg"} alt={alt} className="w-full h-full object-cover object-center text-transparent" />
+        <Image 
+          src={image} 
+          alt={alt} 
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover object-center" 
+        />
         <div
           className="absolute inset-0"
           style={{
@@ -162,45 +169,41 @@ interface OfferCardProps {
 
 function OfferCard({ title, description, price, image, alt, exploreHref, exploreLabel }: OfferCardProps) {
   return (
-    <Link href={exploreHref} className="block">
-      <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
-        <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
-          <img
-            src={image || "/placeholder.svg"}
-            alt={alt}
-            className="w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105 text-transparent"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
+    <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
+      <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
+        <Image
+          src={image}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
 
-          <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
-            <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
-            <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
-            <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
-            <div className="flex gap-3 pt-2">
-              <Button
-                size="sm"
-                className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all"
-                onClick={(e) => e.stopPropagation()}
-              >
-                {exploreLabel}
-              </Button>
-              <Button
-                size="sm"
-                variant="outline"
-                className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent"
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  window.location.href = "/contact"
-                }}
-              >
-                Get Quote
-              </Button>
-            </div>
+        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
+          <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
+          <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
+          <div className="flex gap-3 pt-2">
+            <Button
+              size="sm"
+              className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all"
+              asChild
+            >
+              <Link href={exploreHref}>{exploreLabel}</Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent"
+              asChild
+            >
+              <Link href="/contact">Get Quote</Link>
+            </Button>
           </div>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 
@@ -242,10 +245,12 @@ function TestimonialCard({ headline, service, quote, author, role, company, vide
         </div>
 
         <div className="relative aspect-[2/1] rounded-xl overflow-hidden cursor-pointer">
-          <img
-            src={videoThumbnail || "/placeholder.svg"}
+          <Image
+            src={videoThumbnail}
             alt={`${author} testimonial video`}
-            className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-700 text-transparent"
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
           />
           <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300" />
           <PlayIcon />
@@ -319,10 +324,13 @@ export default function AntovaBuilders() {
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <img
+          <Image
             src="/hero-winter-mountain-home.png"
             alt="Luxury mountain chalet in winter with warm interior lighting"
-            className="w-full h-full object-cover object-center text-transparent"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/25" />
         </div>
@@ -353,15 +361,14 @@ export default function AntovaBuilders() {
             >
               AI Estimator
             </Button>
-            <Link href="/contact" className="w-full sm:w-auto">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full sm:min-w-[264px] h-[40px] border-2 border-white text-white hover:bg-white hover:text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] transition-all hover:scale-105 bg-transparent"
-              >
-                Consult With Us
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border-2 border-white text-white hover:bg-white hover:text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] transition-all hover:scale-105 bg-transparent"
+              asChild
+            >
+              <Link href="/contact">Consult With Us</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -434,32 +441,32 @@ export default function AntovaBuilders() {
                 Our builds redefine precision and performance — crafted with purpose.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                <Link href="/contact" scroll={true} className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    className="w-full sm:w-[200px] min-h-[48px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
-                  >
-                    Consult With Us
-                  </Button>
-                </Link>
-                <Link href="/projects" scroll={true} className="w-full sm:w-auto">
-                  <Button
-                    size="lg"
-                    variant="outline"
-                    className="w-full sm:w-[200px] min-h-[48px] h-[48px] border border-[#c6912c] text-[#c6912c] hover:bg-[#c6912c] hover:text-white bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
-                  >
-                    View Projects
-                  </Button>
-                </Link>
+                <Button
+                  size="lg"
+                  className="w-full sm:w-[200px] min-h-[48px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link href="/contact" scroll={true}>Consult With Us</Link>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-[200px] min-h-[48px] h-[48px] border border-[#c6912c] text-[#c6912c] hover:bg-[#c6912c] hover:text-white bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link href="/projects" scroll={true}>View Projects</Link>
+                </Button>
               </div>
             </div>
 
             <div className="relative lg:ml-auto flex justify-end">
-              <div className="rounded-3xl overflow-hidden shadow-2xl w-full max-w-[520px] lg:max-w-[580px]">
-                <img
+              <div className="rounded-3xl overflow-hidden shadow-2xl w-full max-w-[520px] lg:max-w-[580px] relative aspect-[4/3]">
+                <Image
                   src="/modern-minimalist-architecture-exterior-detail-bla.jpg"
                   alt="Modern architectural detail"
-                  className="w-full h-auto object-cover object-center grayscale text-transparent"
+                  fill
+                  sizes="(max-width: 1024px) 100vw, 580px"
+                  className="object-cover object-center grayscale"
                 />
               </div>
             </div>
@@ -491,33 +498,33 @@ export default function AntovaBuilders() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-16 lg:mt-20">
-            <Link href="/projects" scroll={true} className="w-full sm:w-auto">
-              <Button
-                size="lg"
-                className="w-full sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
-              >
-                View All Projects
-              </Button>
-            </Link>
-            <Link href="/contact" scroll={true} className="w-full sm:w-auto">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
-              >
-                Start Your Project
-              </Button>
-            </Link>
+            <Button
+              size="lg"
+              className="w-full sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/projects" scroll={true}>View All Projects</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/contact" scroll={true}>Start Your Project</Link>
+            </Button>
           </div>
         </div>
       </section>
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-24">
         <div className="absolute inset-0 z-0">
-          <img
+          <Image
             src="/modern-luxury-home-at-night-with-warm-interior-lig.jpg"
             alt="Modern home at dusk"
-            className="w-full h-full object-cover object-center text-transparent"
+            fill
+            sizes="100vw"
+            className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/30" />
         </div>
@@ -539,8 +546,8 @@ export default function AntovaBuilders() {
             <Button
               size="lg"
               variant="outline"
-              asChild
               className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border border-[#c6912c] text-white hover:bg-[#c6912c] hover:text-white bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+              asChild
             >
               <Link href="/about">Our Story</Link>
             </Button>
