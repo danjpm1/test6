@@ -108,9 +108,24 @@ export default function ContactPage() {
             <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
               SCHEDULE A <span className="text-amber-500">CONSULTATION</span>
             </h2>
-            <p className="text-white/50 max-w-xl mx-auto">
-              Virtual or on-site - we will go over your ideas and figure out next steps together.
+            <p className="text-white/50 max-w-xl mx-auto mb-6">
+              Select a time that works for you. After choosing, you can pick your preferred meeting type.
             </p>
+            <div className="flex justify-center gap-6 text-sm">
+              <div className="flex items-center gap-2 text-white/70">
+                <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                <span>Virtual (Google Meet)</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/70">
+                <svg className="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>On-Site Visit</span>
+              </div>
+            </div>
           </div>
           
           <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden">
