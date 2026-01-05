@@ -102,39 +102,25 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <section id="booking" className="bg-gray-50 py-20">
+      <section id="booking" className="bg-black py-20">
         <div className="max-w-5xl mx-auto px-6">
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
-            <div className="p-8 border-b border-gray-200">
-              <div className="flex items-center gap-3 mb-4">
-                <svg width="36" height="36" viewBox="0 0 1500 1500">
-                  <g transform="matrix(4.16667,0,0,4.16667,0,0)">
-                    <g transform="translate(76.457,331.061)">
-                      <path d="M0,-102.938L103.164,-102.938L51.625,0L-51.543,0L0,-102.938Z" fill="#C6912C" />
-                    </g>
-                    <g transform="translate(231.34,21.3845)">
-                      <path
-                        d="M0,309.676L103.676,309.676L-51.375,0L-103.031,103.18L-103.211,103.539L0,309.676Z"
-                        fill="#C6912C"
-                      />
-                    </g>
-                  </g>
-                </svg>
-                <span className="text-gray-500 text-sm">Antova Builders</span>
-              </div>
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">Schedule a Consultation</h2>
-              <p className="text-gray-500 text-sm">
-                Virtual or on-site - we will go over your ideas and figure out next steps together.
-              </p>
-            </div>
-            
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
+              SCHEDULE A <span className="text-amber-500">CONSULTATION</span>
+            </h2>
+            <p className="text-white/50 max-w-xl mx-auto">
+              Virtual or on-site - we will go over your ideas and figure out next steps together.
+            </p>
+          </div>
+          
+          <div className="bg-[#111] rounded-2xl border border-white/10 overflow-hidden">
             {/* Cal.com Embed */}
             <iframe 
-              src="https://cal.com/danjpm?embed=true&theme=light"
+              src="https://cal.com/danjpm?embed=true&theme=dark"
               width="100%"
               height="700"
               frameBorder="0"
-              style={{ minHeight: '700px' }}
+              style={{ minHeight: '700px', background: '#111' }}
             />
           </div>
         </div>
