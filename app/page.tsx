@@ -515,18 +515,26 @@ export default function AntovaBuilders() {
               </div>
             </div>
 
-            {/* Right side - Video */}
+            {/* Right side - Video/Image */}
             <div className="relative order-2">
               <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
-                {/* Video background - iOS compatible autoplay */}
+                {/* Mobile: Static image */}
+                <div className="block lg:hidden absolute inset-0">
+                  <Image
+                    src="/ai-video-poster.jpg"
+                    alt="AI-powered construction estimation"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                
+                {/* Desktop: Video */}
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  disablePictureInPicture
-                  className="absolute inset-0 w-full h-full object-cover"
-                  style={{ WebkitPlaysinline: true } as React.CSSProperties}
+                  className="hidden lg:block absolute inset-0 w-full h-full object-cover"
                 >
                   <source src="/ai-video.mp4" type="video/mp4" />
                 </video>
