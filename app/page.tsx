@@ -497,10 +497,11 @@ export default function AntovaBuilders() {
                 Begin with your vision. Our AI instantly transforms project details into accurate cost estimates, material insights, and construction timelines.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+              {/* Buttons - Desktop only (hidden on mobile) */}
+              <div className="hidden lg:flex flex-row gap-3 pt-4">
                 <Button
                   size="lg"
-                  className="w-full sm:w-auto sm:min-w-[200px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
+                  className="sm:min-w-[200px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
                   asChild
                 >
                   <Link href="/cost-estimator">Try AI Estimator</Link>
@@ -508,7 +509,7 @@ export default function AntovaBuilders() {
                 <Button
                   size="lg"
                   variant="outline"
-                  className="w-full sm:w-auto sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+                  className="sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
                   asChild
                 >
                   <Link href="/about">Learn More</Link>
@@ -561,6 +562,25 @@ export default function AntovaBuilders() {
               
               {/* Glow effect */}
               <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10 hidden lg:block" />
+            </div>
+
+            {/* Buttons - Mobile only (below video) */}
+            <div className="flex lg:hidden flex-col gap-3 order-3 w-full">
+              <Button
+                size="lg"
+                className="w-full h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all"
+                asChild
+              >
+                <Link href="/cost-estimator">Try AI Estimator</Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all"
+                asChild
+              >
+                <Link href="/about">Learn More</Link>
+              </Button>
             </div>
           </div>
         </div>
