@@ -481,33 +481,20 @@ export default function AntovaBuilders() {
         <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Left side - Text content */}
-            <div className="space-y-8">
-              {/* AI Badge */}
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#c6912c]/10 border border-[#c6912c]/30 rounded-full">
-                <div className="w-2 h-2 bg-[#c6912c] rounded-full animate-pulse" />
-                <span className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">AI-Powered</span>
-              </div>
+            <div className="space-y-6">
+              {/* Label */}
+              <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">
+                AI-Powered Estimation
+              </p>
               
-              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-tight">
-                Built with Intelligence.
+              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+                Turn ideas into<br />
+                <span className="text-[#c6912c]">architectural reality.</span>
               </h2>
               
               <p className="text-lg md:text-xl text-white/60 leading-relaxed max-w-xl">
-                Begin with your project details. Our AI instantly transforms them into accurate cost estimates, material insights, and timeline projections.
+                Begin with your vision. Our AI instantly transforms project details into accurate cost estimates, material insights, and construction timelines.
               </p>
-              
-              {/* Feature pills */}
-              <div className="flex flex-wrap gap-3">
-                <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                  Smart Cost Analysis
-                </div>
-                <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                  Real-time Pricing
-                </div>
-                <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-                  Material Insights
-                </div>
-              </div>
               
               <div className="flex flex-col sm:flex-row gap-3 pt-4">
                 <Button
@@ -515,7 +502,7 @@ export default function AntovaBuilders() {
                   className="w-full sm:w-auto sm:min-w-[200px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
                   asChild
                 >
-                  <Link href="/cost-estimator">Explore AI Estimator</Link>
+                  <Link href="/cost-estimator">Try AI Estimator</Link>
                 </Button>
                 <Button
                   size="lg"
@@ -523,85 +510,44 @@ export default function AntovaBuilders() {
                   className="w-full sm:w-auto sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
                   asChild
                 >
-                  <Link href="/about">Our Story</Link>
+                  <Link href="/about">Learn More</Link>
                 </Button>
               </div>
             </div>
 
-            {/* Right side - Video/Visual mockup */}
+            {/* Right side - Video */}
             <div className="relative">
-              {/* Grid background effect */}
               <div className="relative rounded-2xl overflow-hidden aspect-[4/3] lg:aspect-square">
-                {/* Gradient mesh background */}
-                <div className="absolute inset-0 bg-gradient-to-br from-[#c6912c]/30 via-[#c6912c]/10 to-[#1a1a1a]" />
+                {/* Video background */}
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src="/ai-video.mp4" type="video/mp4" />
+                </video>
                 
-                {/* Animated grid */}
-                <div 
-                  className="absolute inset-0 opacity-40"
-                  style={{
-                    backgroundImage: `
-                      linear-gradient(rgba(198, 145, 44, 0.3) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(198, 145, 44, 0.3) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '40px 40px',
-                  }}
-                />
-
-                {/* Floating UI mockup */}
-                <div className="absolute inset-0 flex items-center justify-center p-8">
-                  {/* AI Estimator preview card */}
-                  <div className="w-full max-w-md bg-[#111]/90 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl overflow-hidden">
-                    {/* Card header */}
-                    <div className="px-5 py-4 border-b border-white/10 flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-lg bg-[#c6912c] flex items-center justify-center">
-                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                        </svg>
-                      </div>
-                      <span className="text-white font-medium">AI Cost Estimator</span>
-                      <div className="ml-auto flex items-center gap-1">
-                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-                        <span className="text-green-500 text-xs">Live</span>
-                      </div>
+                {/* Gradient overlay for better blending */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60" />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30" />
+                
+                {/* Floating input mockup */}
+                <div className="absolute bottom-1/3 left-1/2 -translate-x-1/2 w-[80%] max-w-md">
+                  <div className="flex items-center gap-3 bg-[#111]/90 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 shadow-2xl">
+                    <div className="w-8 h-8 rounded-lg bg-[#c6912c]/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                      </svg>
                     </div>
-                    
-                    {/* Card content - fake input */}
-                    <div className="p-5 space-y-4">
-                      <div className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-3 border border-white/10">
-                        <svg className="w-5 h-5 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                        </svg>
-                        <span className="text-white/50 text-sm">2,500 sq ft custom home...</span>
-                        <div className="ml-auto w-8 h-8 rounded-lg bg-[#c6912c] flex items-center justify-center cursor-pointer hover:bg-[#a67923] transition-colors">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                          </svg>
-                        </div>
-                      </div>
-                      
-                      {/* Fake results preview */}
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-white/40 text-sm">Estimated Cost</span>
-                          <span className="text-[#c6912c] font-semibold">$425,000 - $485,000</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-white/40 text-sm">Timeline</span>
-                          <span className="text-white/80 text-sm">8-10 months</span>
-                        </div>
-                        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
-                          <div className="h-full w-3/4 bg-gradient-to-r from-[#c6912c] to-[#d4a84a] rounded-full" />
-                        </div>
-                      </div>
+                    <span className="text-white/50 text-sm truncate">3,200 sq ft modern home with...</span>
+                    <div className="ml-auto w-8 h-8 rounded-lg bg-[#c6912c] flex items-center justify-center cursor-pointer hover:bg-[#a67923] transition-colors flex-shrink-0">
+                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
                     </div>
                   </div>
-                </div>
-
-                {/* Decorative cursor */}
-                <div className="absolute bottom-1/3 right-1/3 transform translate-x-4">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-[#c6912c] drop-shadow-lg">
-                    <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 01.35-.15h6.87a.5.5 0 00.35-.85L6.35 2.86a.5.5 0 00-.85.35z" fill="currentColor"/>
-                  </svg>
                 </div>
               </div>
               
