@@ -1,568 +1,577 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
-import { User, X } from "lucide-react"
+import type React from "react"
+
+import { useState, useEffect, useRef } from "react"
+import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
+import Link from "next/link"
+import Image from "next/image"
 
-const IntroAnimation = ({ onComplete }: { onComplete: () => void }) => {
-  const [phase, setPhase] = useState<"text" | "fade" | "logo" | "reveal">("text")
-  const canvasRef = useRef<HTMLCanvasElement>(null)
+const SCROLL_THRESHOLD = 50
+const SERVICE_CARDS_THRESHOLD = 0.5
+const TESTIMONIALS_THRESHOLD = 0.5
+
+const SERVICE_CARDS = [
+  {
+    title: "Custom Homes.",
+    image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
+    alt: "Custom homes lifestyle",
+    href: "/services/signature-custom-design",
+  },
+  {
+    title: "Renovations.",
+    image: "/luxury-modern-living-room-wood-ceiling-concrete-fi.jpg",
+    alt: "Renovations lifestyle",
+    href: "/services/renovation",
+  },
+  {
+    title: "New Construction.",
+    image: "/human3.jpg",
+    alt: "New construction lifestyle",
+    href: "/services/new-builds",
+  },
+]
+
+const OFFER_CARDS = [
+  {
+    title: "Engineering & Consulting",
+    description: "Expert structural solutions and professional consulting for complex builds.",
+    price: "Consultation from $500",
+    image: "/images/engineering-blueprints.png",
+    alt: "Architects working on architectural blueprints and floor plans",
+    exploreHref: "/services/engineering-consulting",
+    exploreLabel: "Explore Engineering",
+  },
+  {
+    title: "Renovation",
+    description: "Modern renovation spaces designed for business excellence.",
+    price: "$2k-5k credits",
+    image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
+    alt: "Modern luxury home at night with mountains",
+    exploreHref: "/services/renovation",
+    exploreLabel: "Explore Renovation",
+  },
+]
+
+const TESTIMONIALS = [
+  {
+    headline: "Expert Guidance",
+    service: "Consulting",
+    quote:
+      "Antova's consulting team transformed our vision into reality. Their AI-powered estimates were spot-on, and the structural insights saved us months of planning time.",
+    author: "Michael Chen",
+    role: "Owner",
+    company: "Aspen Horse Ranch",
+    videoThumbnail: "/luxury-modern-cabin-interior-with-large-windows-wo.jpg",
+  },
+  {
+    headline: "Flawless Renovation",
+    service: "Renovation",
+    quote:
+      "Our clinic needed a complete transformation without disrupting patient care. Antova delivered exceptional craftsmanship on schedule.— the attention to detail was extraordinary.",
+    author: "Sorin Isparesescu",
+    role: "CEO",
+    company: "Pain Clinic",
+    videoThumbnail: "/project-1.jpg",
+  },
+  {
+    headline: "Dream Home Delivered",
+    service: "New Construction",
+    quote:
+      "From foundation to final walkthrough, Antova exceeded every expectation. Their transparent process and craftsmanship made building our custom home genuinely enjoyable.",
+    author: "James Thornton",
+    role: "CEO",
+    company: "Thornton Capital",
+    videoThumbnail: "/project-2.jpg",
+  },
+]
+
+function getInitials(name: string): string {
+  return name
+    .split(" ")
+    .map((n) => n[0])
+    .join("")
+    .slice(0, 2)
+}
+
+function ArrowIcon() {
+  return (
+    <svg className="w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+  )
+}
+
+function PlayIcon() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="w-14 h-14 bg-[#c6912c] rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+        <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
+      </div>
+    </div>
+  )
+}
+
+function QuoteIcon() {
+  return (
+    <svg className="w-8 h-8 text-[#c6912c]/30" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+    </svg>
+  )
+}
+
+interface ServiceCardProps {
+  title: string
+  image: string
+  alt: string
+  href: string
+}
+
+function ServiceCard({ title, image, alt, href }: ServiceCardProps) {
+  return (
+    <Link href={href}>
+      <div className="group relative overflow-hidden rounded-xl cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.02] aspect-[4/3]">
+        <Image 
+          src={image} 
+          alt={alt} 
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover object-center" 
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)",
+          }}
+        />
+        <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
+          <h3 className="text-white font-medium text-base">{title}</h3>
+          <ArrowIcon />
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+interface OfferCardProps {
+  title: string
+  description: string
+  price: string
+  image: string
+  alt: string
+  exploreHref: string
+  exploreLabel: string
+}
+
+function OfferCard({ title, description, price, image, alt, exploreHref, exploreLabel }: OfferCardProps) {
+  return (
+    <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
+      <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
+        <Image
+          src={image}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
+
+        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
+          <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
+          <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
+          <div className="flex gap-3 pt-2">
+            <Button
+              size="sm"
+              className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all"
+              asChild
+            >
+              <Link href={exploreHref}>{exploreLabel}</Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent"
+              asChild
+            >
+              <Link href="/contact">Get Quote</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface TestimonialCardProps {
+  headline: string
+  service: string
+  quote: string
+  author: string
+  role: string
+  company: string
+  videoThumbnail: string
+}
+
+function TestimonialCard({ headline, service, quote, author, role, company, videoThumbnail }: TestimonialCardProps) {
+  return (
+    <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="p-8 lg:p-10">
+        <div className="flex items-center justify-between mb-6">
+          <span className="text-[#c6912c] text-xs font-medium tracking-[0.2em] uppercase">{service}</span>
+          <QuoteIcon />
+        </div>
+
+        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-5 tracking-tight">{headline}</h3>
+
+        <blockquote className="text-white/70 text-base leading-relaxed mb-8">"{quote}"</blockquote>
+
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
+            <span className="text-[#c6912c] font-semibold text-sm">{getInitials(author)}</span>
+          </div>
+          <div>
+            <p className="text-white font-medium">{author}</p>
+            <p className="text-white/50 text-sm">
+              {role}, {company}
+            </p>
+          </div>
+        </div>
+
+        <div className="relative aspect-[2/1] rounded-xl overflow-hidden cursor-pointer">
+          <Image
+            src={videoThumbnail}
+            alt={`${author} testimonial video`}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300" />
+          <PlayIcon />
+
+          <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/70 rounded text-white/90 text-xs font-medium">
+            2:34
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function useScrollThreshold(ref: React.RefObject<HTMLElement | null>, threshold: number) {
+  const [isPastThreshold, setIsPastThreshold] = useState(false)
 
   useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    const resize = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-    resize()
-    window.addEventListener("resize", resize)
-
-    let animationId: number
-
-    const animate = () => {
-      ctx.fillStyle = "#0a0a0a"
-      ctx.fillRect(0, 0, canvas.width, canvas.height)
-
-      const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height)
-      const data = imageData.data
-      
-      for (let i = 0; i < data.length; i += 4) {
-        const noise = (Math.random() - 0.5) * 8
-        data[i] = Math.max(0, Math.min(255, data[i] + noise))
-        data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + noise))
-        data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + noise))
+    const handleScroll = () => {
+      if (ref.current) {
+        const rect = ref.current.getBoundingClientRect()
+        setIsPastThreshold(rect.top <= window.innerHeight * threshold)
       }
-      
-      ctx.putImageData(imageData, 0, 0)
-
-      animationId = requestAnimationFrame(animate)
     }
 
-    animate()
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [ref, threshold])
+
+  return isPastThreshold
+}
+
+export default function AntovaBuilders() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [showNavbar, setShowNavbar] = useState(false)
+  const [showTitle, setShowTitle] = useState(false)
+  const [showSubtitleAndButtons, setShowSubtitleAndButtons] = useState(false)
+  const serviceCardsRef = useRef<HTMLElement>(null)
+  const testimonialsRef = useRef<HTMLElement>(null)
+
+  const isServiceCardsVisible = useScrollThreshold(serviceCardsRef, SERVICE_CARDS_THRESHOLD)
+  const isTestimonialsVisible = useScrollThreshold(testimonialsRef, TESTIMONIALS_THRESHOLD)
+
+  useEffect(() => {
+    const titleTimer = setTimeout(() => setShowTitle(true), 300)
+    const subtitleTimer = setTimeout(() => setShowSubtitleAndButtons(true), 1000)
+    const navbarTimer = setTimeout(() => setShowNavbar(true), 1800)
 
     return () => {
-      window.removeEventListener("resize", resize)
-      cancelAnimationFrame(animationId)
+      clearTimeout(titleTimer)
+      clearTimeout(subtitleTimer)
+      clearTimeout(navbarTimer)
     }
   }, [])
 
   useEffect(() => {
-    const timer1 = setTimeout(() => setPhase("fade"), 1500)
-    const timer2 = setTimeout(() => setPhase("logo"), 2000)
-    const timer3 = setTimeout(() => setPhase("reveal"), 3500)
-    const timer4 = setTimeout(() => onComplete(), 4200)
-
-    return () => {
-      clearTimeout(timer1)
-      clearTimeout(timer2)
-      clearTimeout(timer3)
-      clearTimeout(timer4)
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
     }
-  }, [onComplete])
-
-  return (
-    <div
-      className={`fixed inset-0 z-[9999] flex items-center justify-center transition-opacity duration-700 ${
-        phase === "reveal" ? "opacity-0 pointer-events-none" : "opacity-100"
-      }`}
-    >
-      <canvas ref={canvasRef} className="absolute inset-0" />
-
-      <div
-        className={`absolute z-10 transition-opacity duration-500 ease-in-out ${
-          phase === "text" ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <h1
-          className="text-[55px] md:text-[66px] lg:text-[77px] font-normal tracking-wide"
-          style={{ 
-            background: "linear-gradient(90deg, white 0%, white 50%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.2) 100%)",
-            backgroundSize: "200% 100%",
-            backgroundPosition: "100% 0",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            backgroundClip: "text",
-            animation: "textReveal 1.2s ease-out forwards",
-          }}
-        >
-          About Us
-        </h1>
-      </div>
-
-      <div
-        className={`absolute z-10 transition-opacity duration-500 ease-in-out ${
-          phase === "logo" || phase === "reveal" ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <img
-          src="/antova-logo-gold.svg"
-          alt="Antova Logo"
-          className="h-[100px] md:h-[133px] lg:h-[166px] w-auto"
-        />
-      </div>
-
-      <style dangerouslySetInnerHTML={{
-        __html: `
-          @keyframes textReveal {
-            0% {
-              background-position: 100% 0;
-            }
-            100% {
-              background-position: 0% 0;
-            }
-          }
-        `
-      }} />
-    </div>
-  )
-}
-
-const teamMembers = [
-  { 
-    name: "Matthew Shaffer", 
-    title: "CEO & FOUNDER",
-    image: "/images/team/matthew-shaffer.jpg",
-    bio: "Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. His sharp vision for luxury construction and client-first approach drives every project we undertake."
-  },
-  { 
-    name: "Ragnar", 
-    title: "Construction Engineer",
-    image: "/images/team/ragnar.jpg",
-    bio: "A master of structural engineering, Ragnar brings precision and innovation to every build. His expertise in modern construction techniques ensures our projects exceed industry standards."
-  },
-  { 
-    name: "Lagertha", 
-    title: "Construction Engineer",
-    image: "/images/team/lagertha.jpg",
-    bio: "Lagertha specializes in sustainable building practices and green certifications. Her commitment to environmental responsibility shapes our approach to modern luxury construction."
-  },
-  { 
-    name: "Rollo", 
-    title: "Construction Engineer",
-    image: "/images/team/rollo.jpg",
-    bio: "With a background in commercial and residential mega-projects, Rollo manages complex builds with remarkable efficiency. His leadership ensures timelines and budgets are always respected."
-  },
-  { 
-    name: "Floki", 
-    title: "Construction Engineer",
-    image: "/images/team/floki.jpg",
-    bio: "Floki is our creative problem-solver, bringing artistic sensibility to technical challenges. His innovative solutions have become signature elements in many of our most celebrated projects."
-  },
-  { 
-    name: "Daniel Anghel", 
-    title: "IT & AI Systems Support",
-    image: "/images/team/daniel-anghel.jpg",
-    bio: "Daniel drives our technological innovation, integrating cutting-edge AI systems and IT infrastructure to streamline operations. His expertise ensures Antova Builders stays at the forefront of construction technology."
-  },
-]
-
-const sections = [
-  {
-    number: "01",
-    title: "Vision",
-    description: "We create a world where every detail is under control and every home reflects refined order. We envision spaces where precision meets artistry, and thoughtful structure delivers true freedom.",
-  },
-  {
-    number: "02",
-    title: "Strategy",
-    description: "We establish clear structures, set the highest benchmarks for craftsmanship, and deliver a seamless journey. From initial consultation to final handover, we orchestrate every element with precision — leveraging cutting-edge technology for efficiency and driving innovation to build structures that respect and protect the environment.",
-  },
-  {
-    number: "03",
-    title: "Experience",
-    description: "Our team brings refined expertise, blending technical mastery with creative problem-solving. Years of dedication translate into flawless execution across every project phase.\n\nAt Antova, our customers are our number one priority. We work tirelessly to achieve excellence and build the most exceptional, high-quality homes — delivering a true 5-star experience every step of the way.",
-  },
-]
-
-const SectionCard = ({
-  number,
-  title,
-  description,
-  cardRef,
-  isActive,
-  zIndex,
-}: {
-  number: string
-  title: string
-  description: string
-  cardRef: React.RefObject<HTMLDivElement>
-  isActive: boolean
-  zIndex: number
-}) => (
-  <div
-    ref={cardRef}
-    className="sticky top-0 min-h-[50vh] flex items-center px-6 md:px-12 lg:px-20 py-10 transition-colors duration-300 border-t"
-    style={{
-      zIndex,
-      backgroundColor: isActive ? "var(--card-active)" : "black",
-      borderTopColor: isActive ? "var(--primary)" : "transparent",
-    }}
-  >
-    <div className="w-full grid grid-cols-1 gap-y-6 gap-x-16 lg:grid-cols-[auto_1fr] items-center">
-      <div
-        className="leading-none font-bold tracking-tight"
-        style={{ fontSize: "var(--text-number-xl)", color: "var(--primary)" }}
-      >
-        {number}
-      </div>
-      <div className="flex flex-col justify-center">
-        <h3
-          className="mb-4 font-medium"
-          style={{ fontSize: "var(--text-heading-md)", color: "var(--primary)", lineHeight: 1.1 }}
-        >
-          {title}
-        </h3>
-        <p
-          className="leading-relaxed max-w-5xl whitespace-pre-line"
-          style={{ fontSize: "var(--text-body-md)", color: "var(--text-light)", lineHeight: 1.7 }}
-        >
-          {description}
-        </p>
-      </div>
-    </div>
-  </div>
-)
-
-interface TeamMember {
-  name: string
-  title: string
-  image: string
-  bio: string
-}
-
-const TeamMemberModal = ({ 
-  member, 
-  isOpen, 
-  onClose 
-}: { 
-  member: TeamMember | null
-  isOpen: boolean
-  onClose: () => void 
-}) => {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden"
-    } else {
-      document.body.style.overflow = ""
-    }
-    return () => {
-      document.body.style.overflow = ""
-    }
-  }, [isOpen])
-
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose()
-    }
-    window.addEventListener("keydown", handleEscape)
-    return () => window.removeEventListener("keydown", handleEscape)
-  }, [onClose])
-
-  if (!member) return null
-
-  return (
-    <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center transition-all duration-500 ${
-        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-      }`}
-      onClick={onClose}
-    >
-      {/* Backdrop - lighter blur to see cards behind */}
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm" />
-      
-      {/* Close Button - Fixed position top right */}
-      <button
-        onClick={onClose}
-        className="absolute top-6 right-6 md:top-8 md:right-8 z-20 w-12 h-12 flex items-center justify-center bg-black rounded-full transition-all duration-300 hover:scale-110"
-        aria-label="Close modal"
-      >
-        <X size={20} className="text-white" />
-      </button>
-
-      {/* Modal Content */}
-      <div
-        className={`relative z-10 w-full max-w-2xl mx-4 md:mx-auto px-6 md:px-0 transition-all duration-500 ${
-          isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-        }`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Title Section */}
-        <div className="mb-8">
-          <p className="text-base md:text-lg tracking-widest uppercase text-gray-500 mb-3 font-medium">
-            {member.title}
-          </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-gray-900 tracking-tight leading-none">
-            {member.name}
-          </h2>
-        </div>
-
-        {/* Image */}
-        <div className="w-full aspect-[16/10] overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center mb-8 shadow-2xl">
-          {member.image ? (
-            <img
-              src={member.image}
-              alt={member.name}
-              className="w-full h-full object-cover"
-              onError={(e) => {
-                e.currentTarget.style.display = "none"
-                e.currentTarget.nextElementSibling?.classList.remove("hidden")
-              }}
-            />
-          ) : null}
-          <div className={`flex items-center justify-center ${member.image ? "hidden" : ""}`}>
-            <User size={120} className="text-[#c6912c]/30" />
-          </div>
-        </div>
-
-        {/* Bio Text */}
-        <p className="text-xl md:text-2xl text-gray-700 leading-relaxed max-w-xl font-normal">
-          {member.bio}
-        </p>
-      </div>
-    </div>
-  )
-}
-
-const TeamMemberCard = ({ 
-  member, 
-  onExpand 
-}: { 
-  member: TeamMember
-  onExpand: () => void 
-}) => {
-  const [isHovered, setIsHovered] = useState(false)
-
-  return (
-    <div 
-      className="relative flex flex-col border-t-2 pt-6 transition-all duration-300 cursor-pointer group rounded-lg overflow-hidden"
-      style={{ 
-        backgroundColor: "rgba(0,0,0,0.02)",
-        borderTopColor: "var(--primary)",
-      }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onExpand}
-    >
-      {/* Expand Button */}
-      <button
-        className={`absolute top-4 right-4 z-10 w-9 h-9 flex items-center justify-center bg-white rounded-full shadow-md transition-all duration-300 ${
-          isHovered ? "scale-110 shadow-lg" : "scale-100"
-        }`}
-        aria-label={`Learn more about ${member.name}`}
-        onClick={(e) => {
-          e.stopPropagation()
-          onExpand()
-        }}
-      >
-        <svg 
-          width="14" 
-          height="14" 
-          viewBox="0 0 14 14" 
-          fill="none" 
-          className={`transition-transform duration-300 ${isHovered ? "rotate-90" : ""}`}
-        >
-          <path 
-            d="M7 1V13M1 7H13" 
-            stroke="#1a1a1a" 
-            strokeWidth="2" 
-            strokeLinecap="round"
-          />
-        </svg>
-      </button>
-
-      {/* Image Placeholder */}
-      <div 
-        className="w-full aspect-[4/3] overflow-hidden mb-6 flex items-center justify-center bg-gray-100 transition-all duration-500 group-hover:bg-gray-50"
-      >
-        {member.image ? (
-          <img
-            src={member.image}
-            alt={member.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-            onError={(e) => {
-              e.currentTarget.style.display = "none"
-              e.currentTarget.nextElementSibling?.classList.remove("hidden")
-            }}
-          />
-        ) : null}
-        <div className={`flex items-center justify-center ${member.image ? "hidden" : ""}`}>
-          <User size={72} className="text-[#c6912c]/30" />
-        </div>
-      </div>
-
-      {/* Text Content */}
-      <div className="px-5 pb-6">
-        <h3 
-          className="text-lg md:text-xl tracking-[0.1em] mb-1 text-gray-900 transition-colors duration-300 group-hover:text-[#c6912c]"
-          style={{ fontWeight: 500 }}
-        >
-          {member.name}
-        </h3>
-        <p className="text-sm tracking-wide text-gray-600">
-          {member.title}
-        </p>
-      </div>
-
-      {/* Hover Overlay Hint */}
-      <div className={`absolute inset-0 border-2 border-[#c6912c] pointer-events-none transition-opacity duration-300 rounded-lg ${
-        isHovered ? "opacity-100" : "opacity-0"
-      }`} />
-    </div>
-  )
-}
-
-export default function AboutPage() {
-  const [scrollY, setScrollY] = useState(0)
-  const [activeCard, setActiveCard] = useState(1)
-  const [showIntro, setShowIntro] = useState(true)
-  const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
-  const [isModalOpen, setIsModalOpen] = useState(false)
-
-  const sectionRefs = [
-    useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
-    useRef<HTMLDivElement>(null),
-  ]
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
     handleScroll()
+    window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            const index = sectionRefs.findIndex((ref) => ref.current === entry.target)
-            if (index !== -1) setActiveCard(index + 1)
-          }
-        })
-      },
-      { threshold: 0.3, rootMargin: "-20% 0px -20% 0px" }
-    )
-
-    sectionRefs.forEach((ref) => ref.current && observer.observe(ref.current))
-    return () => observer.disconnect()
-  }, [])
-
-  const handleIntroComplete = useCallback(() => {
-    setShowIntro(false)
-  }, [])
-
-  const handleExpandMember = (member: TeamMember) => {
-    setSelectedMember(member)
-    setIsModalOpen(true)
-  }
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false)
-    setTimeout(() => setSelectedMember(null), 300)
-  }
+  const topBgColor = isServiceCardsVisible ? "bg-white" : "bg-black"
+  const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-white"
 
   return (
-    <div className="min-h-screen w-full bg-black">
-      {showIntro && <IntroAnimation onComplete={handleIntroComplete} />}
-      
-      <Navbar />
+    <div className={`min-h-screen ${topBgColor} transition-colors duration-300 ease-in-out overflow-x-hidden`}>
+      <Navbar hidden={!showNavbar} />
 
-      <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 bg-black">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start min-h-[50vh]">
-            <div>
-              <h1
-                className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight"
-                style={{ color: "var(--primary)" }}
-              >
-                ABOUT US
-              </h1>
-            </div>
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
+          <Image
+            src="/hero-winter-mountain-home.png"
+            alt="Luxury mountain chalet in winter with warm interior lighting"
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-black/25" />
+        </div>
 
-            <div className="space-y-8 lg:pt-24">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-semibold tracking-tight">
-                Matthew, Founder of Antova Builders
-              </h2>
-              
-              <div
-                className="border-l-2 pl-8 lg:pl-12"
-                style={{ borderColor: "var(--primary)" }}
-              >
-                <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-                  Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.
-                </p>
-              </div>
-
-              <div className="relative pl-8 lg:pl-12">
-                <svg 
-                  className="absolute -left-1 top-0 w-8 h-8 opacity-40" 
-                  style={{ color: "var(--primary)" }}
-                  fill="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-                <blockquote className="text-xl md:text-2xl text-white/50 leading-relaxed italic font-light">
-                  "I will never stop pushing for excellence, innovation, and the best customer service. I believe that quality should never be compromised, and luxury can be achieved in every structure where imagination thrives."
-                </blockquote>
-              </div>
-            </div>
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-32 md:-mt-40">
+          <h1 
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-2 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
+              showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            Antova Builders
+          </h1>
+          <p 
+            className={`text-lg md:text-xl lg:text-2xl mb-4 text-white/90 tracking-wide text-balance transition-all duration-700 ease-out ${
+              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            Precision Built. Luxury Perfected.
+          </p>
+          <div 
+            className={`flex flex-col sm:flex-row items-center justify-center gap-3 transition-all duration-700 ease-out ${
+              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] bg-[#c6912c] hover:bg-[#a67923] text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] shadow-lg hover:shadow-[#c6912c]/50 transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/cost-estimator">AI Estimator</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border-2 border-white text-white hover:bg-white hover:text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] transition-all hover:scale-105 bg-transparent"
+              asChild
+            >
+              <Link href="/contact">Consult With Us</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      <section className="relative w-full bg-black">
-        {sections.map((section, index) => (
-          <SectionCard
-            key={section.title}
-            number={section.number}
-            title={section.title}
-            description={section.description}
-            cardRef={sectionRefs[index]}
-            isActive={activeCard === index + 1}
-            zIndex={index + 1}
-          />
-        ))}
-      </section>
-
-      <section className="relative w-full bg-white py-20 md:py-28">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
-          <div className="mb-16 md:mb-20">
-            <h2 
-              className="text-3xl md:text-4xl tracking-[0.2em] uppercase text-gray-900"
-              style={{ fontWeight: 500 }}
-            >
-              OUR TEAM
-            </h2>
+      <section className="py-20 lg:py-28 bg-black">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-16">
+            <Link href="/offers">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-left text-white hover:text-[#c6912c] transition-colors cursor-pointer">
+                Get your offer now.
+              </h2>
+            </Link>
+            <Link href="/offers">
+              <button className="flex items-center gap-2 px-6 py-3 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-sm rounded transition-all hover:scale-105">
+                <span>View All Offers</span>
+                <svg 
+                  className="w-4 h-4" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+            </Link>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
-            {teamMembers.map((member, index) => (
-              <TeamMemberCard 
-                key={`${member.name}-${index}`}
-                member={member}
-                onExpand={() => handleExpandMember(member)}
-              />
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+            {OFFER_CARDS.map((card) => (
+              <OfferCard key={card.title} {...card} />
+            ))}
+          </div>
+        </div>
+
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-[1000px] border-l-2 border-[#c6912c] pl-8 lg:pl-12">
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white leading-snug font-light">
+              Luxury is the freedom to relax
+            </p>
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white leading-snug font-light mt-4">
+              while experts handle every detail.
+            </p>
+            <p className="text-lg md:text-xl text-white/60 mt-8 leading-relaxed">
+              Antova delivers master craftsmanship, precise AI estimating, and seamless service — from blueprint to perfection.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="services"
+        ref={serviceCardsRef}
+        className={`py-24 lg:py-32 ${topBgColor} transition-colors duration-300 ease-in-out`}
+      >
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {SERVICE_CARDS.map((card) => (
+              <ServiceCard key={card.title} {...card} />
             ))}
           </div>
         </div>
       </section>
 
-      <Footer />
+      <section
+        ref={testimonialsRef}
+        className={`py-24 lg:py-32 ${bottomBgColor} transition-colors duration-300 ease-in-out relative overflow-hidden`}
+      >
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Modal */}
-      <TeamMemberModal 
-        member={selectedMember}
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-      />
+        <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-3xl mb-16 lg:mb-20">
+            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Testimonials</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+              Stories of Excellence
+            </h2>
+            <p className="text-white/60 text-lg md:text-xl leading-relaxed">
+              Hear from clients who trusted Antova with their most ambitious projects.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {TESTIMONIALS.map((testimonial) => (
+              <TestimonialCard key={testimonial.headline} {...testimonial} />
+            ))}
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-16 lg:mt-20">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/projects" scroll={true}>View All Projects</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/contact" scroll={true}>Start Your Project</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* AI-Powered Section - Replaces the old image-based section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-24 bg-black">
+        {/* Animated gradient background */}
+        <div className="absolute inset-0 z-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black" />
+          
+          {/* Grid pattern */}
+          <div 
+            className="absolute inset-0 opacity-20"
+            style={{
+              backgroundImage: `
+                linear-gradient(rgba(198, 145, 44, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(198, 145, 44, 0.1) 1px, transparent 1px)
+              `,
+              backgroundSize: '60px 60px',
+            }}
+          />
+          
+          {/* Glowing orbs */}
+          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#c6912c]/10 rounded-full blur-[120px] animate-pulse" />
+          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#c6912c]/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c6912c]/5 rounded-full blur-[150px]" />
+          
+          {/* Circuit lines */}
+          <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <linearGradient id="circuit-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#c6912c" stopOpacity="0" />
+                <stop offset="50%" stopColor="#c6912c" stopOpacity="1" />
+                <stop offset="100%" stopColor="#c6912c" stopOpacity="0" />
+              </linearGradient>
+            </defs>
+            <line x1="10%" y1="20%" x2="30%" y2="20%" stroke="url(#circuit-gradient)" strokeWidth="1" />
+            <line x1="30%" y1="20%" x2="30%" y2="40%" stroke="url(#circuit-gradient)" strokeWidth="1" />
+            <line x1="70%" y1="30%" x2="90%" y2="30%" stroke="url(#circuit-gradient)" strokeWidth="1" />
+            <line x1="70%" y1="30%" x2="70%" y2="60%" stroke="url(#circuit-gradient)" strokeWidth="1" />
+            <line x1="20%" y1="70%" x2="40%" y2="70%" stroke="url(#circuit-gradient)" strokeWidth="1" />
+            <line x1="60%" y1="80%" x2="80%" y2="80%" stroke="url(#circuit-gradient)" strokeWidth="1" />
+            <circle cx="30%" cy="20%" r="3" fill="#c6912c" opacity="0.5" />
+            <circle cx="30%" cy="40%" r="3" fill="#c6912c" opacity="0.5" />
+            <circle cx="70%" cy="30%" r="3" fill="#c6912c" opacity="0.5" />
+            <circle cx="70%" cy="60%" r="3" fill="#c6912c" opacity="0.5" />
+            <circle cx="20%" cy="70%" r="3" fill="#c6912c" opacity="0.5" />
+            <circle cx="40%" cy="70%" r="3" fill="#c6912c" opacity="0.5" />
+            <circle cx="80%" cy="80%" r="3" fill="#c6912c" opacity="0.5" />
+          </svg>
+        </div>
+
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full">
+          {/* AI Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#c6912c]/10 border border-[#c6912c]/30 rounded-full mb-8">
+            <div className="w-2 h-2 bg-[#c6912c] rounded-full animate-pulse" />
+            <span className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">AI-Powered</span>
+          </div>
+          
+          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-balance text-white">
+            Built with Intelligence.
+          </h2>
+          <p className="text-xl md:text-2xl mb-12 text-white/60 max-w-3xl mx-auto text-balance">
+            Powered by AI-driven estimation and real-time material insights.
+          </p>
+          
+          {/* Feature pills */}
+          <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
+            <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
+              Smart Cost Analysis
+            </div>
+            <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
+              Real-time Pricing
+            </div>
+            <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
+              Material Insights
+            </div>
+          </div>
+          
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
+              asChild
+            >
+              <Link href="/cost-estimator">Explore AI Estimator</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/about">Our Story</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      <Footer />
     </div>
   )
 }
