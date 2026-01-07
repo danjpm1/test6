@@ -486,7 +486,7 @@ export default function AboutPage() {
               </h1>
             </div>
 
-            <div className="space-y-8 lg:pt-16">
+            <div className="space-y-8 lg:pt-24">
               <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-semibold tracking-tight">
                 Matthew, Founder of Antova Builders
               </h2>
