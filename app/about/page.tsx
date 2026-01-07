@@ -479,17 +479,18 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start min-h-[50vh]">
             <div>
               <h1
-                className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight mb-8"
+                className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight"
                 style={{ color: "var(--primary)" }}
               >
                 ABOUT US
               </h1>
+            </div>
+
+            <div className="space-y-8">
               <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-semibold tracking-tight">
                 Matthew, Founder of Antova Builders
               </h2>
-            </div>
-
-            <div className="space-y-10">
+              
               <div
                 className="border-l-2 pl-8 lg:pl-12"
                 style={{ borderColor: "var(--primary)" }}
