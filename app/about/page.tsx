@@ -476,39 +476,42 @@ export default function AboutPage() {
 
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 bg-black">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-4xl">
-            <h1
-              className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight mb-12"
-              style={{ color: "var(--primary)" }}
-            >
-              ABOUT US
-            </h1>
-            
-            <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-semibold tracking-tight mb-10">
-              Matthew, Founder of Antova Builders
-            </h2>
-            
-            <div
-              className="border-l-2 pl-8 lg:pl-12 mb-12"
-              style={{ borderColor: "var(--primary)" }}
-            >
-              <p className="text-lg md:text-xl lg:text-2xl text-white/80 leading-relaxed">
-                Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.
-              </p>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start min-h-[50vh]">
+            <div>
+              <h1
+                className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight mb-8"
+                style={{ color: "var(--primary)" }}
+              >
+                ABOUT US
+              </h1>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-semibold tracking-tight">
+                Matthew, Founder of Antova Builders
+              </h2>
             </div>
 
-            <div className="relative pl-8 lg:pl-12">
-              <svg 
-                className="absolute -left-1 top-0 w-8 h-8 opacity-40" 
-                style={{ color: "var(--primary)" }}
-                fill="currentColor" 
-                viewBox="0 0 24 24"
+            <div className="space-y-10">
+              <div
+                className="border-l-2 pl-8 lg:pl-12"
+                style={{ borderColor: "var(--primary)" }}
               >
-                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-              </svg>
-              <blockquote className="text-xl md:text-2xl lg:text-3xl text-white/50 leading-relaxed italic font-light">
-                "I will never stop pushing for excellence, innovation, and the best customer service. I believe that quality should never be compromised, and luxury can be achieved in every structure where imagination thrives."
-              </blockquote>
+                <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+                  Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.
+                </p>
+              </div>
+
+              <div className="relative pl-8 lg:pl-12">
+                <svg 
+                  className="absolute -left-1 top-0 w-8 h-8 opacity-40" 
+                  style={{ color: "var(--primary)" }}
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+                <blockquote className="text-xl md:text-2xl text-white/50 leading-relaxed italic font-light">
+                  "I will never stop pushing for excellence, innovation, and the best customer service. I believe that quality should never be compromised, and luxury can be achieved in every structure where imagination thrives."
+                </blockquote>
+              </div>
             </div>
           </div>
         </div>
