@@ -477,22 +477,22 @@ export default function AntovaBuilders() {
       </section>
 
       {/* AI-Powered Section - Two column layout with video */}
-      <section className="relative min-h-screen flex items-center overflow-hidden py-24 bg-[#0a0a0a]">
+      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 lg:min-h-screen bg-[#0a0a0a]">
         <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             {/* Left side - Text content */}
-            <div className="space-y-6">
+            <div className="space-y-6 order-1">
               {/* Label */}
               <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">
                 AI-Powered Estimation
               </p>
               
-              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1]">
                 Turn ideas into<br />
                 <span className="text-[#c6912c]">architectural reality.</span>
               </h2>
               
-              <p className="text-lg md:text-xl text-white/60 leading-relaxed max-w-xl">
+              <p className="text-base md:text-lg lg:text-xl text-white/60 leading-relaxed max-w-xl">
                 Begin with your vision. Our AI instantly transforms project details into accurate cost estimates, material insights, and construction timelines.
               </p>
               
@@ -516,14 +516,15 @@ export default function AntovaBuilders() {
             </div>
 
             {/* Right side - Video */}
-            <div className="relative">
-              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] lg:aspect-square">
-                {/* Video background */}
+            <div className="relative order-2">
+              <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
+                {/* Video background - optimized with lazy loading */}
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="metadata"
                   className="absolute inset-0 w-full h-full object-cover"
                 >
                   <source src="/ai-video.mp4" type="video/mp4" />
@@ -531,19 +532,19 @@ export default function AntovaBuilders() {
                 
                 {/* Gradient overlay for better blending */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60" />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30" />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30 hidden lg:block" />
                 
                 {/* Floating input mockup */}
-                <div className="absolute bottom-1/3 left-1/2 -translate-x-1/2 w-[80%] max-w-md">
-                  <div className="flex items-center gap-3 bg-[#111]/90 backdrop-blur-sm rounded-xl px-4 py-3 border border-white/10 shadow-2xl">
-                    <div className="w-8 h-8 rounded-lg bg-[#c6912c]/20 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute bottom-4 sm:bottom-1/3 left-1/2 -translate-x-1/2 w-[90%] sm:w-[80%] max-w-md">
+                  <div className="flex items-center gap-2 sm:gap-3 bg-[#111]/90 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-white/10 shadow-2xl">
+                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#c6912c]/20 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
                       </svg>
                     </div>
-                    <span className="text-white/50 text-sm truncate">3,200 sq ft modern home with...</span>
-                    <div className="ml-auto w-8 h-8 rounded-lg bg-[#c6912c] flex items-center justify-center cursor-pointer hover:bg-[#a67923] transition-colors flex-shrink-0">
-                      <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <span className="text-white/50 text-xs sm:text-sm truncate">3,200 sq ft modern home...</span>
+                    <div className="ml-auto w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#c6912c] flex items-center justify-center cursor-pointer hover:bg-[#a67923] transition-colors flex-shrink-0">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>
                     </div>
@@ -552,7 +553,7 @@ export default function AntovaBuilders() {
               </div>
               
               {/* Glow effect */}
-              <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10" />
+              <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10 hidden lg:block" />
             </div>
           </div>
         </div>
