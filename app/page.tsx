@@ -541,23 +541,6 @@ export default function AntovaBuilders() {
                 {/* Gradient overlay for better blending */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60 pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30 hidden lg:block pointer-events-none" />
-                
-                {/* Floating input mockup */}
-                <div className="absolute bottom-4 sm:bottom-1/3 left-1/2 -translate-x-1/2 w-[90%] sm:w-[80%] max-w-md pointer-events-none">
-                  <div className="flex items-center gap-2 sm:gap-3 bg-[#111]/90 backdrop-blur-sm rounded-lg sm:rounded-xl px-3 sm:px-4 py-2 sm:py-3 border border-white/10 shadow-2xl">
-                    <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#c6912c]/20 flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                      </svg>
-                    </div>
-                    <span className="text-white/50 text-xs sm:text-sm truncate">3,200 sq ft modern home...</span>
-                    <div className="ml-auto w-6 h-6 sm:w-8 sm:h-8 rounded-lg bg-[#c6912c] flex items-center justify-center flex-shrink-0">
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                      </svg>
-                    </div>
-                  </div>
-                </div>
               </div>
               
               {/* Glow effect */}
