@@ -518,14 +518,15 @@ export default function AntovaBuilders() {
             {/* Right side - Video */}
             <div className="relative order-2">
               <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
-                {/* Video background - optimized with lazy loading */}
+                {/* Video background - iOS compatible autoplay */}
                 <video
                   autoPlay
                   loop
                   muted
                   playsInline
-                  preload="metadata"
+                  disablePictureInPicture
                   className="absolute inset-0 w-full h-full object-cover"
+                  style={{ WebkitPlaysinline: true } as React.CSSProperties}
                 >
                   <source src="/ai-video.mp4" type="video/mp4" />
                 </video>
