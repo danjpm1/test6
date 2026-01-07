@@ -476,97 +476,138 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
-      {/* AI-Powered Section - Replaces the old image-based section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden py-24 bg-black">
-        {/* Animated gradient background */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-black via-[#0a0a0a] to-black" />
-          
-          {/* Grid pattern */}
-          <div 
-            className="absolute inset-0 opacity-20"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(198, 145, 44, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(198, 145, 44, 0.1) 1px, transparent 1px)
-              `,
-              backgroundSize: '60px 60px',
-            }}
-          />
-          
-          {/* Glowing orbs */}
-          <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-[#c6912c]/10 rounded-full blur-[120px] animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-[#c6912c]/5 rounded-full blur-[100px] animate-pulse" style={{ animationDelay: '1s' }} />
-          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c6912c]/5 rounded-full blur-[150px]" />
-          
-          {/* Circuit lines */}
-          <svg className="absolute inset-0 w-full h-full opacity-10" xmlns="http://www.w3.org/2000/svg">
-            <defs>
-              <linearGradient id="circuit-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#c6912c" stopOpacity="0" />
-                <stop offset="50%" stopColor="#c6912c" stopOpacity="1" />
-                <stop offset="100%" stopColor="#c6912c" stopOpacity="0" />
-              </linearGradient>
-            </defs>
-            <line x1="10%" y1="20%" x2="30%" y2="20%" stroke="url(#circuit-gradient)" strokeWidth="1" />
-            <line x1="30%" y1="20%" x2="30%" y2="40%" stroke="url(#circuit-gradient)" strokeWidth="1" />
-            <line x1="70%" y1="30%" x2="90%" y2="30%" stroke="url(#circuit-gradient)" strokeWidth="1" />
-            <line x1="70%" y1="30%" x2="70%" y2="60%" stroke="url(#circuit-gradient)" strokeWidth="1" />
-            <line x1="20%" y1="70%" x2="40%" y2="70%" stroke="url(#circuit-gradient)" strokeWidth="1" />
-            <line x1="60%" y1="80%" x2="80%" y2="80%" stroke="url(#circuit-gradient)" strokeWidth="1" />
-            <circle cx="30%" cy="20%" r="3" fill="#c6912c" opacity="0.5" />
-            <circle cx="30%" cy="40%" r="3" fill="#c6912c" opacity="0.5" />
-            <circle cx="70%" cy="30%" r="3" fill="#c6912c" opacity="0.5" />
-            <circle cx="70%" cy="60%" r="3" fill="#c6912c" opacity="0.5" />
-            <circle cx="20%" cy="70%" r="3" fill="#c6912c" opacity="0.5" />
-            <circle cx="40%" cy="70%" r="3" fill="#c6912c" opacity="0.5" />
-            <circle cx="80%" cy="80%" r="3" fill="#c6912c" opacity="0.5" />
-          </svg>
-        </div>
+      {/* AI-Powered Section - Two column layout with video */}
+      <section className="relative min-h-screen flex items-center overflow-hidden py-24 bg-[#0a0a0a]">
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Left side - Text content */}
+            <div className="space-y-8">
+              {/* AI Badge */}
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#c6912c]/10 border border-[#c6912c]/30 rounded-full">
+                <div className="w-2 h-2 bg-[#c6912c] rounded-full animate-pulse" />
+                <span className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">AI-Powered</span>
+              </div>
+              
+              <h2 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-tight">
+                Built with Intelligence.
+              </h2>
+              
+              <p className="text-lg md:text-xl text-white/60 leading-relaxed max-w-xl">
+                Begin with your project details. Our AI instantly transforms them into accurate cost estimates, material insights, and timeline projections.
+              </p>
+              
+              {/* Feature pills */}
+              <div className="flex flex-wrap gap-3">
+                <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
+                  Smart Cost Analysis
+                </div>
+                <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
+                  Real-time Pricing
+                </div>
+                <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
+                  Material Insights
+                </div>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-3 pt-4">
+                <Button
+                  size="lg"
+                  className="w-full sm:w-auto sm:min-w-[200px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
+                  asChild
+                >
+                  <Link href="/cost-estimator">Explore AI Estimator</Link>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="w-full sm:w-auto sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link href="/about">Our Story</Link>
+                </Button>
+              </div>
+            </div>
 
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full">
-          {/* AI Badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#c6912c]/10 border border-[#c6912c]/30 rounded-full mb-8">
-            <div className="w-2 h-2 bg-[#c6912c] rounded-full animate-pulse" />
-            <span className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">AI-Powered</span>
-          </div>
-          
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold mb-6 tracking-tight text-balance text-white">
-            Built with Intelligence.
-          </h2>
-          <p className="text-xl md:text-2xl mb-12 text-white/60 max-w-3xl mx-auto text-balance">
-            Powered by AI-driven estimation and real-time material insights.
-          </p>
-          
-          {/* Feature pills */}
-          <div className="flex flex-wrap items-center justify-center gap-3 mb-12">
-            <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-              Smart Cost Analysis
+            {/* Right side - Video/Visual mockup */}
+            <div className="relative">
+              {/* Grid background effect */}
+              <div className="relative rounded-2xl overflow-hidden aspect-[4/3] lg:aspect-square">
+                {/* Gradient mesh background */}
+                <div className="absolute inset-0 bg-gradient-to-br from-[#c6912c]/30 via-[#c6912c]/10 to-[#1a1a1a]" />
+                
+                {/* Animated grid */}
+                <div 
+                  className="absolute inset-0 opacity-40"
+                  style={{
+                    backgroundImage: `
+                      linear-gradient(rgba(198, 145, 44, 0.3) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(198, 145, 44, 0.3) 1px, transparent 1px)
+                    `,
+                    backgroundSize: '40px 40px',
+                  }}
+                />
+
+                {/* Floating UI mockup */}
+                <div className="absolute inset-0 flex items-center justify-center p-8">
+                  {/* AI Estimator preview card */}
+                  <div className="w-full max-w-md bg-[#111]/90 backdrop-blur-sm rounded-xl border border-white/10 shadow-2xl overflow-hidden">
+                    {/* Card header */}
+                    <div className="px-5 py-4 border-b border-white/10 flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-[#c6912c] flex items-center justify-center">
+                        <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                      </div>
+                      <span className="text-white font-medium">AI Cost Estimator</span>
+                      <div className="ml-auto flex items-center gap-1">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+                        <span className="text-green-500 text-xs">Live</span>
+                      </div>
+                    </div>
+                    
+                    {/* Card content - fake input */}
+                    <div className="p-5 space-y-4">
+                      <div className="flex items-center gap-3 bg-white/5 rounded-lg px-4 py-3 border border-white/10">
+                        <svg className="w-5 h-5 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                        </svg>
+                        <span className="text-white/50 text-sm">2,500 sq ft custom home...</span>
+                        <div className="ml-auto w-8 h-8 rounded-lg bg-[#c6912c] flex items-center justify-center cursor-pointer hover:bg-[#a67923] transition-colors">
+                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                          </svg>
+                        </div>
+                      </div>
+                      
+                      {/* Fake results preview */}
+                      <div className="space-y-3">
+                        <div className="flex justify-between items-center">
+                          <span className="text-white/40 text-sm">Estimated Cost</span>
+                          <span className="text-[#c6912c] font-semibold">$425,000 - $485,000</span>
+                        </div>
+                        <div className="flex justify-between items-center">
+                          <span className="text-white/40 text-sm">Timeline</span>
+                          <span className="text-white/80 text-sm">8-10 months</span>
+                        </div>
+                        <div className="h-2 bg-white/10 rounded-full overflow-hidden">
+                          <div className="h-full w-3/4 bg-gradient-to-r from-[#c6912c] to-[#d4a84a] rounded-full" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Decorative cursor */}
+                <div className="absolute bottom-1/3 right-1/3 transform translate-x-4">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-[#c6912c] drop-shadow-lg">
+                    <path d="M5.5 3.21V20.8c0 .45.54.67.85.35l4.86-4.86a.5.5 0 01.35-.15h6.87a.5.5 0 00.35-.85L6.35 2.86a.5.5 0 00-.85.35z" fill="currentColor"/>
+                  </svg>
+                </div>
+              </div>
+              
+              {/* Glow effect */}
+              <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10" />
             </div>
-            <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-              Real-time Pricing
-            </div>
-            <div className="px-4 py-2 bg-white/5 border border-white/10 rounded-full text-white/70 text-sm">
-              Material Insights
-            </div>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
-              asChild
-            >
-              <Link href="/cost-estimator">Explore AI Estimator</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
-              asChild
-            >
-              <Link href="/about">Our Story</Link>
-            </Button>
           </div>
         </div>
       </section>
