@@ -126,7 +126,7 @@ const IntroAnimation = ({ onComplete }: { onComplete: () => void }) => {
 const teamMembers = [
   { 
     name: "Matthew Shaffer", 
-    title: "CEO, Managing Principal",
+    title: "CEO & FOUNDER",
     image: "/images/team/matthew-shaffer.jpg",
     bio: "Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. His sharp vision for luxury construction and client-first approach drives every project we undertake."
   },
@@ -166,17 +166,17 @@ const sections = [
   {
     number: "01",
     title: "Vision",
-    description: "Create a world where every detail is under control and every home reflects refined order. We envision spaces where precision meets artistry, and structure creates freedom.",
+    description: "We create a world where every detail is under control and every home reflects refined order. We envision spaces where precision meets artistry, and thoughtful structure delivers true freedom.",
   },
   {
     number: "02",
     title: "Strategy",
-    description: "Establish clear structures, set the benchmark for craftsmanship, and deliver a seamless journey. From initial consultation to final handover, we orchestrate every element with precision.",
+    description: "We establish clear structures, set the highest benchmarks for craftsmanship, and deliver a seamless journey. From initial consultation to final handover, we orchestrate every element with precision — leveraging cutting-edge technology for efficiency and driving innovation to build structures that respect and protect the environment.",
   },
   {
     number: "03",
     title: "Experience",
-    description: "Our team brings refined expertise, blending technical mastery with creative problem-solving. Years of dedication translate into flawless execution across every project phase.",
+    description: "Our team brings refined expertise, blending technical mastery with creative problem-solving. Years of dedication translate into flawless execution across every project phase.\n\nAt Antova, our customers are our number one priority. We work tirelessly to achieve excellence and build the most exceptional, high-quality homes — delivering a true 5-star experience every step of the way.",
   },
 ]
 
@@ -219,7 +219,7 @@ const SectionCard = ({
           {title}
         </h3>
         <p
-          className="leading-relaxed max-w-5xl"
+          className="leading-relaxed max-w-5xl whitespace-pre-line"
           style={{ fontSize: "var(--text-body-md)", color: "var(--text-light)", lineHeight: 1.7 }}
         >
           {description}
@@ -476,25 +476,45 @@ export default function AboutPage() {
 
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 bg-black">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center min-h-[50vh]">
-            <h1
-              className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight"
-              style={{ color: "var(--primary)" }}
-            >
-              ABOUT US
-            </h1>
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start min-h-[50vh]">
+            <div>
+              <h1
+                className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight mb-8"
+                style={{ color: "var(--primary)" }}
+              >
+                ABOUT US
+              </h1>
+              <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-medium tracking-tight">
+                Matthew, Founder of Antova Builders
+              </h2>
+            </div>
 
-            <div
-              className="border-l-2 pl-8 lg:pl-12"
-              style={{ borderColor: "var(--primary)" }}
-            >
-              <p className="text-lg md:text-xl text-white/60 mb-4">
-                Antova Builders began with a singular belief:
-              </p>
-              <p className="text-2xl md:text-3xl lg:text-4xl text-white leading-snug font-light">
-                True luxury is the freedom to relax while experts handle{" "}
-                <span style={{ color: "var(--primary)" }}>the complexity.</span>
-              </p>
+            <div className="space-y-8">
+              <div
+                className="border-l-2 pl-8 lg:pl-12"
+                style={{ borderColor: "var(--primary)" }}
+              >
+                <p className="text-lg md:text-xl text-white/80 leading-relaxed">
+                  Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.
+                </p>
+              </div>
+
+              <div className="pl-8 lg:pl-12 relative">
+                <svg 
+                  className="absolute -left-2 -top-2 w-10 h-10 opacity-30" 
+                  style={{ color: "var(--primary)" }}
+                  fill="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+                </svg>
+                <p className="text-xl md:text-2xl text-white/60 leading-relaxed italic">
+                  "I will never stop pushing for excellence, innovation, and the best customer service. I believe that quality should never be compromised, and luxury can be achieved in every structure where imagination thrives."
+                </p>
+                <p className="mt-4 text-sm tracking-widest uppercase" style={{ color: "var(--primary)" }}>
+                  — Matthew Shaffer
+                </p>
+              </div>
             </div>
           </div>
         </div>
