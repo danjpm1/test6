@@ -477,15 +477,16 @@ export default function AboutPage() {
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 bg-black">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="max-w-4xl">
-            <p 
-              className="text-sm tracking-[0.3em] uppercase mb-6"
+            <h1
+              className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight mb-12"
               style={{ color: "var(--primary)" }}
             >
-              Founder & CEO
-            </p>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl xl:text-7xl text-white font-bold tracking-tight mb-10">
-              Matthew Shaffer
+              ABOUT US
             </h1>
+            
+            <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-semibold tracking-tight mb-10">
+              Matthew, Founder of Antova Builders
+            </h2>
             
             <div
               className="border-l-2 pl-8 lg:pl-12 mb-12"
