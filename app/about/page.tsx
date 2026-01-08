@@ -126,33 +126,21 @@ const IntroAnimation = ({ onComplete }: { onComplete: () => void }) => {
 const teamMembers = [
   { 
     name: "Matthew Shaffer", 
-    title: "CEO & FOUNDER",
+    title: "Managing Director",
     image: "/images/team/matthew-shaffer.jpg",
-    bio: "Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. His sharp vision for luxury construction and client-first approach drives every project we undertake."
+    bio: "Matthew, Founder, CEO, and Managing Director of Antova Builders, leads on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake."
   },
   { 
-    name: "Ragnar", 
-    title: "Construction Engineer",
-    image: "/images/team/ragnar.jpg",
-    bio: "A master of structural engineering, Ragnar brings precision and innovation to every build. His expertise in modern construction techniques ensures our projects exceed industry standards."
+    name: "Stanley Hyde", 
+    title: "Site Supervisor",
+    image: "/images/team/stanley-hyde.jpg",
+    bio: "With many years of hands-on construction experience, Stanley brings exceptional leadership to our on-site operations. A talented woodworker with a keen eye for fine details and custom millwork, he oversees daily progress, coordinates trades, and ensures every refined finish meets Antova's uncompromising standards. His strong problem-solving skills help navigate challenges efficiently, turning complex visions into flawless luxury homes."
   },
   { 
-    name: "Lagertha", 
-    title: "Construction Engineer",
-    image: "/images/team/lagertha.jpg",
-    bio: "Lagertha specializes in sustainable building practices and green certifications. Her commitment to environmental responsibility shapes our approach to modern luxury construction."
-  },
-  { 
-    name: "Rollo", 
-    title: "Construction Engineer",
-    image: "/images/team/rollo.jpg",
-    bio: "With a background in commercial and residential mega-projects, Rollo manages complex builds with remarkable efficiency. His leadership ensures timelines and budgets are always respected."
-  },
-  { 
-    name: "Floki", 
-    title: "Construction Engineer",
-    image: "/images/team/floki.jpg",
-    bio: "Floki is our creative problem-solver, bringing artistic sensibility to technical challenges. His innovative solutions have become signature elements in many of our most celebrated projects."
+    name: "Andrew Mason", 
+    title: "Project Coordinator",
+    image: "/images/team/andrew-mason.jpg",
+    bio: "Andrew brings strong mechanical skills and an outstanding talent for creative problem-solving to every project. He manages precise estimating, material takeoffs, logistics, and day-to-day coordination — ensuring projects stay on schedule, within budget, and executed with efficiency. His proactive approach and sharp problem-solving deliver seamless results from planning through final handover, supporting Antova's commitment to extraordinary luxury homes."
   },
   { 
     name: "Daniel Anghel", 
@@ -496,7 +484,7 @@ export default function AboutPage() {
                 style={{ borderColor: "var(--primary)" }}
               >
                 <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-                  Matthew founded Antova Builders on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.
+                  Matthew, Founder, CEO, and Managing Director of Antova Builders, leads on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.
                 </p>
               </div>
 
@@ -533,7 +521,7 @@ export default function AboutPage() {
       </section>
 
       <section className="relative w-full bg-white py-20 md:py-28">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12">
           <div className="mb-16 md:mb-20">
             <h2 
               className="text-3xl md:text-4xl tracking-[0.2em] uppercase text-gray-900"
@@ -543,7 +531,7 @@ export default function AboutPage() {
             </h2>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {teamMembers.map((member, index) => (
               <TeamMemberCard 
                 key={`${member.name}-${index}`}
