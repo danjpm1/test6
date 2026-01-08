@@ -482,31 +482,19 @@ export default function AboutPage() {
             </div>
 
             <div className="space-y-8 lg:pt-24">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl text-white font-semibold tracking-tight">
-                Matthew, Founder of Antova Builders
-              </h2>
-              
               <div
                 className="border-l-2 pl-8 lg:pl-12"
                 style={{ borderColor: "var(--primary)" }}
               >
                 <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-                  Matthew, Founder, CEO, and Managing Director of Antova Builders, leads on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.
+                  Founded in 2021, Antova Builders is a forward-thinking luxury custom home builder committed to disrupting the construction industry. We combine deep expertise — with a team boasting over 30 years of experience in complex projects and refined finishes — with cutting-edge AI and technological advancements to streamline processes, complete projects faster, and deliver exceptional value without compromising quality.
                 </p>
               </div>
 
-              <div className="relative pl-8 lg:pl-12">
-                <svg 
-                  className="absolute -left-1 top-0 w-8 h-8 opacity-40" 
-                  style={{ color: "var(--primary)" }}
-                  fill="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-                </svg>
-                <blockquote className="text-xl md:text-2xl text-white/50 leading-relaxed italic font-light">
-                  "I will never stop pushing for excellence, innovation, and the best customer service. I believe that quality should never be compromised, and luxury can be achieved in every structure where imagination thrives."
-                </blockquote>
+              <div className="pl-8 lg:pl-12">
+                <p className="text-lg md:text-xl text-white/60 leading-relaxed">
+                  Whether building extraordinary new homes from the ground up or elevating existing residences through high-end renovations and transformations, we pride ourselves on solving the toughest challenges in construction while providing unmatched customer service. Our mission is simple: to create timeless, high-quality spaces with precision, innovation, and a relentless focus on client satisfaction.
+                </p>
               </div>
             </div>
           </div>
