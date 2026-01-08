@@ -470,33 +470,47 @@ export default function AboutPage() {
       <Navbar />
 
       <section className="pt-32 pb-20 lg:pt-40 lg:pb-28 bg-black">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-start min-h-[50vh]">
-            <div>
-              <h1
-                className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight"
-                style={{ color: "var(--primary)" }}
-              >
-                ABOUT US
-              </h1>
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1200px] mx-auto">
+          {/* Centered Header */}
+          <div className="text-center mb-16 lg:mb-20">
+            <p 
+              className="text-sm md:text-base tracking-[0.3em] uppercase mb-4 font-light"
+              style={{ color: "var(--primary)" }}
+            >
+              Est. 2021
+            </p>
+            <h1
+              className="text-5xl md:text-6xl lg:text-8xl font-bold tracking-tight mb-6"
+              style={{ color: "var(--primary)" }}
+            >
+              ABOUT US
+            </h1>
+            {/* Decorative gold line */}
+            <div 
+              className="w-16 h-[2px] mx-auto"
+              style={{ backgroundColor: "var(--primary)" }}
+            />
+          </div>
+
+          {/* Centered Content */}
+          <div className="max-w-3xl mx-auto text-center space-y-8">
+            <p className="text-lg md:text-xl lg:text-2xl text-white/90 leading-relaxed font-light">
+              Founded in 2021, Antova Builders is a forward-thinking luxury custom home builder committed to disrupting the construction industry. We combine deep expertise — with a team boasting over 30 years of experience in complex projects and refined finishes — with cutting-edge AI and technological advancements to streamline processes, complete projects faster, and deliver exceptional value without compromising quality.
+            </p>
+
+            {/* Decorative divider */}
+            <div className="flex items-center justify-center gap-4 py-4">
+              <div className="w-8 h-[1px] bg-white/20" />
+              <div 
+                className="w-2 h-2 rotate-45"
+                style={{ backgroundColor: "var(--primary)" }}
+              />
+              <div className="w-8 h-[1px] bg-white/20" />
             </div>
 
-            <div className="space-y-8 lg:pt-24">
-              <div
-                className="border-l-2 pl-8 lg:pl-12"
-                style={{ borderColor: "var(--primary)" }}
-              >
-                <p className="text-lg md:text-xl text-white/80 leading-relaxed">
-                  Founded in 2021, Antova Builders is a forward-thinking luxury custom home builder committed to disrupting the construction industry. We combine deep expertise — with a team boasting over 30 years of experience in complex projects and refined finishes — with cutting-edge AI and technological advancements to streamline processes, complete projects faster, and deliver exceptional value without compromising quality.
-                </p>
-              </div>
-
-              <div className="pl-8 lg:pl-12">
-                <p className="text-lg md:text-xl text-white/60 leading-relaxed">
-                  Whether building extraordinary new homes from the ground up or elevating existing residences through high-end renovations and transformations, we pride ourselves on solving the toughest challenges in construction while providing unmatched customer service. Our mission is simple: to create timeless, high-quality spaces with precision, innovation, and a relentless focus on client satisfaction.
-                </p>
-              </div>
-            </div>
+            <p className="text-base md:text-lg text-white/60 leading-relaxed font-light italic">
+              Whether building extraordinary new homes from the ground up or elevating existing residences through high-end renovations and transformations, we pride ourselves on solving the toughest challenges in construction while providing unmatched customer service. Our mission is simple: to create timeless, high-quality spaces with precision, innovation, and a relentless focus on client satisfaction.
+            </p>
           </div>
         </div>
       </section>
