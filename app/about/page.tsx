@@ -263,7 +263,7 @@ const TeamMemberModal = ({
   return (
     <div
       ref={modalRef}
-      className={`fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto transition-all duration-500 ${
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-hidden transition-all duration-500 ${
         isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       }`}
       onClick={onClose}
@@ -282,23 +282,23 @@ const TeamMemberModal = ({
 
       {/* Modal Content */}
       <div
-        className={`relative z-10 w-full max-w-2xl mx-4 md:mx-auto px-6 md:px-0 pt-20 md:pt-24 pb-32 transition-all duration-500 ${
+        className={`relative z-10 w-full max-w-xl mx-4 md:mx-auto px-6 md:px-0 py-12 md:py-16 transition-all duration-500 ${
           isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
         {/* Title Section */}
-        <div className="mb-8">
-          <p className="text-base md:text-lg tracking-widest uppercase text-gray-500 mb-3 font-medium">
+        <div className="mb-5">
+          <p className="text-sm md:text-base tracking-widest uppercase text-gray-500 mb-2 font-medium">
             {member.title}
           </p>
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-semibold text-gray-900 tracking-tight leading-none">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-semibold text-gray-900 tracking-tight leading-none">
             {member.name}
           </h2>
         </div>
 
         {/* Image */}
-        <div className="w-full aspect-[16/10] overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center mb-8 shadow-2xl">
+        <div className="w-full aspect-[2/1] overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center mb-5 shadow-xl">
           {member.image ? (
             <img
               src={member.image}
@@ -311,12 +311,12 @@ const TeamMemberModal = ({
             />
           ) : null}
           <div className={`flex items-center justify-center ${member.image ? "hidden" : ""}`}>
-            <User size={120} className="text-[#c6912c]/30" />
+            <User size={80} className="text-[#c6912c]/30" />
           </div>
         </div>
 
         {/* Bio Text */}
-        <p className="text-xl md:text-2xl text-gray-700 leading-relaxed max-w-xl font-normal whitespace-pre-line">
+        <p className="text-base md:text-lg text-gray-700 leading-relaxed font-normal whitespace-pre-line">
           {member.bio}
         </p>
       </div>
