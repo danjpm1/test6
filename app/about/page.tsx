@@ -233,9 +233,15 @@ const TeamMemberModal = ({
   isOpen: boolean
   onClose: () => void 
 }) => {
+  const modalRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden"
+      // Scroll modal to top when opening
+      if (modalRef.current) {
+        modalRef.current.scrollTop = 0
+      }
     } else {
       document.body.style.overflow = ""
     }
@@ -256,18 +262,19 @@ const TeamMemberModal = ({
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center transition-all duration-500 ${
+      ref={modalRef}
+      className={`fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto transition-all duration-500 ${
         isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       }`}
       onClick={onClose}
     >
       {/* Backdrop - lighter blur to see cards behind */}
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-sm" />
+      <div className="fixed inset-0 bg-white/60 backdrop-blur-sm" />
       
       {/* Close Button - Fixed position top right */}
       <button
         onClick={onClose}
-        className="absolute top-6 right-6 md:top-8 md:right-8 z-20 w-12 h-12 flex items-center justify-center bg-black rounded-full transition-all duration-300 hover:scale-110"
+        className="fixed top-6 right-6 md:top-8 md:right-8 z-20 w-12 h-12 flex items-center justify-center bg-black rounded-full transition-all duration-300 hover:scale-110"
         aria-label="Close modal"
       >
         <X size={20} className="text-white" />
@@ -275,7 +282,7 @@ const TeamMemberModal = ({
 
       {/* Modal Content */}
       <div
-        className={`relative z-10 w-full max-w-2xl mx-4 md:mx-auto px-6 md:px-0 transition-all duration-500 ${
+        className={`relative z-10 w-full max-w-2xl mx-4 md:mx-auto px-6 md:px-0 pt-20 md:pt-24 pb-32 transition-all duration-500 ${
           isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
         }`}
         onClick={(e) => e.stopPropagation()}
