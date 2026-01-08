@@ -8,22 +8,22 @@ import { Footer } from "@/components/footer"
 const STEPS = [
   {
     number: "1",
-    title: "Assess",
-    description: "We evaluate your existing space to uncover its full potential and identify what matters most to you.",
+    title: "Consult",
+    description: "We begin with a thoughtful, in-depth consultation — listening closely to your vision, lifestyle, and priorities while carefully evaluating your existing space to uncover its full potential and craft a tailored plan that reflects what matters most to you.",
     image: "/aerial.jpg",
     alt: "Luxury home aerial view with pool",
   },
   {
     number: "2",
     title: "Transform",
-    description: "Renovation is reinvention – we reshape your home with care, precision, and respect for what already exists.",
+    description: "Renovation is reinvention — we reshape your home with meticulous care, precision artistry, and deep respect for its original character, bringing your vision to life flawlessly.",
     image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
     alt: "Home renovation in progress",
   },
   {
     number: "3",
-    title: "Enjoy",
-    description: "Rediscover your home as if for the first time — renewed, refined, and ready for the next chapter.",
+    title: "Rediscover",
+    description: "Step into your renewed space as if for the first time — refined, elevated, and perfectly aligned with the next chapter of your story.",
     image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
     alt: "Completed luxury renovation at night",
   },
@@ -101,15 +101,12 @@ export default function RenovationPage() {
 
             <div className="space-y-4 md:space-y-6 text-[15px] md:text-lg text-gray-300 mt-4 lg:mt-0">
               <p className="leading-[1.7] md:leading-8">
-                Antova Builder specializes in luxury renovations, transforming existing spaces into homes that reflect your
-                evolving lifestyle and exceed your expectations.
+                Antova Builder specializes in luxury renovations for every budget.
               </p>
               <p className="leading-[1.7] md:leading-8">
-                Renovation isn't just about updating walls and fixtures; it's about reimagining how you want to live.
-                Through thoughtful design and expert craftsmanship, we breathe new life into your home while honoring
-                what made you fall in love with it in the first place.
+                We transform existing homes into spaces that perfectly match the way you want to live today, delivering exceptional design, materials, and craftsmanship at every price point. A renovation isn't just new walls and fixtures; it's a complete re-imagination of your home. We listen closely, honor everything you already love about the place, and elevate it with thoughtful details and flawless execution — whether the project is focused and efficient or grand in scope.
               </p>
-              <p className="font-semibold text-white pt-1 md:pt-2">Your space, our expertise.</p>
+              <p className="font-semibold text-white pt-1 md:pt-2">Your vision. Your budget. Our expertise.</p>
             </div>
           </div>
         </div>
