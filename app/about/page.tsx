@@ -298,7 +298,7 @@ const TeamMemberModal = ({
         </div>
 
         {/* Image */}
-        <div className="w-full aspect-[2/1] overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center mb-5 shadow-xl">
+        <div className="w-full aspect-[3/2] overflow-hidden rounded-lg bg-gray-100 flex items-center justify-center mb-5 shadow-xl">
           {member.image ? (
             <img
               src={member.image}
