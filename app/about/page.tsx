@@ -128,7 +128,7 @@ const teamMembers = [
     name: "Matthew Shaffer", 
     title: "Managing Director",
     image: "/images/team/matthew-shaffer.jpg",
-    bio: "Matthew, Founder, CEO, and Managing Director of Antova Builders, leads on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake."
+    bio: "Matthew, Founder, CEO, and Managing Director of Antova Builders, leads on the principle that exceptional craftsmanship should come with exceptional service. With a sharp vision for luxury construction and structures designed for everyone, his client-first approach drives every project we undertake.\n\n\"I will never stop pushing for excellence, innovation, and the best customer service. I believe that quality should never be compromised, and luxury can be achieved in every structure where imagination thrives.\""
   },
   { 
     name: "Stanley Hyde", 
@@ -309,7 +309,7 @@ const TeamMemberModal = ({
         </div>
 
         {/* Bio Text */}
-        <p className="text-xl md:text-2xl text-gray-700 leading-relaxed max-w-xl font-normal">
+        <p className="text-xl md:text-2xl text-gray-700 leading-relaxed max-w-xl font-normal whitespace-pre-line">
           {member.bio}
         </p>
       </div>
