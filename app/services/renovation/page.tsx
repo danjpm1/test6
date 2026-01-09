@@ -34,7 +34,12 @@ const SWIPE_THRESHOLD = 50
 
 export default function RenovationPage() {
   const [activeStep, setActiveStep] = useState(0)
+  const [isVideoVisible, setIsVideoVisible] = useState(false)
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(true)
   const touchStartX = useRef(0)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const videoContainerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -47,6 +52,50 @@ export default function RenovationPage() {
 
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVideoVisible(true)
+            if (videoRef.current && isVideoLoaded && isPlaying) {
+              videoRef.current.play()
+            }
+          } else {
+            if (videoRef.current) {
+              videoRef.current.pause()
+            }
+          }
+        })
+      },
+      { threshold: 0.25 }
+    )
+
+    if (videoContainerRef.current) {
+      observer.observe(videoContainerRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [isVideoLoaded, isPlaying])
+
+  const handleVideoLoaded = () => {
+    setIsVideoLoaded(true)
+    if (videoRef.current && isVideoVisible && isPlaying) {
+      videoRef.current.play()
+    }
+  }
+
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (isPlaying) {
+        videoRef.current.pause()
+      } else {
+        videoRef.current.play()
+      }
+      setIsPlaying(!isPlaying)
+    }
+  }
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX
@@ -210,9 +259,10 @@ export default function RenovationPage() {
 
       {/* Tesla-style Feature Section */}
       <section className="bg-white py-16 md:py-24 lg:py-32">
-        <div className="mx-auto px-5 md:px-8 lg:px-16 max-w-[1400px]">
+        <div className="mx-auto px-4 md:px-6 lg:px-8">
           <div 
-            className="relative w-full aspect-[2.5/1] md:aspect-[3.2/1] overflow-hidden"
+            ref={videoContainerRef}
+            className="relative w-full aspect-[2.5/1] md:aspect-[3/1] overflow-hidden bg-gray-100"
             style={{
               clipPath: `polygon(
                 0 0,
@@ -224,32 +274,49 @@ export default function RenovationPage() {
               )`
             }}
           >
-            <video
-              src="/renovation-showcase.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            {/* Pause button */}
+            {isVideoVisible && (
+              <video
+                ref={videoRef}
+                src="/renovation-showcase.mp4"
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster="/renovation-poster.jpg"
+                onLoadedData={handleVideoLoaded}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            )}
+            {/* Play/Pause button */}
             <button 
+              onClick={toggleVideo}
               className="absolute bottom-4 left-4 w-8 h-8 bg-black/60 rounded flex items-center justify-center hover:bg-black/80 transition-colors"
-              aria-label="Pause video"
+              aria-label={isPlaying ? "Pause video" : "Play video"}
             >
-              <svg 
-                xmlns="http://www.w3.org/2000/svg" 
-                viewBox="0 0 24 24" 
-                fill="white" 
-                className="w-4 h-4"
-              >
-                <rect x="6" y="4" width="4" height="16" />
-                <rect x="14" y="4" width="4" height="16" />
-              </svg>
+              {isPlaying ? (
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 24 24" 
+                  fill="white" 
+                  className="w-4 h-4"
+                >
+                  <rect x="6" y="4" width="4" height="16" />
+                  <rect x="14" y="4" width="4" height="16" />
+                </svg>
+              ) : (
+                <svg 
+                  xmlns="http://www.w3.org/2000/svg" 
+                  viewBox="0 0 24 24" 
+                  fill="white" 
+                  className="w-4 h-4"
+                >
+                  <polygon points="5,3 19,12 5,21" />
+                </svg>
+              )}
             </button>
           </div>
 
-          <div className="mt-6 md:mt-10">
+          <div className="mt-8 md:mt-12 px-2 md:px-4">
             <h2 className="text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] font-medium text-black tracking-tight leading-tight">
               Redefining Renovations forever
             </h2>
