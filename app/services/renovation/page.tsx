@@ -122,7 +122,7 @@ export default function RenovationPage() {
           </h1>
         </div>
 
-        <div className="relative w-full aspect-[3/1] md:aspect-[3/1] lg:aspect-[3.5/1]">
+        <div className="relative w-full aspect-[2.2/1] md:aspect-[2.2/1] lg:aspect-[2.5/1]">
           <Image
             src="/luxury-modern-cabin-interior-with-large-windows-wo.png"
             alt="Modern luxury renovation"
