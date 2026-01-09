@@ -122,12 +122,12 @@ export default function RenovationPage() {
           </h1>
         </div>
 
-        <div className="relative w-full aspect-[16/9] md:aspect-[16/9] lg:aspect-[2/1] bg-black">
+        <div className="relative w-full aspect-[1344/768]">
           <Image
             src="/luxury-modern-cabin-interior-with-large-windows-wo.png"
             alt="Modern luxury renovation"
             fill
-            className="object-contain"
+            className="object-cover"
             priority
           />
           {/* Top gradient overlay */}
