@@ -116,8 +116,8 @@ export default function RenovationPage() {
       <Navbar />
 
       <section className="relative w-full">
-        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20 bg-black">
-          <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] font-bold text-white tracking-tight">
+        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20 bg-white">
+          <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] font-bold text-black tracking-tight">
             RENOVATION
           </h1>
         </div>
@@ -130,8 +130,8 @@ export default function RenovationPage() {
             className="object-cover object-center"
             priority
           />
-          {/* Top gradient overlay */}
-          <div className="absolute inset-x-0 top-0 h-24 md:h-32 lg:h-40 bg-gradient-to-b from-black/70 via-black/30 to-transparent pointer-events-none" />
+          {/* Top gradient overlay - white to transparent */}
+          <div className="absolute inset-x-0 top-0 h-24 md:h-32 lg:h-40 bg-gradient-to-b from-white via-white/30 to-transparent pointer-events-none" />
           {/* Bottom gradient overlay */}
           <div className="absolute inset-x-0 bottom-0 h-32 md:h-40 lg:h-48 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
         </div>
