@@ -122,12 +122,12 @@ export default function RenovationPage() {
           </h1>
         </div>
 
-        <div className="relative w-full h-[50vh] md:h-[60vh] lg:h-[70vh] bg-black">
+        <div className="relative w-full aspect-[1.75/1] max-h-[calc(100vh-180px)]">
           <Image
             src="/renovation-home.png"
             alt="Modern luxury renovation"
             fill
-            className="object-contain"
+            className="object-cover object-center"
             priority
           />
           {/* Top gradient overlay */}
