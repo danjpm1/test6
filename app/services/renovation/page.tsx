@@ -262,7 +262,7 @@ export default function RenovationPage() {
         <div className="mx-auto px-[5%] md:px-[7.5%]">
           <div 
             ref={videoContainerRef}
-            className="relative w-full aspect-[3.5/1] md:aspect-[4.2/1] overflow-hidden bg-gray-100"
+            className="relative w-full aspect-[2.4/1] md:aspect-[2.8/1] overflow-hidden bg-gray-100"
             style={{
               clipPath: `polygon(
                 0 0,
