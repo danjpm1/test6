@@ -133,7 +133,7 @@ export default function RenovationPage() {
           {/* Top gradient overlay */}
           <div className="absolute inset-x-0 top-0 h-24 md:h-32 lg:h-40 bg-gradient-to-b from-black/70 via-black/30 to-transparent pointer-events-none" />
           {/* Bottom gradient overlay */}
-          <div className="absolute inset-x-0 bottom-0 h-16 md:h-20 lg:h-24 bg-gradient-to-t from-black to-transparent pointer-events-none" />
+          <div className="absolute inset-x-0 bottom-0 h-8 md:h-10 lg:h-12 bg-gradient-to-t from-black/60 to-transparent pointer-events-none" />
         </div>
       </section>
 
