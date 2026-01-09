@@ -212,17 +212,15 @@ export default function RenovationPage() {
       <section className="bg-white py-16 md:py-24 lg:py-32">
         <div className="mx-auto px-5 md:px-8 lg:px-16 max-w-[1400px]">
           <div 
-            className="relative w-full aspect-[2.35/1] md:aspect-[2.76/1] overflow-hidden"
+            className="relative w-full aspect-[2.5/1] md:aspect-[3.2/1] overflow-hidden"
             style={{
               clipPath: `polygon(
-                12px 0,
-                calc(100% - 12px) 0,
-                100% 12px,
-                100% calc(100% - 12px),
-                calc(100% - 12px) 100%,
-                12px 100%,
-                0 calc(100% - 12px),
-                0 12px
+                0 0,
+                calc(100% - 20px) 0,
+                100% 20px,
+                100% 100%,
+                20px 100%,
+                0 calc(100% - 20px)
               )`
             }}
           >
