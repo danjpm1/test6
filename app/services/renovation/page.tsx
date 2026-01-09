@@ -130,8 +130,13 @@ export default function RenovationPage() {
             className="object-cover object-center"
             priority
           />
-          {/* Top gradient overlay - subtle white to transparent */}
-          <div className="absolute inset-x-0 top-0 h-20 md:h-28 lg:h-36 bg-gradient-to-b from-white/50 via-white/20 to-transparent pointer-events-none" />
+          {/* Top gradient overlay - smooth multi-stop white to transparent */}
+          <div 
+            className="absolute inset-x-0 top-0 h-32 md:h-40 lg:h-48 pointer-events-none"
+            style={{
+              background: 'linear-gradient(to bottom, rgba(255,255,255,1) 0%, rgba(255,255,255,0.7) 20%, rgba(255,255,255,0.4) 40%, rgba(255,255,255,0.2) 60%, rgba(255,255,255,0.05) 80%, transparent 100%)'
+            }}
+          />
           {/* Bottom gradient overlay */}
           <div className="absolute inset-x-0 bottom-0 h-32 md:h-40 lg:h-48 bg-gradient-to-t from-black via-black/50 to-transparent pointer-events-none" />
         </div>
