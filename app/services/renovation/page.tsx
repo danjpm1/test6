@@ -208,6 +208,46 @@ export default function RenovationPage() {
         </div>
       </section>
 
+      {/* Tesla-style Feature Section */}
+      <section className="bg-white py-16 md:py-24 lg:py-32">
+        <div className="mx-auto px-5 md:px-8 lg:px-16 max-w-[1400px]">
+          <div className="relative w-full aspect-[16/9] md:aspect-[2.2/1] rounded-xl overflow-hidden">
+            <video
+              src="/renovation-showcase.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+            {/* Pause button */}
+            <button 
+              className="absolute bottom-4 left-4 w-8 h-8 bg-black/60 rounded flex items-center justify-center hover:bg-black/80 transition-colors"
+              aria-label="Pause video"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                viewBox="0 0 24 24" 
+                fill="white" 
+                className="w-4 h-4"
+              >
+                <rect x="6" y="4" width="4" height="16" />
+                <rect x="14" y="4" width="4" height="16" />
+              </svg>
+            </button>
+          </div>
+
+          <div className="mt-6 md:mt-10">
+            <h2 className="text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] font-medium text-black tracking-tight leading-tight">
+              Redefining Renovations forever
+            </h2>
+            <p className="mt-2 md:mt-3 text-sm md:text-[15px] text-gray-500">
+              Our renovations are timeless & last a lifetime.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
