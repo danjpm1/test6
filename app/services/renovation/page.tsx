@@ -130,6 +130,8 @@ export default function RenovationPage() {
             className="object-cover object-center"
             priority
           />
+          {/* Top gradient overlay */}
+          <div className="absolute inset-x-0 top-0 h-24 md:h-32 lg:h-40 bg-gradient-to-b from-white/70 via-white/30 to-transparent pointer-events-none" />
         </div>
       </section>
 
