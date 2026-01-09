@@ -124,7 +124,7 @@ export default function RenovationPage() {
 
         <div className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[3/1]">
           <Image
-            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
+            src="/luxury-modern-cabin-interior-with-large-windows-wo.png"
             alt="Modern luxury renovation"
             fill
             className="object-cover object-center"
