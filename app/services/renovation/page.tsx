@@ -211,7 +211,7 @@ export default function RenovationPage() {
       {/* Tesla-style Feature Section */}
       <section className="bg-white py-16 md:py-24 lg:py-32">
         <div className="mx-auto px-5 md:px-8 lg:px-16 max-w-[1400px]">
-          <div className="relative w-full aspect-[16/9] md:aspect-[2.2/1] rounded-xl overflow-hidden">
+          <div className="relative w-full aspect-[2.35/1] md:aspect-[2.76/1] rounded-[4px] overflow-hidden">
             <video
               src="/renovation-showcase.mp4"
               autoPlay
