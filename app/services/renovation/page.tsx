@@ -259,7 +259,7 @@ export default function RenovationPage() {
 
       {/* Tesla-style Feature Section */}
       <section className="bg-white py-16 md:py-24 lg:py-32">
-        <div className="mx-auto px-8 md:px-16 lg:px-24 max-w-[1600px]">
+        <div className="mx-auto px-[5%] md:px-[7.5%]">
           <div 
             ref={videoContainerRef}
             className="relative w-full aspect-[3.5/1] md:aspect-[4.2/1] overflow-hidden bg-gray-100"
