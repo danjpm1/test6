@@ -262,7 +262,7 @@ export default function RenovationPage() {
         <div className="mx-auto px-4 md:px-6 lg:px-8">
           <div 
             ref={videoContainerRef}
-            className="relative w-full aspect-[2.5/1] md:aspect-[3/1] overflow-hidden bg-gray-100"
+            className="relative w-full aspect-[3/1] md:aspect-[3.5/1] overflow-hidden bg-gray-100"
             style={{
               clipPath: `polygon(
                 0 0,
@@ -274,19 +274,17 @@ export default function RenovationPage() {
               )`
             }}
           >
-            {isVideoVisible && (
-              <video
-                ref={videoRef}
-                src="/renovation-showcase.mp4"
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster="/renovation-poster.jpg"
-                onLoadedData={handleVideoLoaded}
-                className="absolute inset-0 w-full h-full object-cover"
-              />
-            )}
+            <video
+              ref={videoRef}
+              src="/renovation-showcase.mp4"
+              autoPlay
+              muted
+              loop
+              playsInline
+              poster="/renovation-poster.jpg"
+              onLoadedData={handleVideoLoaded}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
             {/* Play/Pause button */}
             <button 
               onClick={toggleVideo}
