@@ -1,6 +1,7 @@
 "use client"
 
 import type React from "react"
+
 import { useState, useEffect, useRef } from "react"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
@@ -9,8 +10,8 @@ import Link from "next/link"
 import Image from "next/image"
 
 const SCROLL_THRESHOLD = 50
-const PHILOSOPHY_THRESHOLD = 0.8
-const SMART_SECTION_THRESHOLD = 0.5
+const SERVICE_CARDS_THRESHOLD = 0.5
+const TESTIMONIALS_THRESHOLD = 0.5
 
 const SERVICE_CARDS = [
   {
@@ -121,206 +122,49 @@ const GOOGLE_REVIEWS = [
   },
 ]
 
-// Custom hook for scroll threshold
-function useScrollThreshold(threshold: number) {
-  const [isPastThreshold, setIsPastThreshold] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsPastThreshold(window.scrollY > threshold)
-    }
-    handleScroll()
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [threshold])
-
-  return isPastThreshold
-}
-
-// Service Card Component
-interface ServiceCardProps {
-  title: string
-  image: string
-  alt: string
-  href: string
-}
-
-function ServiceCard({ title, image, alt, href }: ServiceCardProps) {
-  return (
-    <Link
-      href={href}
-      className="group relative aspect-[4/5] overflow-hidden rounded-2xl"
-    >
-      <Image
-        src={image}
-        alt={alt}
-        fill
-        className="object-cover transition-transform duration-700 group-hover:scale-105"
-      />
-      <div
-        className="absolute inset-0"
-        style={{
-          background:
-            "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)",
-        }}
-      />
-      <div className="absolute bottom-6 left-6 right-6">
-        <h3 className="text-2xl md:text-3xl font-semibold text-white">
-          {title}
-        </h3>
-      </div>
-    </Link>
-  )
-}
-
-// Offer Card Component
-interface OfferCardProps {
-  title: string
-  description: string
-  price: string
-  image: string
-  alt: string
-  exploreHref: string
-  exploreLabel: string
-}
-
-function OfferCard({
-  title,
-  description,
-  price,
-  image,
-  alt,
-  exploreHref,
-  exploreLabel,
-}: OfferCardProps) {
-  return (
-    <div className="group relative overflow-hidden rounded-2xl bg-neutral-900">
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <Image
-          src={image}
-          alt={alt}
-          fill
-          className="object-cover transition-transform duration-700 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/50 to-transparent" />
-      </div>
-      <div className="relative p-6 -mt-20">
-        <h3 className="text-xl md:text-2xl font-semibold text-white mb-2">
-          {title}
-        </h3>
-        <p className="text-neutral-400 text-sm mb-3">{description}</p>
-        <p className="text-[#c6912c] font-medium mb-4">{price}</p>
-        <div className="flex gap-3">
-          <Link
-            href={exploreHref}
-            className="text-sm text-white hover:text-[#c6912c] transition-colors"
-          >
-            {exploreLabel}
-          </Link>
-          <Link
-            href="/contact"
-            className="text-sm text-neutral-500 hover:text-white transition-colors"
-          >
-            Get Quote
-          </Link>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-// Testimonial Card Component
-interface TestimonialCardProps {
-  headline: string
-  service: string
-  quote: string
-  author: string
-  role: string
-  company: string
-  videoThumbnail: string
-}
-
-function TestimonialCard({
-  headline,
-  service,
-  quote,
-  author,
-  role,
-  company,
-  videoThumbnail,
-}: TestimonialCardProps) {
-  const initials = author
+function getInitials(name: string): string {
+  return name
     .split(" ")
     .map((n) => n[0])
     .join("")
-    .toUpperCase()
+    .slice(0, 2)
+}
 
+function ArrowIcon() {
   return (
-    <div className="bg-neutral-900/60 backdrop-blur-sm border border-neutral-800 rounded-2xl p-6 hover:border-[#c6912c]/30 transition-all duration-500">
-      <div className="flex items-center justify-between mb-4">
-        <span className="text-[#c6912c] text-xs font-medium tracking-wider uppercase">
-          {service}
-        </span>
-        <span className="text-[#c6912c]/60 text-4xl font-serif">"</span>
-      </div>
+    <svg className="w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+    </svg>
+  )
+}
 
-      <h3 className="text-xl md:text-2xl font-semibold text-white mb-4">
-        {headline}
-      </h3>
-
-      <blockquote className="text-neutral-400 text-sm leading-relaxed mb-6">
-        "{quote}"
-      </blockquote>
-
-      <div className="flex items-center gap-3 mb-6">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c6912c] to-[#8a6420] flex items-center justify-center text-sm font-medium text-white/90">
-          {initials}
-        </div>
-        <div>
-          <p className="text-white font-medium text-sm">{author}</p>
-          <p className="text-neutral-500 text-xs">
-            {role}, {company}
-          </p>
-        </div>
-      </div>
-
-      <div className="relative aspect-video rounded-xl overflow-hidden group/video cursor-pointer">
-        <Image
-          src={videoThumbnail}
-          alt={`${author} testimonial video`}
-          fill
-          className="object-cover transition-transform duration-500 group-hover/video:scale-105"
-        />
-        <div className="absolute inset-0 bg-black/30 group-hover/video:bg-black/20 transition-colors" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="w-12 h-12 rounded-full bg-[#c6912c] flex items-center justify-center group-hover/video:scale-110 transition-transform">
-            <svg
-              className="w-5 h-5 text-white ml-1"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M8 5v14l11-7z" />
-            </svg>
-          </div>
-        </div>
-        <div className="absolute bottom-3 right-3 bg-black/60 px-2 py-1 rounded text-white text-xs">
-          2:34
-        </div>
+function PlayIcon() {
+  return (
+    <div className="absolute inset-0 flex items-center justify-center">
+      <div className="w-14 h-14 bg-[#c6912c] rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
+        <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M8 5v14l11-7z" />
+        </svg>
       </div>
     </div>
   )
 }
 
-// Star Rating Component
+function QuoteIcon() {
+  return (
+    <svg className="w-8 h-8 text-[#c6912c]/30" fill="currentColor" viewBox="0 0 24 24">
+      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+    </svg>
+  )
+}
+
 function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex gap-0.5">
       {[1, 2, 3, 4, 5].map((star) => (
         <svg
           key={star}
-          className={`w-4 h-4 ${
-            star <= rating ? "text-amber-500" : "text-neutral-600"
-          }`}
+          className={`w-4 h-4 ${star <= rating ? "text-[#c6912c]" : "text-white/20"}`}
           fill="currentColor"
           viewBox="0 0 20 20"
         >
@@ -331,197 +175,272 @@ function StarRating({ rating }: { rating: number }) {
   )
 }
 
-// Google Review Card Component
-interface GoogleReviewCardProps {
-  author_name: string
-  rating: number
-  relative_time_description: string
-  text: string
-  index: number
+function GoogleIcon() {
+  return (
+    <svg className="w-4 h-4" viewBox="0 0 24 24">
+      <path
+        fill="#4285F4"
+        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+      />
+      <path
+        fill="#34A853"
+        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+      />
+      <path
+        fill="#FBBC05"
+        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+      />
+      <path
+        fill="#EA4335"
+        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+      />
+    </svg>
+  )
 }
 
-function GoogleReviewCard({
-  author_name,
-  rating,
-  relative_time_description,
-  text,
-  index,
-}: GoogleReviewCardProps) {
-  const initials = author_name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .toUpperCase()
+interface ServiceCardProps {
+  title: string
+  image: string
+  alt: string
+  href: string
+}
 
+function ServiceCard({ title, image, alt, href }: ServiceCardProps) {
   return (
-    <div
-      className="group bg-neutral-900/60 backdrop-blur-sm border border-neutral-800 rounded-2xl p-6 hover:border-[#c6912c]/30 transition-all duration-500"
-      style={{ animationDelay: `${index * 100}ms` }}
-    >
-      <div className="flex items-start justify-between mb-4">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#c6912c] to-[#8a6420] flex items-center justify-center text-sm font-medium text-white/90">
-            {initials}
-          </div>
-          <div>
-            <p className="text-white font-medium text-sm">{author_name}</p>
-            <p className="text-neutral-500 text-xs">
-              {relative_time_description}
-            </p>
+    <Link href={href}>
+      <div className="group relative overflow-hidden rounded-xl cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.02] aspect-[4/3]">
+        <Image 
+          src={image} 
+          alt={alt} 
+          fill
+          sizes="(max-width: 768px) 100vw, 33vw"
+          className="object-cover object-center" 
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)",
+          }}
+        />
+        <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
+          <h3 className="text-white font-medium text-base">{title}</h3>
+          <ArrowIcon />
+        </div>
+      </div>
+    </Link>
+  )
+}
+
+interface OfferCardProps {
+  title: string
+  description: string
+  price: string
+  image: string
+  alt: string
+  exploreHref: string
+  exploreLabel: string
+}
+
+function OfferCard({ title, description, price, image, alt, exploreHref, exploreLabel }: OfferCardProps) {
+  return (
+    <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
+      <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
+        <Image
+          src={image}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
+
+        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
+          <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
+          <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
+          <div className="flex gap-3 pt-2">
+            <Button
+              size="sm"
+              className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all"
+              asChild
+            >
+              <Link href={exploreHref}>{exploreLabel}</Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent"
+              asChild
+            >
+              <Link href="/contact">Get Quote</Link>
+            </Button>
           </div>
         </div>
-        <StarRating rating={rating} />
-      </div>
-
-      <p className="text-neutral-400 text-sm leading-relaxed line-clamp-4 group-hover:text-neutral-300 transition-colors duration-300">
-        "{text}"
-      </p>
-
-      <div className="mt-4 pt-4 border-t border-neutral-800/50 flex items-center gap-2">
-        <svg className="w-4 h-4" viewBox="0 0 24 24">
-          <path
-            fill="#4285F4"
-            d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-          />
-          <path
-            fill="#34A853"
-            d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-          />
-          <path
-            fill="#FBBC05"
-            d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-          />
-          <path
-            fill="#EA4335"
-            d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-          />
-        </svg>
-        <span className="text-neutral-600 text-xs">Google Review</span>
       </div>
     </div>
   )
 }
 
-// Google Reviews Section Component
+interface TestimonialCardProps {
+  headline: string
+  service: string
+  quote: string
+  author: string
+  role: string
+  company: string
+  videoThumbnail: string
+}
+
+function TestimonialCard({ headline, service, quote, author, role, company, videoThumbnail }: TestimonialCardProps) {
+  return (
+    <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="p-8 lg:p-10">
+        <div className="flex items-center justify-between mb-6">
+          <span className="text-[#c6912c] text-xs font-medium tracking-[0.2em] uppercase">{service}</span>
+          <QuoteIcon />
+        </div>
+
+        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-5 tracking-tight">{headline}</h3>
+
+        <blockquote className="text-white/70 text-base leading-relaxed mb-8">"{quote}"</blockquote>
+
+        <div className="flex items-center gap-4 mb-8">
+          <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
+            <span className="text-[#c6912c] font-semibold text-sm">{getInitials(author)}</span>
+          </div>
+          <div>
+            <p className="text-white font-medium">{author}</p>
+            <p className="text-white/50 text-sm">
+              {role}, {company}
+            </p>
+          </div>
+        </div>
+
+        <div className="relative aspect-[2/1] rounded-xl overflow-hidden cursor-pointer">
+          <Image
+            src={videoThumbnail}
+            alt={`${author} testimonial video`}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+            className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+          />
+          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300" />
+          <PlayIcon />
+
+          <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/70 rounded text-white/90 text-xs font-medium">
+            2:34
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+interface GoogleReviewCardProps {
+  author_name: string
+  rating: number
+  relative_time_description: string
+  text: string
+}
+
+function GoogleReviewCard({ author_name, rating, relative_time_description, text }: GoogleReviewCardProps) {
+  return (
+    <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
+      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+      <div className="p-8 lg:p-10">
+        <div className="flex items-start justify-between mb-6">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
+              <span className="text-[#c6912c] font-semibold text-sm">{getInitials(author_name)}</span>
+            </div>
+            <div>
+              <p className="text-white font-medium">{author_name}</p>
+              <p className="text-white/50 text-sm">{relative_time_description}</p>
+            </div>
+          </div>
+          <StarRating rating={rating} />
+        </div>
+
+        <blockquote className="text-white/70 text-base leading-relaxed mb-6">"{text}"</blockquote>
+
+        <div className="pt-6 border-t border-white/10 flex items-center gap-2">
+          <GoogleIcon />
+          <span className="text-white/40 text-xs">Google Review</span>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function GoogleReviewsSection() {
   const [showAll, setShowAll] = useState(false)
   const displayedReviews = showAll ? GOOGLE_REVIEWS : GOOGLE_REVIEWS.slice(0, 3)
 
-  const avgRating =
-    GOOGLE_REVIEWS.reduce((sum, r) => sum + r.rating, 0) / GOOGLE_REVIEWS.length
+  const avgRating = GOOGLE_REVIEWS.reduce((sum, r) => sum + r.rating, 0) / GOOGLE_REVIEWS.length
 
   return (
-    <section className="py-24 px-6 bg-black">
-      <div className="max-w-7xl mx-auto">
-        {/* Section Header */}
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
-          <div>
-            <p className="text-[#c6912c] text-sm font-medium tracking-wider uppercase mb-3">
-              Client Reviews
-            </p>
-            <h2 className="text-4xl md:text-5xl font-light text-white tracking-tight">
+    <section className="py-24 lg:py-32 bg-black relative overflow-hidden">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
+
+      <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16 lg:mb-20">
+          <div className="max-w-3xl">
+            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Client Reviews</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
               Trusted by Our Clients
             </h2>
           </div>
 
-          {/* Google Rating Summary */}
-          <div className="flex items-center gap-4 bg-neutral-900/40 border border-neutral-800 rounded-xl px-5 py-3">
+          <div className="flex items-center gap-4 bg-[#111] border border-white/10 rounded-xl px-5 py-4">
             <div className="flex items-center gap-2">
-              <svg className="w-6 h-6" viewBox="0 0 24 24">
-                <path
-                  fill="#4285F4"
-                  d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                />
-              </svg>
-              <span className="text-white font-semibold">
-                {avgRating.toFixed(1)}
-              </span>
+              <GoogleIcon />
+              <span className="text-white font-semibold text-lg">{avgRating.toFixed(1)}</span>
             </div>
-            <div className="h-8 w-px bg-neutral-700" />
+            <div className="h-8 w-px bg-white/10" />
             <div className="flex flex-col">
               <StarRating rating={Math.round(avgRating)} />
-              <span className="text-neutral-500 text-xs mt-0.5">
-                {GOOGLE_REVIEWS.length} reviews
-              </span>
+              <span className="text-white/50 text-xs mt-1">{GOOGLE_REVIEWS.length} reviews</span>
             </div>
           </div>
         </div>
 
-        {/* Reviews Grid */}
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
           {displayedReviews.map((review, index) => (
-            <GoogleReviewCard key={index} {...review} index={index} />
+            <GoogleReviewCard key={index} {...review} />
           ))}
         </div>
 
-        {/* Show More Button */}
         {GOOGLE_REVIEWS.length > 3 && (
-          <div className="mt-10 text-center">
+          <div className="mt-12 text-center">
             <button
               onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm text-[#c6912c] border border-[#c6912c]/50 rounded-full hover:bg-[#c6912c]/10 transition-all duration-300"
+              className="inline-flex items-center gap-2 px-8 py-4 text-sm text-[#c6912c] border border-[#c6912c]/50 rounded-[4px] hover:bg-[#c6912c]/10 transition-all duration-300"
             >
               {showAll ? "Show Less" : `View All ${GOOGLE_REVIEWS.length} Reviews`}
               <svg
-                className={`w-4 h-4 transition-transform duration-300 ${
-                  showAll ? "rotate-180" : ""
-                }`}
+                className={`w-4 h-4 transition-transform duration-300 ${showAll ? "rotate-180" : ""}`}
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 9l-7 7-7-7"
-                />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
               </svg>
             </button>
           </div>
         )}
 
-        {/* Write a Review CTA */}
         <div className="mt-16 text-center">
-          <p className="text-neutral-500 text-sm mb-4">
-            Had a great experience with Antova?
-          </p>
+          <p className="text-white/50 text-sm mb-4">Had a great experience with Antova?</p>
           <a
             href="#"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-full hover:bg-neutral-200 transition-colors duration-300"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-[4px] hover:bg-white/90 transition-colors duration-300"
           >
-            <svg className="w-5 h-5" viewBox="0 0 24 24">
-              <path
-                fill="#4285F4"
-                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-              />
-              <path
-                fill="#34A853"
-                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-              />
-              <path
-                fill="#FBBC05"
-                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-              />
-              <path
-                fill="#EA4335"
-                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-              />
-            </svg>
+            <GoogleIcon />
             Write a Review on Google
           </a>
         </div>
@@ -530,168 +449,215 @@ function GoogleReviewsSection() {
   )
 }
 
-// Main Page Component
-export default function AntovaBuilders() {
-  const [bgColor, setBgColor] = useState("bg-white")
-  const [textColor, setTextColor] = useState("text-black")
-
-  const philosophyRef = useRef<HTMLDivElement>(null)
+function useScrollThreshold(ref: React.RefObject<HTMLElement | null>, threshold: number) {
+  const [isPastThreshold, setIsPastThreshold] = useState(false)
 
   useEffect(() => {
-    function handleScroll() {
-      if (philosophyRef.current) {
-        const rect = philosophyRef.current.getBoundingClientRect()
-        const threshold = window.innerHeight * PHILOSOPHY_THRESHOLD
-
-        if (rect.top <= threshold) {
-          setBgColor("bg-black")
-          setTextColor("text-white")
-        } else {
-          setBgColor("bg-white")
-          setTextColor("text-black")
-        }
+    const handleScroll = () => {
+      if (ref.current) {
+        const rect = ref.current.getBoundingClientRect()
+        setIsPastThreshold(rect.top <= window.innerHeight * threshold)
       }
     }
 
     handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
+  }, [ref, threshold])
+
+  return isPastThreshold
+}
+
+export default function AntovaBuilders() {
+  const [isScrolled, setIsScrolled] = useState(false)
+  const [showNavbar, setShowNavbar] = useState(false)
+  const [showTitle, setShowTitle] = useState(false)
+  const [showSubtitleAndButtons, setShowSubtitleAndButtons] = useState(false)
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const serviceCardsRef = useRef<HTMLElement>(null)
+  const testimonialsRef = useRef<HTMLElement>(null)
+
+  const isServiceCardsVisible = useScrollThreshold(serviceCardsRef, SERVICE_CARDS_THRESHOLD)
+  const isTestimonialsVisible = useScrollThreshold(testimonialsRef, TESTIMONIALS_THRESHOLD)
+
+  useEffect(() => {
+    const titleTimer = setTimeout(() => setShowTitle(true), 300)
+    const subtitleTimer = setTimeout(() => setShowSubtitleAndButtons(true), 1000)
+    const navbarTimer = setTimeout(() => setShowNavbar(true), 1800)
+
+    return () => {
+      clearTimeout(titleTimer)
+      clearTimeout(subtitleTimer)
+      clearTimeout(navbarTimer)
+    }
   }, [])
 
-  const goldBtn =
-    "bg-[#c6912c] hover:bg-[#a67923] text-black font-medium rounded shadow-lg hover:shadow-[#c6912c]/50 hover:scale-105 transition-all"
-  const outlineBtn =
-    "border-2 border-white text-white hover:bg-white hover:text-black font-medium rounded bg-transparent hover:scale-105 transition-all"
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
+    }
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  const topBgColor = isServiceCardsVisible ? "bg-white" : "bg-black"
+  const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-white"
 
   return (
-    <div className={`min-h-screen ${bgColor} transition-colors duration-300`}>
-      <Navbar />
+    <div className={`min-h-screen ${topBgColor} transition-colors duration-300 ease-in-out overflow-x-hidden`}>
+      <Navbar hidden={!showNavbar} />
 
-      {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 z-0">
           <Image
             src="/hero-winter-mountain-home.png"
             alt="Luxury mountain chalet in winter with warm interior lighting"
             fill
-            className="object-cover"
             priority
+            sizes="100vw"
+            className="object-cover object-center"
           />
           <div className="absolute inset-0 bg-black/25" />
         </div>
 
-        <div className="relative z-10 px-6 lg:px-12 text-center -mt-32 md:-mt-40">
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-2 tracking-tight text-white">
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-32 md:-mt-40">
+          <h1 
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-2 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
+              showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             Antova Builders
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl mb-4 text-white/90 tracking-wide">
+          <p 
+            className={`text-lg md:text-xl lg:text-2xl mb-4 text-white/90 tracking-wide text-balance transition-all duration-700 ease-out ${
+              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
             Precision Built. Luxury Perfected.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center mt-8">
-            <Link href="/cost-estimator">
-              <Button className={`${goldBtn} px-8 py-6 text-base`}>
-                AI Estimator
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button className={`${outlineBtn} px-8 py-6 text-base`}>
-                Consult With Us
-              </Button>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Offers Banner */}
-      <section className="bg-black py-4">
-        <div className="max-w-7xl mx-auto px-6">
-          <Link
-            href="/offers"
-            className="flex items-center justify-between py-3 px-4 bg-neutral-900 rounded-xl hover:bg-neutral-800 transition-colors group"
+          <div 
+            className={`flex flex-col sm:flex-row items-center justify-center gap-3 transition-all duration-700 ease-out ${
+              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
           >
-            <h3 className="text-white font-semibold">Get your offer now.</h3>
-            <span className="text-neutral-400 group-hover:text-white transition-colors">
-              View All Offers
-            </span>
-          </Link>
-        </div>
-      </section>
-
-      {/* Offer Cards */}
-      <section className="bg-black py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-2 gap-6">
-            {OFFER_CARDS.map((card, index) => (
-              <OfferCard key={index} {...card} />
-            ))}
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] bg-[#c6912c] hover:bg-[#a67923] text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] shadow-lg hover:shadow-[#c6912c]/50 transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/cost-estimator">AI Estimator</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border-2 border-white text-white hover:bg-white hover:text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] transition-all hover:scale-105 bg-transparent"
+              asChild
+            >
+              <Link href="/contact">Consult With Us</Link>
+            </Button>
           </div>
         </div>
       </section>
 
-      {/* Philosophy Quote */}
-      <div
-        ref={philosophyRef}
-        className="bg-black py-24 px-6 border-l-4 border-[#c6912c]"
-      >
-        <div className="max-w-4xl mx-auto">
-          <p className="text-2xl md:text-3xl lg:text-4xl text-white/90 font-light leading-relaxed">
-            <span className="text-[#c6912c]">Luxury</span> is the freedom to
-            relax
-            <br />
-            while experts handle every detail.
-          </p>
-          <p className="mt-6 text-neutral-400 text-lg">
-            Antova delivers master craftsmanship, precise AI estimating, and
-            seamless service — from blueprint to perfection.
-          </p>
-        </div>
-      </div>
+      <section className="py-20 lg:py-28 bg-black">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-16">
+            <Link href="/offers">
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-left text-white hover:text-[#c6912c] transition-colors cursor-pointer">
+                Get your offer now.
+              </h2>
+            </Link>
+            <Link href="/offers">
+              <button className="flex items-center gap-2 px-6 py-3 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-sm rounded transition-all hover:scale-105">
+                <span>View All Offers</span>
+                <svg 
+                  className="w-4 h-4" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24"
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+            </Link>
+          </div>
 
-      {/* Services Grid */}
-      <section className="bg-black py-16 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid md:grid-cols-3 gap-6">
-            {SERVICE_CARDS.map((card, index) => (
-              <ServiceCard key={index} {...card} />
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+            {OFFER_CARDS.map((card) => (
+              <OfferCard key={card.title} {...card} />
             ))}
           </div>
         </div>
-      </section>
 
-      {/* Video Testimonials - Stories of Excellence */}
-      <section className="bg-black py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="mb-12">
-            <p className="text-neutral-500 text-sm tracking-wider uppercase mb-2">
-              Testimonials
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-[1000px] border-l-2 border-[#c6912c] pl-8 lg:pl-12">
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white leading-snug font-light">
+              Luxury is the freedom to relax
             </p>
-            <h2 className="text-4xl md:text-5xl font-bold text-white">
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white leading-snug font-light mt-4">
+              while experts handle every detail.
+            </p>
+            <p className="text-lg md:text-xl text-white/60 mt-8 leading-relaxed">
+              Antova delivers master craftsmanship, precise AI estimating, and seamless service — from blueprint to perfection.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="services"
+        ref={serviceCardsRef}
+        className={`py-24 lg:py-32 ${topBgColor} transition-colors duration-300 ease-in-out`}
+      >
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {SERVICE_CARDS.map((card) => (
+              <ServiceCard key={card.title} {...card} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section
+        ref={testimonialsRef}
+        className={`py-24 lg:py-32 ${bottomBgColor} transition-colors duration-300 ease-in-out relative overflow-hidden`}
+      >
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-3xl mb-16 lg:mb-20">
+            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Testimonials</p>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
               Stories of Excellence
             </h2>
-            <p className="text-neutral-400 mt-4 max-w-2xl">
-              Hear from clients who trusted Antova with their most ambitious
-              projects.
+            <p className="text-white/60 text-lg md:text-xl leading-relaxed">
+              Hear from clients who trusted Antova with their most ambitious projects.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {TESTIMONIALS.map((testimonial, index) => (
-              <TestimonialCard key={index} {...testimonial} />
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            {TESTIMONIALS.map((testimonial) => (
+              <TestimonialCard key={testimonial.headline} {...testimonial} />
             ))}
           </div>
 
-          <div className="flex flex-wrap gap-4 justify-center mt-12">
-            <Link href="/projects">
-              <Button
-                variant="outline"
-                className="border-neutral-700 text-white hover:bg-neutral-800"
-              >
-                View All Projects
-              </Button>
-            </Link>
-            <Link href="/contact">
-              <Button className={goldBtn}>Start Your Project</Button>
-            </Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-16 lg:mt-20">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/projects" scroll={true}>View All Projects</Link>
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/contact" scroll={true}>Start Your Project</Link>
+            </Button>
           </div>
         </div>
       </section>
@@ -699,56 +665,93 @@ export default function AntovaBuilders() {
       {/* Google Reviews Section */}
       <GoogleReviewsSection />
 
-      {/* AI Estimator CTA */}
-      <section className="bg-black py-24 px-6">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-[#c6912c] text-sm font-medium tracking-wider uppercase mb-3">
+      {/* AI-Powered Section - Two column layout with video */}
+      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 lg:min-h-screen bg-[#0a0a0a]">
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+            {/* Left side - Text content */}
+            <div className="space-y-6 order-1">
+              {/* Label */}
+              <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">
                 AI-Powered Estimation
               </p>
-              <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                Turn ideas into architectural reality.
+              
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+                Turn ideas into<br />
+                <span className="text-[#c6912c]">architectural reality.</span>
               </h2>
-              <p className="text-neutral-400 text-lg mb-8 max-w-lg">
-                Begin with your vision. Our AI instantly transforms project
-                details into accurate cost estimates, material insights, and
-                construction timelines.
+              
+              <p className="text-base md:text-lg lg:text-xl text-white/60 leading-relaxed max-w-xl">
+                Begin with your vision. Our AI instantly transforms project details into accurate cost estimates, material insights, and construction timelines.
               </p>
-              <div className="flex flex-wrap gap-4">
-                <Link href="/cost-estimator">
-                  <Button className={goldBtn}>Try AI Estimator</Button>
-                </Link>
-                <Link href="/about">
-                  <Button
-                    variant="outline"
-                    className="border-neutral-700 text-white hover:bg-neutral-800"
-                  >
-                    Learn More
-                  </Button>
-                </Link>
+              
+              {/* Buttons - Desktop only (hidden on mobile) */}
+              <div className="hidden lg:flex flex-row gap-3 pt-4">
+                <Button
+                  size="lg"
+                  className="sm:min-w-[200px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
+                  asChild
+                >
+                  <Link href="/cost-estimator">Try AI Estimator</Link>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link href="/about">Learn More</Link>
+                </Button>
               </div>
             </div>
 
-            <div className="relative aspect-video rounded-2xl overflow-hidden group cursor-pointer">
-              <Image
-                src="/ai-video-poster.jpg"
-                alt="AI Estimator demonstration"
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors" />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-16 h-16 rounded-full bg-[#c6912c] flex items-center justify-center group-hover:scale-110 transition-transform">
-                  <svg
-                    className="w-6 h-6 text-white ml-1"
-                    fill="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
+            {/* Right side - Video */}
+            <div className="relative order-2">
+              <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
+                {/* Video with poster and tap-to-play on mobile */}
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster="/ai-video-poster.jpg"
+                  className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+                  onClick={(e) => {
+                    const video = e.currentTarget;
+                    video.play();
+                    setIsVideoPlaying(true);
+                  }}
+                  onPlay={() => setIsVideoPlaying(true)}
+                >
+                  <source src="/ai-video.mp4" type="video/mp4" />
+                </video>
+                
+                {/* Gradient overlay for better blending */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30 hidden lg:block pointer-events-none" />
               </div>
+              
+              {/* Glow effect */}
+              <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10 hidden lg:block" />
+            </div>
+
+            {/* Buttons - Mobile only (below video) */}
+            <div className="flex lg:hidden flex-col gap-3 order-3 w-full">
+              <Button
+                size="lg"
+                className="w-full h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all"
+                asChild
+              >
+                <Link href="/cost-estimator">Try AI Estimator</Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all"
+                asChild
+              >
+                <Link href="/about">Learn More</Link>
+              </Button>
             </div>
           </div>
         </div>
