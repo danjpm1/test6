@@ -95,30 +95,35 @@ const GOOGLE_REVIEWS = [
     rating: 5,
     relative_time_description: "2 weeks ago",
     text: "Antova exceeded every expectation. From the initial consultation to the final walkthrough, their team demonstrated remarkable professionalism. The craftsmanship on our mountain retreat is absolutely stunning.",
+    image: null,
   },
   {
     author_name: "Elena Vasquez",
     rating: 5,
     relative_time_description: "1 month ago",
     text: "We hired Antova for a complete renovation of our historic property. They preserved the original character while modernizing everything. Truly exceptional attention to detail.",
+    image: null,
   },
   {
     author_name: "Robert Blackwood",
     rating: 5,
     relative_time_description: "1 month ago",
     text: "The AI-powered estimates saved us weeks of back-and-forth. Accurate, transparent, and the build quality speaks for itself. Our new office headquarters is a masterpiece.",
+    image: null,
   },
   {
     author_name: "Sarah Mitchell",
     rating: 5,
     relative_time_description: "2 months ago",
     text: "Working with Antova felt like having a true partner in realizing our vision. They listened, adapted, and delivered beyond what we imagined possible.",
+    image: null,
   },
   {
     author_name: "Marcus Chen",
-    rating: 4,
+    rating: 5,
     relative_time_description: "3 months ago",
     text: "Professional team, excellent communication throughout the project. The final result on our lakeside cabin is beautiful. Would recommend for any premium construction needs.",
+    image: "/project-3.jpg",
   },
 ]
 
@@ -343,9 +348,10 @@ interface GoogleReviewCardProps {
   rating: number
   relative_time_description: string
   text: string
+  image: string | null
 }
 
-function GoogleReviewCard({ author_name, rating, relative_time_description, text }: GoogleReviewCardProps) {
+function GoogleReviewCard({ author_name, rating, relative_time_description, text, image }: GoogleReviewCardProps) {
   return (
     <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -365,6 +371,19 @@ function GoogleReviewCard({ author_name, rating, relative_time_description, text
         </div>
 
         <blockquote className="text-white/70 text-base leading-relaxed mb-6">"{text}"</blockquote>
+
+        {image && (
+          <div className="relative aspect-[2/1] rounded-xl overflow-hidden mb-6">
+            <Image
+              src={image}
+              alt={`Project by ${author_name}`}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+              className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
+          </div>
+        )}
 
         <div className="pt-6 border-t border-white/10 flex items-center gap-2">
           <GoogleIcon />
