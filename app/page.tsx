@@ -123,7 +123,7 @@ const GOOGLE_REVIEWS = [
     rating: 5,
     relative_time_description: "3 months ago",
     text: "Professional team, excellent communication throughout the project. The final result on our lakeside cabin is beautiful. Would recommend for any premium construction needs.",
-    image: "/project-3.jpg",
+    image: null,
   },
 ]
 
