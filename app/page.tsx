@@ -48,7 +48,7 @@ const OFFER_CARDS = [
     title: "Renovation",
     description: "Modern renovation spaces designed for business excellence.",
     price: "$2k-5k credits",
-    image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
+    image: "/modern-luxury-home-at-night-with-warm-interior-lig.png",
     alt: "Modern luxury home at night with mountains",
     exploreHref: "/services/renovation",
     exploreLabel: "Explore Renovation",
