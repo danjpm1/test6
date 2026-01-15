@@ -162,13 +162,39 @@ function ScrollIndicator({ show }: { show: boolean }) {
 
   return (
     <div 
-      className={`absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-700 ease-out ${
-        show ? "opacity-70 hover:opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      className={`absolute bottom-10 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
+        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       onClick={scrollToContent}
     >
-      <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center">
-        <div className="w-1 h-2 bg-white/80 rounded-full mt-2 animate-bounce" />
+      <div className="flex flex-col items-center gap-3">
+        {/* Mouse icon with animated wheel */}
+        <div className="relative w-7 h-11 border-2 border-white/50 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
+          {/* Animated scroll wheel */}
+          <div className="w-1 h-2.5 bg-[#c6912c] rounded-full mt-2 animate-scroll-wheel" />
+          {/* Glow effect on hover */}
+          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
+        </div>
+        
+        {/* Animated chevrons */}
+        <div className="flex flex-col items-center -space-y-1">
+          <svg 
+            className="w-4 h-4 text-white/40 animate-chevron-1 group-hover:text-[#c6912c]/60 transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+          <svg 
+            className="w-4 h-4 text-white/25 animate-chevron-2 group-hover:text-[#c6912c]/40 transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
       </div>
     </div>
   )
@@ -544,6 +570,59 @@ export default function AntovaBuilders() {
 
   return (
     <div className={`min-h-screen ${topBgColor} transition-colors duration-300 ease-in-out overflow-x-hidden`}>
+      {/* Custom animations for scroll indicator */}
+      <style jsx global>{`
+        @keyframes scroll-wheel {
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(8px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(12px);
+          }
+        }
+        
+        @keyframes chevron-fade-1 {
+          0%, 100% {
+            opacity: 0.4;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(4px);
+          }
+        }
+        
+        @keyframes chevron-fade-2 {
+          0%, 100% {
+            opacity: 0.25;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.7;
+            transform: translateY(4px);
+          }
+        }
+        
+        .animate-scroll-wheel {
+          animation: scroll-wheel 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-1 {
+          animation: chevron-fade-1 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-2 {
+          animation: chevron-fade-2 1.5s ease-in-out infinite;
+          animation-delay: 0.15s;
+        }
+      `}</style>
+      
       <Navbar hidden={!showNavbar} />
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
