@@ -134,9 +134,9 @@ export default function RenovationPage() {
         />
         
         {/* Title - lower right positioning */}
-        <div className="absolute bottom-[15%] right-[5%] md:right-[8%]">
+        <div className="absolute bottom-[18%] right-[5%] md:right-[8%]">
           <h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-[6.5rem] font-bold text-white tracking-tight"
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight"
             style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
           >
             RENOVATION
