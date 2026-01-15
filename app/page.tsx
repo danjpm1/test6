@@ -155,6 +155,25 @@ function PlayIcon() {
   )
 }
 
+function ScrollIndicator({ show }: { show: boolean }) {
+  const scrollToContent = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+  }
+
+  return (
+    <div 
+      className={`absolute bottom-8 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-700 ease-out ${
+        show ? "opacity-70 hover:opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+      }`}
+      onClick={scrollToContent}
+    >
+      <div className="w-6 h-10 border-2 border-white/60 rounded-full flex justify-center">
+        <div className="w-1 h-2 bg-white/80 rounded-full mt-2 animate-bounce" />
+      </div>
+    </div>
+  )
+}
+
 function QuoteIcon() {
   return (
     <svg className="w-8 h-8 text-[#c6912c]/30" fill="currentColor" viewBox="0 0 24 24">
@@ -577,6 +596,9 @@ export default function AntovaBuilders() {
             </Button>
           </div>
         </div>
+
+        {/* Scroll Indicator */}
+        <ScrollIndicator show={showSubtitleAndButtons} />
       </section>
 
       <section className="py-20 lg:py-28 bg-black">
