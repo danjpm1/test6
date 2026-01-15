@@ -136,7 +136,7 @@ export default function RenovationPage() {
         {/* Title - top center positioning */}
         <div className="absolute top-[18%] md:top-[22%] inset-x-0 flex justify-center">
           <h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
+            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight"
             style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
           >
             RENOVATION
