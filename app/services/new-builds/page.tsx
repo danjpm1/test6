@@ -10,26 +10,29 @@ const STEPS = [
     number: "1",
     title: "Design",
     description: "We craft architectural visions that balance ambition with practicality from the ground up.",
-    image: "/aerial.jpg",
+    image: "/design.png",
     alt: "Luxury home aerial view with pool",
+    type: "image",
   },
   {
     number: "2",
     title: "Build",
     description: "Construction is creation – we bring your vision to life with precision and purpose.",
-    image: "/new-builds.png",
+    image: "/newbuilds-video.mp4",
     alt: "New home construction",
+    type: "video",
   },
   {
     number: "3",
     title: "Live it",
     description: "Move into the home you've always imagined — built for your life, not someone else's.",
-    image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
+    image: "/live it.png",
     alt: "Completed luxury home at night",
+    type: "image",
   },
 ]
 
-const ROTATION_INTERVAL = 7000
+const ROTATION_INTERVAL = 8000
 const SWIPE_THRESHOLD = 50
 
 function ScrollIndicator({ show }: { show: boolean }) {
@@ -193,7 +196,7 @@ export default function NewBuildsPage() {
         {/* Title - lower right positioning */}
         <div className="absolute bottom-[22%] right-[5%] md:right-[8%]">
           <h1 
-            className="text-4xl sm:text-5xl md:text-6xl lg:text-[6.5rem] font-bold text-white tracking-tight"
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
             style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
           >
             NEW BUILDS
@@ -253,7 +256,18 @@ export default function NewBuildsPage() {
               {STEPS.map((step, i) => (
                 <div key={i} className="w-full flex-shrink-0">
                   <div className="relative w-full aspect-[4/3] mb-6">
-                    <Image src={step.image} alt={step.alt} fill className="object-cover object-center" />
+                    {step.type === "video" ? (
+                      <video
+                        src={step.image}
+                        autoPlay
+                        muted
+                        loop
+                        playsInline
+                        className="absolute inset-0 w-full h-full object-cover object-center"
+                      />
+                    ) : (
+                      <Image src={step.image} alt={step.alt} fill className="object-cover object-center" />
+                    )}
                   </div>
                 </div>
               ))}
@@ -292,13 +306,25 @@ export default function NewBuildsPage() {
         <div className="hidden md:flex w-full justify-center px-6">
           <div className="w-full max-w-[1400px]">
             <div className="relative w-full aspect-[21/9]">
-              <Image
-                src={currentStep.image}
-                alt={currentStep.alt}
-                fill
-                className="object-cover object-center transition-opacity duration-300"
-                key={activeStep}
-              />
+              {currentStep.type === "video" ? (
+                <video
+                  key={activeStep}
+                  src={currentStep.image}
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300"
+                />
+              ) : (
+                <Image
+                  src={currentStep.image}
+                  alt={currentStep.alt}
+                  fill
+                  className="object-cover object-center transition-opacity duration-300"
+                  key={activeStep}
+                />
+              )}
             </div>
 
             <div className="grid grid-cols-3 gap-8 pt-12">
