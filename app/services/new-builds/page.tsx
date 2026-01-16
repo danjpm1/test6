@@ -10,8 +10,8 @@ const STEPS = [
     number: "1",
     title: "Design",
     description: "We craft architectural visions that balance ambition with practicality from the ground up.",
-    image: "/design.png",
-    alt: "Luxury home",
+    image: "/aerial.jpg",
+    alt: "Luxury home aerial view with pool",
     type: "image",
   },
   {
@@ -26,7 +26,7 @@ const STEPS = [
     number: "3",
     title: "Live it",
     description: "Move into the home you've always imagined — built for your life, not someone else's.",
-    image: "/live it.png",
+    image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
     alt: "Completed luxury home at night",
     type: "image",
   },
@@ -193,8 +193,8 @@ export default function NewBuildsPage() {
           }}
         />
         
-        {/* Title - lower right positioning */}
-        <div className="absolute bottom-[22%] right-[5%] md:right-[8%]">
+        {/* Title - centered on mobile, lower right on desktop */}
+        <div className="absolute inset-x-0 bottom-[38%] md:bottom-[22%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
           <h1 
             className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
             style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
