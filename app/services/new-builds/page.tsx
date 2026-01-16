@@ -176,7 +176,7 @@ export default function NewBuildsPage() {
       <Navbar />
 
       {/* Hero Section - Tesla Style Full Bleed */}
-      <section className="relative w-full h-screen">
+      <section className="relative w-full aspect-[16/9] md:aspect-auto md:h-screen bg-black">
         <Image
           src="/new-builds.png"
           alt="Modern luxury new build"
