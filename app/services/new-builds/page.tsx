@@ -17,7 +17,7 @@ const STEPS = [
     number: "2",
     title: "Build",
     description: "Construction is creation – we bring your vision to life with precision and purpose.",
-    image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
+    image: "/new-builds.png",
     alt: "New home construction",
   },
   {
@@ -29,15 +29,68 @@ const STEPS = [
   },
 ]
 
-const ROTATION_INTERVAL = 4000
+const ROTATION_INTERVAL = 7000
 const SWIPE_THRESHOLD = 50
+
+function ScrollIndicator({ show }: { show: boolean }) {
+  const scrollToContent = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+  }
+
+  return (
+    <div 
+      className={`absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
+        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+      onClick={scrollToContent}
+    >
+      <div className="flex flex-col items-center gap-4">
+        {/* Mouse icon with animated wheel */}
+        <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
+          {/* Animated scroll wheel */}
+          <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
+          {/* Glow effect on hover */}
+          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
+        </div>
+        
+        {/* Animated chevrons - bigger and brighter */}
+        <div className="flex flex-col items-center -space-y-2">
+          <svg 
+            className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+          <svg 
+            className="w-7 h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function NewBuildsPage() {
   const [activeStep, setActiveStep] = useState(0)
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
   const touchStartX = useRef(0)
 
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowScrollIndicator(true), 1000)
+    return () => clearTimeout(timer)
   }, [])
 
   useEffect(() => {
@@ -64,27 +117,94 @@ export default function NewBuildsPage() {
 
   return (
     <div className="w-full overflow-x-hidden bg-black">
+      {/* Custom animations for scroll indicator */}
+      <style jsx global>{`
+        @keyframes scroll-wheel {
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(10px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+        }
+        
+        @keyframes chevron-fade-1 {
+          0%, 100% {
+            opacity: 0.8;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(6px);
+          }
+        }
+        
+        @keyframes chevron-fade-2 {
+          0%, 100% {
+            opacity: 0.5;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.9;
+            transform: translateY(6px);
+          }
+        }
+        
+        .animate-scroll-wheel {
+          animation: scroll-wheel 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-1 {
+          animation: chevron-fade-1 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-2 {
+          animation: chevron-fade-2 1.5s ease-in-out infinite;
+          animation-delay: 0.2s;
+        }
+      `}</style>
+
       <Navbar />
 
-      <section className="relative w-full">
-        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20 bg-black">
-          <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] font-bold text-white tracking-tight">
+      {/* Hero Section - Tesla Style Full Bleed */}
+      <section className="relative w-full h-screen">
+        <Image
+          src="/new-builds.png"
+          alt="Modern luxury new build"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        
+        {/* Subtle gradient overlay */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
+          }}
+        />
+        
+        {/* Title - lower right positioning */}
+        <div className="absolute bottom-[22%] right-[5%] md:right-[8%]">
+          <h1 
+            className="text-4xl sm:text-5xl md:text-6xl lg:text-[6.5rem] font-bold text-white tracking-tight"
+            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
+          >
             NEW BUILDS
           </h1>
         </div>
 
-        <div className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[3/1]">
-          <Image
-            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
-            alt="Modern luxury new build"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
+        {/* Scroll Indicator */}
+        <ScrollIndicator show={showScrollIndicator} />
       </section>
 
-      <div className="bg-black h-16 md:h-32" />
+      <div className="bg-black h-6 md:h-12" />
       <div className="w-full h-[2px] bg-[#D4A574]" />
 
       <section className="bg-black text-white py-12 md:py-32">
@@ -101,15 +221,20 @@ export default function NewBuildsPage() {
 
             <div className="space-y-4 md:space-y-6 text-[15px] md:text-lg text-gray-300 mt-4 lg:mt-0">
               <p className="leading-[1.7] md:leading-8">
-                Antova Builder specializes in luxury new construction, creating homes from scratch that reflect your
-                lifestyle and exceed your expectations.
+                <span className="font-semibold text-white">Antova Builder</span> excels in creating exceptional new custom homes—from sophisticated
+                luxury builds to thoughtfully designed residences that suit a variety of lifestyles and budgets.
               </p>
               <p className="leading-[1.7] md:leading-8">
-                Building new isn't just about blueprints and materials; it's about understanding how you want to live.
-                Through close collaboration and expert craftsmanship, we turn empty lots into homes that feel like
-                they've always been yours.
+                We believe every client deserves a home that feels perfectly theirs. Through genuine
+                collaboration, expert guidance, and superior craftsmanship, we bring your ideas to life,
+                delivering outstanding quality and attention to detail whether you're seeking the height
+                of luxury or a refined, well-executed home that fits your world.
               </p>
-              <p className="font-semibold text-white pt-1 md:pt-2">Your dream, our foundation.</p>
+              <p className="leading-[1.7] md:leading-8">
+                From the first conversation to the final key handover, we're committed to building
+                something extraordinary—tailored just for you.
+              </p>
+              <p className="font-semibold text-white pt-1 md:pt-2">Your dream. Our craftsmanship. Built for you.</p>
             </div>
           </div>
         </div>
@@ -208,6 +333,34 @@ export default function NewBuildsPage() {
               })}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 sm:py-20 bg-black">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+          {/* Two CTA Buttons */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
+            <a
+              href="/contact"
+              className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
+            >
+              Start Your New Build
+            </a>
+            <a
+              href="/cost-estimator"
+              className="h-11 min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
+            >
+              AI Estimator
+            </a>
+          </div>
+
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-6">
+            Let's Start Making Your <span className="text-[#c6912c]">Dream Home</span> a Reality
+          </h2>
+          <p className="font-sans text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
+            From initial design to final walkthrough, our team delivers exceptional custom homes. Get in touch today.
+          </p>
         </div>
       </section>
 
