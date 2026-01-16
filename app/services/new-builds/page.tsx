@@ -11,7 +11,7 @@ const STEPS = [
     title: "Design",
     description: "We craft architectural visions that balance ambition with practicality from the ground up.",
     image: "/design.png",
-    alt: "Luxury home aerial view with pool",
+    alt: "Luxury home",
     type: "image",
   },
   {
