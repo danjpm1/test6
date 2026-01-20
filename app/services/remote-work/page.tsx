@@ -9,7 +9,7 @@ const SECTIONS = [
   {
     id: "dream",
     type: "video",
-    media: "/dream-hero-optimized.mp4",
+    media: "/dream.mp4",
     headline: "YOU FOUND IT.",
     subtext: "That perfect spot where the world falls away.",
     theme: "light",
@@ -256,7 +256,7 @@ export default function RemoteBuildsScrollytelling() {
             playsInline
             className="hero-video w-full h-full object-cover"
           >
-            <source src="/dream-hero-optimized.mp4" type="video/mp4" />
+            <source src="/dream.mp4" type="video/mp4" />
           </video>
         </div>
 
