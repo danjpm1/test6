@@ -299,7 +299,7 @@ export default function RemoteBuildsImmersive() {
                 {section.headline}
               </h2>
 
-              <p className="body-font text-base md:text-lg text-white/90 mt-6 font-light leading-relaxed max-w-lg drop-shadow-md">
+              <p className="body-font text-lg md:text-xl lg:text-2xl text-white/90 mt-6 font-light leading-relaxed max-w-lg drop-shadow-md">
                 {section.subtext}
               </p>
 
