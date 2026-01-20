@@ -29,15 +29,68 @@ const STEPS = [
   },
 ]
 
-const ROTATION_INTERVAL = 4000
+const ROTATION_INTERVAL = 8000
 const SWIPE_THRESHOLD = 50
+
+function ScrollIndicator({ show }: { show: boolean }) {
+  const scrollToContent = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+  }
+
+  return (
+    <div 
+      className={`absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
+        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+      onClick={scrollToContent}
+    >
+      <div className="flex flex-col items-center gap-4">
+        {/* Mouse icon with animated wheel */}
+        <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
+          {/* Animated scroll wheel */}
+          <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
+          {/* Glow effect on hover */}
+          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
+        </div>
+        
+        {/* Animated chevrons - bigger and brighter */}
+        <div className="flex flex-col items-center -space-y-2">
+          <svg 
+            className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+          <svg 
+            className="w-7 h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 export default function RemoteWorkPage() {
   const [activeStep, setActiveStep] = useState(0)
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
   const touchStartX = useRef(0)
 
   useEffect(() => {
     window.scrollTo(0, 0)
+  }, [])
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowScrollIndicator(true), 1000)
+    return () => clearTimeout(timer)
   }, [])
 
   useEffect(() => {
@@ -64,27 +117,93 @@ export default function RemoteWorkPage() {
 
   return (
     <div className="w-full overflow-x-hidden bg-black">
+      {/* Custom animations for scroll indicator */}
+      <style jsx global>{`
+        @keyframes scroll-wheel {
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(10px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+        }
+        
+        @keyframes chevron-fade-1 {
+          0%, 100% {
+            opacity: 0.8;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(6px);
+          }
+        }
+        
+        @keyframes chevron-fade-2 {
+          0%, 100% {
+            opacity: 0.5;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.9;
+            transform: translateY(6px);
+          }
+        }
+        
+        .animate-scroll-wheel {
+          animation: scroll-wheel 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-1 {
+          animation: chevron-fade-1 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-2 {
+          animation: chevron-fade-2 1.5s ease-in-out infinite;
+          animation-delay: 0.2s;
+        }
+      `}</style>
+
       <Navbar />
 
-      <section className="relative w-full">
-        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20 bg-black">
-          <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] font-bold text-white tracking-tight">
-            REMOTE WORK
+      <section className="relative w-full h-screen">
+        <Image
+          src="/Remote_Hero.png"
+          alt="Remote mountain construction"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        
+        {/* Subtle gradient overlay */}
+        <div 
+          className="absolute inset-0"
+          style={{
+            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
+          }}
+        />
+        
+        {/* Title - lower right positioning */}
+        <div className="absolute bottom-[22%] right-[5%] md:right-[8%]">
+          <h1 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
+            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
+          >
+            REMOTE BUILDS
           </h1>
         </div>
 
-        <div className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[3/1]">
-          <Image
-            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
-            alt="Remote mountain construction"
-            fill
-            className="object-cover object-center"
-            priority
-          />
-        </div>
+        {/* Scroll Indicator */}
+        <ScrollIndicator show={showScrollIndicator} />
       </section>
 
-      <div className="bg-black h-16 md:h-32" />
+      <div className="bg-black h-6 md:h-12" />
       <div className="w-full h-[2px] bg-[#D4A574]" />
 
       <section className="bg-black text-white py-12 md:py-32">
