@@ -1,332 +1,413 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
-const STEPS = [
+const SECTIONS = [
   {
-    number: "1",
-    title: "Scout",
-    description: "We assess the terrain, logistics, and challenges — no location is too remote for our team.",
-    image: "/aerial.jpg",
-    alt: "Remote mountain site assessment",
+    id: "dream",
+    type: "video",
+    media: "/remote/dream.mp4",
+    headline: "YOU FOUND IT.",
+    subtext: "That perfect spot where the world falls away.",
+    theme: "light",
   },
   {
-    number: "2",
-    title: "Mobilize",
-    description: "Helicopters, mules, or heavy machinery — we get crews and materials where others can't.",
-    image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
-    alt: "Remote construction mobilization",
+    id: "challenge",
+    type: "image",
+    media: "/remote/challenge.png",
+    headline: "OTHERS SEE IMPOSSIBLE.",
+    subtext: "No roads. No access. No way... they said.",
+    theme: "dark",
   },
   {
-    number: "3",
-    title: "Build",
-    description: "Your dream location becomes reality — built with precision, no matter how far off the grid.",
-    image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
-    alt: "Completed remote luxury home",
+    id: "scout",
+    type: "image",
+    media: "/remote/scout.png",
+    headline: "WE SEE POTENTIAL.",
+    subtext: "Our team assesses terrain, logistics, and challenges — mapping the path forward.",
+    theme: "dark",
+  },
+  {
+    id: "mobilize",
+    type: "image",
+    media: "/remote/mobilize.png",
+    headline: "WE BRING EVERYTHING.",
+    subtext: "Premium materials delivered to the unreachable — no matter what it takes.",
+    theme: "light",
+  },
+  {
+    id: "build",
+    type: "image",
+    media: "/remote/build.png",
+    headline: "PRECISION IN THE WILD.",
+    subtext: "Expert craftsmen building with care, no matter how far off the grid.",
+    theme: "light",
+  },
+  {
+    id: "result",
+    type: "image",
+    media: "/remote/result.png",
+    headline: "YOUR DREAM. REALIZED.",
+    subtext: "If you can dream the location, we can build it there.",
+    theme: "dark",
   },
 ]
 
-const ROTATION_INTERVAL = 8000
-const SWIPE_THRESHOLD = 50
+export default function RemoteBuildsScrollytelling() {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const sectionsRef = useRef<(HTMLElement | null)[]>([])
 
-function ScrollIndicator({ show }: { show: boolean }) {
-  const scrollToContent = () => {
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
-  }
+  useEffect(() => {
+    // Dynamically import GSAP to avoid SSR issues
+    const initGSAP = async () => {
+      const gsap = (await import("gsap")).default
+      const ScrollTrigger = (await import("gsap/ScrollTrigger")).default
+      
+      gsap.registerPlugin(ScrollTrigger)
+
+      // Smooth scroll behavior
+      document.documentElement.style.scrollBehavior = "smooth"
+
+      // Animate each section
+      sectionsRef.current.forEach((section, index) => {
+        if (!section) return
+
+        const headline = section.querySelector(".headline")
+        const subtext = section.querySelector(".subtext")
+        const media = section.querySelector(".media-container")
+        const overlay = section.querySelector(".overlay")
+
+        // Initial states
+        gsap.set(headline, { y: 100, opacity: 0 })
+        gsap.set(subtext, { y: 50, opacity: 0 })
+
+        // Create timeline for this section
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            end: "top 20%",
+            scrub: 1,
+          },
+        })
+
+        // Animate in
+        tl.to(headline, { y: 0, opacity: 1, duration: 1, ease: "power3.out" })
+        tl.to(subtext, { y: 0, opacity: 1, duration: 1, ease: "power3.out" }, "-=0.5")
+
+        // Parallax effect on media
+        gsap.to(media, {
+          yPercent: -20,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        })
+
+        // Fade overlay based on scroll
+        if (overlay && index > 0) {
+          gsap.fromTo(
+            overlay,
+            { opacity: 0.7 },
+            {
+              opacity: 0.3,
+              scrollTrigger: {
+                trigger: section,
+                start: "top bottom",
+                end: "top top",
+                scrub: true,
+              },
+            }
+          )
+        }
+      })
+
+      // Progress indicator animation
+      ScrollTrigger.create({
+        trigger: containerRef.current,
+        start: "top top",
+        end: "bottom bottom",
+        onUpdate: (self) => {
+          const progress = document.querySelector(".scroll-progress") as HTMLElement
+          if (progress) {
+            progress.style.transform = `scaleY(${self.progress})`
+          }
+        },
+      })
+    }
+
+    initGSAP()
+
+    return () => {
+      // Cleanup
+      import("gsap/ScrollTrigger").then(({ default: ScrollTrigger }) => {
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill())
+      })
+    }
+  }, [])
 
   return (
-    <div 
-      className={`absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      onClick={scrollToContent}
-    >
-      <div className="flex flex-col items-center gap-4">
-        {/* Mouse icon with animated wheel */}
-        <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
-          {/* Animated scroll wheel */}
-          <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
-          {/* Glow effect on hover */}
-          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
-        </div>
-        
-        {/* Animated chevrons - bigger and brighter */}
-        <div className="flex flex-col items-center -space-y-2">
-          <svg 
-            className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth={2.5}
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-          <svg 
-            className="w-7 h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth={2.5}
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default function RemoteWorkPage() {
-  const [activeStep, setActiveStep] = useState(0)
-  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
-  const touchStartX = useRef(0)
-
-  useEffect(() => {
-    window.scrollTo(0, 0)
-  }, [])
-
-  useEffect(() => {
-    const timer = setTimeout(() => setShowScrollIndicator(true), 1000)
-    return () => clearTimeout(timer)
-  }, [])
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % STEPS.length)
-    }, ROTATION_INTERVAL)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-  }
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const deltaX = touchStartX.current - e.changedTouches[0].clientX
-    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return
-
-    const direction = deltaX > 0 ? 1 : -1
-    setActiveStep((prev) => (prev + direction + STEPS.length) % STEPS.length)
-  }
-
-  const currentStep = STEPS[activeStep]
-
-  return (
-    <div className="w-full overflow-x-hidden bg-black">
-      {/* Custom animations for scroll indicator */}
+    <div ref={containerRef} className="w-full bg-black">
       <style jsx global>{`
-        @keyframes scroll-wheel {
-          0% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 0.5;
-            transform: translateY(10px);
-          }
-          100% {
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Outfit:wght@300;400;500;600&display=swap');
+
+        .scroll-progress {
+          transform-origin: top;
+          transform: scaleY(0);
+        }
+
+        .headline-text {
+          font-family: 'Playfair Display', serif;
+        }
+
+        .subtext-text {
+          font-family: 'Outfit', sans-serif;
+        }
+
+        @keyframes fadeInUp {
+          from {
             opacity: 0;
-            transform: translateY(14px);
+            transform: translateY(40px);
           }
-        }
-        
-        @keyframes chevron-fade-1 {
-          0%, 100% {
-            opacity: 0.8;
-            transform: translateY(0);
-          }
-          50% {
+          to {
             opacity: 1;
-            transform: translateY(6px);
-          }
-        }
-        
-        @keyframes chevron-fade-2 {
-          0%, 100% {
-            opacity: 0.5;
             transform: translateY(0);
           }
-          50% {
-            opacity: 0.9;
-            transform: translateY(6px);
+        }
+
+        @keyframes scaleIn {
+          from {
+            opacity: 0;
+            transform: scale(1.1);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
           }
         }
-        
-        .animate-scroll-wheel {
-          animation: scroll-wheel 1.5s ease-in-out infinite;
+
+        .hero-video {
+          animation: scaleIn 2s ease-out forwards;
         }
-        
-        .animate-chevron-1 {
-          animation: chevron-fade-1 1.5s ease-in-out infinite;
+
+        .hero-headline {
+          animation: fadeInUp 1.2s ease-out 0.5s forwards;
+          opacity: 0;
         }
-        
-        .animate-chevron-2 {
-          animation: chevron-fade-2 1.5s ease-in-out infinite;
-          animation-delay: 0.2s;
+
+        .hero-subtext {
+          animation: fadeInUp 1.2s ease-out 0.8s forwards;
+          opacity: 0;
+        }
+
+        .scroll-hint {
+          animation: fadeInUp 1.2s ease-out 1.5s forwards;
+          opacity: 0;
+        }
+
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(10px); }
+        }
+
+        .scroll-hint-arrow {
+          animation: float 2s ease-in-out infinite;
         }
       `}</style>
 
       <Navbar />
 
-      <section className="relative w-full h-screen">
-        <Image
-          src="/Remote_Hero.png"
-          alt="Remote mountain construction"
-          fill
-          className="object-cover"
-          style={{ objectPosition: 'center 20%' }}
-          priority
-        />
-        
-        {/* Subtle gradient overlay */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
-          }}
-        />
-        
-        {/* Title - lower right positioning */}
-        <div className="absolute bottom-[22%] right-[5%] md:right-[8%]">
-          <h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
-            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
+      {/* Scroll Progress Indicator */}
+      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:block">
+        <div className="w-[2px] h-32 bg-white/20 rounded-full overflow-hidden">
+          <div className="scroll-progress w-full h-full bg-[#c6912c]" />
+        </div>
+      </div>
+
+      {/* Section Navigation Dots */}
+      <div className="fixed right-8 top-1/2 -translate-y-1/2 z-50 hidden lg:flex flex-col gap-3 translate-x-8">
+        {SECTIONS.map((section, index) => (
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            className="w-2 h-2 rounded-full bg-white/30 hover:bg-[#c6912c] transition-all duration-300 hover:scale-150"
+            aria-label={`Go to ${section.headline}`}
+          />
+        ))}
+      </div>
+
+      {/* Hero Section - The Dream (Video) */}
+      <section
+        id="dream"
+        ref={(el) => { sectionsRef.current[0] = el }}
+        className="relative w-full h-screen overflow-hidden"
+      >
+        <div className="media-container absolute inset-0 w-full h-[120%] -top-[10%]">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="hero-video w-full h-full object-cover"
           >
-            REMOTE BUILDS
-          </h1>
+            <source src="/remote/dream.mp4" type="video/mp4" />
+          </video>
         </div>
 
-        {/* Scroll Indicator */}
-        <ScrollIndicator show={showScrollIndicator} />
+        {/* Gradient Overlay */}
+        <div className="overlay absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-transparent" />
+
+        {/* Content */}
+        <div className="relative z-10 h-full flex flex-col justify-end pb-24 md:pb-32 px-6 md:px-16 lg:px-24">
+          <h1 className="headline hero-headline headline-text text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight max-w-4xl">
+            {SECTIONS[0].headline}
+          </h1>
+          <p className="subtext hero-subtext subtext-text text-lg md:text-2xl text-white/80 mt-4 md:mt-6 max-w-2xl font-light">
+            {SECTIONS[0].subtext}
+          </p>
+
+          {/* Scroll Hint */}
+          <div className="scroll-hint absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+            <span className="subtext-text text-white/60 text-sm tracking-widest uppercase">
+              Scroll to discover
+            </span>
+            <div className="scroll-hint-arrow">
+              <svg
+                className="w-6 h-6 text-[#c6912c]"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={2}
+                viewBox="0 0 24 24"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+              </svg>
+            </div>
+          </div>
+        </div>
       </section>
 
-      <div className="bg-black h-6 md:h-12" />
-      <div className="w-full h-[2px] bg-[#D4A574]" />
-
-      <section className="bg-black text-white py-12 md:py-32">
-        <div className="container mx-auto px-5 md:px-6 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-16 mb-10 md:mb-20">
-            <div>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-1 md:mb-4">
-                Hard to Reach.
-              </h2>
-              <p className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light italic text-gray-400">
-                Not Hard to Build.
-              </p>
-            </div>
-
-            <div className="space-y-4 md:space-y-6 text-[15px] md:text-lg text-gray-300 mt-4 lg:mt-0">
-              <p className="leading-[1.7] md:leading-8">
-                Antova Builder specializes in construction on difficult terrain — mountaintops, remote valleys, islands,
-                and locations where standard contractors won't go.
-              </p>
-              <p className="leading-[1.7] md:leading-8">
-                We deploy helicopters, specialized vehicles, and experienced crews who thrive in challenging conditions.
-                Whether it's airlifting materials to a peak or navigating roads that don't exist yet, we make the
-                impossible accessible.
-              </p>
-              <p className="font-semibold text-white pt-1 md:pt-2">If you can dream the location, we can build there.</p>
-            </div>
+      {/* Remaining Sections */}
+      {SECTIONS.slice(1).map((section, index) => (
+        <section
+          key={section.id}
+          id={section.id}
+          ref={(el) => { sectionsRef.current[index + 1] = el }}
+          className="relative w-full min-h-screen overflow-hidden flex items-center"
+        >
+          {/* Background Image with Parallax Container */}
+          <div className="media-container absolute inset-0 w-full h-[120%] -top-[10%]">
+            <Image
+              src={section.media}
+              alt={section.headline}
+              fill
+              className="object-cover"
+              priority={index < 2}
+            />
           </div>
-        </div>
 
-        {/* Mobile carousel */}
-        <div className="md:hidden w-full px-5">
+          {/* Overlay - Different for light/dark themes */}
           <div
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            className="relative overflow-hidden"
+            className={`overlay absolute inset-0 ${
+              section.theme === "dark"
+                ? "bg-gradient-to-r from-black/70 via-black/50 to-black/30"
+                : "bg-gradient-to-t from-black/60 via-black/30 to-transparent"
+            }`}
+          />
+
+          {/* Content */}
+          <div
+            className={`relative z-10 w-full px-6 md:px-16 lg:px-24 py-24 ${
+              index % 2 === 0 ? "text-left" : "text-right ml-auto"
+            }`}
           >
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${activeStep * 100}%)` }}
-            >
-              {STEPS.map((step, i) => (
-                <div key={i} className="w-full flex-shrink-0">
-                  <div className="relative w-full aspect-[4/3] mb-6">
-                    <Image src={step.image} alt={step.alt} fill className="object-cover object-center" />
-                  </div>
+            <div className={`max-w-3xl ${index % 2 !== 0 ? "ml-auto" : ""}`}>
+              {/* Section Number */}
+              <span className="subtext-text text-[#c6912c] text-sm md:text-base tracking-[0.3em] uppercase mb-4 block font-medium">
+                {String(index + 2).padStart(2, "0")} — {section.id}
+              </span>
+
+              <h2 className="headline headline-text text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1]">
+                {section.headline}
+              </h2>
+
+              <p className="subtext subtext-text text-lg md:text-xl lg:text-2xl text-white/70 mt-6 md:mt-8 font-light leading-relaxed">
+                {section.subtext}
+              </p>
+
+              {/* CTA for last section */}
+              {section.id === "result" && (
+                <div className="mt-10 md:mt-12">
+                  <a
+                    href="/contact"
+                    className="inline-flex items-center gap-3 bg-[#c6912c] hover:bg-[#d4a43d] text-black font-semibold px-8 py-4 text-lg transition-all duration-300 hover:gap-5 subtext-text"
+                  >
+                    Start Your Journey
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth={2.5}
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </a>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-3 mb-4 w-full">
-            {STEPS.map((step, i) => {
-              const isActive = activeStep === i
-              return (
-                <button key={i} onClick={() => setActiveStep(i)} className="flex flex-col cursor-pointer">
-                  <div className={`h-[2px] w-full transition-colors duration-300 ${isActive ? "bg-white" : "bg-gray-600"}`} />
-                  <div className="flex items-center gap-2 mt-4">
-                    <span
-                      className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold transition-all duration-300 ${
-                        isActive ? "bg-[#c6912c] text-black" : "bg-transparent border border-gray-600 text-gray-600"
-                      }`}
-                    >
-                      {step.number}
-                    </span>
-                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isActive ? "text-white" : "text-gray-600"}`}>
-                      {step.title}
-                    </h3>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
+          {/* Decorative Line */}
+          <div
+            className={`absolute bottom-0 ${
+              index % 2 === 0 ? "left-0" : "right-0"
+            } w-1/3 h-[2px] bg-gradient-to-r from-[#c6912c] to-transparent ${
+              index % 2 !== 0 ? "rotate-180" : ""
+            }`}
+          />
+        </section>
+      ))}
 
-          <div className="text-left pr-8 mt-2">
-            <p className="text-sm text-gray-300 leading-relaxed">{currentStep.description}</p>
-          </div>
+      {/* Final CTA Section */}
+      <section className="relative bg-black py-24 md:py-32">
+        <div className="absolute inset-0 opacity-20">
+          <div
+            className="w-full h-full"
+            style={{
+              backgroundImage: `radial-gradient(circle at 2px 2px, #c6912c 1px, transparent 0)`,
+              backgroundSize: "40px 40px",
+            }}
+          />
         </div>
 
-        {/* Desktop carousel */}
-        <div className="hidden md:flex w-full justify-center px-6">
-          <div className="w-full max-w-[1400px]">
-            <div className="relative w-full aspect-[21/9]">
-              <Image
-                src={currentStep.image}
-                alt={currentStep.alt}
-                fill
-                className="object-cover object-center transition-opacity duration-300"
-                key={activeStep}
-              />
-            </div>
+        <div className="relative z-10 container mx-auto px-6 md:px-16 text-center">
+          <h2 className="headline-text text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+            Ready to Build the <span className="text-[#c6912c]">Impossible</span>?
+          </h2>
+          <p className="subtext-text text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-10">
+            Tell us about your dream location. We'll handle the rest.
+          </p>
 
-            <div className="grid grid-cols-3 gap-8 pt-12">
-              {STEPS.map((step, i) => {
-                const isActive = activeStep === i
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setActiveStep(i)}
-                    className="relative text-center cursor-pointer transition-all hover:opacity-80"
-                  >
-                    <div className={`absolute top-0 left-0 right-0 h-[2px] transition-colors ${isActive ? "bg-[#c6912c]" : "bg-gray-700"}`} />
-
-                    <div className="flex items-center justify-center gap-3 pt-6 pb-4">
-                      <span
-                        className={`flex items-center justify-center w-10 h-10 rounded-full text-lg font-bold transition-all duration-300 ${
-                          isActive ? "bg-[#c6912c] text-black" : "bg-transparent border-2 border-gray-600 text-gray-600"
-                        }`}
-                      >
-                        {step.number}
-                      </span>
-                      <h3 className={`text-xl font-semibold transition-colors duration-300 ${isActive ? "text-white" : "text-gray-500"}`}>
-                        {step.title}
-                      </h3>
-                    </div>
-
-                    <p className={`text-xs sm:text-sm leading-relaxed px-1 sm:px-0 transition-colors ${isActive ? "text-white" : "text-gray-500"}`}>
-                      {step.description}
-                    </p>
-                  </button>
-                )
-              })}
-            </div>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a43d] text-black font-semibold px-10 py-4 text-lg transition-all duration-300 subtext-text"
+            >
+              Contact Us
+            </a>
+            <a
+              href="/projects"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white/30 hover:border-[#c6912c] text-white hover:text-[#c6912c] font-semibold px-10 py-4 text-lg transition-all duration-300 subtext-text"
+            >
+              View Projects
+            </a>
           </div>
         </div>
       </section>
