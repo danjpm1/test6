@@ -9,7 +9,7 @@ const SECTIONS = [
   {
     id: "dream",
     type: "video",
-    media: "/dream.mp4",
+    media: "/dream-hero-optimized.mp4",
     headline: "YOU FOUND IT.",
     subtext: "That perfect spot where the world falls away.",
     theme: "light",
@@ -17,7 +17,7 @@ const SECTIONS = [
   {
     id: "challenge",
     type: "image",
-    media: "/challenge.png",
+    media: "/challange.png",
     headline: "OTHERS SEE IMPOSSIBLE.",
     subtext: "No roads. No access. No way... they said.",
     theme: "dark",
