@@ -12,7 +12,6 @@ const SECTIONS = [
     media: "/dream.mp4",
     headline: "YOU FOUND IT.",
     subtext: "That perfect spot where the world falls away.",
-    color: "#1a2f1f",
   },
   {
     id: "challenge",
@@ -20,7 +19,6 @@ const SECTIONS = [
     media: "/challange.png",
     headline: "OTHERS SEE IMPOSSIBLE.",
     subtext: "No roads. No access. No way... they said.",
-    color: "#2a2a3e",
   },
   {
     id: "scout",
@@ -28,7 +26,6 @@ const SECTIONS = [
     media: "/scout.png",
     headline: "WE SEE POTENTIAL.",
     subtext: "Our team assesses terrain, logistics, and challenges — mapping the path forward.",
-    color: "#2a3a4a",
   },
   {
     id: "mobilize",
@@ -36,7 +33,6 @@ const SECTIONS = [
     media: "/mobilize.png",
     headline: "WE BRING EVERYTHING.",
     subtext: "Premium materials delivered to the unreachable — no matter what it takes.",
-    color: "#3a2a1a",
   },
   {
     id: "build",
@@ -44,7 +40,6 @@ const SECTIONS = [
     media: "/build.png",
     headline: "PRECISION IN THE WILD.",
     subtext: "Expert craftsmen building with care, no matter how far off the grid.",
-    color: "#2a3a2a",
   },
   {
     id: "result",
@@ -52,14 +47,11 @@ const SECTIONS = [
     media: "/result.png",
     headline: "YOUR DREAM. REALIZED.",
     subtext: "If you can dream the location, we can build it there.",
-    color: "#1a1a2a",
   },
 ]
 
 export default function RemoteBuildsImmersive() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const heroRef = useRef<HTMLElement>(null)
-  const sectionsRef = useRef<(HTMLElement | null)[]>([])
 
   useEffect(() => {
     const initAnimations = async () => {
@@ -68,114 +60,167 @@ export default function RemoteBuildsImmersive() {
       
       gsap.registerPlugin(ScrollTrigger)
 
-      // Smooth defaults
-      gsap.defaults({ ease: "none" })
+      // Select all sections
+      const sections = document.querySelectorAll(".parallax-section")
 
-      // Hero section - pin and zoom with diagonal movement
-      if (heroRef.current) {
-        const heroVideo = heroRef.current.querySelector(".hero-media")
-        const heroHeadline = heroRef.current.querySelector(".hero-headline")
-        const heroSubtext = heroRef.current.querySelector(".hero-subtext")
-        const heroOverlay = heroRef.current.querySelector(".hero-overlay")
+      sections.forEach((section, index) => {
+        const media = section.querySelector(".parallax-media")
+        const headline = section.querySelector(".parallax-headline")
+        const subtext = section.querySelector(".parallax-subtext")
+        const number = section.querySelector(".parallax-number")
+        const overlay = section.querySelector(".parallax-overlay")
 
-        // Pin hero and create zoom effect
-        const heroTl = gsap.timeline({
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "+=100%",
-            pin: true,
-            scrub: 1,
+        // Direction alternates for variety
+        const direction = index % 2 === 0 ? 1 : -1
+
+        // MEDIA: Moves OPPOSITE to scroll (creates depth)
+        // As you scroll DOWN, image moves UP (and vice versa)
+        gsap.fromTo(media,
+          { 
+            yPercent: -15,
+            scale: 1.15,
+            rotation: direction * 1
           },
-        })
+          {
+            yPercent: 15,
+            scale: 1,
+            rotation: direction * -1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          }
+        )
 
-        heroTl
-          .to(heroVideo, { scale: 1.4, rotation: 2, duration: 1 }, 0)
-          .to(heroHeadline, { y: -150, x: -100, opacity: 0, scale: 1.1, rotation: -3, duration: 0.5 }, 0)
-          .to(heroSubtext, { y: -80, x: -50, opacity: 0, duration: 0.5 }, 0.1)
-          .to(heroOverlay, { opacity: 0.6, duration: 1 }, 0)
-      }
-
-      // Animate each content section with diagonal movements
-      sectionsRef.current.forEach((section, index) => {
-        if (!section) return
-
-        const media = section.querySelector(".section-media")
-        const headline = section.querySelector(".section-headline")
-        const subtext = section.querySelector(".section-subtext")
-        const number = section.querySelector(".section-number")
-        const overlay = section.querySelector(".section-overlay")
-        const diagonalWipe = section.querySelector(".diagonal-wipe")
-
-        // Alternate direction for visual variety
-        const isEven = index % 2 === 0
-        const xDirection = isEven ? 1 : -1
-
-        // Pin section and create immersive effects
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: section,
-            start: "top top",
-            end: "+=150%",
-            pin: true,
-            scrub: 1,
-            anticipatePin: 1,
+        // HEADLINE: Moves FASTER than scroll (foreground feel)
+        gsap.fromTo(headline,
+          { 
+            yPercent: 50,
+            xPercent: direction * 10,
+            opacity: 0,
+            rotation: direction * 3
           },
-        })
+          {
+            yPercent: -50,
+            xPercent: direction * -10,
+            opacity: 1,
+            rotation: 0,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          }
+        )
 
-        // Initial states - coming from diagonal direction
-        gsap.set(headline, { y: 200, x: 100 * xDirection, opacity: 0, scale: 0.85, rotation: 5 * xDirection })
-        gsap.set(subtext, { y: 150, x: 80 * xDirection, opacity: 0 })
-        gsap.set(number, { x: -100 * xDirection, opacity: 0, rotation: -10 * xDirection })
-        gsap.set(media, { scale: 1.3, x: 50 * xDirection, rotation: 2 * xDirection })
-        gsap.set(diagonalWipe, { scaleX: 1 })
+        // SUBTEXT: Moves at different rate than headline
+        gsap.fromTo(subtext,
+          { 
+            yPercent: 80,
+            xPercent: direction * -5,
+            opacity: 0
+          },
+          {
+            yPercent: -30,
+            xPercent: direction * 5,
+            opacity: 1,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          }
+        )
 
-        // Animation sequence with diagonal movement
-        tl
-          // Phase 1: Diagonal wipe reveal (0 - 0.2)
-          .to(diagonalWipe, { scaleX: 0, duration: 0.2, ease: "power2.inOut" }, 0)
-          
-          // Phase 2: Content reveals diagonally (0.1 - 0.4)
-          .to(media, { scale: 1, x: 0, rotation: 0, duration: 0.4 }, 0.1)
-          .to(overlay, { opacity: 0.15, duration: 0.3 }, 0.1)
-          .to(number, { x: 0, opacity: 0.2, rotation: 0, duration: 0.3 }, 0.15)
-          .to(headline, { y: 0, x: 0, opacity: 1, scale: 1, rotation: 0, duration: 0.35 }, 0.15)
-          .to(subtext, { y: 0, x: 0, opacity: 1, duration: 0.35 }, 0.25)
-          
-          // Phase 3: Hold with subtle movement (0.4 - 0.6)
-          .to(media, { scale: 1.05, rotation: 0.5 * xDirection, duration: 0.2 }, 0.4)
-          
-          // Phase 4: Exit diagonally (0.6 - 1.0)
-          .to(headline, { y: -150, x: -80 * xDirection, opacity: 0, scale: 1.1, rotation: -5 * xDirection, duration: 0.35 }, 0.6)
-          .to(subtext, { y: -100, x: -60 * xDirection, opacity: 0, duration: 0.35 }, 0.65)
-          .to(number, { x: 100 * xDirection, opacity: 0, rotation: 10 * xDirection, duration: 0.25 }, 0.7)
-          .to(media, { scale: 1.4, x: -30 * xDirection, rotation: -2 * xDirection, duration: 0.4 }, 0.6)
-          .to(overlay, { opacity: 0.7, duration: 0.4 }, 0.6)
+        // NUMBER: Moves in opposite direction to text
+        gsap.fromTo(number,
+          { 
+            yPercent: -100,
+            xPercent: direction * -20,
+            opacity: 0,
+            rotation: direction * -10
+          },
+          {
+            yPercent: 100,
+            xPercent: direction * 20,
+            opacity: 0.3,
+            rotation: direction * 10,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1,
+            },
+          }
+        )
+
+        // OVERLAY: Fades based on position
+        gsap.fromTo(overlay,
+          { opacity: 0.5 },
+          {
+            opacity: 0.2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "top bottom",
+              end: "center center",
+              scrub: 1,
+            },
+          }
+        )
+        
+        // Overlay darkens as you leave
+        gsap.fromTo(overlay,
+          { opacity: 0.2 },
+          {
+            opacity: 0.6,
+            ease: "none",
+            scrollTrigger: {
+              trigger: section,
+              start: "center center",
+              end: "bottom top",
+              scrub: 1,
+            },
+          }
+        )
       })
 
-      // Floating particles - diagonal movement
+      // Floating particles with continuous diagonal movement
       const particles = document.querySelectorAll(".particle")
       particles.forEach((particle, i) => {
         const direction = i % 2 === 0 ? 1 : -1
+        
+        // Continuous floating
         gsap.to(particle, {
-          y: `random(-200, 200)`,
-          x: `random(-150, 150)`,
-          rotation: `random(-360, 360)`,
+          y: `random(-150, 150)`,
+          x: `random(-100, 100)`,
+          rotation: `random(-180, 180)`,
           scale: `random(0.5, 1.5)`,
-          duration: `random(8, 15)`,
+          duration: `random(6, 12)`,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
-          delay: i * 0.3,
         })
         
-        // Add continuous diagonal drift
+        // Diagonal drift based on scroll
         gsap.to(particle, {
-          y: `-=${direction * 500}`,
-          x: `-=${direction * 300}`,
-          duration: 20,
-          repeat: -1,
+          y: direction * -800,
+          x: direction * -400,
           ease: "none",
+          scrollTrigger: {
+            trigger: containerRef.current,
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 2,
+          },
         })
       })
 
@@ -211,6 +256,10 @@ export default function RemoteBuildsImmersive() {
           scroll-behavior: auto !important;
         }
 
+        body {
+          overflow-x: hidden;
+        }
+
         .headline-font {
           font-family: 'Playfair Display', serif;
         }
@@ -219,134 +268,47 @@ export default function RemoteBuildsImmersive() {
           font-family: 'Outfit', sans-serif;
         }
 
-        @keyframes float {
-          0%, 100% { transform: translateY(0) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
-
-        @keyframes pulse-glow {
-          0%, 100% { opacity: 0.3; }
-          50% { opacity: 0.6; }
-        }
-
-        @keyframes gradient-shift {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-
-        .particle {
-          position: absolute;
-          border-radius: 50%;
-          pointer-events: none;
+        .text-shadow-lg {
+          text-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 80px rgba(0,0,0,0.3);
         }
 
         .scroll-progress-bar {
           transform-origin: left;
           transform: scaleX(0);
         }
-
-        .text-shadow-lg {
-          text-shadow: 0 4px 30px rgba(0,0,0,0.8), 0 0 100px rgba(0,0,0,0.5);
-        }
-
-        /* Diagonal flow animation */
-        @keyframes diagonal-flow {
-          0% { 
-            transform: translate(100%, -100%) rotate(-45deg);
-            opacity: 0;
-          }
-          10% {
-            opacity: 1;
-          }
-          90% {
-            opacity: 1;
-          }
-          100% { 
-            transform: translate(-100%, 100%) rotate(-45deg);
-            opacity: 0;
-          }
-        }
-
-        /* Subtle rotation */
-        @keyframes subtle-rotate {
-          0%, 100% { transform: rotate(-1deg) scale(1); }
-          50% { transform: rotate(1deg) scale(1.02); }
-        }
-
-        .diagonal-animate {
-          animation: diagonal-flow 15s linear infinite;
-        }
-
-        .subtle-move {
-          animation: subtle-rotate 10s ease-in-out infinite;
-        }
       `}</style>
 
       <Navbar />
 
-      {/* Progress Bar - Top */}
+      {/* Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-white/10 z-[100]">
         <div className="scroll-progress-bar h-full bg-gradient-to-r from-[#c6912c] to-[#e8b84a]" />
       </div>
 
-      {/* Floating Particles - More Dynamic */}
+      {/* Floating Particles */}
       <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-        {/* Round particles */}
-        {[...Array(12)].map((_, i) => (
+        {[...Array(20)].map((_, i) => (
           <div
-            key={`round-${i}`}
-            className="particle bg-[#c6912c] rounded-full"
+            key={i}
+            className="particle absolute rounded-full"
             style={{
               width: Math.random() * 8 + 3 + "px",
               height: Math.random() * 8 + 3 + "px",
               left: Math.random() * 100 + "%",
               top: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.4 + 0.1,
-            }}
-          />
-        ))}
-        {/* Elongated particles (like seeds) */}
-        {[...Array(8)].map((_, i) => (
-          <div
-            key={`seed-${i}`}
-            className="particle bg-[#c6912c]/60"
-            style={{
-              width: Math.random() * 4 + 2 + "px",
-              height: Math.random() * 15 + 8 + "px",
-              borderRadius: "50%",
-              left: Math.random() * 100 + "%",
-              top: Math.random() * 100 + "%",
               opacity: Math.random() * 0.3 + 0.1,
-              transform: `rotate(${Math.random() * 60 - 30}deg)`,
-            }}
-          />
-        ))}
-        {/* Glowing dots */}
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={`glow-${i}`}
-            className="particle rounded-full"
-            style={{
-              width: Math.random() * 12 + 6 + "px",
-              height: Math.random() * 12 + 6 + "px",
-              left: Math.random() * 100 + "%",
-              top: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.2 + 0.05,
-              background: "radial-gradient(circle, #c6912c 0%, transparent 70%)",
-              filter: "blur(2px)",
+              background: i % 3 === 0 
+                ? "radial-gradient(circle, #c6912c 0%, transparent 70%)" 
+                : "#c6912c",
+              filter: i % 3 === 0 ? "blur(2px)" : "none",
             }}
           />
         ))}
       </div>
 
       {/* Hero Section */}
-      <section
-        ref={heroRef}
-        className="relative w-full h-screen overflow-hidden"
-      >
-        {/* Video Background */}
-        <div className="hero-media absolute inset-0 w-full h-full">
+      <section className="parallax-section relative w-full h-screen overflow-hidden">
+        <div className="parallax-media absolute inset-[-15%] w-[130%] h-[130%]">
           <video
             autoPlay
             muted
@@ -358,18 +320,13 @@ export default function RemoteBuildsImmersive() {
           </video>
         </div>
 
-        {/* Gradient Overlay */}
-        <div className="hero-overlay absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent opacity-40" />
-        
-        {/* Vignette */}
-        <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.4)]" />
+        <div className="parallax-overlay absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
 
-        {/* Content */}
         <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-          <h1 className="hero-headline headline-font text-6xl md:text-8xl lg:text-9xl font-bold text-white tracking-tight text-shadow-lg">
+          <h1 className="parallax-headline headline-font text-6xl md:text-8xl lg:text-9xl font-bold text-white tracking-tight text-shadow-lg">
             YOU FOUND IT.
           </h1>
-          <p className="hero-subtext body-font text-xl md:text-2xl lg:text-3xl text-white/90 mt-6 md:mt-8 font-light max-w-2xl">
+          <p className="parallax-subtext body-font text-xl md:text-2xl lg:text-3xl text-white/90 mt-6 md:mt-8 font-light max-w-2xl">
             That perfect spot where the world falls away.
           </p>
           
@@ -383,23 +340,22 @@ export default function RemoteBuildsImmersive() {
             </div>
           </div>
         </div>
+
+        {/* Diagonal Decorative Line */}
+        <div 
+          className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent"
+          style={{ clipPath: "polygon(0 60%, 100% 0%, 100% 100%, 0 100%)" }}
+        />
       </section>
 
       {/* Content Sections */}
       {SECTIONS.slice(1).map((section, index) => (
         <section
           key={section.id}
-          ref={(el) => { sectionsRef.current[index] = el }}
-          className="relative w-full h-screen overflow-hidden"
+          className="parallax-section relative w-full min-h-screen overflow-hidden"
         >
-          {/* Background Color Layer */}
-          <div 
-            className="section-bg absolute inset-0 transition-colors duration-1000"
-            style={{ backgroundColor: section.color }}
-          />
-
-          {/* Image */}
-          <div className="section-media absolute inset-0 w-full h-full">
+          {/* Background Image - Oversized for parallax movement */}
+          <div className="parallax-media absolute inset-[-15%] w-[130%] h-[130%]">
             <Image
               src={section.media}
               alt={section.headline}
@@ -410,32 +366,27 @@ export default function RemoteBuildsImmersive() {
           </div>
 
           {/* Overlay */}
-          <div className="section-overlay absolute inset-0 bg-black/30" />
-          
-          {/* Diagonal Wipe Transition */}
+          <div className="parallax-overlay absolute inset-0 bg-black/30" />
+
+          {/* Diagonal Top Border */}
           <div 
-            className="diagonal-wipe absolute inset-0 bg-black/80 z-30 origin-left"
-            style={{ 
-              clipPath: "polygon(0 0, 100% 0, 85% 100%, 0 100%)",
-            }}
+            className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-10"
+            style={{ clipPath: "polygon(0 0, 100% 0, 100% 40%, 0 100%)" }}
           />
-          
-          {/* Vignette */}
-          <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.3)]" />
 
           {/* Content */}
-          <div className="relative z-20 h-full flex flex-col justify-center px-8 md:px-16 lg:px-24">
+          <div className="relative z-20 min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24 py-32">
             {/* Section Number */}
-            <span className="section-number body-font text-[#c6912c] text-8xl md:text-9xl font-bold opacity-30 absolute top-1/4 right-8 md:right-16">
+            <span className="parallax-number body-font text-[#c6912c] text-[10rem] md:text-[14rem] font-bold absolute top-1/2 -translate-y-1/2 right-4 md:right-12 opacity-20 pointer-events-none">
               {String(index + 2).padStart(2, "0")}
             </span>
 
             <div className="max-w-4xl">
-              <h2 className="section-headline headline-font text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[0.95] text-shadow-lg">
+              <h2 className="parallax-headline headline-font text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[0.95] text-shadow-lg">
                 {section.headline}
               </h2>
 
-              <p className="section-subtext body-font text-lg md:text-xl lg:text-2xl text-white/80 mt-6 md:mt-10 font-light leading-relaxed max-w-2xl">
+              <p className="parallax-subtext body-font text-lg md:text-xl lg:text-2xl text-white/85 mt-6 md:mt-10 font-light leading-relaxed max-w-2xl">
                 {section.subtext}
               </p>
 
@@ -462,38 +413,24 @@ export default function RemoteBuildsImmersive() {
             </div>
           </div>
 
-          {/* Diagonal Decorative Lines */}
+          {/* Diagonal Bottom Border */}
           <div 
-            className="absolute bottom-0 left-0 w-64 h-1 bg-gradient-to-r from-[#c6912c] to-transparent origin-left"
-            style={{ transform: "rotate(-15deg) translateY(20px)" }}
+            className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10"
+            style={{ clipPath: "polygon(0 60%, 100% 0%, 100% 100%, 0 100%)" }}
           />
-          <div 
-            className="absolute top-0 right-0 w-64 h-1 bg-gradient-to-l from-[#c6912c] to-transparent origin-right"
-            style={{ transform: "rotate(-15deg) translateY(-20px)" }}
-          />
-          
-          {/* Corner Accents */}
-          <div className="absolute bottom-8 left-8 w-16 h-16">
-            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#c6912c]/40" style={{ transform: "rotate(-45deg) translateX(-30%)" }} />
-          </div>
-          <div className="absolute top-8 right-8 w-16 h-16">
-            <div className="absolute top-0 right-0 w-full h-[2px] bg-[#c6912c]/40" style={{ transform: "rotate(-45deg) translateX(30%)" }} />
-          </div>
         </section>
       ))}
 
       {/* Final CTA Section */}
       <section className="relative bg-black py-32 md:py-48 overflow-hidden">
-        {/* Animated Background */}
         <div className="absolute inset-0">
           <div 
-            className="absolute inset-0 opacity-30"
+            className="absolute inset-0 opacity-20"
             style={{
               backgroundImage: `radial-gradient(circle at 2px 2px, #c6912c 1px, transparent 0)`,
               backgroundSize: "50px 50px",
             }}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black" />
         </div>
 
         <div className="relative z-10 container mx-auto px-6 md:px-16 text-center">
@@ -501,7 +438,7 @@ export default function RemoteBuildsImmersive() {
             Ready to Build the{" "}
             <span className="text-[#c6912c] italic">Impossible</span>?
           </h2>
-          <p className="body-font text-lg md:text-xl text-white/50 max-w-2xl mx-auto mb-12 font-light">
+          <p className="body-font text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-12 font-light">
             Tell us about your dream location. We'll make it reality.
           </p>
 
