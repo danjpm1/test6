@@ -196,7 +196,7 @@ export default function RemoteBuildsImmersive() {
 
         body {
           overflow-x: hidden;
-          background: #f5f5f0;
+          background: #0a0a0a;
         }
 
         .headline-font {
@@ -208,7 +208,7 @@ export default function RemoteBuildsImmersive() {
         }
 
         .text-shadow-lg {
-          text-shadow: 0 2px 40px rgba(255,255,255,0.9), 0 4px 60px rgba(255,255,255,0.5);
+          text-shadow: 0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6), 0 0 80px rgba(0,0,0,0.4);
         }
 
         .scroll-progress-bar {
@@ -225,7 +225,7 @@ export default function RemoteBuildsImmersive() {
       <Navbar />
 
       {/* Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] bg-black/10 z-[100]">
+      <div className="fixed top-0 left-0 right-0 h-[2px] bg-white/10 z-[100]">
         <div className="scroll-progress-bar h-full bg-[#c6912c]" />
       </div>
 
@@ -260,46 +260,13 @@ export default function RemoteBuildsImmersive() {
           </div>
         ))}
         
-        {/* ===== UNIFYING COLOR WORLD - LIGHT VERSION ===== */}
-        {/* This creates the "one world" feeling */}
+        {/* ===== MINIMAL OVERLAY FOR TEXT READABILITY ===== */}
         
-        {/* Base tint - very subtle warm cream */}
-        <div 
-          className="absolute inset-0 z-20 mix-blend-overlay"
-          style={{
-            background: "linear-gradient(180deg, rgba(245,240,230,0.15) 0%, rgba(250,245,235,0.1) 50%, rgba(245,240,230,0.15) 100%)"
-          }}
-        />
-        
-        {/* Golden hour warmth - very subtle */}
-        <div 
-          className="absolute inset-0 z-20 mix-blend-soft-light"
-          style={{
-            background: "linear-gradient(135deg, rgba(198,145,44,0.05) 0%, transparent 50%, rgba(198,145,44,0.03) 100%)"
-          }}
-        />
-        
-        {/* Consistent sky gradient at top - subtle */}
+        {/* Left side gradient for text readability only */}
         <div 
           className="absolute inset-0 z-20"
           style={{
-            background: "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 25%, transparent 75%, rgba(245,245,240,0.2) 100%)"
-          }}
-        />
-        
-        {/* Vignette - very light */}
-        <div 
-          className="absolute inset-0 z-20"
-          style={{
-            boxShadow: "inset 0 0 150px 30px rgba(245,245,240,0.3)"
-          }}
-        />
-        
-        {/* Left side gradient for text readability - subtle */}
-        <div 
-          className="absolute inset-0 z-20"
-          style={{
-            background: "linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.15) 25%, transparent 50%)"
+            background: "linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 30%, transparent 60%)"
           }}
         />
 
@@ -323,16 +290,16 @@ export default function RemoteBuildsImmersive() {
           >
             <div className="max-w-2xl pointer-events-auto">
               {index > 0 && (
-                <span className="body-font text-[#996d1f] text-xs tracking-[0.4em] uppercase mb-6 block font-medium">
+                <span className="body-font text-[#c6912c] text-xs tracking-[0.4em] uppercase mb-6 block font-semibold drop-shadow-lg">
                   {String(index + 1).padStart(2, "0")} — {section.id}
                 </span>
               )}
 
-              <h2 className="headline-font text-4xl md:text-5xl lg:text-6xl font-bold text-[#1a1a1a] tracking-tight leading-[1.1] text-shadow-lg">
+              <h2 className="headline-font text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] text-shadow-lg">
                 {section.headline}
               </h2>
 
-              <p className="body-font text-base md:text-lg text-[#333]/80 mt-6 font-light leading-relaxed max-w-lg">
+              <p className="body-font text-base md:text-lg text-white/90 mt-6 font-light leading-relaxed max-w-lg drop-shadow-md">
                 {section.subtext}
               </p>
 
@@ -362,10 +329,10 @@ export default function RemoteBuildsImmersive() {
 
       {/* Scroll hint */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
-        <span className="body-font text-[#333]/50 text-xs tracking-[0.2em] uppercase">
+        <span className="body-font text-white/60 text-xs tracking-[0.2em] uppercase drop-shadow-md">
           Scroll
         </span>
-        <svg className="w-4 h-4 text-[#c6912c] animate-bounce" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <svg className="w-4 h-4 text-[#c6912c] animate-bounce drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>
@@ -374,13 +341,13 @@ export default function RemoteBuildsImmersive() {
       <div className="h-[50vh]" />
 
       {/* Final CTA */}
-      <section className="relative py-24 md:py-32 z-50 bg-gradient-to-b from-transparent via-[#f5f5f0] to-[#f5f5f0]">
+      <section className="relative py-24 md:py-32 z-50 bg-gradient-to-b from-transparent via-black/80 to-black">
         <div className="relative container mx-auto px-8 md:px-16 text-center">
-          <h2 className="headline-font text-3xl md:text-5xl lg:text-6xl font-bold text-[#1a1a1a] mb-6">
+          <h2 className="headline-font text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Ready to Build the{" "}
             <span className="text-[#c6912c]">Impossible</span>?
           </h2>
-          <p className="body-font text-base md:text-lg text-[#333]/60 max-w-xl mx-auto mb-10 font-light">
+          <p className="body-font text-base md:text-lg text-white/70 max-w-xl mx-auto mb-10 font-light">
             Tell us about your dream location.
           </p>
 
@@ -393,7 +360,7 @@ export default function RemoteBuildsImmersive() {
             </a>
             <a
               href="/projects"
-              className="inline-flex items-center justify-center border border-[#1a1a1a]/20 hover:border-[#c6912c] text-[#1a1a1a] hover:text-[#c6912c] font-medium px-10 py-4 transition-all duration-300 body-font"
+              className="inline-flex items-center justify-center border border-white/30 hover:border-[#c6912c] text-white hover:text-[#c6912c] font-medium px-10 py-4 transition-all duration-300 body-font"
             >
               View Projects
             </a>
