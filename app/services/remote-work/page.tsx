@@ -236,43 +236,43 @@ export default function RemoteBuildsImmersive() {
         {/* ===== UNIFYING COLOR WORLD - LIGHT VERSION ===== */}
         {/* This creates the "one world" feeling */}
         
-        {/* Base tint - warm cream/sand */}
+        {/* Base tint - very subtle warm cream */}
         <div 
           className="absolute inset-0 z-20 mix-blend-overlay"
           style={{
-            background: "linear-gradient(180deg, rgba(245,240,230,0.3) 0%, rgba(250,245,235,0.2) 50%, rgba(245,240,230,0.4) 100%)"
+            background: "linear-gradient(180deg, rgba(245,240,230,0.15) 0%, rgba(250,245,235,0.1) 50%, rgba(245,240,230,0.15) 100%)"
           }}
         />
         
-        {/* Golden hour warmth */}
+        {/* Golden hour warmth - very subtle */}
         <div 
           className="absolute inset-0 z-20 mix-blend-soft-light"
           style={{
-            background: "linear-gradient(135deg, rgba(198,145,44,0.1) 0%, transparent 50%, rgba(198,145,44,0.08) 100%)"
+            background: "linear-gradient(135deg, rgba(198,145,44,0.05) 0%, transparent 50%, rgba(198,145,44,0.03) 100%)"
           }}
         />
         
-        {/* Consistent sky gradient at top - light */}
+        {/* Consistent sky gradient at top - subtle */}
         <div 
           className="absolute inset-0 z-20"
           style={{
-            background: "linear-gradient(180deg, rgba(255,255,255,0.4) 0%, transparent 30%, transparent 70%, rgba(245,245,240,0.5) 100%)"
+            background: "linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 25%, transparent 75%, rgba(245,245,240,0.2) 100%)"
           }}
         />
         
-        {/* Vignette - light/cream */}
+        {/* Vignette - very light */}
         <div 
           className="absolute inset-0 z-20"
           style={{
-            boxShadow: "inset 0 0 200px 50px rgba(245,245,240,0.6)"
+            boxShadow: "inset 0 0 150px 30px rgba(245,245,240,0.3)"
           }}
         />
         
-        {/* Left side gradient for text readability - light */}
+        {/* Left side gradient for text readability - subtle */}
         <div 
           className="absolute inset-0 z-20"
           style={{
-            background: "linear-gradient(90deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0.3) 30%, transparent 60%)"
+            background: "linear-gradient(90deg, rgba(255,255,255,0.35) 0%, rgba(255,255,255,0.15) 25%, transparent 50%)"
           }}
         />
 
