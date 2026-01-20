@@ -54,7 +54,7 @@ export default function RemoteBuildsImmersive() {
   const containerRef = useRef<HTMLDivElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  // Connected particles - continuous across entire page
+  // Connected particles
   useEffect(() => {
     const canvas = canvasRef.current
     if (!canvas) return
@@ -79,16 +79,16 @@ export default function RemoteBuildsImmersive() {
       vy: number
     }> = []
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 40; i++) {
       const x = Math.random() * canvas.width
       const y = Math.random() * canvas.height
       particles.push({
         x, y,
         baseX: x,
         baseY: y,
-        size: Math.random() * 3 + 1,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
+        size: Math.random() * 2 + 1,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
       })
     }
 
@@ -99,22 +99,22 @@ export default function RemoteBuildsImmersive() {
       particles.forEach((particle, i) => {
         particle.x += particle.vx
         particle.y += particle.vy
-        particle.vx += (particle.baseX - particle.x) * 0.0005
-        particle.vy += (particle.baseY - particle.y) * 0.0005
+        particle.vx += (particle.baseX - particle.x) * 0.0003
+        particle.vy += (particle.baseY - particle.y) * 0.0003
         particle.vx *= 0.99
         particle.vy *= 0.99
 
-        // Glowing particle
+        // Subtle gold particle
         const gradient = ctx.createRadialGradient(
           particle.x, particle.y, 0,
-          particle.x, particle.y, particle.size * 3
+          particle.x, particle.y, particle.size * 4
         )
-        gradient.addColorStop(0, "rgba(198, 145, 44, 0.7)")
-        gradient.addColorStop(0.5, "rgba(198, 145, 44, 0.2)")
+        gradient.addColorStop(0, "rgba(198, 145, 44, 0.5)")
+        gradient.addColorStop(0.5, "rgba(198, 145, 44, 0.1)")
         gradient.addColorStop(1, "rgba(198, 145, 44, 0)")
         
         ctx.beginPath()
-        ctx.arc(particle.x, particle.y, particle.size * 3, 0, Math.PI * 2)
+        ctx.arc(particle.x, particle.y, particle.size * 4, 0, Math.PI * 2)
         ctx.fillStyle = gradient
         ctx.fill()
 
@@ -122,11 +122,11 @@ export default function RemoteBuildsImmersive() {
         particles.forEach((other, j) => {
           if (i >= j) return
           const dist = Math.hypot(particle.x - other.x, particle.y - other.y)
-          if (dist < 120) {
+          if (dist < 100) {
             ctx.beginPath()
             ctx.moveTo(particle.x, particle.y)
             ctx.lineTo(other.x, other.y)
-            ctx.strokeStyle = `rgba(198, 145, 44, ${0.15 * (1 - dist / 120)})`
+            ctx.strokeStyle = `rgba(198, 145, 44, ${0.08 * (1 - dist / 100)})`
             ctx.lineWidth = 0.5
             ctx.stroke()
           }
@@ -143,7 +143,7 @@ export default function RemoteBuildsImmersive() {
     }
   }, [])
 
-  // GSAP animations - seamless continuous flow
+  // GSAP animations
   useEffect(() => {
     const initAnimations = async () => {
       const gsap = (await import("gsap")).default
@@ -151,21 +151,17 @@ export default function RemoteBuildsImmersive() {
       
       gsap.registerPlugin(ScrollTrigger)
 
-      // All media layers stacked
       const mediaLayers = document.querySelectorAll(".media-layer")
       const contentLayers = document.querySelectorAll(".content-layer")
 
-      // Each media crossfades into the next
+      // Media crossfade
       mediaLayers.forEach((layer, index) => {
         if (index === 0) {
-          // First layer starts visible
           gsap.set(layer, { opacity: 1, scale: 1 })
         } else {
-          // Other layers start hidden
-          gsap.set(layer, { opacity: 0, scale: 1.1 })
+          gsap.set(layer, { opacity: 0, scale: 1.05 })
         }
 
-        // Fade out current, fade in next
         if (index < mediaLayers.length - 1) {
           const trigger = document.querySelector(`#trigger-${index}`)
           
@@ -174,12 +170,12 @@ export default function RemoteBuildsImmersive() {
               trigger: trigger,
               start: "top top",
               end: "bottom top",
-              scrub: 1,
+              scrub: 1.5,
             }
           })
           .to(layer, { 
             opacity: 0, 
-            scale: 1.15,
+            scale: 1.1,
             duration: 1 
           }, 0)
           .to(mediaLayers[index + 1], { 
@@ -190,30 +186,28 @@ export default function RemoteBuildsImmersive() {
         }
       })
 
-      // Content fades in and out
+      // Content fade
       contentLayers.forEach((layer, index) => {
         const trigger = document.querySelector(`#trigger-${index}`)
         
         gsap.set(layer, { opacity: 0 })
 
-        // Fade in
         gsap.to(layer, {
           opacity: 1,
           scrollTrigger: {
             trigger: trigger,
-            start: "top 80%",
-            end: "top 30%",
+            start: "top 70%",
+            end: "top 20%",
             scrub: 1,
           }
         })
 
-        // Fade out
         gsap.to(layer, {
           opacity: 0,
           scrollTrigger: {
             trigger: trigger,
-            start: "bottom 70%",
-            end: "bottom 30%",
+            start: "bottom 80%",
+            end: "bottom 40%",
             scrub: 1,
           }
         })
@@ -243,7 +237,7 @@ export default function RemoteBuildsImmersive() {
   }, [])
 
   return (
-    <div ref={containerRef} className="w-full bg-[#080c08]">
+    <div ref={containerRef} className="w-full">
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Outfit:wght@200;300;400;500;600&display=swap');
 
@@ -253,7 +247,7 @@ export default function RemoteBuildsImmersive() {
 
         body {
           overflow-x: hidden;
-          background: #080c08;
+          background: #0d1810;
         }
 
         .headline-font {
@@ -265,7 +259,7 @@ export default function RemoteBuildsImmersive() {
         }
 
         .text-shadow-lg {
-          text-shadow: 0 2px 40px rgba(0,0,0,0.9);
+          text-shadow: 0 2px 40px rgba(0,0,0,0.9), 0 4px 60px rgba(0,0,0,0.5);
         }
 
         .scroll-progress-bar {
@@ -281,15 +275,10 @@ export default function RemoteBuildsImmersive() {
         <div className="scroll-progress-bar h-full bg-[#c6912c]" />
       </div>
 
-      {/* Particle Canvas - Fixed, always visible */}
-      <canvas 
-        ref={canvasRef}
-        className="fixed inset-0 pointer-events-none z-30"
-        style={{ mixBlendMode: "screen" }}
-      />
-
-      {/* FIXED MEDIA STACK - All images layered, crossfade between them */}
+      {/* ===== UNIFIED WORLD CONTAINER ===== */}
       <div className="fixed inset-0 z-0">
+        
+        {/* MEDIA STACK */}
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
@@ -317,12 +306,59 @@ export default function RemoteBuildsImmersive() {
           </div>
         ))}
         
-        {/* Consistent gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#080c08] via-transparent to-[#080c08]/30 z-10" />
-        <div className="absolute inset-0 bg-gradient-to-r from-[#080c08]/70 via-transparent to-transparent z-10" />
+        {/* ===== UNIFYING COLOR WORLD ===== */}
+        {/* This creates the "one world" feeling */}
+        
+        {/* Base tint - warm forest green/teal */}
+        <div 
+          className="absolute inset-0 z-20 mix-blend-overlay"
+          style={{
+            background: "linear-gradient(180deg, rgba(20,60,50,0.4) 0%, rgba(30,50,40,0.3) 50%, rgba(20,40,30,0.5) 100%)"
+          }}
+        />
+        
+        {/* Golden hour warmth */}
+        <div 
+          className="absolute inset-0 z-20 mix-blend-soft-light"
+          style={{
+            background: "linear-gradient(135deg, rgba(198,145,44,0.15) 0%, transparent 50%, rgba(198,145,44,0.1) 100%)"
+          }}
+        />
+        
+        {/* Consistent sky gradient at top */}
+        <div 
+          className="absolute inset-0 z-20"
+          style={{
+            background: "linear-gradient(180deg, rgba(15,35,30,0.7) 0%, transparent 30%, transparent 70%, rgba(10,25,20,0.8) 100%)"
+          }}
+        />
+        
+        {/* Vignette - same throughout */}
+        <div 
+          className="absolute inset-0 z-20"
+          style={{
+            boxShadow: "inset 0 0 200px 50px rgba(10,20,15,0.8)"
+          }}
+        />
+        
+        {/* Left side gradient for text readability */}
+        <div 
+          className="absolute inset-0 z-20"
+          style={{
+            background: "linear-gradient(90deg, rgba(10,20,15,0.7) 0%, rgba(10,20,15,0.4) 30%, transparent 60%)"
+          }}
+        />
+
       </div>
 
-      {/* SCROLL TRIGGERS - Empty divs that trigger transitions */}
+      {/* Particle Canvas */}
+      <canvas 
+        ref={canvasRef}
+        className="fixed inset-0 pointer-events-none z-30"
+        style={{ mixBlendMode: "screen" }}
+      />
+
+      {/* SCROLL TRIGGERS */}
       {SECTIONS.map((_, index) => (
         <div 
           key={index}
@@ -331,7 +367,7 @@ export default function RemoteBuildsImmersive() {
         />
       ))}
 
-      {/* FIXED CONTENT STACK - Text layers that fade in/out */}
+      {/* FIXED CONTENT */}
       <div className="fixed inset-0 z-40 pointer-events-none">
         {SECTIONS.map((section, index) => (
           <div 
@@ -340,16 +376,16 @@ export default function RemoteBuildsImmersive() {
           >
             <div className="max-w-2xl pointer-events-auto">
               {index > 0 && (
-                <span className="body-font text-[#c6912c] text-sm tracking-[0.3em] uppercase mb-4 block font-medium">
-                  {String(index + 1).padStart(2, "0")}
+                <span className="body-font text-[#c6912c] text-xs tracking-[0.4em] uppercase mb-6 block font-medium">
+                  {String(index + 1).padStart(2, "0")} — {section.id}
                 </span>
               )}
 
-              <h2 className="headline-font text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.05] text-shadow-lg">
+              <h2 className="headline-font text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] text-shadow-lg">
                 {section.headline}
               </h2>
 
-              <p className="body-font text-base md:text-xl text-white/80 mt-6 font-light leading-relaxed max-w-xl">
+              <p className="body-font text-base md:text-lg text-white/75 mt-6 font-light leading-relaxed max-w-lg">
                 {section.subtext}
               </p>
 
@@ -373,32 +409,25 @@ export default function RemoteBuildsImmersive() {
                 </div>
               )}
             </div>
-
-            {/* Section number - large, subtle */}
-            {index > 0 && (
-              <span className="absolute top-1/3 right-8 md:right-16 body-font text-[#c6912c]/10 text-[12rem] md:text-[18rem] font-bold leading-none pointer-events-none">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-            )}
           </div>
         ))}
       </div>
 
-      {/* Scroll hint - only on first section */}
+      {/* Scroll hint */}
       <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
-        <span className="body-font text-white/40 text-xs tracking-[0.2em] uppercase">
+        <span className="body-font text-white/30 text-xs tracking-[0.2em] uppercase">
           Scroll
         </span>
-        <svg className="w-5 h-5 text-[#c6912c] animate-bounce" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+        <svg className="w-4 h-4 text-[#c6912c] animate-bounce" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
         </svg>
       </div>
 
-      {/* Spacer for final CTA */}
+      {/* Spacer */}
       <div className="h-screen" />
 
-      {/* Final CTA - Not fixed */}
-      <section className="relative bg-[#080c08] py-24 md:py-32 z-50">
+      {/* Final CTA */}
+      <section className="relative py-24 md:py-32 z-50 bg-gradient-to-b from-transparent via-[#0d1810] to-[#0d1810]">
         <div className="relative container mx-auto px-8 md:px-16 text-center">
           <h2 className="headline-font text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Ready to Build the{" "}
