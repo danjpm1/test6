@@ -52,7 +52,105 @@ const SECTIONS = [
 
 export default function RemoteBuildsImmersive() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
+  // Connected particles animation (like Pioneer's constellation effect)
+  useEffect(() => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    
+    const ctx = canvas.getContext("2d")
+    if (!ctx) return
+
+    const resizeCanvas = () => {
+      canvas.width = window.innerWidth
+      canvas.height = window.innerHeight
+    }
+    resizeCanvas()
+    window.addEventListener("resize", resizeCanvas)
+
+    // Create particles
+    const particles: Array<{
+      x: number
+      y: number
+      baseX: number
+      baseY: number
+      size: number
+      vx: number
+      vy: number
+    }> = []
+
+    for (let i = 0; i < 60; i++) {
+      const x = Math.random() * canvas.width
+      const y = Math.random() * canvas.height
+      particles.push({
+        x,
+        y,
+        baseX: x,
+        baseY: y,
+        size: Math.random() * 4 + 1,
+        vx: (Math.random() - 0.5) * 0.4,
+        vy: (Math.random() - 0.5) * 0.4,
+      })
+    }
+
+    let animationId: number
+    const animate = () => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+
+      particles.forEach((particle, i) => {
+        // Float movement
+        particle.x += particle.vx
+        particle.y += particle.vy
+
+        // Pull back to base position
+        particle.vx += (particle.baseX - particle.x) * 0.0003
+        particle.vy += (particle.baseY - particle.y) * 0.0003
+
+        // Damping
+        particle.vx *= 0.995
+        particle.vy *= 0.995
+
+        // Draw particle (glowing dot)
+        const gradient = ctx.createRadialGradient(
+          particle.x, particle.y, 0,
+          particle.x, particle.y, particle.size * 2
+        )
+        gradient.addColorStop(0, "rgba(198, 145, 44, 0.8)")
+        gradient.addColorStop(0.5, "rgba(198, 145, 44, 0.3)")
+        gradient.addColorStop(1, "rgba(198, 145, 44, 0)")
+        
+        ctx.beginPath()
+        ctx.arc(particle.x, particle.y, particle.size * 2, 0, Math.PI * 2)
+        ctx.fillStyle = gradient
+        ctx.fill()
+
+        // Draw connections (constellation lines)
+        particles.forEach((other, j) => {
+          if (i >= j) return
+          const dist = Math.hypot(particle.x - other.x, particle.y - other.y)
+          if (dist < 150) {
+            ctx.beginPath()
+            ctx.moveTo(particle.x, particle.y)
+            ctx.lineTo(other.x, other.y)
+            ctx.strokeStyle = `rgba(198, 145, 44, ${0.2 * (1 - dist / 150)})`
+            ctx.lineWidth = 1
+            ctx.stroke()
+          }
+        })
+      })
+
+      animationId = requestAnimationFrame(animate)
+    }
+    animate()
+
+    return () => {
+      cancelAnimationFrame(animationId)
+      window.removeEventListener("resize", resizeCanvas)
+    }
+  }, [])
+
+  // GSAP Scroll animations
   useEffect(() => {
     const initAnimations = async () => {
       const gsap = (await import("gsap")).default
@@ -60,76 +158,50 @@ export default function RemoteBuildsImmersive() {
       
       gsap.registerPlugin(ScrollTrigger)
 
-      // Select all sections
-      const sections = document.querySelectorAll(".story-section")
+      // Animate each section - PINNED with dramatic effects
+      const sections = document.querySelectorAll(".pinned-section")
 
       sections.forEach((section) => {
-        const media = section.querySelector(".story-media")
-        const content = section.querySelector(".story-content")
+        const media = section.querySelector(".section-media")
+        const mediaInner = section.querySelector(".section-media-inner")
+        const content = section.querySelector(".section-content")
 
-        // IMAGE: Subtle parallax (moves slower than scroll)
-        if (media) {
-          gsap.fromTo(media,
-            { yPercent: -10 },
-            {
-              yPercent: 10,
-              ease: "none",
-              scrollTrigger: {
-                trigger: section,
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true,
-              },
-            }
-          )
-        }
-
-        // CONTENT: Simple fade in/out based on position
-        if (content) {
-          // Fade in when entering
-          gsap.fromTo(content,
-            { opacity: 0 },
-            {
-              opacity: 1,
-              ease: "power2.out",
-              scrollTrigger: {
-                trigger: section,
-                start: "top 80%",
-                end: "top 30%",
-                scrub: true,
-              },
-            }
-          )
-
-          // Fade out when leaving
-          gsap.fromTo(content,
-            { opacity: 1 },
-            {
-              opacity: 0,
-              ease: "power2.in",
-              scrollTrigger: {
-                trigger: section,
-                start: "bottom 70%",
-                end: "bottom 20%",
-                scrub: true,
-              },
-            }
-          )
-        }
-      })
-
-      // Floating particles
-      const particles = document.querySelectorAll(".particle")
-      particles.forEach((particle, i) => {
-        gsap.to(particle, {
-          y: "random(-80, 80)",
-          x: "random(-40, 40)",
-          duration: "random(8, 15)",
-          repeat: -1,
-          yoyo: true,
-          ease: "sine.inOut",
-          delay: i * 0.2,
+        // PIN the section and scrub through animation
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top top",
+            end: "+=150%",
+            pin: true,
+            scrub: 1,
+            anticipatePin: 1,
+          },
         })
+
+        // IMAGE CONTAINER: Scale up (zoom effect)
+        tl.fromTo(media,
+          { scale: 1 },
+          { scale: 1.3, duration: 1 },
+          0
+        )
+
+        // IMAGE INNER: Additional scale + slight blur as you leave
+        tl.fromTo(mediaInner,
+          { scale: 1.1, filter: "blur(0px) brightness(1)" },
+          { scale: 1, filter: "blur(3px) brightness(0.7)", duration: 1 },
+          0
+        )
+
+        // CONTENT: Fade in then out (text stays HORIZONTAL, no movement)
+        tl.fromTo(content,
+          { opacity: 0 },
+          { opacity: 1, duration: 0.25 },
+          0.1
+        )
+        tl.to(content,
+          { opacity: 0, duration: 0.25 },
+          0.75
+        )
       })
 
       // Progress bar
@@ -166,6 +238,7 @@ export default function RemoteBuildsImmersive() {
 
         body {
           overflow-x: hidden;
+          background: #0a0f0a;
         }
 
         .headline-font {
@@ -177,7 +250,7 @@ export default function RemoteBuildsImmersive() {
         }
 
         .text-shadow-lg {
-          text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+          text-shadow: 0 2px 40px rgba(0,0,0,0.9), 0 0 80px rgba(0,0,0,0.5);
         }
 
         .scroll-progress-bar {
@@ -189,46 +262,40 @@ export default function RemoteBuildsImmersive() {
       <Navbar />
 
       {/* Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-[3px] bg-white/5 z-[100]">
+      <div className="fixed top-0 left-0 right-0 h-[2px] bg-white/5 z-[100]">
         <div className="scroll-progress-bar h-full bg-[#c6912c]" />
       </div>
 
-      {/* Floating Particles */}
-      <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={i}
-            className="particle absolute rounded-full bg-[#c6912c]"
-            style={{
-              width: Math.random() * 4 + 2 + "px",
-              height: Math.random() * 4 + 2 + "px",
-              left: Math.random() * 100 + "%",
-              top: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.2 + 0.05,
-            }}
-          />
-        ))}
-      </div>
+      {/* Connected Particle Network (constellation effect) */}
+      <canvas 
+        ref={canvasRef}
+        className="fixed inset-0 pointer-events-none z-30"
+        style={{ mixBlendMode: "screen" }}
+      />
 
       {/* Hero Section */}
-      <section className="story-section relative w-full h-screen overflow-hidden">
-        <div className="story-media absolute inset-[-10%] w-[120%] h-[120%]">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src="/dream.mp4" type="video/mp4" />
-          </video>
+      <section className="pinned-section relative w-full h-screen overflow-hidden">
+        <div className="section-media absolute inset-0 w-full h-full origin-center">
+          <div className="section-media-inner w-full h-full">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/dream.mp4" type="video/mp4" />
+            </video>
+          </div>
         </div>
 
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0a] via-transparent to-transparent" />
+        {/* Gradients */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0a] via-transparent to-transparent z-10" />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f0a]/60 via-transparent to-transparent z-10" />
 
-        <div className="story-content relative z-20 h-full flex flex-col justify-end pb-24 md:pb-32 px-8 md:px-16 lg:px-24">
-          <h1 className="headline-font text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight text-shadow-lg">
+        {/* Content */}
+        <div className="section-content absolute inset-0 z-40 flex flex-col justify-end pb-24 md:pb-32 px-8 md:px-16 lg:px-24">
+          <h1 className="headline-font text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight text-shadow-lg max-w-4xl">
             YOU FOUND IT.
           </h1>
           <p className="body-font text-lg md:text-xl lg:text-2xl text-white/80 mt-4 md:mt-6 font-light max-w-xl">
@@ -251,42 +318,42 @@ export default function RemoteBuildsImmersive() {
       {SECTIONS.slice(1).map((section, index) => (
         <section
           key={section.id}
-          className="story-section relative w-full min-h-screen overflow-hidden"
+          className="pinned-section relative w-full h-screen overflow-hidden"
         >
-          {/* Background Image */}
-          <div className="story-media absolute inset-[-10%] w-[120%] h-[120%]">
-            <Image
-              src={section.media}
-              alt={section.headline}
-              fill
-              className="object-cover"
-              priority={index < 2}
-            />
+          {/* Image - Scales dramatically like Pioneer */}
+          <div className="section-media absolute inset-0 w-full h-full origin-center">
+            <div className="section-media-inner w-full h-full">
+              <Image
+                src={section.media}
+                alt={section.headline}
+                fill
+                className="object-cover"
+                priority={index < 2}
+              />
+            </div>
           </div>
 
-          {/* Gradient overlays for smooth blending */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0a] via-transparent to-[#0a0f0a]/80" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f0a]/60 via-transparent to-transparent" />
+          {/* Gradients for depth */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0a] via-transparent to-[#0a0f0a]/40 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f0a]/70 via-[#0a0f0a]/20 to-transparent z-10" />
 
-          {/* Content - Static position, only fades */}
-          <div className="story-content relative z-20 min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24">
-            <div className="max-w-2xl">
-              {/* Section indicator */}
-              <span className="body-font text-[#c6912c] text-sm tracking-[0.2em] uppercase mb-4 block">
+          {/* Content - STATIC position, only fades */}
+          <div className="section-content absolute inset-0 z-40 flex flex-col justify-center px-8 md:px-16 lg:px-24">
+            <div className="max-w-xl">
+              <span className="body-font text-[#c6912c] text-sm tracking-[0.3em] uppercase mb-4 block font-medium">
                 {String(index + 2).padStart(2, "0")}
               </span>
 
-              <h2 className="headline-font text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] text-shadow-lg">
+              <h2 className="headline-font text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] text-shadow-lg">
                 {section.headline}
               </h2>
 
-              <p className="body-font text-base md:text-lg lg:text-xl text-white/70 mt-6 md:mt-8 font-light leading-relaxed">
+              <p className="body-font text-base md:text-lg text-white/75 mt-6 font-light leading-relaxed">
                 {section.subtext}
               </p>
 
-              {/* CTA on last section */}
               {section.id === "result" && (
-                <div className="mt-10">
+                <div className="mt-8">
                   <a
                     href="/contact"
                     className="group inline-flex items-center gap-3 bg-[#c6912c] hover:bg-[#d4a43d] text-black font-medium px-8 py-4 text-base transition-all duration-300 body-font"
@@ -309,9 +376,9 @@ export default function RemoteBuildsImmersive() {
         </section>
       ))}
 
-      {/* Final CTA Section */}
-      <section className="relative bg-[#0a0f0a] py-24 md:py-32">
-        <div className="relative z-10 container mx-auto px-8 md:px-16 text-center">
+      {/* Final CTA */}
+      <section className="relative bg-[#0a0f0a] py-24 md:py-32 z-50">
+        <div className="relative container mx-auto px-8 md:px-16 text-center">
           <h2 className="headline-font text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Ready to Build the{" "}
             <span className="text-[#c6912c]">Impossible</span>?
