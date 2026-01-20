@@ -64,72 +64,99 @@ export default function RemoteBuildsImmersive() {
       const mediaLayers = document.querySelectorAll(".media-layer")
       const contentLayers = document.querySelectorAll(".content-layer")
 
-      // Media crossfade
+      // Media crossfade with parallax
       mediaLayers.forEach((layer, index) => {
+        const inner = layer.querySelector('video, img')
+        
         if (index === 0) {
-          gsap.set(layer, { opacity: 1, scale: 1 })
+          gsap.set(layer, { opacity: 1 })
         } else {
-          gsap.set(layer, { opacity: 0, scale: 1.05 })
+          gsap.set(layer, { opacity: 0 })
         }
 
+        // Parallax movement on all images - moves opposite to scroll
+        if (inner) {
+          gsap.fromTo(inner,
+            { yPercent: -10, scale: 1.15 },
+            {
+              yPercent: 10,
+              scale: 1.05,
+              ease: "none",
+              scrollTrigger: {
+                trigger: document.querySelector(`#trigger-${index}`),
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              }
+            }
+          )
+        }
+
+        // Crossfade between images - slower transition
         if (index < mediaLayers.length - 1) {
           const trigger = document.querySelector(`#trigger-${index}`)
           
-          gsap.timeline({
+          // Fade out current layer
+          gsap.to(layer, { 
+            opacity: 0,
             scrollTrigger: {
               trigger: trigger,
-              start: "top top",
+              start: "center center",
               end: "bottom top",
-              scrub: 1.5,
+              scrub: 2,
             }
           })
-          .to(layer, { 
-            opacity: 0, 
-            scale: 1.1,
-            duration: 1 
-          }, 0)
-          .to(mediaLayers[index + 1], { 
-            opacity: 1, 
-            scale: 1,
-            duration: 1 
-          }, 0)
+          
+          // Fade in next layer
+          gsap.to(mediaLayers[index + 1], { 
+            opacity: 1,
+            scrollTrigger: {
+              trigger: trigger,
+              start: "center center",
+              end: "bottom top",
+              scrub: 2,
+            }
+          })
         }
       })
 
-      // Content fade
+      // Content fade - slower, matches image transitions
       contentLayers.forEach((layer, index) => {
         const trigger = document.querySelector(`#trigger-${index}`)
         
         if (index === 0) {
-          // First content starts visible, only fades out
+          // First content starts visible, fades out slowly
           gsap.to(layer, {
             opacity: 0,
             scrollTrigger: {
               trigger: trigger,
-              start: "bottom 80%",
-              end: "bottom 40%",
-              scrub: 1,
+              start: "center center",
+              end: "bottom 20%",
+              scrub: 2,
             }
           })
         } else {
-          // Other content fades in then out
-          gsap.to(layer, {
-            opacity: 1,
-            scrollTrigger: {
-              trigger: trigger,
-              start: "top 70%",
-              end: "top 20%",
-              scrub: 1,
+          // Other content fades in then out - slower
+          gsap.fromTo(layer,
+            { opacity: 0 },
+            {
+              opacity: 1,
+              scrollTrigger: {
+                trigger: trigger,
+                start: "top 80%",
+                end: "top 20%",
+                scrub: 2,
+              }
             }
-          })
+          )
 
           gsap.to(layer, {
             opacity: 0,
             scrollTrigger: {
               trigger: trigger,
-              start: "bottom 80%",
-              end: "bottom 40%",
-              scrub: 1,
+              start: "center center",
+              end: "bottom 20%",
+              scrub: 2,
             }
           })
         }
@@ -209,7 +236,7 @@ export default function RemoteBuildsImmersive() {
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
-            className={`media-layer absolute inset-0 w-full h-full ${index !== 0 ? 'layer-hidden' : ''}`}
+            className={`media-layer absolute inset-[-10%] w-[120%] h-[120%] ${index !== 0 ? 'layer-hidden' : ''}`}
           >
             {section.type === "video" ? (
               <video
@@ -278,12 +305,12 @@ export default function RemoteBuildsImmersive() {
 
       </div>
 
-      {/* SCROLL TRIGGERS */}
+      {/* SCROLL TRIGGERS - taller for slower transitions */}
       {SECTIONS.map((_, index) => (
         <div 
           key={index}
           id={`trigger-${index}`}
-          className="h-screen w-full"
+          className="h-[150vh] w-full"
         />
       ))}
 
@@ -344,7 +371,7 @@ export default function RemoteBuildsImmersive() {
       </div>
 
       {/* Spacer */}
-      <div className="h-screen" />
+      <div className="h-[50vh]" />
 
       {/* Final CTA */}
       <section className="relative py-24 md:py-32 z-50 bg-gradient-to-b from-transparent via-[#f5f5f0] to-[#f5f5f0]">
