@@ -177,7 +177,8 @@ export default function RemoteWorkPage() {
           src="/Remote_Hero.png"
           alt="Remote mountain construction"
           fill
-          className="object-cover object-center"
+          className="object-cover"
+          style={{ objectPosition: 'center 20%' }}
           priority
         />
         
