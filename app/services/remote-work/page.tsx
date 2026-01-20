@@ -61,166 +61,74 @@ export default function RemoteBuildsImmersive() {
       gsap.registerPlugin(ScrollTrigger)
 
       // Select all sections
-      const sections = document.querySelectorAll(".parallax-section")
+      const sections = document.querySelectorAll(".story-section")
 
-      sections.forEach((section, index) => {
-        const media = section.querySelector(".parallax-media")
-        const headline = section.querySelector(".parallax-headline")
-        const subtext = section.querySelector(".parallax-subtext")
-        const number = section.querySelector(".parallax-number")
-        const overlay = section.querySelector(".parallax-overlay")
+      sections.forEach((section) => {
+        const media = section.querySelector(".story-media")
+        const content = section.querySelector(".story-content")
 
-        // Direction alternates for variety
-        const direction = index % 2 === 0 ? 1 : -1
+        // IMAGE: Subtle parallax (moves slower than scroll)
+        if (media) {
+          gsap.fromTo(media,
+            { yPercent: -10 },
+            {
+              yPercent: 10,
+              ease: "none",
+              scrollTrigger: {
+                trigger: section,
+                start: "top bottom",
+                end: "bottom top",
+                scrub: true,
+              },
+            }
+          )
+        }
 
-        // MEDIA: Moves OPPOSITE to scroll (creates depth)
-        // As you scroll DOWN, image moves UP (and vice versa)
-        gsap.fromTo(media,
-          { 
-            yPercent: -15,
-            scale: 1.15,
-            rotation: direction * 1
-          },
-          {
-            yPercent: 15,
-            scale: 1,
-            rotation: direction * -1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          }
-        )
+        // CONTENT: Simple fade in/out based on position
+        if (content) {
+          // Fade in when entering
+          gsap.fromTo(content,
+            { opacity: 0 },
+            {
+              opacity: 1,
+              ease: "power2.out",
+              scrollTrigger: {
+                trigger: section,
+                start: "top 80%",
+                end: "top 30%",
+                scrub: true,
+              },
+            }
+          )
 
-        // HEADLINE: Moves FASTER than scroll (foreground feel)
-        gsap.fromTo(headline,
-          { 
-            yPercent: 50,
-            xPercent: direction * 10,
-            opacity: 0,
-            rotation: direction * 3
-          },
-          {
-            yPercent: -50,
-            xPercent: direction * -10,
-            opacity: 1,
-            rotation: 0,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          }
-        )
-
-        // SUBTEXT: Moves at different rate than headline
-        gsap.fromTo(subtext,
-          { 
-            yPercent: 80,
-            xPercent: direction * -5,
-            opacity: 0
-          },
-          {
-            yPercent: -30,
-            xPercent: direction * 5,
-            opacity: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          }
-        )
-
-        // NUMBER: Moves in opposite direction to text
-        gsap.fromTo(number,
-          { 
-            yPercent: -100,
-            xPercent: direction * -20,
-            opacity: 0,
-            rotation: direction * -10
-          },
-          {
-            yPercent: 100,
-            xPercent: direction * 20,
-            opacity: 0.3,
-            rotation: direction * 10,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1,
-            },
-          }
-        )
-
-        // OVERLAY: Fades based on position
-        gsap.fromTo(overlay,
-          { opacity: 0.5 },
-          {
-            opacity: 0.2,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "top bottom",
-              end: "center center",
-              scrub: 1,
-            },
-          }
-        )
-        
-        // Overlay darkens as you leave
-        gsap.fromTo(overlay,
-          { opacity: 0.2 },
-          {
-            opacity: 0.6,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section,
-              start: "center center",
-              end: "bottom top",
-              scrub: 1,
-            },
-          }
-        )
+          // Fade out when leaving
+          gsap.fromTo(content,
+            { opacity: 1 },
+            {
+              opacity: 0,
+              ease: "power2.in",
+              scrollTrigger: {
+                trigger: section,
+                start: "bottom 70%",
+                end: "bottom 20%",
+                scrub: true,
+              },
+            }
+          )
+        }
       })
 
-      // Floating particles with continuous diagonal movement
+      // Floating particles
       const particles = document.querySelectorAll(".particle")
       particles.forEach((particle, i) => {
-        const direction = i % 2 === 0 ? 1 : -1
-        
-        // Continuous floating
         gsap.to(particle, {
-          y: `random(-150, 150)`,
-          x: `random(-100, 100)`,
-          rotation: `random(-180, 180)`,
-          scale: `random(0.5, 1.5)`,
-          duration: `random(6, 12)`,
+          y: "random(-80, 80)",
+          x: "random(-40, 40)",
+          duration: "random(8, 15)",
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
-        })
-        
-        // Diagonal drift based on scroll
-        gsap.to(particle, {
-          y: direction * -800,
-          x: direction * -400,
-          ease: "none",
-          scrollTrigger: {
-            trigger: containerRef.current,
-            start: "top top",
-            end: "bottom bottom",
-            scrub: 2,
-          },
+          delay: i * 0.2,
         })
       })
 
@@ -248,7 +156,7 @@ export default function RemoteBuildsImmersive() {
   }, [])
 
   return (
-    <div ref={containerRef} className="w-full bg-black">
+    <div ref={containerRef} className="w-full bg-[#0a0f0a]">
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Outfit:wght@200;300;400;500;600&display=swap');
 
@@ -269,7 +177,7 @@ export default function RemoteBuildsImmersive() {
         }
 
         .text-shadow-lg {
-          text-shadow: 0 4px 30px rgba(0,0,0,0.5), 0 0 80px rgba(0,0,0,0.3);
+          text-shadow: 0 2px 20px rgba(0,0,0,0.5);
         }
 
         .scroll-progress-bar {
@@ -281,34 +189,30 @@ export default function RemoteBuildsImmersive() {
       <Navbar />
 
       {/* Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-1 bg-white/10 z-[100]">
-        <div className="scroll-progress-bar h-full bg-gradient-to-r from-[#c6912c] to-[#e8b84a]" />
+      <div className="fixed top-0 left-0 right-0 h-[3px] bg-white/5 z-[100]">
+        <div className="scroll-progress-bar h-full bg-[#c6912c]" />
       </div>
 
       {/* Floating Particles */}
       <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-        {[...Array(20)].map((_, i) => (
+        {[...Array(15)].map((_, i) => (
           <div
             key={i}
-            className="particle absolute rounded-full"
+            className="particle absolute rounded-full bg-[#c6912c]"
             style={{
-              width: Math.random() * 8 + 3 + "px",
-              height: Math.random() * 8 + 3 + "px",
+              width: Math.random() * 4 + 2 + "px",
+              height: Math.random() * 4 + 2 + "px",
               left: Math.random() * 100 + "%",
               top: Math.random() * 100 + "%",
-              opacity: Math.random() * 0.3 + 0.1,
-              background: i % 3 === 0 
-                ? "radial-gradient(circle, #c6912c 0%, transparent 70%)" 
-                : "#c6912c",
-              filter: i % 3 === 0 ? "blur(2px)" : "none",
+              opacity: Math.random() * 0.2 + 0.05,
             }}
           />
         ))}
       </div>
 
       {/* Hero Section */}
-      <section className="parallax-section relative w-full h-screen overflow-hidden">
-        <div className="parallax-media absolute inset-[-15%] w-[130%] h-[130%]">
+      <section className="story-section relative w-full h-screen overflow-hidden">
+        <div className="story-media absolute inset-[-10%] w-[120%] h-[120%]">
           <video
             autoPlay
             muted
@@ -320,42 +224,37 @@ export default function RemoteBuildsImmersive() {
           </video>
         </div>
 
-        <div className="parallax-overlay absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent" />
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0a] via-transparent to-transparent" />
 
-        <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
-          <h1 className="parallax-headline headline-font text-6xl md:text-8xl lg:text-9xl font-bold text-white tracking-tight text-shadow-lg">
+        <div className="story-content relative z-20 h-full flex flex-col justify-end pb-24 md:pb-32 px-8 md:px-16 lg:px-24">
+          <h1 className="headline-font text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight text-shadow-lg">
             YOU FOUND IT.
           </h1>
-          <p className="parallax-subtext body-font text-xl md:text-2xl lg:text-3xl text-white/90 mt-6 md:mt-8 font-light max-w-2xl">
+          <p className="body-font text-lg md:text-xl lg:text-2xl text-white/80 mt-4 md:mt-6 font-light max-w-xl">
             That perfect spot where the world falls away.
           </p>
           
           {/* Scroll Hint */}
-          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3">
-            <span className="body-font text-white/50 text-sm tracking-[0.3em] uppercase">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+            <span className="body-font text-white/40 text-xs tracking-[0.2em] uppercase">
               Scroll to discover
             </span>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2 animate-bounce" />
-            </div>
+            <svg className="w-5 h-5 text-[#c6912c] animate-bounce" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+            </svg>
           </div>
         </div>
-
-        {/* Diagonal Decorative Line */}
-        <div 
-          className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent"
-          style={{ clipPath: "polygon(0 60%, 100% 0%, 100% 100%, 0 100%)" }}
-        />
       </section>
 
       {/* Content Sections */}
       {SECTIONS.slice(1).map((section, index) => (
         <section
           key={section.id}
-          className="parallax-section relative w-full min-h-screen overflow-hidden"
+          className="story-section relative w-full min-h-screen overflow-hidden"
         >
-          {/* Background Image - Oversized for parallax movement */}
-          <div className="parallax-media absolute inset-[-15%] w-[130%] h-[130%]">
+          {/* Background Image */}
+          <div className="story-media absolute inset-[-10%] w-[120%] h-[120%]">
             <Image
               src={section.media}
               alt={section.headline}
@@ -365,44 +264,39 @@ export default function RemoteBuildsImmersive() {
             />
           </div>
 
-          {/* Overlay */}
-          <div className="parallax-overlay absolute inset-0 bg-black/30" />
+          {/* Gradient overlays for smooth blending */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0f0a] via-transparent to-[#0a0f0a]/80" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0a0f0a]/60 via-transparent to-transparent" />
 
-          {/* Diagonal Top Border */}
-          <div 
-            className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-black to-transparent z-10"
-            style={{ clipPath: "polygon(0 0, 100% 0, 100% 40%, 0 100%)" }}
-          />
+          {/* Content - Static position, only fades */}
+          <div className="story-content relative z-20 min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24">
+            <div className="max-w-2xl">
+              {/* Section indicator */}
+              <span className="body-font text-[#c6912c] text-sm tracking-[0.2em] uppercase mb-4 block">
+                {String(index + 2).padStart(2, "0")}
+              </span>
 
-          {/* Content */}
-          <div className="relative z-20 min-h-screen flex flex-col justify-center px-8 md:px-16 lg:px-24 py-32">
-            {/* Section Number */}
-            <span className="parallax-number body-font text-[#c6912c] text-[10rem] md:text-[14rem] font-bold absolute top-1/2 -translate-y-1/2 right-4 md:right-12 opacity-20 pointer-events-none">
-              {String(index + 2).padStart(2, "0")}
-            </span>
-
-            <div className="max-w-4xl">
-              <h2 className="parallax-headline headline-font text-5xl md:text-7xl lg:text-8xl font-bold text-white tracking-tight leading-[0.95] text-shadow-lg">
+              <h2 className="headline-font text-4xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] text-shadow-lg">
                 {section.headline}
               </h2>
 
-              <p className="parallax-subtext body-font text-lg md:text-xl lg:text-2xl text-white/85 mt-6 md:mt-10 font-light leading-relaxed max-w-2xl">
+              <p className="body-font text-base md:text-lg lg:text-xl text-white/70 mt-6 md:mt-8 font-light leading-relaxed">
                 {section.subtext}
               </p>
 
               {/* CTA on last section */}
               {section.id === "result" && (
-                <div className="mt-12">
+                <div className="mt-10">
                   <a
                     href="/contact"
-                    className="group inline-flex items-center gap-4 bg-[#c6912c] hover:bg-[#d4a43d] text-black font-semibold px-10 py-5 text-lg transition-all duration-500 body-font"
+                    className="group inline-flex items-center gap-3 bg-[#c6912c] hover:bg-[#d4a43d] text-black font-medium px-8 py-4 text-base transition-all duration-300 body-font"
                   >
                     Start Your Journey
                     <svg
-                      className="w-5 h-5 transition-transform duration-500 group-hover:translate-x-2"
+                      className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                       fill="none"
                       stroke="currentColor"
-                      strokeWidth={2.5}
+                      strokeWidth={2}
                       viewBox="0 0 24 24"
                     >
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -412,46 +306,30 @@ export default function RemoteBuildsImmersive() {
               )}
             </div>
           </div>
-
-          {/* Diagonal Bottom Border */}
-          <div 
-            className="absolute bottom-0 left-0 w-full h-32 bg-gradient-to-t from-black to-transparent z-10"
-            style={{ clipPath: "polygon(0 60%, 100% 0%, 100% 100%, 0 100%)" }}
-          />
         </section>
       ))}
 
       {/* Final CTA Section */}
-      <section className="relative bg-black py-32 md:py-48 overflow-hidden">
-        <div className="absolute inset-0">
-          <div 
-            className="absolute inset-0 opacity-20"
-            style={{
-              backgroundImage: `radial-gradient(circle at 2px 2px, #c6912c 1px, transparent 0)`,
-              backgroundSize: "50px 50px",
-            }}
-          />
-        </div>
-
-        <div className="relative z-10 container mx-auto px-6 md:px-16 text-center">
-          <h2 className="headline-font text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-8">
+      <section className="relative bg-[#0a0f0a] py-24 md:py-32">
+        <div className="relative z-10 container mx-auto px-8 md:px-16 text-center">
+          <h2 className="headline-font text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
             Ready to Build the{" "}
-            <span className="text-[#c6912c] italic">Impossible</span>?
+            <span className="text-[#c6912c]">Impossible</span>?
           </h2>
-          <p className="body-font text-lg md:text-xl text-white/60 max-w-2xl mx-auto mb-12 font-light">
-            Tell us about your dream location. We'll make it reality.
+          <p className="body-font text-base md:text-lg text-white/50 max-w-xl mx-auto mb-10 font-light">
+            Tell us about your dream location.
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-6 justify-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
               href="/contact"
-              className="inline-flex items-center justify-center gap-3 bg-[#c6912c] hover:bg-[#d4a43d] text-black font-semibold px-12 py-5 text-lg transition-all duration-300 body-font"
+              className="inline-flex items-center justify-center bg-[#c6912c] hover:bg-[#d4a43d] text-black font-medium px-10 py-4 transition-all duration-300 body-font"
             >
               Contact Us
             </a>
             <a
               href="/projects"
-              className="inline-flex items-center justify-center gap-3 border-2 border-white/20 hover:border-[#c6912c] text-white hover:text-[#c6912c] font-semibold px-12 py-5 text-lg transition-all duration-300 body-font"
+              className="inline-flex items-center justify-center border border-white/20 hover:border-[#c6912c] text-white hover:text-[#c6912c] font-medium px-10 py-4 transition-all duration-300 body-font"
             >
               View Projects
             </a>
