@@ -9,7 +9,7 @@ const SECTIONS = [
   {
     id: "dream",
     type: "video",
-    media: "/remote/dream.mp4",
+    media: "/dream.mp4",
     headline: "YOU FOUND IT.",
     subtext: "That perfect spot where the world falls away.",
     theme: "light",
@@ -17,7 +17,7 @@ const SECTIONS = [
   {
     id: "challenge",
     type: "image",
-    media: "/remote/challenge.png",
+    media: "/challenge.png",
     headline: "OTHERS SEE IMPOSSIBLE.",
     subtext: "No roads. No access. No way... they said.",
     theme: "dark",
@@ -25,7 +25,7 @@ const SECTIONS = [
   {
     id: "scout",
     type: "image",
-    media: "/remote/scout.png",
+    media: "/scout.png",
     headline: "WE SEE POTENTIAL.",
     subtext: "Our team assesses terrain, logistics, and challenges — mapping the path forward.",
     theme: "dark",
@@ -33,7 +33,7 @@ const SECTIONS = [
   {
     id: "mobilize",
     type: "image",
-    media: "/remote/mobilize.png",
+    media: "/mobilize.png",
     headline: "WE BRING EVERYTHING.",
     subtext: "Premium materials delivered to the unreachable — no matter what it takes.",
     theme: "light",
@@ -41,7 +41,7 @@ const SECTIONS = [
   {
     id: "build",
     type: "image",
-    media: "/remote/build.png",
+    media: "/build.png",
     headline: "PRECISION IN THE WILD.",
     subtext: "Expert craftsmen building with care, no matter how far off the grid.",
     theme: "light",
@@ -49,7 +49,7 @@ const SECTIONS = [
   {
     id: "result",
     type: "image",
-    media: "/remote/result.png",
+    media: "/result.png",
     headline: "YOUR DREAM. REALIZED.",
     subtext: "If you can dream the location, we can build it there.",
     theme: "dark",
@@ -256,7 +256,7 @@ export default function RemoteBuildsScrollytelling() {
             playsInline
             className="hero-video w-full h-full object-cover"
           >
-            <source src="/remote/dream.mp4" type="video/mp4" />
+            <source src="/dream-hero-optimized.mp4" type="video/mp4" />
           </video>
         </div>
 
