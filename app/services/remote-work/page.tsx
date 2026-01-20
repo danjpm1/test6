@@ -71,7 +71,7 @@ export default function RemoteBuildsImmersive() {
       // Smooth defaults
       gsap.defaults({ ease: "none" })
 
-      // Hero section - pin and zoom
+      // Hero section - pin and zoom with diagonal movement
       if (heroRef.current) {
         const heroVideo = heroRef.current.querySelector(".hero-media")
         const heroHeadline = heroRef.current.querySelector(".hero-headline")
@@ -90,13 +90,13 @@ export default function RemoteBuildsImmersive() {
         })
 
         heroTl
-          .to(heroVideo, { scale: 1.3, duration: 1 }, 0)
-          .to(heroHeadline, { y: -100, opacity: 0, scale: 1.1, duration: 0.5 }, 0)
-          .to(heroSubtext, { y: -50, opacity: 0, duration: 0.5 }, 0.1)
-          .to(heroOverlay, { opacity: 0.8, duration: 1 }, 0)
+          .to(heroVideo, { scale: 1.4, rotation: 2, duration: 1 }, 0)
+          .to(heroHeadline, { y: -150, x: -100, opacity: 0, scale: 1.1, rotation: -3, duration: 0.5 }, 0)
+          .to(heroSubtext, { y: -80, x: -50, opacity: 0, duration: 0.5 }, 0.1)
+          .to(heroOverlay, { opacity: 0.9, duration: 1 }, 0)
       }
 
-      // Animate each content section
+      // Animate each content section with diagonal movements
       sectionsRef.current.forEach((section, index) => {
         if (!section) return
 
@@ -105,7 +105,11 @@ export default function RemoteBuildsImmersive() {
         const subtext = section.querySelector(".section-subtext")
         const number = section.querySelector(".section-number")
         const overlay = section.querySelector(".section-overlay")
-        const bgColor = section.querySelector(".section-bg")
+        const diagonalWipe = section.querySelector(".diagonal-wipe")
+
+        // Alternate direction for visual variety
+        const isEven = index % 2 === 0
+        const xDirection = isEven ? 1 : -1
 
         // Pin section and create immersive effects
         const tl = gsap.timeline({
@@ -119,43 +123,59 @@ export default function RemoteBuildsImmersive() {
           },
         })
 
-        // Initial states
-        gsap.set(headline, { y: 150, opacity: 0, scale: 0.9 })
-        gsap.set(subtext, { y: 100, opacity: 0 })
-        gsap.set(number, { x: -50, opacity: 0 })
-        gsap.set(media, { scale: 1.2 })
+        // Initial states - coming from diagonal direction
+        gsap.set(headline, { y: 200, x: 100 * xDirection, opacity: 0, scale: 0.85, rotation: 5 * xDirection })
+        gsap.set(subtext, { y: 150, x: 80 * xDirection, opacity: 0 })
+        gsap.set(number, { x: -100 * xDirection, opacity: 0, rotation: -10 * xDirection })
+        gsap.set(media, { scale: 1.3, x: 50 * xDirection, rotation: 2 * xDirection })
+        gsap.set(diagonalWipe, { scaleX: 1 })
 
-        // Animation sequence
+        // Animation sequence with diagonal movement
         tl
-          // Phase 1: Reveal content (0 - 0.3)
-          .to(media, { scale: 1, duration: 0.3 }, 0)
-          .to(overlay, { opacity: 0.3, duration: 0.3 }, 0)
-          .to(number, { x: 0, opacity: 1, duration: 0.2 }, 0.1)
-          .to(headline, { y: 0, opacity: 1, scale: 1, duration: 0.3 }, 0.1)
-          .to(subtext, { y: 0, opacity: 1, duration: 0.3 }, 0.2)
+          // Phase 1: Diagonal wipe reveal (0 - 0.2)
+          .to(diagonalWipe, { scaleX: 0, duration: 0.2, ease: "power2.inOut" }, 0)
           
-          // Phase 2: Hold (0.3 - 0.6)
+          // Phase 2: Content reveals diagonally (0.1 - 0.4)
+          .to(media, { scale: 1, x: 0, rotation: 0, duration: 0.4 }, 0.1)
+          .to(overlay, { opacity: 0.3, duration: 0.3 }, 0.1)
+          .to(number, { x: 0, opacity: 0.2, rotation: 0, duration: 0.3 }, 0.15)
+          .to(headline, { y: 0, x: 0, opacity: 1, scale: 1, rotation: 0, duration: 0.35 }, 0.15)
+          .to(subtext, { y: 0, x: 0, opacity: 1, duration: 0.35 }, 0.25)
           
-          // Phase 3: Exit (0.6 - 1.0)
-          .to(headline, { y: -100, opacity: 0, scale: 1.05, duration: 0.3 }, 0.6)
-          .to(subtext, { y: -50, opacity: 0, duration: 0.3 }, 0.65)
-          .to(number, { x: 50, opacity: 0, duration: 0.2 }, 0.7)
-          .to(media, { scale: 1.3, duration: 0.4 }, 0.6)
-          .to(overlay, { opacity: 0.9, duration: 0.4 }, 0.6)
+          // Phase 3: Hold with subtle movement (0.4 - 0.6)
+          .to(media, { scale: 1.05, rotation: 0.5 * xDirection, duration: 0.2 }, 0.4)
+          
+          // Phase 4: Exit diagonally (0.6 - 1.0)
+          .to(headline, { y: -150, x: -80 * xDirection, opacity: 0, scale: 1.1, rotation: -5 * xDirection, duration: 0.35 }, 0.6)
+          .to(subtext, { y: -100, x: -60 * xDirection, opacity: 0, duration: 0.35 }, 0.65)
+          .to(number, { x: 100 * xDirection, opacity: 0, rotation: 10 * xDirection, duration: 0.25 }, 0.7)
+          .to(media, { scale: 1.4, x: -30 * xDirection, rotation: -2 * xDirection, duration: 0.4 }, 0.6)
+          .to(overlay, { opacity: 1, duration: 0.4 }, 0.6)
       })
 
-      // Floating particles
+      // Floating particles - diagonal movement
       const particles = document.querySelectorAll(".particle")
       particles.forEach((particle, i) => {
+        const direction = i % 2 === 0 ? 1 : -1
         gsap.to(particle, {
-          y: "random(-100, 100)",
-          x: "random(-50, 50)",
-          rotation: "random(-180, 180)",
-          duration: "random(10, 20)",
+          y: `random(-200, 200)`,
+          x: `random(-150, 150)`,
+          rotation: `random(-360, 360)`,
+          scale: `random(0.5, 1.5)`,
+          duration: `random(8, 15)`,
           repeat: -1,
           yoyo: true,
           ease: "sine.inOut",
-          delay: i * 0.2,
+          delay: i * 0.3,
+        })
+        
+        // Add continuous diagonal drift
+        gsap.to(particle, {
+          y: `-=${direction * 500}`,
+          x: `-=${direction * 300}`,
+          duration: 20,
+          repeat: -1,
+          ease: "none",
         })
       })
 
@@ -229,6 +249,38 @@ export default function RemoteBuildsImmersive() {
         .text-shadow-lg {
           text-shadow: 0 4px 30px rgba(0,0,0,0.8), 0 0 100px rgba(0,0,0,0.5);
         }
+
+        /* Diagonal flow animation */
+        @keyframes diagonal-flow {
+          0% { 
+            transform: translate(100%, -100%) rotate(-45deg);
+            opacity: 0;
+          }
+          10% {
+            opacity: 1;
+          }
+          90% {
+            opacity: 1;
+          }
+          100% { 
+            transform: translate(-100%, 100%) rotate(-45deg);
+            opacity: 0;
+          }
+        }
+
+        /* Subtle rotation */
+        @keyframes subtle-rotate {
+          0%, 100% { transform: rotate(-1deg) scale(1); }
+          50% { transform: rotate(1deg) scale(1.02); }
+        }
+
+        .diagonal-animate {
+          animation: diagonal-flow 15s linear infinite;
+        }
+
+        .subtle-move {
+          animation: subtle-rotate 10s ease-in-out infinite;
+        }
       `}</style>
 
       <Navbar />
@@ -238,18 +290,51 @@ export default function RemoteBuildsImmersive() {
         <div className="scroll-progress-bar h-full bg-gradient-to-r from-[#c6912c] to-[#e8b84a]" />
       </div>
 
-      {/* Floating Particles */}
+      {/* Floating Particles - More Dynamic */}
       <div className="fixed inset-0 pointer-events-none z-10 overflow-hidden">
-        {[...Array(15)].map((_, i) => (
+        {/* Round particles */}
+        {[...Array(12)].map((_, i) => (
           <div
-            key={i}
-            className="particle bg-[#c6912c]"
+            key={`round-${i}`}
+            className="particle bg-[#c6912c] rounded-full"
             style={{
-              width: Math.random() * 6 + 2 + "px",
-              height: Math.random() * 6 + 2 + "px",
+              width: Math.random() * 8 + 3 + "px",
+              height: Math.random() * 8 + 3 + "px",
+              left: Math.random() * 100 + "%",
+              top: Math.random() * 100 + "%",
+              opacity: Math.random() * 0.4 + 0.1,
+            }}
+          />
+        ))}
+        {/* Elongated particles (like seeds) */}
+        {[...Array(8)].map((_, i) => (
+          <div
+            key={`seed-${i}`}
+            className="particle bg-[#c6912c]/60"
+            style={{
+              width: Math.random() * 4 + 2 + "px",
+              height: Math.random() * 15 + 8 + "px",
+              borderRadius: "50%",
               left: Math.random() * 100 + "%",
               top: Math.random() * 100 + "%",
               opacity: Math.random() * 0.3 + 0.1,
+              transform: `rotate(${Math.random() * 60 - 30}deg)`,
+            }}
+          />
+        ))}
+        {/* Glowing dots */}
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={`glow-${i}`}
+            className="particle rounded-full"
+            style={{
+              width: Math.random() * 12 + 6 + "px",
+              height: Math.random() * 12 + 6 + "px",
+              left: Math.random() * 100 + "%",
+              top: Math.random() * 100 + "%",
+              opacity: Math.random() * 0.2 + 0.05,
+              background: "radial-gradient(circle, #c6912c 0%, transparent 70%)",
+              filter: "blur(2px)",
             }}
           />
         ))}
@@ -327,6 +412,14 @@ export default function RemoteBuildsImmersive() {
           {/* Overlay */}
           <div className="section-overlay absolute inset-0 bg-black/60" />
           
+          {/* Diagonal Wipe Transition */}
+          <div 
+            className="diagonal-wipe absolute inset-0 bg-black z-30 origin-left"
+            style={{ 
+              clipPath: "polygon(0 0, 100% 0, 85% 100%, 0 100%)",
+            }}
+          />
+          
           {/* Vignette */}
           <div className="absolute inset-0 shadow-[inset_0_0_200px_rgba(0,0,0,0.7)]" />
 
@@ -369,9 +462,23 @@ export default function RemoteBuildsImmersive() {
             </div>
           </div>
 
-          {/* Decorative Corner */}
-          <div className="absolute bottom-0 left-0 w-32 h-32 border-l-2 border-b-2 border-[#c6912c]/30" />
-          <div className="absolute top-0 right-0 w-32 h-32 border-r-2 border-t-2 border-[#c6912c]/30" />
+          {/* Diagonal Decorative Lines */}
+          <div 
+            className="absolute bottom-0 left-0 w-64 h-1 bg-gradient-to-r from-[#c6912c] to-transparent origin-left"
+            style={{ transform: "rotate(-15deg) translateY(20px)" }}
+          />
+          <div 
+            className="absolute top-0 right-0 w-64 h-1 bg-gradient-to-l from-[#c6912c] to-transparent origin-right"
+            style={{ transform: "rotate(-15deg) translateY(-20px)" }}
+          />
+          
+          {/* Corner Accents */}
+          <div className="absolute bottom-8 left-8 w-16 h-16">
+            <div className="absolute bottom-0 left-0 w-full h-[2px] bg-[#c6912c]/40" style={{ transform: "rotate(-45deg) translateX(-30%)" }} />
+          </div>
+          <div className="absolute top-8 right-8 w-16 h-16">
+            <div className="absolute top-0 right-0 w-full h-[2px] bg-[#c6912c]/40" style={{ transform: "rotate(-45deg) translateX(30%)" }} />
+          </div>
         </section>
       ))}
 
