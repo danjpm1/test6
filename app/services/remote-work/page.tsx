@@ -52,96 +52,6 @@ const SECTIONS = [
 
 export default function RemoteBuildsImmersive() {
   const containerRef = useRef<HTMLDivElement>(null)
-  const canvasRef = useRef<HTMLCanvasElement>(null)
-
-  // Connected particles
-  useEffect(() => {
-    const canvas = canvasRef.current
-    if (!canvas) return
-    
-    const ctx = canvas.getContext("2d")
-    if (!ctx) return
-
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
-    }
-    resizeCanvas()
-    window.addEventListener("resize", resizeCanvas)
-
-    const particles: Array<{
-      x: number
-      y: number
-      baseX: number
-      baseY: number
-      size: number
-      vx: number
-      vy: number
-    }> = []
-
-    for (let i = 0; i < 40; i++) {
-      const x = Math.random() * canvas.width
-      const y = Math.random() * canvas.height
-      particles.push({
-        x, y,
-        baseX: x,
-        baseY: y,
-        size: Math.random() * 2 + 1,
-        vx: (Math.random() - 0.5) * 0.2,
-        vy: (Math.random() - 0.5) * 0.2,
-      })
-    }
-
-    let animationId: number
-    const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height)
-
-      particles.forEach((particle, i) => {
-        particle.x += particle.vx
-        particle.y += particle.vy
-        particle.vx += (particle.baseX - particle.x) * 0.0003
-        particle.vy += (particle.baseY - particle.y) * 0.0003
-        particle.vx *= 0.99
-        particle.vy *= 0.99
-
-        // Subtle gold particle
-        const gradient = ctx.createRadialGradient(
-          particle.x, particle.y, 0,
-          particle.x, particle.y, particle.size * 4
-        )
-        gradient.addColorStop(0, "rgba(198, 145, 44, 0.5)")
-        gradient.addColorStop(0.5, "rgba(198, 145, 44, 0.1)")
-        gradient.addColorStop(1, "rgba(198, 145, 44, 0)")
-        
-        ctx.beginPath()
-        ctx.arc(particle.x, particle.y, particle.size * 4, 0, Math.PI * 2)
-        ctx.fillStyle = gradient
-        ctx.fill()
-
-        // Connection lines
-        particles.forEach((other, j) => {
-          if (i >= j) return
-          const dist = Math.hypot(particle.x - other.x, particle.y - other.y)
-          if (dist < 100) {
-            ctx.beginPath()
-            ctx.moveTo(particle.x, particle.y)
-            ctx.lineTo(other.x, other.y)
-            ctx.strokeStyle = `rgba(198, 145, 44, ${0.08 * (1 - dist / 100)})`
-            ctx.lineWidth = 0.5
-            ctx.stroke()
-          }
-        })
-      })
-
-      animationId = requestAnimationFrame(animate)
-    }
-    animate()
-
-    return () => {
-      cancelAnimationFrame(animationId)
-      window.removeEventListener("resize", resizeCanvas)
-    }
-  }, [])
 
   // GSAP animations
   useEffect(() => {
@@ -190,27 +100,39 @@ export default function RemoteBuildsImmersive() {
       contentLayers.forEach((layer, index) => {
         const trigger = document.querySelector(`#trigger-${index}`)
         
-        gsap.set(layer, { opacity: 0 })
+        if (index === 0) {
+          // First content starts visible, only fades out
+          gsap.to(layer, {
+            opacity: 0,
+            scrollTrigger: {
+              trigger: trigger,
+              start: "bottom 80%",
+              end: "bottom 40%",
+              scrub: 1,
+            }
+          })
+        } else {
+          // Other content fades in then out
+          gsap.to(layer, {
+            opacity: 1,
+            scrollTrigger: {
+              trigger: trigger,
+              start: "top 70%",
+              end: "top 20%",
+              scrub: 1,
+            }
+          })
 
-        gsap.to(layer, {
-          opacity: 1,
-          scrollTrigger: {
-            trigger: trigger,
-            start: "top 70%",
-            end: "top 20%",
-            scrub: 1,
-          }
-        })
-
-        gsap.to(layer, {
-          opacity: 0,
-          scrollTrigger: {
-            trigger: trigger,
-            start: "bottom 80%",
-            end: "bottom 40%",
-            scrub: 1,
-          }
-        })
+          gsap.to(layer, {
+            opacity: 0,
+            scrollTrigger: {
+              trigger: trigger,
+              start: "bottom 80%",
+              end: "bottom 40%",
+              scrub: 1,
+            }
+          })
+        }
       })
 
       // Progress bar
@@ -266,6 +188,11 @@ export default function RemoteBuildsImmersive() {
           transform-origin: left;
           transform: scaleX(0);
         }
+
+        /* Hide non-active layers initially */
+        .layer-hidden {
+          opacity: 0;
+        }
       `}</style>
 
       <Navbar />
@@ -282,7 +209,7 @@ export default function RemoteBuildsImmersive() {
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
-            className="media-layer absolute inset-0 w-full h-full"
+            className={`media-layer absolute inset-0 w-full h-full ${index !== 0 ? 'layer-hidden' : ''}`}
           >
             {section.type === "video" ? (
               <video
@@ -351,13 +278,6 @@ export default function RemoteBuildsImmersive() {
 
       </div>
 
-      {/* Particle Canvas */}
-      <canvas 
-        ref={canvasRef}
-        className="fixed inset-0 pointer-events-none z-30"
-        style={{ mixBlendMode: "screen" }}
-      />
-
       {/* SCROLL TRIGGERS */}
       {SECTIONS.map((_, index) => (
         <div 
@@ -372,7 +292,7 @@ export default function RemoteBuildsImmersive() {
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
-            className="content-layer absolute inset-0 flex flex-col justify-center px-8 md:px-16 lg:px-24"
+            className={`content-layer absolute inset-0 flex flex-col justify-center px-8 md:px-16 lg:px-24 ${index !== 0 ? 'layer-hidden' : ''}`}
           >
             <div className="max-w-2xl pointer-events-auto">
               {index > 0 && (
