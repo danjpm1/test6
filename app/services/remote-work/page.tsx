@@ -12,7 +12,7 @@ const SECTIONS = [
     media: "/dream.mp4",
     headline: "YOU FOUND IT.",
     subtext: "That perfect spot where the world falls away.",
-    color: "#0a1a0f",
+    color: "#1a2f1f",
   },
   {
     id: "challenge",
@@ -20,7 +20,7 @@ const SECTIONS = [
     media: "/challange.png",
     headline: "OTHERS SEE IMPOSSIBLE.",
     subtext: "No roads. No access. No way... they said.",
-    color: "#1a1a2e",
+    color: "#2a2a3e",
   },
   {
     id: "scout",
@@ -28,7 +28,7 @@ const SECTIONS = [
     media: "/scout.png",
     headline: "WE SEE POTENTIAL.",
     subtext: "Our team assesses terrain, logistics, and challenges — mapping the path forward.",
-    color: "#1a2a3a",
+    color: "#2a3a4a",
   },
   {
     id: "mobilize",
@@ -36,7 +36,7 @@ const SECTIONS = [
     media: "/mobilize.png",
     headline: "WE BRING EVERYTHING.",
     subtext: "Premium materials delivered to the unreachable — no matter what it takes.",
-    color: "#2a1a0a",
+    color: "#3a2a1a",
   },
   {
     id: "build",
@@ -44,7 +44,7 @@ const SECTIONS = [
     media: "/build.png",
     headline: "PRECISION IN THE WILD.",
     subtext: "Expert craftsmen building with care, no matter how far off the grid.",
-    color: "#1a2a1a",
+    color: "#2a3a2a",
   },
   {
     id: "result",
@@ -52,7 +52,7 @@ const SECTIONS = [
     media: "/result.png",
     headline: "YOUR DREAM. REALIZED.",
     subtext: "If you can dream the location, we can build it there.",
-    color: "#0a0a1a",
+    color: "#1a1a2a",
   },
 ]
 
@@ -93,7 +93,7 @@ export default function RemoteBuildsImmersive() {
           .to(heroVideo, { scale: 1.4, rotation: 2, duration: 1 }, 0)
           .to(heroHeadline, { y: -150, x: -100, opacity: 0, scale: 1.1, rotation: -3, duration: 0.5 }, 0)
           .to(heroSubtext, { y: -80, x: -50, opacity: 0, duration: 0.5 }, 0.1)
-          .to(heroOverlay, { opacity: 0.9, duration: 1 }, 0)
+          .to(heroOverlay, { opacity: 0.6, duration: 1 }, 0)
       }
 
       // Animate each content section with diagonal movements
@@ -137,7 +137,7 @@ export default function RemoteBuildsImmersive() {
           
           // Phase 2: Content reveals diagonally (0.1 - 0.4)
           .to(media, { scale: 1, x: 0, rotation: 0, duration: 0.4 }, 0.1)
-          .to(overlay, { opacity: 0.3, duration: 0.3 }, 0.1)
+          .to(overlay, { opacity: 0.15, duration: 0.3 }, 0.1)
           .to(number, { x: 0, opacity: 0.2, rotation: 0, duration: 0.3 }, 0.15)
           .to(headline, { y: 0, x: 0, opacity: 1, scale: 1, rotation: 0, duration: 0.35 }, 0.15)
           .to(subtext, { y: 0, x: 0, opacity: 1, duration: 0.35 }, 0.25)
@@ -150,7 +150,7 @@ export default function RemoteBuildsImmersive() {
           .to(subtext, { y: -100, x: -60 * xDirection, opacity: 0, duration: 0.35 }, 0.65)
           .to(number, { x: 100 * xDirection, opacity: 0, rotation: 10 * xDirection, duration: 0.25 }, 0.7)
           .to(media, { scale: 1.4, x: -30 * xDirection, rotation: -2 * xDirection, duration: 0.4 }, 0.6)
-          .to(overlay, { opacity: 1, duration: 0.4 }, 0.6)
+          .to(overlay, { opacity: 0.7, duration: 0.4 }, 0.6)
       })
 
       // Floating particles - diagonal movement
@@ -359,17 +359,17 @@ export default function RemoteBuildsImmersive() {
         </div>
 
         {/* Gradient Overlay */}
-        <div className="hero-overlay absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent opacity-50" />
+        <div className="hero-overlay absolute inset-0 bg-gradient-to-t from-black/40 via-black/20 to-transparent opacity-40" />
         
         {/* Vignette */}
-        <div className="absolute inset-0 shadow-[inset_0_0_200px_rgba(0,0,0,0.8)]" />
+        <div className="absolute inset-0 shadow-[inset_0_0_150px_rgba(0,0,0,0.4)]" />
 
         {/* Content */}
         <div className="relative z-20 h-full flex flex-col justify-center items-center text-center px-6">
           <h1 className="hero-headline headline-font text-6xl md:text-8xl lg:text-9xl font-bold text-white tracking-tight text-shadow-lg">
             YOU FOUND IT.
           </h1>
-          <p className="hero-subtext body-font text-xl md:text-2xl lg:text-3xl text-white/80 mt-6 md:mt-8 font-light max-w-2xl">
+          <p className="hero-subtext body-font text-xl md:text-2xl lg:text-3xl text-white/90 mt-6 md:mt-8 font-light max-w-2xl">
             That perfect spot where the world falls away.
           </p>
           
@@ -410,23 +410,23 @@ export default function RemoteBuildsImmersive() {
           </div>
 
           {/* Overlay */}
-          <div className="section-overlay absolute inset-0 bg-black/60" />
+          <div className="section-overlay absolute inset-0 bg-black/30" />
           
           {/* Diagonal Wipe Transition */}
           <div 
-            className="diagonal-wipe absolute inset-0 bg-black z-30 origin-left"
+            className="diagonal-wipe absolute inset-0 bg-black/80 z-30 origin-left"
             style={{ 
               clipPath: "polygon(0 0, 100% 0, 85% 100%, 0 100%)",
             }}
           />
           
           {/* Vignette */}
-          <div className="absolute inset-0 shadow-[inset_0_0_200px_rgba(0,0,0,0.7)]" />
+          <div className="absolute inset-0 shadow-[inset_0_0_100px_rgba(0,0,0,0.3)]" />
 
           {/* Content */}
           <div className="relative z-20 h-full flex flex-col justify-center px-8 md:px-16 lg:px-24">
             {/* Section Number */}
-            <span className="section-number body-font text-[#c6912c] text-8xl md:text-9xl font-bold opacity-20 absolute top-1/4 right-8 md:right-16">
+            <span className="section-number body-font text-[#c6912c] text-8xl md:text-9xl font-bold opacity-30 absolute top-1/4 right-8 md:right-16">
               {String(index + 2).padStart(2, "0")}
             </span>
 
@@ -435,7 +435,7 @@ export default function RemoteBuildsImmersive() {
                 {section.headline}
               </h2>
 
-              <p className="section-subtext body-font text-lg md:text-xl lg:text-2xl text-white/70 mt-6 md:mt-10 font-light leading-relaxed max-w-2xl">
+              <p className="section-subtext body-font text-lg md:text-xl lg:text-2xl text-white/80 mt-6 md:mt-10 font-light leading-relaxed max-w-2xl">
                 {section.subtext}
               </p>
 
