@@ -302,7 +302,7 @@ export default function RemoteBuildsImmersive() {
           >
             <div className="max-w-2xl pointer-events-auto">
               {index > 0 && (
-                <span className="body-font text-[#c6912c] text-xs tracking-[0.4em] uppercase mb-6 block font-semibold drop-shadow-lg">
+                <span className="body-font text-[#c6912c] text-sm md:text-base tracking-[0.3em] uppercase mb-4 block font-semibold drop-shadow-lg">
                   {String(index + 1).padStart(2, "0")} — {section.id}
                 </span>
               )}
