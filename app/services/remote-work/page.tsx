@@ -1,424 +1,177 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
-const SECTIONS = [
-  {
-    id: "dream",
-    type: "video",
-    media: "/dream-light.mp4",
-    mediaMobile: "/dream-light.mp4",
-    headline: "YOU FOUND IT.",
-    subtext: "That perfect spot where the world falls away.",
-  },
-  {
-    id: "challenge",
-    type: "image",
-    media: "/challange.png",
-    mediaMobile: "/challange.png",
-    headline: "OTHERS SEE IMPOSSIBLE.",
-    subtext: "No roads. No access. No way... they said.",
-  },
-  {
-    id: "scout",
-    type: "image",
-    media: "/scout.png",
-    mediaMobile: "/scoutP.png",
-    headline: "WE SEE POTENTIAL.",
-    subtext: "Our team assesses terrain, logistics, and challenges — mapping the path forward.",
-  },
-  {
-    id: "mobilize",
-    type: "image",
-    media: "/mobilize.png",
-    mediaMobile: "/mobilizeP.png",
-    headline: "WE BRING EVERYTHING.",
-    subtext: "Premium materials delivered to the unreachable — no matter what it takes.",
-  },
-  {
-    id: "build",
-    type: "image",
-    media: "/build.png",
-    mediaMobile: "/buildP.png",
-    headline: "PRECISION IN THE WILD.",
-    subtext: "Expert craftsmen building with care, no matter how far off the grid.",
-  },
-  {
-    id: "result",
-    type: "image",
-    media: "/result.png",
-    mediaMobile: "/resultP.png",
-    headline: "YOUR DREAM. REALIZED.",
-    subtext: "If you can dream the location, we can build it there.",
-  },
-]
+function ScrollIndicator({ show }: { show: boolean }) {
+  const scrollToContent = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+  }
 
-export default function RemoteBuildsImmersive() {
-  const containerRef = useRef<HTMLDivElement>(null)
+  return (
+    <div 
+      className={`absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
+        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+      onClick={scrollToContent}
+    >
+      <div className="flex flex-col items-center gap-4">
+        <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
+          <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
+          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
+        </div>
+        
+        <div className="flex flex-col items-center -space-y-2">
+          <svg 
+            className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+          <svg 
+            className="w-7 h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
 
-  // GSAP animations
+export default function RemoteBuildsPage() {
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
+
   useEffect(() => {
-    let ctx: any
+    window.scrollTo(0, 0)
+  }, [])
 
-    const initAnimations = async () => {
-      const gsap = (await import("gsap")).default
-      const ScrollTrigger = (await import("gsap/ScrollTrigger")).default
-      
-      gsap.registerPlugin(ScrollTrigger)
-      
-      // Performance settings
-      ScrollTrigger.config({
-        limitCallbacks: true,
-        ignoreMobileResize: true,
-      })
-
-      // Create GSAP context for clean cleanup
-      ctx = gsap.context(() => {
-        const mediaLayers = gsap.utils.toArray(".media-layer") as HTMLElement[]
-        const contentLayers = gsap.utils.toArray(".content-layer") as HTMLElement[]
-
-        // Media crossfade with parallax
-        mediaLayers.forEach((layer, index) => {
-          const inner = layer.querySelector('video, img')
-          
-          if (index === 0) {
-            gsap.set(layer, { opacity: 1 })
-          } else {
-            gsap.set(layer, { opacity: 0 })
-          }
-
-          // Parallax movement on all images - moves opposite to scroll
-          if (inner) {
-            gsap.fromTo(inner,
-              { yPercent: -10, scale: 1.15 },
-              {
-                yPercent: 10,
-                scale: 1.05,
-                ease: "none",
-                scrollTrigger: {
-                  trigger: `#trigger-${index}`,
-                  start: "top bottom",
-                  end: "bottom top",
-                  scrub: true,
-                }
-              }
-            )
-          }
-
-          // Crossfade between images - slower transition
-          if (index < mediaLayers.length - 1) {
-            // Fade out current layer
-            gsap.to(layer, { 
-              opacity: 0,
-              scrollTrigger: {
-                trigger: `#trigger-${index}`,
-                start: "center center",
-                end: "bottom top",
-                scrub: 2,
-              }
-            })
-            
-            // Fade in next layer
-            gsap.to(mediaLayers[index + 1], { 
-              opacity: 1,
-              scrollTrigger: {
-                trigger: `#trigger-${index}`,
-                start: "center center",
-                end: "bottom top",
-                scrub: 2,
-              }
-            })
-          }
-        })
-
-        // Content fade - slower, matches image transitions
-        contentLayers.forEach((layer, index) => {
-          if (index === 0) {
-            // First content starts visible, fades out slowly
-            gsap.to(layer, {
-              opacity: 0,
-              scrollTrigger: {
-                trigger: `#trigger-${index}`,
-                start: "center center",
-                end: "bottom 20%",
-                scrub: 2,
-              }
-            })
-          } else {
-            // Other content fades in then out - slower
-            gsap.fromTo(layer,
-              { opacity: 0 },
-              {
-                opacity: 1,
-                scrollTrigger: {
-                  trigger: `#trigger-${index}`,
-                  start: "top 80%",
-                  end: "top 20%",
-                  scrub: 2,
-                }
-              }
-            )
-
-            gsap.to(layer, {
-              opacity: 0,
-              scrollTrigger: {
-                trigger: `#trigger-${index}`,
-                start: "center center",
-                end: "bottom 20%",
-                scrub: 2,
-              }
-            })
-          }
-        })
-
-        // Progress bar
-        ScrollTrigger.create({
-          trigger: containerRef.current,
-          start: "top top",
-          end: "bottom bottom",
-          onUpdate: (self) => {
-            const progress = document.querySelector(".scroll-progress-bar") as HTMLElement
-            if (progress) {
-              progress.style.transform = `scaleX(${self.progress})`
-            }
-            
-            // Hide scroll hint when near end (last 15%)
-            const scrollHint = document.getElementById("scroll-hint")
-            if (scrollHint) {
-              scrollHint.style.opacity = self.progress > 0.85 ? "0" : "1"
-            }
-          },
-        })
-      })
-    }
-
-    initAnimations()
-
-    return () => {
-      ctx?.revert() // Clean GSAP context
-    }
+  useEffect(() => {
+    const timer = setTimeout(() => setShowScrollIndicator(true), 1000)
+    return () => clearTimeout(timer)
   }, [])
 
   return (
-    <div ref={containerRef} className="w-full">
+    <div className="w-full overflow-x-hidden bg-black">
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Outfit:wght@200;300;400;500;600&display=swap');
-
-        html {
-          scroll-behavior: auto !important;
-        }
-
-        body {
-          overflow-x: hidden;
-          background: #0a0a0a;
-        }
-
-        .headline-font {
-          font-family: 'Playfair Display', serif;
-          font-display: swap;
-        }
-
-        .body-font {
-          font-family: 'Outfit', sans-serif;
-          font-display: swap;
-        }
-
-        .text-shadow-lg {
-          text-shadow: 0 2px 20px rgba(0,0,0,0.8), 0 4px 40px rgba(0,0,0,0.6), 0 0 80px rgba(0,0,0,0.4);
-        }
-
-        .scroll-progress-bar {
-          transform-origin: left;
-          transform: scaleX(0);
-          will-change: transform;
-        }
-
-        /* Hide non-active layers initially */
-        .layer-hidden {
-          opacity: 0;
-        }
-
-        /* Performance: hint browser about animated properties */
-        .media-layer {
-          will-change: opacity, transform;
-          contain: layout style paint;
+        @keyframes scroll-wheel {
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(10px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(14px);
+          }
         }
         
-        .media-layer img,
-        .media-layer video {
-          will-change: transform;
+        @keyframes chevron-fade-1 {
+          0%, 100% {
+            opacity: 0.8;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(6px);
+          }
         }
         
-        .content-layer {
-          will-change: opacity;
-          contain: layout style;
+        @keyframes chevron-fade-2 {
+          0%, 100% {
+            opacity: 0.5;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.9;
+            transform: translateY(6px);
+          }
+        }
+        
+        .animate-scroll-wheel {
+          animation: scroll-wheel 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-1 {
+          animation: chevron-fade-1 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-2 {
+          animation: chevron-fade-2 1.5s ease-in-out infinite;
+          animation-delay: 0.2s;
         }
       `}</style>
 
       <Navbar />
 
-      {/* Progress Bar */}
-      <div className="fixed top-0 left-0 right-0 h-[2px] bg-white/10 z-[100]">
-        <div className="scroll-progress-bar h-full bg-[#c6912c]" />
-      </div>
-
-      {/* ===== UNIFIED WORLD CONTAINER ===== */}
-      <div className="fixed inset-0 z-0">
+      {/* Hero Section - Tesla Style Full Bleed */}
+      <section className="relative w-full h-screen">
+        <Image
+          src="/remote-builds.png"
+          alt="Modern luxury remote build"
+          fill
+          className="object-cover object-center"
+          priority
+        />
         
-        {/* MEDIA STACK */}
-        {SECTIONS.map((section, index) => (
-          <div 
-            key={section.id}
-            className="media-layer absolute inset-[-10%] w-[120%] h-[120%] bg-black"
-            style={{ opacity: index === 0 ? 1 : 0 }}
-          >
-            {section.type === "video" ? (
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                className="w-full h-full object-cover"
-              >
-                <source src={section.media} type="video/mp4" />
-              </video>
-            ) : (
-              <>
-                {/* Desktop image */}
-                <Image
-                  src={section.media}
-                  alt={section.headline}
-                  fill
-                  className="object-cover hidden md:block"
-                  priority={index < 2}
-                  loading={index < 2 ? "eager" : "lazy"}
-                  sizes="100vw"
-                  quality={85}
-                />
-                {/* Mobile image */}
-                <Image
-                  src={section.mediaMobile}
-                  alt={section.headline}
-                  fill
-                  className="object-cover md:hidden"
-                  priority={index < 2}
-                  loading={index < 2 ? "eager" : "lazy"}
-                  sizes="100vw"
-                  quality={85}
-                />
-              </>
-            )}
-          </div>
-        ))}
-        
-        {/* ===== MINIMAL OVERLAY FOR TEXT READABILITY ===== */}
-        
-        {/* Left side gradient for text readability only */}
         <div 
-          className="absolute inset-0 z-20"
+          className="absolute inset-0"
           style={{
-            background: "linear-gradient(90deg, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 30%, transparent 60%)"
+            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
           }}
         />
-
-      </div>
-
-      {/* SCROLL TRIGGERS - taller for slower transitions */}
-      {SECTIONS.map((_, index) => (
-        <div 
-          key={index}
-          id={`trigger-${index}`}
-          className="h-[150vh] w-full"
-        />
-      ))}
-
-      {/* FIXED CONTENT */}
-      <div className="fixed inset-0 z-40 pointer-events-none">
-        {SECTIONS.map((section, index) => (
-          <div 
-            key={section.id}
-            className={`content-layer absolute inset-0 flex flex-col justify-center px-8 md:px-16 lg:px-24`}
-            style={{ opacity: index === 0 ? 1 : 0 }}
+        
+        <div className="absolute inset-x-0 bottom-[25%] md:bottom-[22%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
+          <h1 
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
+            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
           >
-            <div className="max-w-2xl pointer-events-auto">
-              <span className="body-font text-[#c6912c] text-sm md:text-base tracking-[0.3em] uppercase mb-4 block font-semibold drop-shadow-lg">
-                {String(index + 1).padStart(2, "0")} — {section.id}
-              </span>
+            REMOTE BUILDS
+          </h1>
+        </div>
 
-              <h2 className="headline-font text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] text-shadow-lg">
-                {section.headline}
-              </h2>
+        <ScrollIndicator show={showScrollIndicator} />
+      </section>
 
-              <p className="body-font text-lg md:text-xl lg:text-2xl text-white/90 mt-6 font-light leading-relaxed max-w-lg drop-shadow-md">
-                {section.subtext}
-              </p>
+      <div className="bg-black h-6 md:h-12" />
+      <div className="w-full h-[2px] bg-[#D4A574]" />
 
-              {section.id === "result" && (
-                <div className="mt-10">
-                  <a
-                    href="/contact"
-                    className="group inline-flex items-center gap-3 bg-[#c6912c] hover:bg-[#d4a43d] text-white font-medium px-8 py-4 text-base transition-all duration-300 body-font"
-                  >
-                    Start Your Journey
-                    <svg
-                      className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth={2}
-                      viewBox="0 0 24 24"
-                    >
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </a>
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* Scroll hint - hides at end */}
-      <div id="scroll-hint" className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 transition-opacity duration-500">
-        <span className="body-font text-white/60 text-xs tracking-[0.2em] uppercase drop-shadow-md">
-          Scroll
-        </span>
-        <svg className="w-4 h-4 text-[#c6912c] animate-bounce drop-shadow-lg" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-        </svg>
-      </div>
-
-      {/* Spacer */}
-      <div className="h-[50vh]" />
-
-      {/* Final CTA */}
-      <section className="relative py-24 md:py-32 z-50 bg-gradient-to-b from-transparent via-black/80 to-black">
-        <div className="relative container mx-auto px-8 md:px-16 text-center">
-          <h2 className="headline-font text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
-            Ready to Build the{" "}
-            <span className="text-[#c6912c]">Impossible</span>?
-          </h2>
-          <p className="body-font text-base md:text-lg text-white/70 max-w-xl mx-auto mb-10 font-light">
-            Tell us about your dream location.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      {/* CTA Section */}
+      <section className="py-16 sm:py-20 bg-black">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
             <a
               href="/contact"
-              className="inline-flex items-center justify-center bg-[#c6912c] hover:bg-[#d4a43d] text-white font-medium px-10 py-4 transition-all duration-300 body-font"
+              className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
             >
-              Contact Us
+              Start Your Remote Build
             </a>
             <a
-              href="/projects"
-              className="inline-flex items-center justify-center border border-white/30 hover:border-[#c6912c] text-white hover:text-[#c6912c] font-medium px-10 py-4 transition-all duration-300 body-font"
+              href="/cost-estimator"
+              className="h-11 min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
             >
-              View Projects
+              AI Estimator
             </a>
           </div>
+
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-6">
+            Let's Start Making Your <span className="text-[#c6912c]">Dream Home</span> a Reality
+          </h2>
+          <p className="font-sans text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
+            From initial design to final walkthrough, our team delivers exceptional custom homes. Get in touch today.
+          </p>
         </div>
       </section>
 
