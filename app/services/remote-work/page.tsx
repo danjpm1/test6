@@ -58,6 +58,31 @@ const SECTIONS = [
 
 export default function RemoteBuildsImmersive() {
   const containerRef = useRef<HTMLDivElement>(null)
+  const videoRef = useRef<HTMLVideoElement>(null)
+
+  // Smooth video loop with fade
+  useEffect(() => {
+    const video = videoRef.current
+    if (!video) return
+
+    const handleTimeUpdate = () => {
+      // When video is near end (last 0.5 seconds), start fading out
+      if (video.duration - video.currentTime < 0.5) {
+        video.style.opacity = String((video.duration - video.currentTime) / 0.5)
+      } else if (video.currentTime < 0.5) {
+        // When video just restarted (first 0.5 seconds), fade in
+        video.style.opacity = String(video.currentTime / 0.5)
+      } else {
+        video.style.opacity = '1'
+      }
+    }
+
+    video.addEventListener('timeupdate', handleTimeUpdate)
+    
+    return () => {
+      video.removeEventListener('timeupdate', handleTimeUpdate)
+    }
+  }, [])
 
   // GSAP animations
   useEffect(() => {
@@ -270,12 +295,13 @@ export default function RemoteBuildsImmersive() {
           >
             {section.type === "video" ? (
               <video
+                ref={index === 0 ? videoRef : null}
                 autoPlay
                 muted
                 loop
                 playsInline
                 preload={index === 0 ? "auto" : "none"}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-cover transition-opacity duration-300"
               >
                 <source src={section.media} type="video/mp4" />
               </video>
