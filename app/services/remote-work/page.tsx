@@ -26,7 +26,7 @@ const SECTIONS = [
     id: "scout",
     type: "image",
     media: "/scout.png",
-    mediaMobile: "/scout.png",
+    mediaMobile: "/scoutP.png",
     headline: "WE SEE POTENTIAL.",
     subtext: "Our team assesses terrain, logistics, and challenges — mapping the path forward.",
   },
