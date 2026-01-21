@@ -275,6 +275,7 @@ export default function RemoteBuildsImmersive() {
                 loop
                 playsInline
                 preload={index === 0 ? "auto" : "none"}
+                poster="/dream-poster.jpg"
                 className="w-full h-full object-cover"
               >
                 <source src={section.media} type="video/mp4" />
