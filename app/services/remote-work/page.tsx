@@ -10,6 +10,7 @@ const SECTIONS = [
     id: "dream",
     type: "video",
     media: "/dream.mp4",
+    mediaMobile: "/dream.mp4",
     headline: "YOU FOUND IT.",
     subtext: "That perfect spot where the world falls away.",
   },
@@ -17,6 +18,7 @@ const SECTIONS = [
     id: "challenge",
     type: "image",
     media: "/challange.png",
+    mediaMobile: "/challange.png",
     headline: "OTHERS SEE IMPOSSIBLE.",
     subtext: "No roads. No access. No way... they said.",
   },
@@ -24,6 +26,7 @@ const SECTIONS = [
     id: "scout",
     type: "image",
     media: "/scout.png",
+    mediaMobile: "/scout.png",
     headline: "WE SEE POTENTIAL.",
     subtext: "Our team assesses terrain, logistics, and challenges — mapping the path forward.",
   },
@@ -31,6 +34,7 @@ const SECTIONS = [
     id: "mobilize",
     type: "image",
     media: "/mobilize.png",
+    mediaMobile: "/mobilizeP.png",
     headline: "WE BRING EVERYTHING.",
     subtext: "Premium materials delivered to the unreachable — no matter what it takes.",
   },
@@ -38,6 +42,7 @@ const SECTIONS = [
     id: "build",
     type: "image",
     media: "/build.png",
+    mediaMobile: "/buildP.png",
     headline: "PRECISION IN THE WILD.",
     subtext: "Expert craftsmen building with care, no matter how far off the grid.",
   },
@@ -45,6 +50,7 @@ const SECTIONS = [
     id: "result",
     type: "image",
     media: "/result.png",
+    mediaMobile: "/resultP.png",
     headline: "YOUR DREAM. REALIZED.",
     subtext: "If you can dream the location, we can build it there.",
   },
@@ -244,18 +250,24 @@ export default function RemoteBuildsImmersive() {
                 muted
                 loop
                 playsInline
-                className="w-full h-full object-contain md:object-cover"
+                className="w-full h-full object-cover"
               >
                 <source src={section.media} type="video/mp4" />
               </video>
             ) : (
-              <Image
-                src={section.media}
-                alt={section.headline}
-                fill
-                className="object-contain md:object-cover"
-                priority={index < 3}
-              />
+              <picture className="w-full h-full">
+                {/* Mobile: portrait image */}
+                <source 
+                  media="(max-width: 768px)" 
+                  srcSet={section.mediaMobile} 
+                />
+                {/* Desktop: landscape image */}
+                <img
+                  src={section.media}
+                  alt={section.headline}
+                  className="w-full h-full object-cover"
+                />
+              </picture>
             )}
           </div>
         ))}
