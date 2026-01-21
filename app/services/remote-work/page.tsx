@@ -207,7 +207,7 @@ export default function RemoteBuildsImmersive() {
 
         body {
           overflow-x: hidden;
-          background: #0a0a0a;
+          background: #1a2f28;
         }
 
         .headline-font {
@@ -266,20 +266,32 @@ export default function RemoteBuildsImmersive() {
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
-            className={`media-layer absolute inset-[-10%] w-[120%] h-[120%] bg-black ${index !== 0 ? 'layer-hidden' : ''}`}
+            className={`media-layer absolute inset-[-10%] w-[120%] h-[120%] ${index === 0 ? '' : 'bg-black'} ${index !== 0 ? 'layer-hidden' : ''}`}
           >
             {section.type === "video" ? (
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload={index === 0 ? "auto" : "none"}
-                poster="/dream-poster.jpg"
-                className="w-full h-full object-cover"
-              >
-                <source src={section.media} type="video/mp4" />
-              </video>
+              <>
+                {/* Poster image shows instantly while video loads */}
+                <Image
+                  src="/dream-poster.jpg"
+                  alt={section.headline}
+                  fill
+                  className="object-cover"
+                  priority
+                  sizes="120vw"
+                  quality={90}
+                />
+                {/* Video plays on top once loaded */}
+                <video
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  preload="auto"
+                  className="absolute inset-0 w-full h-full object-cover"
+                >
+                  <source src={section.media} type="video/mp4" />
+                </video>
+              </>
             ) : (
               <>
                 {/* Desktop image */}
