@@ -266,7 +266,8 @@ export default function RemoteBuildsImmersive() {
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
-            className={`media-layer absolute inset-[-10%] w-[120%] h-[120%] bg-black ${index !== 0 ? 'layer-hidden' : ''}`}
+            className="media-layer absolute inset-[-10%] w-[120%] h-[120%] bg-black"
+            style={{ opacity: index === 0 ? 1 : 0 }}
           >
             {section.type === "video" ? (
               <video
@@ -334,7 +335,8 @@ export default function RemoteBuildsImmersive() {
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
-            className={`content-layer absolute inset-0 flex flex-col justify-center px-8 md:px-16 lg:px-24 ${index !== 0 ? 'layer-hidden' : ''}`}
+            className={`content-layer absolute inset-0 flex flex-col justify-center px-8 md:px-16 lg:px-24`}
+            style={{ opacity: index === 0 ? 1 : 0 }}
           >
             <div className="max-w-2xl pointer-events-auto">
               <span className="body-font text-[#c6912c] text-sm md:text-base tracking-[0.3em] uppercase mb-4 block font-semibold drop-shadow-lg">
