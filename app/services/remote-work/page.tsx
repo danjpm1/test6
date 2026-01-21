@@ -61,133 +61,138 @@ export default function RemoteBuildsImmersive() {
 
   // GSAP animations
   useEffect(() => {
+    let ctx: any
+
     const initAnimations = async () => {
       const gsap = (await import("gsap")).default
       const ScrollTrigger = (await import("gsap/ScrollTrigger")).default
       
       gsap.registerPlugin(ScrollTrigger)
-
-      const mediaLayers = document.querySelectorAll(".media-layer")
-      const contentLayers = document.querySelectorAll(".content-layer")
-
-      // Media crossfade with parallax
-      mediaLayers.forEach((layer, index) => {
-        const inner = layer.querySelector('video, img')
-        
-        if (index === 0) {
-          gsap.set(layer, { opacity: 1 })
-        } else {
-          gsap.set(layer, { opacity: 0 })
-        }
-
-        // Parallax movement on all images - moves opposite to scroll
-        if (inner) {
-          gsap.fromTo(inner,
-            { yPercent: -10, scale: 1.15 },
-            {
-              yPercent: 10,
-              scale: 1.05,
-              ease: "none",
-              scrollTrigger: {
-                trigger: document.querySelector(`#trigger-${index}`),
-                start: "top bottom",
-                end: "bottom top",
-                scrub: true,
-              }
-            }
-          )
-        }
-
-        // Crossfade between images - slower transition
-        if (index < mediaLayers.length - 1) {
-          const trigger = document.querySelector(`#trigger-${index}`)
-          
-          // Fade out current layer
-          gsap.to(layer, { 
-            opacity: 0,
-            scrollTrigger: {
-              trigger: trigger,
-              start: "center center",
-              end: "bottom top",
-              scrub: 2,
-            }
-          })
-          
-          // Fade in next layer
-          gsap.to(mediaLayers[index + 1], { 
-            opacity: 1,
-            scrollTrigger: {
-              trigger: trigger,
-              start: "center center",
-              end: "bottom top",
-              scrub: 2,
-            }
-          })
-        }
+      
+      // Performance settings
+      ScrollTrigger.config({
+        limitCallbacks: true,
+        ignoreMobileResize: true,
       })
 
-      // Content fade - slower, matches image transitions
-      contentLayers.forEach((layer, index) => {
-        const trigger = document.querySelector(`#trigger-${index}`)
-        
-        if (index === 0) {
-          // First content starts visible, fades out slowly
-          gsap.to(layer, {
-            opacity: 0,
-            scrollTrigger: {
-              trigger: trigger,
-              start: "center center",
-              end: "bottom 20%",
-              scrub: 2,
-            }
-          })
-        } else {
-          // Other content fades in then out - slower
-          gsap.fromTo(layer,
-            { opacity: 0 },
-            {
-              opacity: 1,
+      // Create GSAP context for clean cleanup
+      ctx = gsap.context(() => {
+        const mediaLayers = gsap.utils.toArray(".media-layer") as HTMLElement[]
+        const contentLayers = gsap.utils.toArray(".content-layer") as HTMLElement[]
+
+        // Media crossfade with parallax
+        mediaLayers.forEach((layer, index) => {
+          const inner = layer.querySelector('video, img')
+          
+          if (index === 0) {
+            gsap.set(layer, { opacity: 1 })
+          } else {
+            gsap.set(layer, { opacity: 0 })
+          }
+
+          // Parallax movement on all images - moves opposite to scroll
+          if (inner) {
+            gsap.fromTo(inner,
+              { yPercent: -10, scale: 1.15 },
+              {
+                yPercent: 10,
+                scale: 1.05,
+                ease: "none",
+                scrollTrigger: {
+                  trigger: `#trigger-${index}`,
+                  start: "top bottom",
+                  end: "bottom top",
+                  scrub: true,
+                }
+              }
+            )
+          }
+
+          // Crossfade between images - slower transition
+          if (index < mediaLayers.length - 1) {
+            // Fade out current layer
+            gsap.to(layer, { 
+              opacity: 0,
               scrollTrigger: {
-                trigger: trigger,
-                start: "top 80%",
-                end: "top 20%",
+                trigger: `#trigger-${index}`,
+                start: "center center",
+                end: "bottom top",
                 scrub: 2,
               }
-            }
-          )
-
-          gsap.to(layer, {
-            opacity: 0,
-            scrollTrigger: {
-              trigger: trigger,
-              start: "center center",
-              end: "bottom 20%",
-              scrub: 2,
-            }
-          })
-        }
-      })
-
-      // Progress bar
-      ScrollTrigger.create({
-        trigger: containerRef.current,
-        start: "top top",
-        end: "bottom bottom",
-        onUpdate: (self) => {
-          const progress = document.querySelector(".scroll-progress-bar") as HTMLElement
-          if (progress) {
-            progress.style.transform = `scaleX(${self.progress})`
+            })
+            
+            // Fade in next layer
+            gsap.to(mediaLayers[index + 1], { 
+              opacity: 1,
+              scrollTrigger: {
+                trigger: `#trigger-${index}`,
+                start: "center center",
+                end: "bottom top",
+                scrub: 2,
+              }
+            })
           }
-        },
+        })
+
+        // Content fade - slower, matches image transitions
+        contentLayers.forEach((layer, index) => {
+          if (index === 0) {
+            // First content starts visible, fades out slowly
+            gsap.to(layer, {
+              opacity: 0,
+              scrollTrigger: {
+                trigger: `#trigger-${index}`,
+                start: "center center",
+                end: "bottom 20%",
+                scrub: 2,
+              }
+            })
+          } else {
+            // Other content fades in then out - slower
+            gsap.fromTo(layer,
+              { opacity: 0 },
+              {
+                opacity: 1,
+                scrollTrigger: {
+                  trigger: `#trigger-${index}`,
+                  start: "top 80%",
+                  end: "top 20%",
+                  scrub: 2,
+                }
+              }
+            )
+
+            gsap.to(layer, {
+              opacity: 0,
+              scrollTrigger: {
+                trigger: `#trigger-${index}`,
+                start: "center center",
+                end: "bottom 20%",
+                scrub: 2,
+              }
+            })
+          }
+        })
+
+        // Progress bar
+        ScrollTrigger.create({
+          trigger: containerRef.current,
+          start: "top top",
+          end: "bottom bottom",
+          onUpdate: (self) => {
+            const progress = document.querySelector(".scroll-progress-bar") as HTMLElement
+            if (progress) {
+              progress.style.transform = `scaleX(${self.progress})`
+            }
+          },
+        })
       })
     }
 
     initAnimations()
 
     return () => {
-      import("gsap/ScrollTrigger").then(({ default: ScrollTrigger }) => {
-        ScrollTrigger.getAll().forEach((t) => t.kill())
-      })
+      ctx?.revert() // Clean GSAP context
     }
   }, [])
 
@@ -207,10 +212,12 @@ export default function RemoteBuildsImmersive() {
 
         .headline-font {
           font-family: 'Playfair Display', serif;
+          font-display: swap;
         }
 
         .body-font {
           font-family: 'Outfit', sans-serif;
+          font-display: swap;
         }
 
         .text-shadow-lg {
@@ -220,11 +227,28 @@ export default function RemoteBuildsImmersive() {
         .scroll-progress-bar {
           transform-origin: left;
           transform: scaleX(0);
+          will-change: transform;
         }
 
         /* Hide non-active layers initially */
         .layer-hidden {
           opacity: 0;
+        }
+
+        /* Performance: hint browser about animated properties */
+        .media-layer {
+          will-change: opacity, transform;
+          contain: layout style paint;
+        }
+        
+        .media-layer img,
+        .media-layer video {
+          will-change: transform;
+        }
+        
+        .content-layer {
+          will-change: opacity;
+          contain: layout style;
         }
       `}</style>
 
@@ -250,24 +274,36 @@ export default function RemoteBuildsImmersive() {
                 muted
                 loop
                 playsInline
+                preload={index === 0 ? "auto" : "none"}
                 className="w-full h-full object-cover"
               >
                 <source src={section.media} type="video/mp4" />
               </video>
             ) : (
-              <picture className="w-full h-full">
-                {/* Mobile: portrait image */}
-                <source 
-                  media="(max-width: 768px)" 
-                  srcSet={section.mediaMobile} 
-                />
-                {/* Desktop: landscape image */}
-                <img
+              <>
+                {/* Desktop image */}
+                <Image
                   src={section.media}
                   alt={section.headline}
-                  className="w-full h-full object-cover"
+                  fill
+                  className="object-cover hidden md:block"
+                  priority={index < 2}
+                  loading={index < 2 ? "eager" : "lazy"}
+                  sizes="100vw"
+                  quality={85}
                 />
-              </picture>
+                {/* Mobile image */}
+                <Image
+                  src={section.mediaMobile}
+                  alt={section.headline}
+                  fill
+                  className="object-cover md:hidden"
+                  priority={index < 2}
+                  loading={index < 2 ? "eager" : "lazy"}
+                  sizes="100vw"
+                  quality={85}
+                />
+              </>
             )}
           </div>
         ))}
@@ -301,11 +337,9 @@ export default function RemoteBuildsImmersive() {
             className={`content-layer absolute inset-0 flex flex-col justify-center px-8 md:px-16 lg:px-24 ${index !== 0 ? 'layer-hidden' : ''}`}
           >
             <div className="max-w-2xl pointer-events-auto">
-              {index > 0 && (
-                <span className="body-font text-[#c6912c] text-sm md:text-base tracking-[0.3em] uppercase mb-4 block font-semibold drop-shadow-lg">
-                  {String(index + 1).padStart(2, "0")} — {section.id}
-                </span>
-              )}
+              <span className="body-font text-[#c6912c] text-sm md:text-base tracking-[0.3em] uppercase mb-4 block font-semibold drop-shadow-lg">
+                {String(index + 1).padStart(2, "0")} — {section.id}
+              </span>
 
               <h2 className="headline-font text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] text-shadow-lg">
                 {section.headline}
