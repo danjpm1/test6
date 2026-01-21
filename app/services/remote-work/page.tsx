@@ -236,7 +236,7 @@ export default function RemoteBuildsImmersive() {
         {SECTIONS.map((section, index) => (
           <div 
             key={section.id}
-            className={`media-layer absolute inset-[-10%] w-[120%] h-[120%] ${index !== 0 ? 'layer-hidden' : ''}`}
+            className={`media-layer absolute inset-[-10%] w-[120%] h-[120%] bg-black ${index !== 0 ? 'layer-hidden' : ''}`}
           >
             {section.type === "video" ? (
               <video
@@ -244,7 +244,7 @@ export default function RemoteBuildsImmersive() {
                 muted
                 loop
                 playsInline
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain md:object-cover"
               >
                 <source src={section.media} type="video/mp4" />
               </video>
@@ -253,7 +253,7 @@ export default function RemoteBuildsImmersive() {
                 src={section.media}
                 alt={section.headline}
                 fill
-                className="object-cover"
+                className="object-contain md:object-cover"
                 priority={index < 3}
               />
             )}
