@@ -184,6 +184,12 @@ export default function RemoteBuildsImmersive() {
             if (progress) {
               progress.style.transform = `scaleX(${self.progress})`
             }
+            
+            // Hide scroll hint when near end (last 15%)
+            const scrollHint = document.getElementById("scroll-hint")
+            if (scrollHint) {
+              scrollHint.style.opacity = self.progress > 0.85 ? "0" : "1"
+            }
           },
         })
       })
@@ -375,8 +381,8 @@ export default function RemoteBuildsImmersive() {
         ))}
       </div>
 
-      {/* Scroll hint */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2">
+      {/* Scroll hint - hides at end */}
+      <div id="scroll-hint" className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 flex flex-col items-center gap-2 transition-opacity duration-500">
         <span className="body-font text-white/60 text-xs tracking-[0.2em] uppercase drop-shadow-md">
           Scroll
         </span>
