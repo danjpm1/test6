@@ -142,8 +142,11 @@ export default function RemoteBuildsPage() {
           src="/remote-builds.png"
           alt="Modern luxury remote build"
           fill
+          sizes="100vw"
           className="object-cover object-center"
           priority
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDAwUBAAAAAAAAAAAAAQIDAAQRBRIhBhMiMUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAZEQACAwEAAAAAAAAAAAAAAAABAgADESH/2gAMAwEAAhEDEEA/AKOm9RXNvbRQy2sUrxoFLl2XcQOTgDj9qrF1Pd/nl/tKVLuGwKYZ//Z"
         />
         
         {/* Bottom gradient fade - Tesla style */}
@@ -154,8 +157,8 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Title - positioned bottom right like New Builds, with water reflection */}
-        <div className="absolute inset-x-0 bottom-[22%] md:bottom-[18%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
+        {/* Title - positioned over lake area with water reflection */}
+        <div className="absolute top-[38%] md:top-[36%] right-4 md:right-[5%] text-right">
           {/* Main text */}
           <h1 
             className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight relative"
@@ -210,6 +213,8 @@ export default function RemoteBuildsPage() {
                   src={card.image}
                   alt={card.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 
@@ -240,6 +245,8 @@ export default function RemoteBuildsPage() {
           src="/forest.png"
           alt="Remote forest building location"
           fill
+          sizes="100vw"
+          loading="lazy"
           className="object-cover object-center"
         />
         
@@ -292,21 +299,21 @@ export default function RemoteBuildsPage() {
             <div className="hidden lg:grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/remote-card-1.png" alt="Mountain location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/remote-card-1.png" alt="Mountain location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/remote-card-2.png" alt="Valley location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/remote-card-2.png" alt="Valley location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
               </div>
               <div className="space-y-4 pt-8">
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/remote-card-3.png" alt="Island location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/remote-card-3.png" alt="Island location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
                 <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/forest.png" alt="Forest location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/forest.png" alt="Forest location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
               </div>
@@ -359,14 +366,19 @@ export default function RemoteBuildsPage() {
               rgba(0,5,12,0.7) 100%
             )
           `,
+          willChange: 'auto',
+          contain: 'strict',
         }}
       />
       
       {/* Subtle blue tint */}
       <div 
-        className="fixed inset-0 pointer-events-none z-50 mix-blend-overlay"
+        className="fixed inset-0 pointer-events-none z-50"
         style={{
           background: 'linear-gradient(180deg, rgba(20,40,60,0.08) 0%, rgba(15,30,50,0.05) 100%)',
+          mixBlendMode: 'overlay',
+          willChange: 'auto',
+          contain: 'strict',
         }}
       />
     </div>
