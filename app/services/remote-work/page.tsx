@@ -79,32 +79,10 @@ export default function RemoteBuildsPage() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden bg-[#0a0a0a] relative">
-      {/* Subtle unifying gradient overlay */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-10"
-        style={{
-          background: 'linear-gradient(180deg, rgba(5,10,15,0.15) 0%, rgba(10,18,25,0.08) 50%, rgba(5,10,15,0.18) 100%)',
-        }}
-      />
-      
-      {/* Subtle vignette */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-10"
-        style={{
-          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.2) 100%)',
-        }}
-      />
-      
-      {/* Subtle noise texture */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-10 opacity-[0.015]"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
-        }}
-      />
-      
-      <style jsx global>{`
+    <div className="w-full overflow-x-hidden bg-[#080a0f] relative">
+      {/* Main content wrapper */}
+      <div className="relative z-0">
+        <style jsx global>{`
         @keyframes scroll-wheel {
           0% {
             opacity: 1;
@@ -156,12 +134,10 @@ export default function RemoteBuildsPage() {
         }
       `}</style>
 
-      <div className="relative z-20">
-        <Navbar />
-      </div>
+      <Navbar />
 
       {/* Hero Section - Tesla Style Full Bleed */}
-      <section className="relative w-full h-screen z-0">
+      <section className="relative w-full h-screen">
         <Image
           src="/remote-builds.png"
           alt="Modern luxury remote build"
@@ -196,11 +172,11 @@ export default function RemoteBuildsPage() {
         <ScrollIndicator show={showScrollIndicator} />
       </section>
 
-      <div className="bg-[#0a0a0a] h-6 md:h-12" />
-      <div className="w-full h-[2px] bg-[#D4A574]/60" />
+      <div className="bg-[#080a0f] h-6 md:h-12" />
+      <div className="w-full h-[2px] bg-[#D4A574]/40" />
 
       {/* Three Cards Section */}
-      <section className="relative py-16 sm:py-24 bg-gradient-to-b from-[#0a0a0a] via-[#0d1015] to-[#0a0a0a]">
+      <section className="relative py-16 sm:py-24 bg-[#080a0f]">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {remoteBuildsCards.map((card, index) => (
@@ -303,7 +279,7 @@ export default function RemoteBuildsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="relative py-16 sm:py-20 bg-gradient-to-b from-[#0a0a0a] to-[#080808]">
+      <section className="relative py-16 sm:py-20 bg-[#080a0f]">
         <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
             <a
@@ -329,9 +305,50 @@ export default function RemoteBuildsPage() {
         </div>
       </section>
 
-      <div className="relative z-20">
-        <Footer />
+      <Footer />
       </div>
+
+      {/* Unified atmospheric overlay - sits on TOP of all content */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-50"
+        style={{
+          background: `
+            radial-gradient(ellipse 120% 100% at 50% 50%, 
+              transparent 0%, 
+              transparent 25%,
+              rgba(5,10,18,0.15) 50%,
+              rgba(3,8,15,0.4) 75%,
+              rgba(0,5,12,0.7) 100%
+            )
+          `,
+        }}
+      />
+      
+      {/* Additional corner darkening */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-50"
+        style={{
+          background: `
+            conic-gradient(from 0deg at 50% 50%,
+              rgba(0,5,15,0.3) 0deg,
+              transparent 45deg,
+              transparent 135deg,
+              rgba(0,5,15,0.3) 180deg,
+              transparent 225deg,
+              transparent 315deg,
+              rgba(0,5,15,0.3) 360deg
+            )
+          `,
+        }}
+      />
+      
+      {/* Subtle blue tint */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-50 mix-blend-overlay"
+        style={{
+          background: 'linear-gradient(180deg, rgba(20,40,60,0.08) 0%, rgba(15,30,50,0.05) 100%)',
+        }}
+      />
     </div>
   )
 }
