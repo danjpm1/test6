@@ -48,6 +48,24 @@ function ScrollIndicator({ show }: { show: boolean }) {
   )
 }
 
+const remoteBuildsCards = [
+  {
+    title: "Logistical Challenges",
+    description: "We handle complex logistics, permits, and coordination so you don't have to.",
+    image: "/remote-card-1.jpg"
+  },
+  {
+    title: "We Can Build Anywhere",
+    description: "From mountain retreats to coastal escapes, no location is too remote.",
+    image: "/remote-card-2.jpg"
+  },
+  {
+    title: "Enjoy Your Oasis",
+    description: "Your private sanctuary awaits, crafted with precision and care.",
+    image: "/remote-card-3.jpg"
+  }
+]
+
 export default function RemoteBuildsPage() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(false)
 
@@ -147,6 +165,44 @@ export default function RemoteBuildsPage() {
 
       <div className="bg-black h-6 md:h-12" />
       <div className="w-full h-[2px] bg-[#D4A574]" />
+
+      {/* Three Cards Section */}
+      <section className="py-16 sm:py-24 bg-black">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {remoteBuildsCards.map((card, index) => (
+              <div 
+                key={index}
+                className="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer"
+              >
+                {/* Background Image */}
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                
+                {/* Content */}
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 tracking-wide uppercase">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-white/70 leading-relaxed">
+                    {card.description}
+                  </p>
+                </div>
+
+                {/* Hover Border Effect */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#c6912c]/50 transition-colors duration-300" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* CTA Section */}
       <section className="py-16 sm:py-20 bg-black">
