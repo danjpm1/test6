@@ -152,24 +152,19 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Text positioned at house level, right side */}
-        <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16 lg:px-24">
-          <div className="text-right">
-            <h1 
-              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extralight tracking-wide"
-              style={{ 
-                color: '#7FBDC4',
-                textShadow: '0 4px 60px rgba(0,0,0,0.4), 0 0 120px rgba(127,189,196,0.3)',
-                letterSpacing: '0.08em'
-              }}
-            >
-              Remote Builds
-            </h1>
-            <div 
-              className="mt-4 h-[2px] w-32 ml-auto"
-              style={{ background: 'linear-gradient(90deg, transparent, #7FBDC4)' }}
-            />
-          </div>
+        {/* Text positioned in lake area, right side */}
+        <div className="absolute bottom-[15%] sm:bottom-[18%] md:bottom-[20%] right-8 md:right-16 lg:right-24">
+          <h1 
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas font-bold tracking-tight"
+            style={{ 
+              color: '#7FBDC4',
+              textShadow: '0 4px 40px rgba(0,0,0,0.5)',
+              fontFamily: "'Bebas Neue', sans-serif",
+              letterSpacing: '0.02em'
+            }}
+          >
+            REMOTE BUILDS
+          </h1>
         </div>
 
         <ScrollIndicator show={showScrollIndicator} />
