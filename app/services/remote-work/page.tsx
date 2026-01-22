@@ -144,20 +144,32 @@ export default function RemoteBuildsPage() {
           priority
         />
         
+        {/* Subtle vignette overlay */}
         <div 
           className="absolute inset-0"
           style={{
-            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
+            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)'
           }}
         />
         
-        <div className="absolute inset-x-0 bottom-[25%] md:bottom-[22%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
-          <h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
-            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
-          >
-            REMOTE BUILDS
-          </h1>
+        {/* Text positioned at house level, right side */}
+        <div className="absolute inset-0 flex items-center justify-end px-8 md:px-16 lg:px-24">
+          <div className="text-right">
+            <h1 
+              className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-extralight tracking-wide"
+              style={{ 
+                color: '#7FBDC4',
+                textShadow: '0 4px 60px rgba(0,0,0,0.4), 0 0 120px rgba(127,189,196,0.3)',
+                letterSpacing: '0.08em'
+              }}
+            >
+              Remote Builds
+            </h1>
+            <div 
+              className="mt-4 h-[2px] w-32 ml-auto"
+              style={{ background: 'linear-gradient(90deg, transparent, #7FBDC4)' }}
+            />
+          </div>
         </div>
 
         <ScrollIndicator show={showScrollIndicator} />
@@ -226,18 +238,6 @@ export default function RemoteBuildsPage() {
                 <span className="text-[#c6912c]">DREAM ANYWHERE</span>
               </h2>
               
-              {/* Watch Video Button */}
-              <div className="flex items-center gap-4 group cursor-pointer">
-                <div className="w-14 h-14 rounded-full border-2 border-white/70 flex items-center justify-center group-hover:border-[#c6912c] group-hover:bg-[#c6912c]/10 transition-all duration-300">
-                  <svg className="w-5 h-5 text-white ml-1" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M8 5v14l11-7z" />
-                  </svg>
-                </div>
-                <span className="text-white/80 text-sm uppercase tracking-widest group-hover:text-[#c6912c] transition-colors duration-300">
-                  Watch the Video
-                </span>
-              </div>
-              
               <div className="space-y-6 max-w-lg">
                 <p className="text-base sm:text-lg text-white/80 leading-relaxed">
                   Antova Builders specializes in building homes and structures in the most challenging locations — mountaintops, remote mountain valleys, islands, and sites where conventional contractors refuse to go.
@@ -258,49 +258,21 @@ export default function RemoteBuildsPage() {
               <div className="space-y-4">
                 <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
                   <Image src="/remote-card-1.png" alt="Mountain location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
                   <Image src="/remote-card-2.png" alt="Valley location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
               </div>
               <div className="space-y-4 pt-8">
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
                   <Image src="/remote-card-3.png" alt="Island location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
                 <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
                   <Image src="/forest.png" alt="Forest location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-black/30 group-hover:bg-black/10 transition-all duration-300" />
-                  <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center">
-                      <svg className="w-4 h-4 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M8 5v14l11-7z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
               </div>
             </div>
