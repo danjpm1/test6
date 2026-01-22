@@ -155,7 +155,7 @@ export default function RemoteBuildsPage() {
         />
         
         {/* Title - centered on mobile, lower right on desktop */}
-        <div className="absolute inset-x-0 bottom-[25%] md:bottom-[22%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
+        <div className="absolute inset-x-0 bottom-[18%] md:bottom-[15%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
           <h1 
             className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight"
             style={{ 
