@@ -146,14 +146,6 @@ export default function RemoteBuildsPage() {
           priority
         />
         
-        {/* Subtle vignette overlay */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.3) 100%)'
-          }}
-        />
-        
         {/* Text positioned in lake reflection area */}
         <div className="absolute top-[45%] sm:top-[42%] md:top-[40%] right-8 md:right-16 lg:right-24">
           <h1 
