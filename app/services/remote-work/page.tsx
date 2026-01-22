@@ -324,24 +324,6 @@ export default function RemoteBuildsPage() {
         }}
       />
       
-      {/* Additional corner darkening */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-50"
-        style={{
-          background: `
-            conic-gradient(from 0deg at 50% 50%,
-              rgba(0,5,15,0.3) 0deg,
-              transparent 45deg,
-              transparent 135deg,
-              rgba(0,5,15,0.3) 180deg,
-              transparent 225deg,
-              transparent 315deg,
-              rgba(0,5,15,0.3) 360deg
-            )
-          `,
-        }}
-      />
-      
       {/* Subtle blue tint */}
       <div 
         className="fixed inset-0 pointer-events-none z-50 mix-blend-overlay"
