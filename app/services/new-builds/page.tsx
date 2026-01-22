@@ -1,39 +1,9 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-
-const STEPS = [
-  {
-    number: "1",
-    title: "Design",
-    description: "We craft architectural visions that balance ambition with practicality from the ground up.",
-    image: "/design.png",
-    alt: "Luxury home",
-    type: "image",
-  },
-  {
-    number: "2",
-    title: "Build",
-    description: "Construction is creation – we bring your vision to life with precision and purpose.",
-    image: "/newbuilds-video.mp4",
-    alt: "New home construction",
-    type: "video",
-  },
-  {
-    number: "3",
-    title: "Live it",
-    description: "Move into the home you've always imagined — built for your life, not someone else's.",
-    image: "/live it.png",
-    alt: "Completed luxury home at night",
-    type: "image",
-  },
-]
-
-const ROTATION_INTERVAL = 8000
-const SWIPE_THRESHOLD = 50
 
 function ScrollIndicator({ show }: { show: boolean }) {
   const scrollToContent = () => {
@@ -48,15 +18,11 @@ function ScrollIndicator({ show }: { show: boolean }) {
       onClick={scrollToContent}
     >
       <div className="flex flex-col items-center gap-4">
-        {/* Mouse icon with animated wheel */}
         <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
-          {/* Animated scroll wheel */}
           <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
-          {/* Glow effect on hover */}
           <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
         </div>
         
-        {/* Animated chevrons - bigger and brighter */}
         <div className="flex flex-col items-center -space-y-2">
           <svg 
             className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
@@ -82,10 +48,26 @@ function ScrollIndicator({ show }: { show: boolean }) {
   )
 }
 
-export default function NewBuildsPage() {
-  const [activeStep, setActiveStep] = useState(0)
+const remoteBuildsCards = [
+  {
+    title: "Logistical Challenges",
+    description: "We handle complex logistics, permits, and coordination so you don't have to.",
+    image: "/remote-card-1.png"
+  },
+  {
+    title: "We Can Build Anywhere",
+    description: "From mountain retreats to coastal escapes, no location is too remote.",
+    image: "/remote-card-2.png"
+  },
+  {
+    title: "Enjoy Your Oasis",
+    description: "Your private sanctuary awaits, crafted with precision and care.",
+    image: "/remote-card-3.png"
+  }
+]
+
+export default function RemoteBuildsPage() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(false)
-  const touchStartX = useRef(0)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -96,32 +78,11 @@ export default function NewBuildsPage() {
     return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % STEPS.length)
-    }, ROTATION_INTERVAL)
-
-    return () => clearInterval(interval)
-  }, [])
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-  }
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const deltaX = touchStartX.current - e.changedTouches[0].clientX
-    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return
-
-    const direction = deltaX > 0 ? 1 : -1
-    setActiveStep((prev) => (prev + direction + STEPS.length) % STEPS.length)
-  }
-
-  const currentStep = STEPS[activeStep]
-
   return (
-    <div className="w-full overflow-x-hidden bg-black">
-      {/* Custom animations for scroll indicator */}
-      <style jsx global>{`
+    <div className="w-full overflow-x-hidden bg-[#080a0f] relative">
+      {/* Main content wrapper */}
+      <div className="relative z-0">
+        <style jsx global>{`
         @keyframes scroll-wheel {
           0% {
             opacity: 1;
@@ -178,200 +139,152 @@ export default function NewBuildsPage() {
       {/* Hero Section - Tesla Style Full Bleed */}
       <section className="relative w-full h-screen">
         <Image
-          src="/new-builds.png"
-          alt="Modern luxury new build"
+          src="/remote-builds.png"
+          alt="Modern luxury remote build"
           fill
           className="object-cover object-center"
           priority
         />
         
-        {/* Subtle gradient overlay */}
+        {/* Bottom gradient fade - Tesla style */}
         <div 
-          className="absolute inset-0"
+          className="absolute inset-x-0 bottom-0 h-[35%]"
           style={{
-            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
+            background: 'linear-gradient(to top, #080a0f 0%, rgba(8,10,15,0.7) 40%, transparent 100%)'
           }}
         />
         
         {/* Title - centered on mobile, lower right on desktop */}
         <div className="absolute inset-x-0 bottom-[25%] md:bottom-[22%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
           <h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white tracking-tight"
-            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight"
+            style={{ 
+              color: '#627486',
+              textShadow: '0 4px 40px rgba(0,0,0,0.5)' 
+            }}
           >
-            NEW BUILDS
+            REMOTE BUILDS
           </h1>
         </div>
 
-        {/* Scroll Indicator */}
         <ScrollIndicator show={showScrollIndicator} />
       </section>
 
-      <div className="bg-black h-6 md:h-12" />
-      <div className="w-full h-[2px] bg-[#D4A574]" />
+      <div className="bg-[#080a0f] h-6 md:h-12" />
+      <div className="w-full h-[2px] bg-[#D4A574]/40" />
 
-      <section className="bg-black text-white py-12 md:py-32">
-        <div className="container mx-auto px-5 md:px-6 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-16 mb-10 md:mb-20">
-            <div>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-1 md:mb-4">
-                Your Vision.
-              </h2>
-              <p className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light italic text-gray-400">
-                Built From the Ground Up.
-              </p>
-            </div>
-
-            <div className="space-y-4 md:space-y-6 text-[15px] md:text-lg text-gray-300 mt-4 lg:mt-0">
-              <p className="leading-[1.7] md:leading-8">
-                <span className="font-semibold text-white">Antova Builder</span> excels in creating exceptional new custom homes—from sophisticated
-                luxury builds to thoughtfully designed residences that suit a variety of lifestyles and budgets.
-              </p>
-              <p className="leading-[1.7] md:leading-8">
-                We believe every client deserves a home that feels perfectly theirs. Through genuine
-                collaboration, expert guidance, and superior craftsmanship, we bring your ideas to life,
-                delivering outstanding quality and attention to detail whether you're seeking the height
-                of luxury or a refined, well-executed home that fits your world.
-              </p>
-              <p className="leading-[1.7] md:leading-8">
-                From the first conversation to the final key handover, we're committed to building
-                something extraordinary—tailored just for you.
-              </p>
-              <p className="font-semibold text-white pt-1 md:pt-2">Your dream. Our craftsmanship. Built for you.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile carousel */}
-        <div className="md:hidden w-full px-5">
-          <div
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            className="relative overflow-hidden"
-          >
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${activeStep * 100}%)` }}
-            >
-              {STEPS.map((step, i) => (
-                <div key={i} className="w-full flex-shrink-0">
-                  <div className="relative w-full aspect-[4/3] mb-6">
-                    {step.type === "video" ? (
-                      <video
-                        src={step.image}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="absolute inset-0 w-full h-full object-cover object-center"
-                      />
-                    ) : (
-                      <Image src={step.image} alt={step.alt} fill className="object-cover object-center" />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3 mb-4 w-full">
-            {STEPS.map((step, i) => {
-              const isActive = activeStep === i
-              return (
-                <button key={i} onClick={() => setActiveStep(i)} className="flex flex-col cursor-pointer">
-                  <div className={`h-[2px] w-full transition-colors duration-300 ${isActive ? "bg-white" : "bg-gray-600"}`} />
-                  <div className="flex items-center gap-2 mt-4">
-                    <span
-                      className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold transition-all duration-300 ${
-                        isActive ? "bg-[#c6912c] text-black" : "bg-transparent border border-gray-600 text-gray-600"
-                      }`}
-                    >
-                      {step.number}
-                    </span>
-                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isActive ? "text-white" : "text-gray-600"}`}>
-                      {step.title}
-                    </h3>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="text-left pr-8 mt-2">
-            <p className="text-sm text-gray-300 leading-relaxed">{currentStep.description}</p>
-          </div>
-        </div>
-
-        {/* Desktop carousel */}
-        <div className="hidden md:flex w-full justify-center px-6">
-          <div className="w-full max-w-[1400px]">
-            <div className="relative w-full aspect-[21/9]">
-              {currentStep.type === "video" ? (
-                <video
-                  key={activeStep}
-                  src={currentStep.image}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300"
-                />
-              ) : (
+      {/* Three Cards Section */}
+      <section className="relative py-16 sm:py-24 bg-[#080a0f]">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {remoteBuildsCards.map((card, index) => (
+              <div 
+                key={index}
+                className="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer"
+              >
+                {/* Background Image */}
                 <Image
-                  src={currentStep.image}
-                  alt={currentStep.alt}
+                  src={card.image}
+                  alt={card.title}
                   fill
-                  className="object-cover object-center transition-opacity duration-300"
-                  key={activeStep}
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
-              )}
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                
+                {/* Content */}
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 tracking-wide uppercase">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm sm:text-base text-white/70 leading-relaxed">
+                    {card.description}
+                  </p>
+                </div>
+
+                {/* Hover Border Effect */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#c6912c]/50 transition-colors duration-300" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Full Width Forest Section */}
+      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden">
+        <Image
+          src="/forest.png"
+          alt="Remote forest building location"
+          fill
+          className="object-cover object-center"
+        />
+        
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
+        
+        <div className="relative z-10 w-full mx-auto max-w-7xl px-6 sm:px-8 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            
+            {/* Left Content */}
+            <div className="space-y-8">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight">
+                BUILD YOUR
+                <br />
+                <span className="text-[#627486]">DREAM ANYWHERE</span>
+              </h2>
+              
+              <div className="space-y-6 max-w-lg">
+                <p className="text-base sm:text-lg text-white/80 leading-relaxed">
+                  Antova Builders specializes in building homes and structures in the most challenging locations — mountaintops, remote mountain valleys, islands, and sites where conventional contractors refuse to go.
+                </p>
+                
+                <p className="text-base sm:text-lg text-white/80 leading-relaxed">
+                  We mobilize helicopters, specialized off-road vehicles, and seasoned crews who excel in extreme conditions. Whether airlifting all materials to an inaccessible peak or pioneering access where no roads exist, we turn impossible sites into reality.
+                </p>
+                
+                <p className="text-lg sm:text-xl font-semibold text-[#c6912c] pt-2">
+                  If you can dream the location, we can build it there
+                </p>
+              </div>
             </div>
-
-            <div className="grid grid-cols-3 gap-8 pt-12">
-              {STEPS.map((step, i) => {
-                const isActive = activeStep === i
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setActiveStep(i)}
-                    className="relative text-center cursor-pointer transition-all hover:opacity-80"
-                  >
-                    <div className={`absolute top-0 left-0 right-0 h-[2px] transition-colors ${isActive ? "bg-[#c6912c]" : "bg-gray-700"}`} />
-
-                    <div className="flex items-center justify-center gap-3 pt-6 pb-4">
-                      <span
-                        className={`flex items-center justify-center w-10 h-10 rounded-full text-lg font-bold transition-all duration-300 ${
-                          isActive ? "bg-[#c6912c] text-black" : "bg-transparent border-2 border-gray-600 text-gray-600"
-                        }`}
-                      >
-                        {step.number}
-                      </span>
-                      <h3 className={`text-xl font-semibold transition-colors duration-300 ${isActive ? "text-white" : "text-gray-500"}`}>
-                        {step.title}
-                      </h3>
-                    </div>
-
-                    <p className={`text-xs sm:text-sm leading-relaxed px-1 sm:px-0 transition-colors ${isActive ? "text-white" : "text-gray-500"}`}>
-                      {step.description}
-                    </p>
-                  </button>
-                )
-              })}
+            
+            {/* Right Image Grid */}
+            <div className="hidden lg:grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/remote-card-1.png" alt="Mountain location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/remote-card-2.png" alt="Valley location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+              </div>
+              <div className="space-y-4 pt-8">
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/remote-card-3.png" alt="Island location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+                <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/forest.png" alt="Forest location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+              </div>
             </div>
+            
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-black">
+      <section className="relative py-16 sm:py-20 bg-[#080a0f]">
         <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
-          {/* Two CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
             <a
               href="/contact"
               className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
             >
-              Start Your New Build
+              Start Your Remote Build
             </a>
             <a
               href="/cost-estimator"
@@ -391,6 +304,31 @@ export default function NewBuildsPage() {
       </section>
 
       <Footer />
+      </div>
+
+      {/* Unified atmospheric overlay - sits on TOP of all content */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-50"
+        style={{
+          background: `
+            radial-gradient(ellipse 120% 100% at 50% 50%, 
+              transparent 0%, 
+              transparent 25%,
+              rgba(5,10,18,0.15) 50%,
+              rgba(3,8,15,0.4) 75%,
+              rgba(0,5,12,0.7) 100%
+            )
+          `,
+        }}
+      />
+      
+      {/* Subtle blue tint */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-50 mix-blend-overlay"
+        style={{
+          background: 'linear-gradient(180deg, rgba(20,40,60,0.08) 0%, rgba(15,30,50,0.05) 100%)',
+        }}
+      />
     </div>
   )
 }
