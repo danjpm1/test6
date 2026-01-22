@@ -79,7 +79,31 @@ export default function RemoteBuildsPage() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden bg-black">
+    <div className="w-full overflow-x-hidden bg-[#0a0a0a] relative">
+      {/* Subtle unifying gradient overlay */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-10"
+        style={{
+          background: 'linear-gradient(180deg, rgba(5,10,15,0.15) 0%, rgba(10,18,25,0.08) 50%, rgba(5,10,15,0.18) 100%)',
+        }}
+      />
+      
+      {/* Subtle vignette */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-10"
+        style={{
+          background: 'radial-gradient(ellipse at center, transparent 40%, rgba(0,0,0,0.2) 100%)',
+        }}
+      />
+      
+      {/* Subtle noise texture */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-10 opacity-[0.015]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
+      
       <style jsx global>{`
         @keyframes scroll-wheel {
           0% {
@@ -132,10 +156,12 @@ export default function RemoteBuildsPage() {
         }
       `}</style>
 
-      <Navbar />
+      <div className="relative z-20">
+        <Navbar />
+      </div>
 
       {/* Hero Section - Tesla Style Full Bleed */}
-      <section className="relative w-full h-screen">
+      <section className="relative w-full h-screen z-0">
         <Image
           src="/remote-builds.png"
           alt="Modern luxury remote build"
@@ -152,10 +178,10 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Text positioned in lake area, right side */}
-        <div className="absolute bottom-[15%] sm:bottom-[18%] md:bottom-[20%] right-8 md:right-16 lg:right-24">
+        {/* Text positioned in lake reflection area */}
+        <div className="absolute top-[45%] sm:top-[42%] md:top-[40%] right-8 md:right-16 lg:right-24">
           <h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bebas font-bold tracking-tight"
+            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight"
             style={{ 
               color: '#7FBDC4',
               textShadow: '0 4px 40px rgba(0,0,0,0.5)',
@@ -170,11 +196,11 @@ export default function RemoteBuildsPage() {
         <ScrollIndicator show={showScrollIndicator} />
       </section>
 
-      <div className="bg-black h-6 md:h-12" />
-      <div className="w-full h-[2px] bg-[#D4A574]" />
+      <div className="bg-[#0a0a0a] h-6 md:h-12" />
+      <div className="w-full h-[2px] bg-[#D4A574]/60" />
 
       {/* Three Cards Section */}
-      <section className="py-16 sm:py-24 bg-black">
+      <section className="relative py-16 sm:py-24 bg-gradient-to-b from-[#0a0a0a] via-[#0d1015] to-[#0a0a0a]">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {remoteBuildsCards.map((card, index) => (
@@ -277,7 +303,7 @@ export default function RemoteBuildsPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-black">
+      <section className="relative py-16 sm:py-20 bg-gradient-to-b from-[#0a0a0a] to-[#080808]">
         <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
             <a
@@ -303,7 +329,9 @@ export default function RemoteBuildsPage() {
         </div>
       </section>
 
-      <Footer />
+      <div className="relative z-20">
+        <Footer />
+      </div>
     </div>
   )
 }
