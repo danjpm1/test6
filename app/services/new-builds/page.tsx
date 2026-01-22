@@ -243,7 +243,24 @@ export default function RemoteBuildsPage() {
           className="object-cover object-center"
         />
         
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
+        {/* Top gradient fade - smooth transition from section above */}
+        <div 
+          className="absolute inset-x-0 top-0 h-[25%]"
+          style={{
+            background: 'linear-gradient(to bottom, #080a0f 0%, rgba(8,10,15,0.7) 40%, transparent 100%)'
+          }}
+        />
+        
+        {/* Bottom gradient fade - smooth transition to section below */}
+        <div 
+          className="absolute inset-x-0 bottom-0 h-[20%]"
+          style={{
+            background: 'linear-gradient(to top, #080a0f 0%, rgba(8,10,15,0.6) 40%, transparent 100%)'
+          }}
+        />
+        
+        {/* Left gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         
         <div className="relative z-10 w-full mx-auto max-w-7xl px-6 sm:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
