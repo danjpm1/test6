@@ -12,20 +12,20 @@ function ScrollIndicator({ show }: { show: boolean }) {
 
   return (
     <div 
-      className={`absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
+      className={`absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
         show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
       }`}
       onClick={scrollToContent}
     >
-      <div className="flex flex-col items-center gap-4">
-        <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
-          <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
+      <div className="flex flex-col items-center gap-3 sm:gap-4">
+        <div className="relative w-7 h-11 sm:w-9 sm:h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
+          <div className="w-1 h-2.5 sm:w-1.5 sm:h-3 bg-[#c6912c] rounded-full mt-2 sm:mt-2.5 animate-scroll-wheel" />
           <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
         </div>
         
         <div className="flex flex-col items-center -space-y-2">
           <svg 
-            className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
+            className="w-5 h-5 sm:w-7 sm:h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
             fill="none" 
             stroke="currentColor" 
             strokeWidth={2.5}
@@ -34,7 +34,7 @@ function ScrollIndicator({ show }: { show: boolean }) {
             <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
           <svg 
-            className="w-7 h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
+            className="w-5 h-5 sm:w-7 sm:h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
             fill="none" 
             stroke="currentColor" 
             strokeWidth={2.5}
@@ -142,8 +142,11 @@ export default function RemoteBuildsPage() {
           src="/remote-builds.png"
           alt="Modern luxury remote build"
           fill
-          className="object-cover object-center"
+          sizes="100vw"
+          className="object-cover object-top"
           priority
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDAwUBAAAAAAAAAAAAAQIDAAQRBRIhBhMiMUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAZEQACAwEAAAAAAAAAAAAAAAABAgADESH/2gAMAwEAAhEDEEA/AKOm9RXNvbRQy2sUrxoFLl2XcQOTgDj9qrF1Pd/nl/tKVLuGwKYZ//Z"
         />
         
         {/* Bottom gradient fade - Tesla style */}
@@ -154,15 +157,13 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Text positioned in lake reflection area */}
-        <div className="absolute top-[45%] sm:top-[42%] md:top-[40%] right-8 md:right-16 lg:right-24">
+        {/* Title - centered on mobile, right-aligned on desktop */}
+        <div className="absolute top-[40%] sm:top-[38%] md:top-[34%] inset-x-4 md:inset-x-auto md:right-[5%] text-center md:text-right">
           <h1 
-            className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight"
+            className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight"
             style={{ 
-              color: '#7FBDC4',
-              textShadow: '0 4px 40px rgba(0,0,0,0.5)',
-              fontFamily: "'Bebas Neue', sans-serif",
-              letterSpacing: '0.02em'
+              color: '#D4F1F9',
+              textShadow: '0 2px 40px rgba(0,0,0,0.4)',
             }}
           >
             REMOTE BUILDS
@@ -189,6 +190,8 @@ export default function RemoteBuildsPage() {
                   src={card.image}
                   alt={card.title}
                   fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 
@@ -197,10 +200,10 @@ export default function RemoteBuildsPage() {
                 
                 {/* Content */}
                 <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
-                  <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 tracking-wide uppercase">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-white mb-2 tracking-wide uppercase">
                     {card.title}
                   </h3>
-                  <p className="text-sm sm:text-base text-white/70 leading-relaxed">
+                  <p className="font-sans text-sm sm:text-base text-white/70 leading-relaxed">
                     {card.description}
                   </p>
                 </div>
@@ -214,25 +217,44 @@ export default function RemoteBuildsPage() {
       </section>
 
       {/* Full Width Forest Section */}
-      <section className="relative w-full min-h-[90vh] flex items-center overflow-hidden">
+      <section className="relative w-full min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden">
         <Image
           src="/forest.png"
           alt="Remote forest building location"
           fill
+          sizes="100vw"
+          loading="lazy"
           className="object-cover object-center"
         />
         
-        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40" />
+        {/* Top gradient fade - smooth transition from section above */}
+        <div 
+          className="absolute inset-x-0 top-0 h-[25%]"
+          style={{
+            background: 'linear-gradient(to bottom, #080a0f 0%, rgba(8,10,15,0.7) 40%, transparent 100%)'
+          }}
+        />
+        
+        {/* Bottom gradient fade - smooth transition to section below */}
+        <div 
+          className="absolute inset-x-0 bottom-0 h-[20%]"
+          style={{
+            background: 'linear-gradient(to top, #080a0f 0%, rgba(8,10,15,0.6) 40%, transparent 100%)'
+          }}
+        />
+        
+        {/* Left gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         
         <div className="relative z-10 w-full mx-auto max-w-7xl px-6 sm:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
             {/* Left Content */}
             <div className="space-y-8">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight">
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight">
                 BUILD YOUR
                 <br />
-                <span className="text-[#c6912c]">DREAM ANYWHERE</span>
+                <span className="text-[#627486]">DREAM ANYWHERE</span>
               </h2>
               
               <div className="space-y-6 max-w-lg">
@@ -254,21 +276,21 @@ export default function RemoteBuildsPage() {
             <div className="hidden lg:grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/remote-card-1.png" alt="Mountain location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/remote-card-1.png" alt="Mountain location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/remote-card-2.png" alt="Valley location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/remote-card-2.png" alt="Valley location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
               </div>
               <div className="space-y-4 pt-8">
                 <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/remote-card-3.png" alt="Island location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/remote-card-3.png" alt="Island location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
                 <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
-                  <Image src="/forest.png" alt="Forest location" fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <Image src="/forest.png" alt="Forest location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
                 </div>
               </div>
@@ -284,13 +306,13 @@ export default function RemoteBuildsPage() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
             <a
               href="/contact"
-              className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
+              className="h-11 w-full sm:w-auto sm:min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
             >
               Start Your Remote Build
             </a>
             <a
               href="/cost-estimator"
-              className="h-11 min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
+              className="h-11 w-full sm:w-auto sm:min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
             >
               AI Estimator
             </a>
@@ -321,14 +343,19 @@ export default function RemoteBuildsPage() {
               rgba(0,5,12,0.7) 100%
             )
           `,
+          willChange: 'auto',
+          contain: 'strict',
         }}
       />
       
       {/* Subtle blue tint */}
       <div 
-        className="fixed inset-0 pointer-events-none z-50 mix-blend-overlay"
+        className="fixed inset-0 pointer-events-none z-50"
         style={{
           background: 'linear-gradient(180deg, rgba(20,40,60,0.08) 0%, rgba(15,30,50,0.05) 100%)',
+          mixBlendMode: 'overlay',
+          willChange: 'auto',
+          contain: 'strict',
         }}
       />
     </div>
