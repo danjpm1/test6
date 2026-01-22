@@ -52,17 +52,17 @@ const remoteBuildsCards = [
   {
     title: "Logistical Challenges",
     description: "We handle complex logistics, permits, and coordination so you don't have to.",
-    image: "/remote-card-1.jpg"
+    image: "/remote-card-1.png"
   },
   {
     title: "We Can Build Anywhere",
     description: "From mountain retreats to coastal escapes, no location is too remote.",
-    image: "/remote-card-2.jpg"
+    image: "/remote-card-2.png"
   },
   {
     title: "Enjoy Your Oasis",
     description: "Your private sanctuary awaits, crafted with precision and care.",
-    image: "/remote-card-3.jpg"
+    image: "/remote-card-3.png"
   }
 ]
 
