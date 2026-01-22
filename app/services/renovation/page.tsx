@@ -1,342 +1,363 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
-const STEPS = [
+function ScrollIndicator({ show }: { show: boolean }) {
+  const scrollToContent = () => {
+    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+  }
+
+  return (
+    <div 
+      className={`absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
+        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+      onClick={scrollToContent}
+    >
+      <div className="flex flex-col items-center gap-3 sm:gap-4">
+        <div className="relative w-7 h-11 sm:w-9 sm:h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
+          <div className="w-1 h-2.5 sm:w-1.5 sm:h-3 bg-[#c6912c] rounded-full mt-2 sm:mt-2.5 animate-scroll-wheel" />
+          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
+        </div>
+        
+        <div className="flex flex-col items-center -space-y-2">
+          <svg 
+            className="w-5 h-5 sm:w-7 sm:h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+          <svg 
+            className="w-5 h-5 sm:w-7 sm:h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth={2.5}
+            viewBox="0 0 24 24"
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+          </svg>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+const remoteBuildsCards = [
   {
-    number: "1",
-    title: "Consult",
-    description: "We begin with a thoughtful, in-depth consultation — listening closely to your vision, lifestyle, and priorities while carefully evaluating your existing space to uncover its full potential and craft a tailored plan that reflects what matters most to you.",
-    image: "/aerial.jpg",
-    alt: "Luxury home aerial view with pool",
+    title: "Logistical Challenges",
+    description: "We handle complex logistics, permits, and coordination so you don't have to.",
+    image: "/remote-card-1.png"
   },
   {
-    number: "2",
-    title: "Transform",
-    description: "Renovation is reinvention — we reshape your home with meticulous care, precision artistry, and deep respect for its original character, bringing your vision to life flawlessly.",
-    image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
-    alt: "Home renovation in progress",
+    title: "We Can Build Anywhere",
+    description: "From mountain retreats to coastal escapes, no location is too remote.",
+    image: "/remote-card-2.png"
   },
   {
-    number: "3",
-    title: "Rediscover",
-    description: "Step into your renewed space as if for the first time — refined, elevated, and perfectly aligned with the next chapter of your story.",
-    image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
-    alt: "Completed luxury renovation at night",
-  },
+    title: "Enjoy Your Oasis",
+    description: "Your private sanctuary awaits, crafted with precision and care.",
+    image: "/remote-card-3.png"
+  }
 ]
 
-const ROTATION_INTERVAL = 4000
-const SWIPE_THRESHOLD = 50
-
-export default function RenovationPage() {
-  const [activeStep, setActiveStep] = useState(0)
-  const [isVideoVisible, setIsVideoVisible] = useState(false)
-  const [isVideoLoaded, setIsVideoLoaded] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(true)
-  const touchStartX = useRef(0)
-  const videoRef = useRef<HTMLVideoElement>(null)
-  const videoContainerRef = useRef<HTMLDivElement>(null)
+export default function RemoteBuildsPage() {
+  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % STEPS.length)
-    }, ROTATION_INTERVAL)
-
-    return () => clearInterval(interval)
+    const timer = setTimeout(() => setShowScrollIndicator(true), 1000)
+    return () => clearTimeout(timer)
   }, [])
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setIsVideoVisible(true)
-            if (videoRef.current && isVideoLoaded && isPlaying) {
-              videoRef.current.play()
-            }
-          } else {
-            if (videoRef.current) {
-              videoRef.current.pause()
-            }
-          }
-        })
-      },
-      { threshold: 0.25 }
-    )
-
-    if (videoContainerRef.current) {
-      observer.observe(videoContainerRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [isVideoLoaded, isPlaying])
-
-  const handleVideoLoaded = () => {
-    setIsVideoLoaded(true)
-    if (videoRef.current && isVideoVisible && isPlaying) {
-      videoRef.current.play()
-    }
-  }
-
-  const toggleVideo = () => {
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause()
-      } else {
-        videoRef.current.play()
-      }
-      setIsPlaying(!isPlaying)
-    }
-  }
-
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-  }
-
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const deltaX = touchStartX.current - e.changedTouches[0].clientX
-    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return
-
-    const direction = deltaX > 0 ? 1 : -1
-    setActiveStep((prev) => (prev + direction + STEPS.length) % STEPS.length)
-  }
-
-  const currentStep = STEPS[activeStep]
-
   return (
-    <div className="w-full overflow-x-hidden bg-white">
+    <div className="w-full overflow-x-hidden bg-[#080a0f] relative">
+      {/* Main content wrapper */}
+      <div className="relative z-0">
+        <style jsx global>{`
+        @keyframes scroll-wheel {
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(10px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(14px);
+          }
+        }
+        
+        @keyframes chevron-fade-1 {
+          0%, 100% {
+            opacity: 0.8;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(6px);
+          }
+        }
+        
+        @keyframes chevron-fade-2 {
+          0%, 100% {
+            opacity: 0.5;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.9;
+            transform: translateY(6px);
+          }
+        }
+        
+        .animate-scroll-wheel {
+          animation: scroll-wheel 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-1 {
+          animation: chevron-fade-1 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-2 {
+          animation: chevron-fade-2 1.5s ease-in-out infinite;
+          animation-delay: 0.2s;
+        }
+      `}</style>
+
       <Navbar />
 
-      {/* Hero Section - Tesla/Porsche Style Top Center */}
+      {/* Hero Section - Tesla Style Full Bleed */}
       <section className="relative w-full h-screen">
         <Image
-          src="/renovation-home.png"
-          alt="Modern luxury renovation"
+          src="/remote-builds.png"
+          alt="Modern luxury remote build"
           fill
-          className="object-cover object-center"
+          sizes="100vw"
+          className="object-cover object-top"
           priority
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDAwUBAAAAAAAAAAAAAQIDAAQRBRIhBhMiMUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAZEQACAwEAAAAAAAAAAAAAAAABAgADESH/2gAMAwEAAhEDEEA/AKOm9RXNvbRQy2sUrxoFLl2XcQOTgDj9qrF1Pd/nl/tKVLuGwKYZ//Z"
         />
         
-        {/* Top gradient for text contrast */}
+        {/* Bottom gradient fade - Tesla style */}
         <div 
-          className="absolute inset-0"
+          className="absolute inset-x-0 bottom-0 h-[35%]"
           style={{
-            background: 'linear-gradient(to bottom, rgba(0,0,0,0.55) 0%, rgba(0,0,0,0.2) 35%, transparent 55%)'
+            background: 'linear-gradient(to top, #080a0f 0%, rgba(8,10,15,0.7) 40%, transparent 100%)'
           }}
         />
         
-        {/* Title - top center positioning */}
-        <div className="absolute top-[18%] md:top-[22%] inset-x-0 flex justify-center">
+        {/* Title - bottom right to match other service pages */}
+        <div className="absolute bottom-[18%] sm:bottom-[16%] md:bottom-[15%] inset-x-4 md:inset-x-auto md:right-[5%] text-center md:text-right">
           <h1 
-            className="text-3xl sm:text-4xl md:text-5xl font-bold text-white tracking-tight"
-            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
-          >
-            RENOVATION
-          </h1>
-        </div>
-      </section>
-
-      <div className="bg-white h-6 md:h-12" />
-      <div className="w-full h-[2px] bg-[#D4A574]" />
-
-      <section className="bg-white text-black py-12 md:py-32">
-        <div className="container mx-auto px-5 md:px-6 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-16 mb-10 md:mb-20">
-            <div>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-black mb-1 md:mb-4">
-                Your Home.
-              </h2>
-              <p className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light italic text-gray-500">
-                Reimagined and Renewed.
-              </p>
-            </div>
-
-            <div className="space-y-4 md:space-y-6 text-[15px] md:text-lg text-gray-600 mt-4 lg:mt-0">
-              <p className="leading-[1.7] md:leading-8">
-                Antova Builder specializes in luxury renovations for every budget.
-              </p>
-              <p className="leading-[1.7] md:leading-8">
-                We transform existing homes into spaces that perfectly match the way you want to live today, delivering exceptional design, materials, and craftsmanship at every price point. A renovation isn't just new walls and fixtures; it's a complete re-imagination of your home. We listen closely, honor everything you already love about the place, and elevate it with thoughtful details and flawless execution — whether the project is focused and efficient or grand in scope.
-              </p>
-              <p className="font-semibold text-black pt-1 md:pt-2">Your vision. Your budget. Our expertise.</p>
-            </div>
-          </div>
-        </div>
-
-        {/* Mobile carousel */}
-        <div className="md:hidden w-full px-5">
-          <div
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            className="relative overflow-hidden"
-          >
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${activeStep * 100}%)` }}
-            >
-              {STEPS.map((step, i) => (
-                <div key={i} className="w-full flex-shrink-0">
-                  <div className="relative w-full aspect-[4/3] mb-6">
-                    <Image src={step.image} alt={step.alt} fill className="object-cover object-center" />
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-3 mb-4 w-full">
-            {STEPS.map((step, i) => {
-              const isActive = activeStep === i
-              return (
-                <button key={i} onClick={() => setActiveStep(i)} className="flex flex-col cursor-pointer">
-                  <div className={`h-[2px] w-full transition-colors duration-300 ${isActive ? "bg-black" : "bg-gray-300"}`} />
-                  <div className="flex items-center gap-2 mt-4">
-                    <span
-                      className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold transition-all duration-300 ${
-                        isActive ? "bg-[#c6912c] text-white" : "bg-transparent border border-gray-400 text-gray-400"
-                      }`}
-                    >
-                      {step.number}
-                    </span>
-                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isActive ? "text-black" : "text-gray-400"}`}>
-                      {step.title}
-                    </h3>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
-
-          <div className="text-left pr-8 mt-2">
-            <p className="text-sm text-gray-600 leading-relaxed">{currentStep.description}</p>
-          </div>
-        </div>
-
-        {/* Desktop carousel */}
-        <div className="hidden md:flex w-full justify-center px-6">
-          <div className="w-full max-w-[1400px]">
-            <div className="relative w-full aspect-[21/9]">
-              <Image
-                src={currentStep.image}
-                alt={currentStep.alt}
-                fill
-                className="object-cover object-center transition-opacity duration-300"
-                key={activeStep}
-              />
-            </div>
-
-            <div className="grid grid-cols-3 gap-8 pt-12">
-              {STEPS.map((step, i) => {
-                const isActive = activeStep === i
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setActiveStep(i)}
-                    className="relative text-center cursor-pointer transition-all hover:opacity-80"
-                  >
-                    <div className={`absolute top-0 left-0 right-0 h-[2px] transition-colors ${isActive ? "bg-[#c6912c]" : "bg-gray-300"}`} />
-
-                    <div className="flex items-center justify-center gap-3 pt-6 pb-4">
-                      <span
-                        className={`flex items-center justify-center w-10 h-10 rounded-full text-lg font-bold transition-all duration-300 ${
-                          isActive ? "bg-[#c6912c] text-white" : "bg-transparent border-2 border-gray-300 text-gray-400"
-                        }`}
-                      >
-                        {step.number}
-                      </span>
-                      <h3 className={`text-xl font-semibold transition-colors duration-300 ${isActive ? "text-black" : "text-gray-400"}`}>
-                        {step.title}
-                      </h3>
-                    </div>
-
-                    <p className={`text-xs sm:text-sm leading-relaxed px-1 sm:px-0 transition-colors ${isActive ? "text-gray-700" : "text-gray-400"}`}>
-                      {step.description}
-                    </p>
-                  </button>
-                )
-              })}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Tesla-style Feature Section */}
-      <section className="bg-gray-50 py-16 md:py-24 lg:py-32">
-        <div className="mx-auto px-[5%] md:px-[7.5%]">
-          <div 
-            ref={videoContainerRef}
-            className="relative w-full aspect-[2.4/1] md:aspect-[2.8/1] overflow-hidden bg-gray-200"
-            style={{
-              clipPath: `polygon(
-                0 0,
-                calc(100% - 20px) 0,
-                100% 20px,
-                100% 100%,
-                20px 100%,
-                0 calc(100% - 20px)
-              )`
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
+            style={{ 
+              color: '#D4F1F9',
+              textShadow: '0 2px 40px rgba(0,0,0,0.4)',
             }}
           >
-            <video
-              ref={videoRef}
-              src="/renovation-showcase.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              poster="/renovation-poster.jpg"
-              onLoadedData={handleVideoLoaded}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-            {/* Play/Pause button */}
-            <button 
-              onClick={toggleVideo}
-              className="absolute bottom-4 left-4 w-8 h-8 bg-black/60 rounded flex items-center justify-center hover:bg-black/80 transition-colors"
-              aria-label={isPlaying ? "Pause video" : "Play video"}
+            REMOTE BUILDS
+          </h1>
+        </div>
+
+        <ScrollIndicator show={showScrollIndicator} />
+      </section>
+
+      <div className="bg-[#080a0f] h-6 md:h-12" />
+      <div className="w-full h-[2px] bg-[#D4A574]/40" />
+
+      {/* Three Cards Section */}
+      <section className="relative py-16 sm:py-24 bg-[#080a0f]">
+        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
+            {remoteBuildsCards.map((card, index) => (
+              <div 
+                key={index}
+                className="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer"
+              >
+                {/* Background Image */}
+                <Image
+                  src={card.image}
+                  alt={card.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 33vw"
+                  loading="lazy"
+                  className="object-cover transition-transform duration-700 group-hover:scale-105"
+                />
+                
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                
+                {/* Content */}
+                <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
+                  <h3 className="font-display text-xl sm:text-2xl font-bold text-white mb-2 tracking-wide uppercase">
+                    {card.title}
+                  </h3>
+                  <p className="font-sans text-sm sm:text-base text-white/70 leading-relaxed">
+                    {card.description}
+                  </p>
+                </div>
+
+                {/* Hover Border Effect */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#c6912c]/50 transition-colors duration-300" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Full Width Forest Section */}
+      <section className="relative w-full min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden">
+        <Image
+          src="/forest.png"
+          alt="Remote forest building location"
+          fill
+          sizes="100vw"
+          loading="lazy"
+          className="object-cover object-center"
+        />
+        
+        {/* Top gradient fade - smooth transition from section above */}
+        <div 
+          className="absolute inset-x-0 top-0 h-[25%]"
+          style={{
+            background: 'linear-gradient(to bottom, #080a0f 0%, rgba(8,10,15,0.7) 40%, transparent 100%)'
+          }}
+        />
+        
+        {/* Bottom gradient fade - smooth transition to section below */}
+        <div 
+          className="absolute inset-x-0 bottom-0 h-[20%]"
+          style={{
+            background: 'linear-gradient(to top, #080a0f 0%, rgba(8,10,15,0.6) 40%, transparent 100%)'
+          }}
+        />
+        
+        {/* Left gradient for text readability */}
+        <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
+        
+        <div className="relative z-10 w-full mx-auto max-w-7xl px-6 sm:px-8 py-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+            
+            {/* Left Content */}
+            <div className="space-y-8">
+              <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight">
+                BUILD YOUR
+                <br />
+                <span className="text-[#627486]">DREAM ANYWHERE</span>
+              </h2>
+              
+              <div className="space-y-6 max-w-lg">
+                <p className="text-base sm:text-lg text-white/80 leading-relaxed">
+                  Antova Builders specializes in building homes and structures in the most challenging locations — mountaintops, remote mountain valleys, islands, and sites where conventional contractors refuse to go.
+                </p>
+                
+                <p className="text-base sm:text-lg text-white/80 leading-relaxed">
+                  We mobilize helicopters, specialized off-road vehicles, and seasoned crews who excel in extreme conditions. Whether airlifting all materials to an inaccessible peak or pioneering access where no roads exist, we turn impossible sites into reality.
+                </p>
+                
+                <p className="text-lg sm:text-xl font-semibold text-[#c6912c] pt-2">
+                  If you can dream the location, we can build it there
+                </p>
+              </div>
+            </div>
+            
+            {/* Right Image Grid */}
+            <div className="hidden lg:grid grid-cols-2 gap-4">
+              <div className="space-y-4">
+                <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/remote-card-1.png" alt="Mountain location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/remote-card-2.png" alt="Valley location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+              </div>
+              <div className="space-y-4 pt-8">
+                <div className="relative aspect-[4/3] rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/remote-card-3.png" alt="Island location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+                <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
+                  <Image src="/forest.png" alt="Forest location" fill sizes="25vw" loading="lazy" className="object-cover transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-all duration-300" />
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="relative py-16 sm:py-20 bg-[#080a0f]">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
+            <a
+              href="/contact"
+              className="h-11 w-full sm:w-auto sm:min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
             >
-              {isPlaying ? (
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 24 24" 
-                  fill="white" 
-                  className="w-4 h-4"
-                >
-                  <rect x="6" y="4" width="4" height="16" />
-                  <rect x="14" y="4" width="4" height="16" />
-                </svg>
-              ) : (
-                <svg 
-                  xmlns="http://www.w3.org/2000/svg" 
-                  viewBox="0 0 24 24" 
-                  fill="white" 
-                  className="w-4 h-4"
-                >
-                  <polygon points="5,3 19,12 5,21" />
-                </svg>
-              )}
-            </button>
+              Start Your Remote Build
+            </a>
+            <a
+              href="/cost-estimator"
+              className="h-11 w-full sm:w-auto sm:min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
+            >
+              AI Estimator
+            </a>
           </div>
 
-          <div className="mt-8 md:mt-12 px-2 md:px-4">
-            <h2 className="text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] font-medium text-black tracking-tight leading-tight">
-              Redefining Renovations forever
-            </h2>
-            <p className="mt-2 md:mt-3 text-sm md:text-[15px] text-gray-500">
-              Our renovations are timeless & last a lifetime.
-            </p>
-          </div>
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-6">
+            Let's Start Making Your <span className="text-[#c6912c]">Dream Home</span> a Reality
+          </h2>
+          <p className="font-sans text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
+            From initial design to final walkthrough, our team delivers exceptional custom homes. Get in touch today.
+          </p>
         </div>
       </section>
 
       <Footer />
+      </div>
+
+      {/* Unified atmospheric overlay - sits on TOP of all content */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-50"
+        style={{
+          background: `
+            radial-gradient(ellipse 120% 100% at 50% 50%, 
+              transparent 0%, 
+              transparent 25%,
+              rgba(5,10,18,0.15) 50%,
+              rgba(3,8,15,0.4) 75%,
+              rgba(0,5,12,0.7) 100%
+            )
+          `,
+          willChange: 'auto',
+          contain: 'strict',
+        }}
+      />
+      
+      {/* Subtle blue tint */}
+      <div 
+        className="fixed inset-0 pointer-events-none z-50"
+        style={{
+          background: 'linear-gradient(180deg, rgba(20,40,60,0.08) 0%, rgba(15,30,50,0.05) 100%)',
+          mixBlendMode: 'overlay',
+          willChange: 'auto',
+          contain: 'strict',
+        }}
+      />
     </div>
   )
 }
