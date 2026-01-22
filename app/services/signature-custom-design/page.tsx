@@ -26,104 +26,110 @@ export default function SignatureCustomDesignPage() {
       <Navbar />
 
       {/* Porsche-style Editorial Layout */}
-      <section className="bg-white pt-24 md:pt-32">
+      <section className="bg-white pt-24 md:pt-28">
         
         {/* Script Title - Centered */}
-        <div className="py-6 md:py-10 flex justify-center">
-          <h1 className="script-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-black">
+        <div className="pt-8 pb-6 md:pt-10 md:pb-8 flex justify-center">
+          <h1 className="script-title text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-black">
             Signature Custom Design
           </h1>
         </div>
 
-        {/* Main Image with Black Side Bars */}
-        <div className="flex">
-          {/* Left black bar */}
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
+        {/* === BLACK FRAME CONTAINER === */}
+        <div className="bg-black">
           
-          {/* Center image */}
-          <div className="flex-1 relative aspect-[4/3] md:aspect-[16/10]">
-            <Image
-              src="/signature-showcase-1.png"
-              alt="Breathtaking custom designed home"
-              fill
-              className="object-cover object-center"
-            />
-          </div>
-          
-          {/* Right black bar */}
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
-        </div>
-
-        {/* Thick black bar below first image */}
-        <div className="w-full h-[30px] md:h-[50px] lg:h-[60px] bg-black" />
-
-        {/* Split Section: Text Left, Image Right - with continuing black side bars */}
-        <div className="flex">
-          {/* Left black bar */}
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
-          
-          {/* Content area */}
-          <div className="flex-1 grid md:grid-cols-2">
-            {/* Left - Text Content */}
-            <div className="px-6 md:px-10 lg:px-14 py-10 md:py-14 lg:py-20 flex flex-col justify-center bg-white">
-              <h2 className="text-[1.65rem] sm:text-3xl md:text-[2rem] lg:text-[2.5rem] font-normal text-black leading-[1.2] mb-5 md:mb-7">
-                More drive. For<br />
-                ambitious<br />
-                destinations.
-              </h2>
-              <p className="text-[12px] md:text-[13px] text-gray-500 leading-relaxed max-w-sm">
-                The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
-              </p>
-              <p className="text-[12px] md:text-[13px] text-gray-500 leading-relaxed max-w-sm mt-3">
-                We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
-              </p>
+          {/* Row 1: Main Image with side bars */}
+          <div className="flex">
+            {/* Left black bar - 15% */}
+            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
+            
+            {/* Center image - 70% */}
+            <div className="w-[84%] md:w-[76%] lg:w-[70%] relative">
+              <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
+                <Image
+                  src="/signature-showcase-1.png"
+                  alt="Breathtaking custom designed home"
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
             </div>
+            
+            {/* Right black bar - 15% */}
+            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
+          </div>
 
-            {/* Right - Image */}
-            <div className="relative aspect-[4/3] md:aspect-auto min-h-[280px] md:min-h-0">
-              <Image
-                src="/signature-showcase-2.png"
-                alt="Custom home lifestyle"
-                fill
-                className="object-cover object-center"
-              />
+          {/* Thick black bar between image and split section */}
+          <div className="h-[35px] md:h-[50px] lg:h-[60px] bg-black" />
+
+          {/* Row 2: Split section - Text Left / Image Right */}
+          <div className="flex">
+            {/* Left black bar - 15% */}
+            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
+            
+            {/* Content area - 70% */}
+            <div className="w-[84%] md:w-[76%] lg:w-[70%] flex flex-col md:flex-row">
+              {/* Text block - 40% of content */}
+              <div className="w-full md:w-[40%] bg-white px-6 md:px-10 lg:px-12 py-8 md:py-12 lg:py-16 flex flex-col justify-center">
+                <h2 className="text-[1.5rem] sm:text-[1.75rem] md:text-[1.65rem] lg:text-[2rem] xl:text-[2.25rem] font-normal text-black leading-[1.15] mb-4 md:mb-6">
+                  More drive. For<br />
+                  ambitious<br />
+                  destinations.
+                </h2>
+                <p className="text-[11px] md:text-[12px] lg:text-[13px] text-gray-500 leading-[1.6] max-w-xs">
+                  The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
+                </p>
+                <p className="text-[11px] md:text-[12px] lg:text-[13px] text-gray-500 leading-[1.6] max-w-xs mt-3">
+                  We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
+                </p>
+              </div>
+
+              {/* Image block - 60% of content */}
+              <div className="w-full md:w-[60%] relative min-h-[250px] md:min-h-0">
+                <Image
+                  src="/signature-showcase-2.png"
+                  alt="Custom home lifestyle"
+                  fill
+                  className="object-cover object-center"
+                />
+              </div>
             </div>
+            
+            {/* Right black bar - 15% */}
+            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
           </div>
-          
-          {/* Right black bar */}
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
-        </div>
 
-        {/* Thin black separator */}
-        <div className="flex">
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
-          <div className="flex-1 h-[8px] md:h-[12px] bg-black" />
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
-        </div>
+          {/* Thin black separator */}
+          <div className="h-[8px] md:h-[10px] lg:h-[12px] bg-black" />
 
-        {/* Bottom Autoplay Video with Black Side Bars */}
-        <div className="flex">
-          {/* Left black bar */}
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
-          
-          {/* Center video */}
-          <div className="flex-1 relative aspect-[21/9] md:aspect-[21/7]">
-            <video
-              src="/renovation-showcase.mp4"
-              autoPlay
-              muted
-              loop
-              playsInline
-              className="absolute inset-0 w-full h-full object-cover"
-            />
+          {/* Row 3: Bottom Video */}
+          <div className="flex">
+            {/* Left black bar - 15% */}
+            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
+            
+            {/* Center video - 70% */}
+            <div className="w-[84%] md:w-[76%] lg:w-[70%] relative">
+              <div className="relative w-full" style={{ aspectRatio: '2.5/1' }}>
+                <video
+                  src="/renovation-showcase.mp4"
+                  autoPlay
+                  muted
+                  loop
+                  playsInline
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+              </div>
+            </div>
+            
+            {/* Right black bar - 15% */}
+            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
           </div>
-          
-          {/* Right black bar */}
-          <div className="w-[12%] md:w-[15%] lg:w-[18%] bg-black flex-shrink-0" />
-        </div>
 
-        {/* Bottom black bar */}
-        <div className="w-full h-[20px] md:h-[30px] bg-black" />
+          {/* Bottom black bar */}
+          <div className="h-[15px] md:h-[20px] lg:h-[25px] bg-black" />
+
+        </div>
+        {/* === END BLACK FRAME CONTAINER === */}
 
       </section>
 
