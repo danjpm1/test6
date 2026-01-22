@@ -154,17 +154,48 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Title - centered on mobile, lower right on desktop */}
-        <div className="absolute inset-x-0 bottom-[18%] md:bottom-[15%] md:inset-x-auto md:right-[8%] text-center md:text-right px-5 md:px-0">
+        {/* Title - positioned over lake area with water reflection */}
+        <div className="absolute top-[38%] md:top-[36%] right-4 md:right-[5%] text-right">
+          {/* Main text */}
           <h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight"
+            className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight relative"
             style={{ 
-              color: '#627486',
-              textShadow: '0 4px 40px rgba(0,0,0,0.5)' 
+              color: '#9cb8c8',
+              textShadow: '0 2px 30px rgba(0,0,0,0.3)',
             }}
           >
-            REMOTE BUILDS
+            Remote Builds
           </h1>
+          
+          {/* Water reflection */}
+          <div 
+            className="relative h-20 sm:h-24 md:h-32 lg:h-40 overflow-hidden"
+            style={{
+              marginTop: '-4px',
+            }}
+          >
+            <h1 
+              className="text-5xl sm:text-6xl md:text-8xl lg:text-9xl font-bold tracking-tight"
+              style={{ 
+                color: '#7a9caa',
+                transform: 'scaleY(-1) scaleX(1.02)',
+                opacity: 0.4,
+                filter: 'blur(1px)',
+                maskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 80%)',
+                WebkitMaskImage: 'linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 80%)',
+              }}
+            >
+              Remote Builds
+            </h1>
+            
+            {/* Subtle wave distortion overlay */}
+            <div 
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: 'repeating-linear-gradient(0deg, transparent 0px, rgba(156,184,200,0.03) 2px, transparent 4px)',
+              }}
+            />
+          </div>
         </div>
 
         <ScrollIndicator show={showScrollIndicator} />
