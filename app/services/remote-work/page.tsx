@@ -146,6 +146,14 @@ export default function RemoteBuildsPage() {
           priority
         />
         
+        {/* Bottom gradient fade - Tesla style */}
+        <div 
+          className="absolute inset-x-0 bottom-0 h-[35%]"
+          style={{
+            background: 'linear-gradient(to top, #080a0f 0%, rgba(8,10,15,0.7) 40%, transparent 100%)'
+          }}
+        />
+        
         {/* Text positioned in lake reflection area */}
         <div className="absolute top-[45%] sm:top-[42%] md:top-[40%] right-8 md:right-16 lg:right-24">
           <h1 
