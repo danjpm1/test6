@@ -204,6 +204,32 @@ export default function RemoteBuildsPage() {
         </div>
       </section>
 
+      {/* Full Width Forest Section */}
+      <section className="relative w-full min-h-[80vh] flex items-center">
+        <Image
+          src="/forest.png"
+          alt="Remote forest building location"
+          fill
+          className="object-cover object-center"
+        />
+        
+        <div className="absolute inset-0 bg-black/60" />
+        
+        <div className="relative z-10 mx-auto max-w-4xl px-6 sm:px-8 py-20 text-center">
+          <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed mb-8">
+            Antova Builders specializes in building homes and structures in the most challenging locations — mountaintops, remote mountain valleys, islands, and sites where conventional contractors refuse to go.
+          </p>
+          
+          <p className="text-lg sm:text-xl md:text-2xl text-white leading-relaxed mb-10">
+            We mobilize helicopters, specialized off-road vehicles, and seasoned crews who excel in extreme conditions. Whether airlifting all materials to an inaccessible peak or pioneering access where no roads exist, we turn impossible sites into reality.
+          </p>
+          
+          <p className="text-xl sm:text-2xl md:text-3xl font-bold text-[#c6912c] tracking-wide">
+            If you can dream the location, we can build it there
+          </p>
+        </div>
+      </section>
+
       {/* CTA Section */}
       <section className="py-16 sm:py-20 bg-black">
         <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
