@@ -99,26 +99,26 @@ export default function SignatureCustomDesignPage() {
           {/* Row 2: Split section - second image has scroll-driven parallax */}
           <div ref={splitSectionRef} className="flex justify-center overflow-visible">
             <div className="w-[92%] sm:w-[85%] md:w-[80%] lg:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
-              {/* Text block - on black background */}
-              <div className="w-full md:w-[35%] py-8 md:py-10 lg:py-12 md:pl-[8%] lg:pl-[10%]">
-                <h2 className="text-[2rem] sm:text-[2.5rem] md:text-[2.2rem] lg:text-[2.8rem] xl:text-[3.2rem] font-light text-white leading-[1.1] mb-6 md:mb-8 italic">
+              {/* Text block - on black background, aligned with first image left edge */}
+              <div className="w-full md:w-[42%] py-8 md:py-10 lg:py-12 md:pl-[12%] lg:pl-[14%]">
+                <h2 className="text-[2.2rem] sm:text-[2.8rem] md:text-[2.5rem] lg:text-[3.2rem] xl:text-[3.8rem] font-normal text-white leading-[1.1] mb-8 md:mb-10 italic">
                   More drive. For<br />
                   ambitious<br />
                   destinations.
                 </h2>
-                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px]">
+                <p className="text-[15px] md:text-[16px] lg:text-[17px] text-gray-200 leading-[1.9] max-w-[520px]">
                   The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
                 </p>
-                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px] mt-4">
+                <p className="text-[15px] md:text-[16px] lg:text-[17px] text-gray-200 leading-[1.9] max-w-[520px] mt-5">
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
                 </p>
-                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px] mt-4">
+                <p className="text-[15px] md:text-[16px] lg:text-[17px] text-gray-200 leading-[1.9] max-w-[520px] mt-5">
                   If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
                 </p>
-                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px] mt-4">
+                <p className="text-[15px] md:text-[16px] lg:text-[17px] text-gray-200 leading-[1.9] max-w-[520px] mt-5">
                   Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
                 </p>
-                <p className="text-[15px] md:text-[16px] lg:text-[17px] text-white font-semibold leading-[1.8] max-w-[500px] mt-6">
+                <p className="text-[16px] md:text-[17px] lg:text-[18px] text-white font-semibold leading-[1.8] max-w-[520px] mt-8">
                   "Imagination Isn't Limited. Neither Are We."
                 </p>
               </div>
