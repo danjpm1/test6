@@ -8,28 +8,34 @@ import { Footer } from "@/components/footer"
 export default function SignatureCustomDesignPage() {
   const [parallaxOffset, setParallaxOffset] = useState(0)
   const [videoMargin, setVideoMargin] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const splitSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  // Calculate responsive video margin based on viewport
+  // Check if mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
+  // Calculate responsive video margin based on viewport - DESKTOP ONLY
   useEffect(() => {
     const updateVideoMargin = () => {
       const vh = window.innerHeight
       const vw = window.innerWidth
       
-      // Smaller overlap on mobile, larger on desktop
-      if (vw < 768) {
-        const margin = Math.min(vw * 0.15, vh * 0.2, 150)
+      // Only calculate for desktop
+      if (vw >= 768) {
+        const margin = Math.min(vw * 0.25, vh * 0.45, 500)
         setVideoMargin(margin)
-        return
       }
-      
-      // Desktop overlap
-      const margin = Math.min(vw * 0.25, vh * 0.45, 500)
-      setVideoMargin(margin)
     }
     
     updateVideoMargin()
@@ -37,6 +43,7 @@ export default function SignatureCustomDesignPage() {
     return () => window.removeEventListener('resize', updateVideoMargin)
   }, [])
 
+  // Parallax effect
   useEffect(() => {
     const handleScroll = () => {
       if (splitSectionRef.current) {
@@ -46,7 +53,7 @@ export default function SignatureCustomDesignPage() {
         
         // Smaller parallax on mobile, larger on desktop
         const maxOffset = windowWidth < 768 
-          ? Math.min(windowHeight * 0.1, 80) 
+          ? Math.min(windowHeight * 0.08, 60) 
           : Math.min(windowHeight * 0.2, windowWidth * 0.12, 200)
         
         if (rect.top < windowHeight && rect.bottom > 0) {
@@ -84,11 +91,8 @@ export default function SignatureCustomDesignPage() {
         {/* White background area with title */}
         <div className="bg-white">
           {/* Script Title */}
-          <div style={{ padding: 'clamp(1.5rem, 3vw, 3rem) 0 clamp(2rem, 4vw, 3.5rem) 0' }} className="flex justify-center">
-            <h1 
-              className="script-title text-black"
-              style={{ fontSize: 'clamp(2rem, 5vw, 4.5rem)' }}
-            >
+          <div className="pt-6 pb-8 md:pt-10 md:pb-12 lg:pt-12 lg:pb-14 flex justify-center">
+            <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
               Signature Custom Design
             </h1>
           </div>
@@ -101,9 +105,9 @@ export default function SignatureCustomDesignPage() {
           {/* Black bottom portion - 30% of image height */}
           <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-black" />
           
-          {/* The image itself - centered, responsive width using clamp */}
+          {/* The image itself - centered */}
           <div className="relative flex justify-center py-0">
-            <div style={{ width: 'clamp(70%, 75vw, 72%)' }} className="relative z-10">
+            <div className="w-[92%] sm:w-[85%] md:w-[75%] lg:w-[70%] xl:w-[68%] relative z-10">
               <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
                 <Image
                   src="/signature-showcase-1.png"
@@ -116,43 +120,41 @@ export default function SignatureCustomDesignPage() {
           </div>
         </div>
 
-        {/* === BLACK FRAME CONTAINER - continues below image === */}
+        {/* === BLACK FRAME CONTAINER === */}
         <div className="bg-black overflow-visible relative">
           
-          {/* Small gap before parallax section - scales with viewport */}
-          <div style={{ height: 'clamp(15px, 3vw, 40px)' }} />
+          {/* Small gap before content */}
+          <div className="h-[15px] sm:h-[20px] md:h-[25px] lg:h-[30px] xl:h-[40px]" />
 
-          {/* Row 2: Split section - stacked on mobile, side by side on desktop */}
+          {/* Split section */}
           <div ref={splitSectionRef} className="flex justify-center overflow-visible">
-            <div className="w-full md:w-[82%] lg:w-[78%] xl:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
-              {/* Text block - on black background */}
-              <div className="w-full md:w-[45%] lg:w-[42%] order-1 px-5 md:px-0" style={{ padding: 'clamp(1.5rem, 3vw, 3rem) clamp(0.5rem, 2vw, 1.5rem)' }}>
-                <h2 
-                  className="font-normal text-white leading-[1.1] italic"
-                  style={{ fontSize: 'clamp(1.8rem, 4vw, 3.5rem)', marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)' }}
-                >
+            <div className="w-[92%] sm:w-[88%] md:w-[82%] lg:w-[78%] xl:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
+              
+              {/* Text block */}
+              <div className="w-full md:w-[45%] lg:w-[42%] py-6 sm:py-8 md:py-10 lg:py-12 px-2 md:pl-[2%] lg:pl-[3%] xl:pl-[4%]">
+                <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.8rem] xl:text-[3.5rem] font-normal text-white leading-[1.1] mb-6 sm:mb-8 md:mb-10 italic">
                   More drive. For<br />
                   ambitious<br />
                   destinations.
                 </h2>
-                <p style={{ fontSize: 'clamp(14px, 1.1vw, 17px)' }} className="text-gray-200 leading-[1.85] max-w-[520px]">
+                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px]">
                   The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
                 </p>
-                <p style={{ fontSize: 'clamp(14px, 1.1vw, 17px)', marginTop: 'clamp(1rem, 1.5vw, 1.25rem)' }} className="text-gray-200 leading-[1.85] max-w-[520px]">
+                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px] mt-4 md:mt-5">
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
                 </p>
-                <p style={{ fontSize: 'clamp(14px, 1.1vw, 17px)', marginTop: 'clamp(1rem, 1.5vw, 1.25rem)' }} className="text-gray-200 leading-[1.85] max-w-[520px]">
+                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px] mt-4 md:mt-5">
                   If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
                 </p>
-                <p style={{ fontSize: 'clamp(14px, 1.1vw, 17px)', marginTop: 'clamp(1rem, 1.5vw, 1.25rem)' }} className="text-gray-200 leading-[1.85] max-w-[520px]">
+                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px] mt-4 md:mt-5">
                   Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
                 </p>
               </div>
 
-              {/* === MOBILE ONLY: Video then Image === */}
+              {/* ============ MOBILE ONLY: Video then Image ============ */}
               
               {/* Mobile Video - LEFT aligned, bigger */}
-              <div className="block md:hidden w-[70%] mr-auto order-2 mt-4">
+              <div className="block md:hidden w-[70%] mr-auto mt-4">
                 <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
                   <video
                     src="/renovation-showcase.mp4"
@@ -160,14 +162,14 @@ export default function SignatureCustomDesignPage() {
                     muted
                     loop
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover rounded-r-[8px] rounded-l-none"
+                    className="absolute inset-0 w-full h-full object-cover rounded-r-[8px]"
                   />
                 </div>
               </div>
 
               {/* Mobile Second Image - RIGHT aligned, smaller, overlaps video */}
               <div 
-                className="block md:hidden w-[55%] ml-auto order-3 -mt-20 relative z-20"
+                className="block md:hidden w-[55%] ml-auto -mt-16 relative z-20"
                 style={{ 
                   transform: `translateY(${parallaxOffset}px)`,
                   transition: 'transform 0.05s linear'
@@ -178,12 +180,12 @@ export default function SignatureCustomDesignPage() {
                     src="/signature-showcase-2.png"
                     alt="Custom home lifestyle"
                     fill
-                    className="object-cover object-center rounded-l-[8px] rounded-r-none"
+                    className="object-cover object-center rounded-l-[8px]"
                   />
                 </div>
               </div>
 
-              {/* === DESKTOP ONLY: Image on right side (video is separate section below) === */}
+              {/* ============ DESKTOP ONLY: Second Image ============ */}
               <div 
                 className="hidden md:block md:w-[50%] lg:w-[52%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
                 style={{ 
@@ -211,22 +213,20 @@ export default function SignatureCustomDesignPage() {
 
       </section>
 
-      {/* Video Section - DESKTOP ONLY, overlaps second image, 50/50 black/white */}
+      {/* ============ DESKTOP ONLY: Video Section with 50/50 split ============ */}
       <section 
         className="relative hidden md:block"
         style={{ marginTop: `-${videoMargin}px` }}
       >
-        {/* Split backgrounds - each takes exactly 50% */}
+        {/* Split backgrounds - 50% black, 50% white */}
         <div className="absolute inset-0 flex flex-col">
           <div className="flex-1 bg-black" />
           <div className="flex-1 bg-[#f9f8f6]" />
         </div>
         
-        {/* Video - centered-left on desktop */}
-        <div className="relative z-50 flex justify-center" style={{ padding: 'clamp(30px, 6vh, 100px) 0' }}>
-          <div 
-            className="w-[52%] lg:w-[50%] xl:w-[48%] relative mr-[clamp(3%,6vw,9%)]"
-          >
+        {/* Video centered on the boundary */}
+        <div className="relative z-50 flex justify-center py-[60px] md:py-[80px] lg:py-[100px]">
+          <div className="w-[58%] md:w-[52%] lg:w-[50%] xl:w-[48%] relative mr-[5%] md:mr-[7%] lg:mr-[9%]">
             <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
               <video
                 src="/renovation-showcase.mp4"
@@ -241,40 +241,30 @@ export default function SignatureCustomDesignPage() {
         </div>
       </section>
 
-      {/* Mobile: 50/50 black/white transition section */}
+      {/* ============ MOBILE ONLY: 50/50 transition ============ */}
       <section className="relative block md:hidden">
         <div className="absolute inset-0 flex flex-col">
           <div className="flex-1 bg-black" />
           <div className="flex-1 bg-[#f9f8f6]" />
         </div>
-        <div className="relative z-10 h-[80px]" />
+        <div className="relative z-10 h-[60px]" />
       </section>
 
       {/* Begin Your Vision CTA Section */}
-      <section className="bg-[#f9f8f6]" style={{ padding: 'clamp(4rem, 8vw, 9rem) 0' }}>
+      <section className="bg-[#f9f8f6] py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36">
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
-          <p 
-            className="text-gray-400 uppercase tracking-[0.2em]"
-            style={{ fontSize: 'clamp(11px, 0.9vw, 14px)', marginBottom: 'clamp(1rem, 2vw, 1.5rem)' }}
-          >
+          <p className="text-[12px] sm:text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">
             Signature Custom Design
           </p>
-          <h2 
-            className="script-title text-black leading-tight"
-            style={{ fontSize: 'clamp(1.5rem, 4vw, 3.5rem)', marginBottom: 'clamp(1.5rem, 3vw, 2rem)' }}
-          >
+          <h2 className="script-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.5rem] text-black leading-tight mb-6 sm:mb-8">
             "Imagination Isn't Limited.<br />Neither Are We."
           </h2>
-          <p 
-            className="text-gray-600 leading-relaxed max-w-xl mx-auto"
-            style={{ fontSize: 'clamp(14px, 1.1vw, 16px)', marginBottom: 'clamp(2rem, 4vw, 3rem)' }}
-          >
+          <p className="text-[14px] sm:text-[15px] md:text-base text-gray-600 leading-relaxed max-w-xl mx-auto mb-8 sm:mb-10 md:mb-12">
             If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
           </p>
           <a 
             href="/contact"
-            className="inline-flex items-center gap-3 bg-black text-white tracking-[0.15em] uppercase hover:bg-[#c6912c] transition-colors duration-300"
-            style={{ padding: 'clamp(0.75rem, 1.5vw, 1rem) clamp(1.5rem, 3vw, 2.5rem)', fontSize: 'clamp(11px, 0.9vw, 13px)' }}
+            className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-[#c6912c] transition-colors duration-300"
           >
             Begin Your Vision
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
