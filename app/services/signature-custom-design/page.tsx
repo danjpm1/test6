@@ -265,34 +265,6 @@ export default function SignatureCustomDesignPage() {
           <h2 className="text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] font-bold text-black text-center tracking-tight">
             Antova Builders highlights.
           </h2>
-          
-          {/* Navigation arrows - right aligned */}
-          <div className="flex justify-end mt-6 md:mt-8 gap-4">
-            <button 
-              className="p-2 text-gray-400 hover:text-black transition-colors"
-              aria-label="Previous"
-              onClick={() => {
-                const container = document.getElementById('highlights-carousel')
-                if (container) container.scrollBy({ left: -400, behavior: 'smooth' })
-              }}
-            >
-              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-              </svg>
-            </button>
-            <button 
-              className="p-2 text-black hover:text-gray-600 transition-colors"
-              aria-label="Next"
-              onClick={() => {
-                const container = document.getElementById('highlights-carousel')
-                if (container) container.scrollBy({ left: 400, behavior: 'smooth' })
-              }}
-            >
-              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-              </svg>
-            </button>
-          </div>
         </div>
 
         {/* Carousel */}
