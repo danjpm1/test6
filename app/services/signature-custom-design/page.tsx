@@ -145,16 +145,16 @@ export default function SignatureCustomDesignPage() {
                   ambitious<br />
                   destinations.
                 </h2>
-                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px]">
+                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px]">
                   The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
                 </p>
-                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px] mt-4 md:mt-5">
+                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px] mt-5 md:mt-6">
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
                 </p>
-                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px] mt-4 md:mt-5">
+                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px] mt-5 md:mt-6">
                   If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
                 </p>
-                <p className="text-[14px] sm:text-[15px] md:text-[15px] lg:text-[16px] xl:text-[17px] text-gray-200 leading-[1.8] md:leading-[1.9] max-w-[520px] mt-4 md:mt-5">
+                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px] mt-5 md:mt-6">
                   Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
                 </p>
               </div>
@@ -388,11 +388,11 @@ export default function SignatureCustomDesignPage() {
           <p className="text-[12px] sm:text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">
             Signature Custom Design
           </p>
-          <h2 className="script-title text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-[3.5rem] text-black leading-tight mb-6 sm:mb-8">
-            "Imagination Isn't Limited.<br />Neither Are We."
+          <h2 className="text-[1.5rem] sm:text-[1.75rem] md:text-[2rem] lg:text-[2.25rem] font-bold text-black leading-tight mb-6 sm:mb-8">
+            More vision. For extraordinary homes.
           </h2>
-          <p className="text-[14px] sm:text-[15px] md:text-base text-gray-600 leading-relaxed max-w-xl mx-auto mb-8 sm:mb-10 md:mb-12">
-            If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
+          <p className="text-[14px] sm:text-[15px] md:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12">
+            We've built our reputation on transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits—combining bold creativity, extraordinary craftsmanship, and fearless execution to make ambitious dreams happen.
           </p>
           <a 
             href="/contact"
