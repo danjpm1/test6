@@ -101,16 +101,25 @@ export default function SignatureCustomDesignPage() {
             <div className="w-[92%] sm:w-[85%] md:w-[80%] lg:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
               {/* Text block - on black background */}
               <div className="w-full md:w-[35%] py-8 md:py-10 lg:py-12 md:pl-[8%] lg:pl-[10%]">
-                <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[3rem] font-light text-white leading-[1.1] mb-6 md:mb-8 italic">
+                <h2 className="text-[2rem] sm:text-[2.5rem] md:text-[2.2rem] lg:text-[2.8rem] xl:text-[3.2rem] font-light text-white leading-[1.1] mb-6 md:mb-8 italic">
                   More drive. For<br />
                   ambitious<br />
                   destinations.
                 </h2>
-                <p className="text-[12px] md:text-[13px] lg:text-[14px] text-gray-300 leading-[1.8] max-w-[400px]">
+                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px]">
                   The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
                 </p>
-                <p className="text-[12px] md:text-[13px] lg:text-[14px] text-gray-300 leading-[1.8] max-w-[400px] mt-4">
+                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px] mt-4">
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
+                </p>
+                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px] mt-4">
+                  If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
+                </p>
+                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-300 leading-[1.8] max-w-[500px] mt-4">
+                  Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
+                </p>
+                <p className="text-[15px] md:text-[16px] lg:text-[17px] text-white font-semibold leading-[1.8] max-w-[500px] mt-6">
+                  "Imagination Isn't Limited. Neither Are We."
                 </p>
               </div>
 
