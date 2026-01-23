@@ -393,7 +393,7 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 3 */}
-            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px] pr-6">
+            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
               <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -409,6 +409,9 @@ export default function SignatureCustomDesignPage() {
                 Seamlessly integrated technology throughout your home. Control lighting, climate, security, and entertainment from anywhere with intuitive systems.
               </p>
             </div>
+            
+            {/* Spacer for end padding */}
+            <div className="flex-shrink-0 w-6"></div>
           </div>
 
           {/* Left arrow - hidden initially, shows after scrolling */}
