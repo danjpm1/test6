@@ -277,7 +277,7 @@ export default function SignatureCustomDesignPage() {
           >
             {/* Card 1 */}
             <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
-              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Premium Materials"
@@ -295,7 +295,7 @@ export default function SignatureCustomDesignPage() {
 
             {/* Card 2 */}
             <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
-              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Expert Craftsmanship"
@@ -313,7 +313,7 @@ export default function SignatureCustomDesignPage() {
 
             {/* Card 3 */}
             <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
-              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Smart Home Integration"
@@ -331,7 +331,7 @@ export default function SignatureCustomDesignPage() {
 
             {/* Card 4 */}
             <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
-              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Sustainable Design"
@@ -349,7 +349,7 @@ export default function SignatureCustomDesignPage() {
 
             {/* Card 5 */}
             <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px] pr-6">
-              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
+              <div className="relative w-full aspect-[16/11] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Personalized Service"
