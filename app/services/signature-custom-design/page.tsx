@@ -393,7 +393,7 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 3 */}
-            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
+            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px] pr-6">
               <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -407,42 +407,6 @@ export default function SignatureCustomDesignPage() {
               </h3>
               <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 Seamlessly integrated technology throughout your home. Control lighting, climate, security, and entertainment from anywhere with intuitive systems.
-              </p>
-            </div>
-
-            {/* Card 4 */}
-            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
-              <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
-                <Image
-                  src="/signature-showcase-1.png"
-                  alt="Sustainable Design"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
-                Sustainable Design
-              </h3>
-              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
-                Energy-efficient construction meets luxury living. Solar integration, superior insulation, and eco-friendly materials reduce your footprint without compromise.
-              </p>
-            </div>
-
-            {/* Card 5 */}
-            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px] pr-6">
-              <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
-                <Image
-                  src="/signature-showcase-1.png"
-                  alt="Personalized Service"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
-                Personalized Service
-              </h3>
-              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
-                A dedicated project manager guides you from concept to completion. Regular updates, transparent communication, and unwavering commitment to your vision.
               </p>
             </div>
           </div>
