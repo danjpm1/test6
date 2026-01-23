@@ -149,10 +149,9 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* On MOBILE: Video first (order-2), then image (order-3) */}
-              {/* On DESKTOP: Image on right side (order-2) */}
+              {/* === MOBILE ONLY: Video then Image === */}
               
-              {/* Mobile Video - LEFT aligned, bigger, shows on mobile only */}
+              {/* Mobile Video - LEFT aligned, bigger */}
               <div className="block md:hidden w-[70%] mr-auto order-2 mt-4">
                 <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
                   <video
@@ -184,7 +183,7 @@ export default function SignatureCustomDesignPage() {
                 </div>
               </div>
 
-              {/* Desktop Image - shows on desktop only */}
+              {/* === DESKTOP ONLY: Image on right side (video is separate section below) === */}
               <div 
                 className="hidden md:block md:w-[50%] lg:w-[52%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
                 style={{ 
@@ -242,18 +241,13 @@ export default function SignatureCustomDesignPage() {
         </div>
       </section>
 
-      {/* Mobile Video Section - 50/50 black/white, shown only on mobile */}
-      <section 
-        className="relative block md:hidden -mt-16"
-      >
-        {/* Split backgrounds - each takes exactly 50% */}
+      {/* Mobile: 50/50 black/white transition section */}
+      <section className="relative block md:hidden">
         <div className="absolute inset-0 flex flex-col">
           <div className="flex-1 bg-black" />
           <div className="flex-1 bg-[#f9f8f6]" />
         </div>
-        
-        {/* Empty space to create the 50/50 split effect */}
-        <div className="relative z-10 h-[100px]" />
+        <div className="relative z-10 h-[80px]" />
       </section>
 
       {/* Begin Your Vision CTA Section */}
