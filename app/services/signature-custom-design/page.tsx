@@ -145,7 +145,7 @@ export default function SignatureCustomDesignPage() {
 
           {/* Row 3: Bottom Video */}
           <div className="flex justify-center">
-            <div className="w-[67%] sm:w-[58%] md:w-[50%] lg:w-[47%] relative mr-[2%] md:mr-[3%]">
+            <div className="w-[67%] sm:w-[58%] md:w-[50%] lg:w-[47%] relative mr-[4%] md:mr-[6%]">
               <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
                 <video
                   src="/renovation-showcase.mp4"
