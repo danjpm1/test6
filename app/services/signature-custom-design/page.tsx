@@ -28,9 +28,9 @@ export default function SignatureCustomDesignPage() {
       {/* Porsche-style Editorial Layout */}
       <section className="bg-white pt-24 md:pt-28">
         
-        {/* Script Title - Centered */}
-        <div className="pt-8 pb-6 md:pt-10 md:pb-8 flex justify-center">
-          <h1 className="script-title text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-black">
+        {/* Script Title - White background, large padding */}
+        <div className="bg-white pt-16 pb-10 md:pt-24 md:pb-14 lg:pt-28 lg:pb-16 flex justify-center">
+          <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
             Signature Custom Design
           </h1>
         </div>
@@ -38,37 +38,26 @@ export default function SignatureCustomDesignPage() {
         {/* === BLACK FRAME CONTAINER === */}
         <div className="bg-black">
           
-          {/* Row 1: Main Image with side bars */}
-          <div className="flex">
-            {/* Left black bar - 15% */}
-            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
-            
-            {/* Center image - 70% */}
-            <div className="w-[84%] md:w-[76%] lg:w-[70%] relative">
-              <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
+          {/* Row 1: Main Image - centered with 17% margins each side */}
+          <div className="flex justify-center">
+            <div className="w-[90%] md:w-[75%] lg:w-[66%] relative">
+              <div className="relative w-full" style={{ aspectRatio: '3/2' }}>
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Breathtaking custom designed home"
                   fill
-                  className="object-cover object-center"
+                  className="object-cover object-center rounded-tr-[8px] rounded-bl-[8px] md:rounded-tr-[12px] md:rounded-bl-[12px]"
                 />
               </div>
             </div>
-            
-            {/* Right black bar - 15% */}
-            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
           </div>
 
           {/* Thick black bar between image and split section */}
-          <div className="h-[35px] md:h-[50px] lg:h-[60px] bg-black" />
+          <div className="h-[50px] md:h-[70px] lg:h-[80px]" />
 
           {/* Row 2: Split section - Text Left / Image Right */}
-          <div className="flex">
-            {/* Left black bar - 15% */}
-            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
-            
-            {/* Content area - 70% */}
-            <div className="w-[84%] md:w-[76%] lg:w-[70%] flex flex-col md:flex-row">
+          <div className="flex justify-center">
+            <div className="w-[90%] md:w-[75%] lg:w-[66%] flex flex-col md:flex-row">
               {/* Text block - 40% of content */}
               <div className="w-full md:w-[40%] bg-white px-6 md:px-10 lg:px-12 py-8 md:py-12 lg:py-16 flex flex-col justify-center">
                 <h2 className="text-[1.5rem] sm:text-[1.75rem] md:text-[1.65rem] lg:text-[2rem] xl:text-[2.25rem] font-normal text-black leading-[1.15] mb-4 md:mb-6">
@@ -94,21 +83,14 @@ export default function SignatureCustomDesignPage() {
                 />
               </div>
             </div>
-            
-            {/* Right black bar - 15% */}
-            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
           </div>
 
           {/* Thin black separator */}
-          <div className="h-[8px] md:h-[10px] lg:h-[12px] bg-black" />
+          <div className="h-[8px] md:h-[10px] lg:h-[12px]" />
 
           {/* Row 3: Bottom Video */}
-          <div className="flex">
-            {/* Left black bar - 15% */}
-            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
-            
-            {/* Center video - 70% */}
-            <div className="w-[84%] md:w-[76%] lg:w-[70%] relative">
+          <div className="flex justify-center">
+            <div className="w-[90%] md:w-[75%] lg:w-[66%] relative">
               <div className="relative w-full" style={{ aspectRatio: '2.5/1' }}>
                 <video
                   src="/renovation-showcase.mp4"
@@ -120,13 +102,10 @@ export default function SignatureCustomDesignPage() {
                 />
               </div>
             </div>
-            
-            {/* Right black bar - 15% */}
-            <div className="w-[8%] md:w-[12%] lg:w-[15%] bg-black" />
           </div>
 
           {/* Bottom black bar */}
-          <div className="h-[15px] md:h-[20px] lg:h-[25px] bg-black" />
+          <div className="h-[15px] md:h-[20px] lg:h-[25px]" />
 
         </div>
         {/* === END BLACK FRAME CONTAINER === */}
