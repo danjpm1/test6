@@ -94,7 +94,7 @@ export default function SignatureCustomDesignPage() {
           
           {/* The image itself - centered, responsive width using clamp */}
           <div className="relative flex justify-center py-0">
-            <div style={{ width: 'clamp(65%, 72vw, 70%)' }} className="relative z-10">
+            <div style={{ width: 'clamp(70%, 75vw, 72%)' }} className="relative z-10">
               <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
                 <Image
                   src="/signature-showcase-1.png"
@@ -174,14 +174,15 @@ export default function SignatureCustomDesignPage() {
         className="relative"
         style={{ marginTop: `-${videoMargin}px` }}
       >
-        {/* Top half - black background at z-0 (second image at z-20 shows above) */}
-        <div className="absolute top-0 left-0 right-0 h-1/2 bg-black -z-10" />
-        {/* Bottom half - white/cream background */}
-        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#f9f8f6] -z-10" />
+        {/* Split backgrounds - each takes exactly 50% */}
+        <div className="absolute inset-0 flex flex-col">
+          <div className="flex-1 bg-black" />
+          <div className="flex-1 bg-[#f9f8f6]" />
+        </div>
         
         {/* Video centered on the boundary - high z-index to be above second image */}
-        <div className="relative z-50 flex justify-center py-[clamp(30px,6vw,100px)]">
-          <div className="w-[clamp(45%,55vw,52%)] relative mr-[clamp(3%,5vw,9%)]">
+        <div className="relative z-50 flex justify-center items-center" style={{ padding: 'clamp(40px, 8vh, 100px) 0' }}>
+          <div style={{ width: 'clamp(48%, 52vw, 52%)', marginRight: 'clamp(3%, 6vw, 9%)' }} className="relative">
             <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
               <video
                 src="/renovation-showcase.mp4"
