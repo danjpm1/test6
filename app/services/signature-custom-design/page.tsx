@@ -7,7 +7,6 @@ import { Footer } from "@/components/footer"
 
 export default function SignatureCustomDesignPage() {
   const [parallaxOffset, setParallaxOffset] = useState(0)
-  const [videoMargin, setVideoMargin] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const splitSectionRef = useRef<HTMLDivElement>(null)
 
@@ -23,24 +22,6 @@ export default function SignatureCustomDesignPage() {
     checkMobile()
     window.addEventListener('resize', checkMobile)
     return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Calculate responsive video margin based on viewport - DESKTOP ONLY
-  useEffect(() => {
-    const updateVideoMargin = () => {
-      const vh = window.innerHeight
-      const vw = window.innerWidth
-      
-      // Only calculate for desktop
-      if (vw >= 768) {
-        const margin = Math.min(vw * 0.25, vh * 0.45, 500)
-        setVideoMargin(margin)
-      }
-    }
-    
-    updateVideoMargin()
-    window.addEventListener('resize', updateVideoMargin)
-    return () => window.removeEventListener('resize', updateVideoMargin)
   }, [])
 
   // Parallax effect
@@ -265,21 +246,39 @@ export default function SignatureCustomDesignPage() {
                 </div>
               </div>
 
-              {/* ============ DESKTOP ONLY: Second Image ============ */}
+              {/* ============ DESKTOP ONLY: Second Image + Video below ============ */}
               <div 
                 className="hidden md:block md:w-[50%] lg:w-[52%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
-                style={{ 
-                  transform: `translateY(${parallaxOffset}px)`,
-                  transition: 'transform 0.05s linear'
-                }}
               >
-                <div className="relative w-full md:aspect-[1/1] lg:aspect-[3/3.5] xl:aspect-[3/4]">
-                  <Image
-                    src="/signature-showcase-2.png"
-                    alt="Custom home lifestyle"
-                    fill
-                    className="object-cover object-center rounded-[10px]"
-                  />
+                {/* Second Image with parallax */}
+                <div 
+                  style={{ 
+                    transform: `translateY(${parallaxOffset}px)`,
+                    transition: 'transform 0.05s linear'
+                  }}
+                >
+                  <div className="relative w-full md:aspect-[1/1] lg:aspect-[3/3.5] xl:aspect-[3/4]">
+                    <Image
+                      src="/signature-showcase-2.png"
+                      alt="Custom home lifestyle"
+                      fill
+                      className="object-cover object-center rounded-[10px]"
+                    />
+                  </div>
+                </div>
+                
+                {/* Video below the image */}
+                <div className="mt-6 lg:mt-8">
+                  <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
+                    <video
+                      src="/renovation-showcase.mp4"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      className="absolute inset-0 w-full h-full object-cover rounded-[10px]"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
@@ -291,34 +290,6 @@ export default function SignatureCustomDesignPage() {
         </div>
         {/* === END BLACK FRAME CONTAINER === */}
 
-      </section>
-
-      {/* ============ DESKTOP ONLY: Video Section with 50/50 split ============ */}
-      <section 
-        className="relative hidden md:block"
-        style={{ marginTop: `-${videoMargin}px` }}
-      >
-        {/* Split backgrounds - 50% black, 50% white */}
-        <div className="absolute inset-0 flex flex-col">
-          <div className="flex-1 bg-black" />
-          <div className="flex-1 bg-[#f9f8f6]" />
-        </div>
-        
-        {/* Video centered on the boundary */}
-        <div className="relative z-50 flex justify-center py-[60px] md:py-[80px] lg:py-[100px]">
-          <div className="w-[58%] md:w-[52%] lg:w-[50%] xl:w-[48%] relative mr-[5%] md:mr-[7%] lg:mr-[9%]">
-            <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
-              <video
-                src="/renovation-showcase.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                className="absolute inset-0 w-full h-full object-cover rounded-[10px]"
-              />
-            </div>
-          </div>
-        </div>
       </section>
 
       {/* ============ MOBILE ONLY: 50/50 transition ============ */}
