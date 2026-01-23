@@ -26,55 +26,66 @@ export default function SignatureCustomDesignPage() {
       <Navbar />
 
       {/* Porsche-style Editorial Layout */}
-      <section className="bg-white pt-24 md:pt-28">
+      <section className="pt-24 md:pt-28">
         
-        {/* Script Title - White background, large padding */}
-        <div className="bg-white pt-16 pb-10 md:pt-24 md:pb-14 lg:pt-28 lg:pb-16 flex justify-center">
-          <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
-            Signature Custom Design
-          </h1>
+        {/* White background area with title and top of image */}
+        <div className="bg-white">
+          {/* Script Title */}
+          <div className="pt-12 pb-6 md:pt-20 md:pb-8 lg:pt-24 lg:pb-10 flex justify-center">
+            <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
+              Signature Custom Design
+            </h1>
+          </div>
         </div>
 
-        {/* === BLACK FRAME CONTAINER === */}
-        <div className="bg-black">
+        {/* Image that overlaps white and black sections */}
+        <div className="relative">
+          {/* White top portion */}
+          <div className="absolute top-0 left-0 right-0 h-[40%] bg-white" />
+          {/* Black bottom portion */}
+          <div className="absolute bottom-0 left-0 right-0 h-[60%] bg-black" />
           
-          {/* Row 1: Main Image - centered with 17% margins each side */}
-          <div className="flex justify-center">
-            <div className="w-[90%] md:w-[75%] lg:w-[66%] relative">
-              <div className="relative w-full" style={{ aspectRatio: '3/2' }}>
+          {/* The image itself - centered, narrower width */}
+          <div className="relative flex justify-center py-0">
+            <div className="w-[85%] sm:w-[70%] md:w-[60%] lg:w-[52%] relative z-10">
+              <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Breathtaking custom designed home"
                   fill
-                  className="object-cover object-center rounded-tr-[8px] rounded-bl-[8px] md:rounded-tr-[12px] md:rounded-bl-[12px]"
+                  className="object-cover object-center rounded-tr-[8px] rounded-bl-[8px] md:rounded-tr-[10px] md:rounded-bl-[10px]"
                 />
               </div>
             </div>
           </div>
+        </div>
 
-          {/* Thick black bar between image and split section */}
-          <div className="h-[50px] md:h-[70px] lg:h-[80px]" />
+        {/* === BLACK FRAME CONTAINER - continues below image === */}
+        <div className="bg-black">
+          
+          {/* Space below the overlapping image */}
+          <div className="h-[40px] md:h-[50px] lg:h-[60px]" />
 
           {/* Row 2: Split section - Text Left / Image Right */}
           <div className="flex justify-center">
-            <div className="w-[90%] md:w-[75%] lg:w-[66%] flex flex-col md:flex-row">
+            <div className="w-[85%] sm:w-[70%] md:w-[60%] lg:w-[52%] flex flex-col md:flex-row">
               {/* Text block - 40% of content */}
-              <div className="w-full md:w-[40%] bg-white px-6 md:px-10 lg:px-12 py-8 md:py-12 lg:py-16 flex flex-col justify-center">
-                <h2 className="text-[1.5rem] sm:text-[1.75rem] md:text-[1.65rem] lg:text-[2rem] xl:text-[2.25rem] font-normal text-black leading-[1.15] mb-4 md:mb-6">
+              <div className="w-full md:w-[42%] bg-white px-5 md:px-8 lg:px-10 py-8 md:py-10 lg:py-14 flex flex-col justify-center">
+                <h2 className="text-[1.4rem] sm:text-[1.6rem] md:text-[1.5rem] lg:text-[1.75rem] xl:text-[2rem] font-normal text-black leading-[1.15] mb-4 md:mb-5">
                   More drive. For<br />
                   ambitious<br />
                   destinations.
                 </h2>
-                <p className="text-[11px] md:text-[12px] lg:text-[13px] text-gray-500 leading-[1.6] max-w-xs">
+                <p className="text-[10px] md:text-[11px] lg:text-[12px] text-gray-500 leading-[1.7] max-w-[280px]">
                   The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
                 </p>
-                <p className="text-[11px] md:text-[12px] lg:text-[13px] text-gray-500 leading-[1.6] max-w-xs mt-3">
+                <p className="text-[10px] md:text-[11px] lg:text-[12px] text-gray-500 leading-[1.7] max-w-[280px] mt-3">
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
                 </p>
               </div>
 
               {/* Image block - 60% of content */}
-              <div className="w-full md:w-[60%] relative min-h-[250px] md:min-h-0">
+              <div className="w-full md:w-[58%] relative min-h-[220px] md:min-h-0">
                 <Image
                   src="/signature-showcase-2.png"
                   alt="Custom home lifestyle"
@@ -90,7 +101,7 @@ export default function SignatureCustomDesignPage() {
 
           {/* Row 3: Bottom Video */}
           <div className="flex justify-center">
-            <div className="w-[90%] md:w-[75%] lg:w-[66%] relative">
+            <div className="w-[85%] sm:w-[70%] md:w-[60%] lg:w-[52%] relative">
               <div className="relative w-full" style={{ aspectRatio: '2.5/1' }}>
                 <video
                   src="/renovation-showcase.mp4"
@@ -105,7 +116,7 @@ export default function SignatureCustomDesignPage() {
           </div>
 
           {/* Bottom black bar */}
-          <div className="h-[15px] md:h-[20px] lg:h-[25px]" />
+          <div className="h-[12px] md:h-[16px] lg:h-[20px]" />
 
         </div>
         {/* === END BLACK FRAME CONTAINER === */}
