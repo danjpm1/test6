@@ -143,8 +143,8 @@ export default function SignatureCustomDesignPage() {
           {/* Thin black separator */}
           <div className="h-[8px] md:h-[10px] lg:h-[12px]" />
 
-          {/* Row 3: Bottom Video */}
-          <div className="flex justify-center">
+          {/* Row 3: Bottom Video - shifted up to overlap second image */}
+          <div className="flex justify-center -mt-[40px] md:-mt-[50px] lg:-mt-[60px] relative z-30">
             <div className="w-[67%] sm:w-[58%] md:w-[50%] lg:w-[47%] relative mr-[6%] md:mr-[9%]">
               <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
                 <video
