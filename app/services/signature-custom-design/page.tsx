@@ -276,7 +276,7 @@ export default function SignatureCustomDesignPage() {
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {/* Card 1 */}
-            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+            <div className="flex-shrink-0 w-[384px] sm:w-[480px] md:w-[576px] lg:w-[672px] xl:w-[744px]">
               <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -294,7 +294,7 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 2 */}
-            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+            <div className="flex-shrink-0 w-[384px] sm:w-[480px] md:w-[576px] lg:w-[672px] xl:w-[744px]">
               <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -312,7 +312,7 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 3 */}
-            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+            <div className="flex-shrink-0 w-[384px] sm:w-[480px] md:w-[576px] lg:w-[672px] xl:w-[744px]">
               <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -330,7 +330,7 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 4 */}
-            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+            <div className="flex-shrink-0 w-[384px] sm:w-[480px] md:w-[576px] lg:w-[672px] xl:w-[744px]">
               <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -348,7 +348,7 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 5 */}
-            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px] pr-6">
+            <div className="flex-shrink-0 w-[384px] sm:w-[480px] md:w-[576px] lg:w-[672px] xl:w-[744px] pr-6">
               <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -372,7 +372,7 @@ export default function SignatureCustomDesignPage() {
             aria-label="Next"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
-              if (container) container.scrollBy({ left: 650, behavior: 'smooth' })
+              if (container) container.scrollBy({ left: 780, behavior: 'smooth' })
             }}
           >
             <svg className="w-5 h-5 md:w-6 md:h-6 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
