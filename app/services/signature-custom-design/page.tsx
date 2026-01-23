@@ -14,12 +14,12 @@ export default function SignatureCustomDesignPage() {
   return (
     <div className="w-full overflow-x-hidden bg-white">
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400;1,600;1,700&display=swap');
 
         .script-title {
           font-family: 'Cormorant Garamond', Georgia, serif;
           font-style: italic;
-          font-weight: 300;
+          font-weight: 700;
         }
       `}</style>
 
