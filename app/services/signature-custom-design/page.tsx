@@ -28,10 +28,10 @@ export default function SignatureCustomDesignPage() {
       {/* Porsche-style Editorial Layout */}
       <section className="pt-24 md:pt-28">
         
-        {/* White background area with title and top of image */}
+        {/* White background area with title */}
         <div className="bg-white">
           {/* Script Title */}
-          <div className="pt-12 pb-16 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28 flex justify-center">
+          <div className="pt-12 pb-12 md:pt-20 md:pb-16 lg:pt-24 lg:pb-20 flex justify-center">
             <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
               Signature Custom Design
             </h1>
@@ -40,10 +40,10 @@ export default function SignatureCustomDesignPage() {
 
         {/* Image that overlaps white and black sections */}
         <div className="relative">
-          {/* White top portion - 85% of image height */}
-          <div className="absolute top-0 left-0 right-0 h-[85%] bg-white" />
-          {/* Black bottom portion - 15% of image height */}
-          <div className="absolute bottom-0 left-0 right-0 h-[15%] bg-black" />
+          {/* White top portion - 60% of image height */}
+          <div className="absolute top-0 left-0 right-0 h-[60%] bg-white" />
+          {/* Black bottom portion - 40% of image height */}
+          <div className="absolute bottom-0 left-0 right-0 h-[40%] bg-black" />
           
           {/* The image itself - centered, wider width ~65% */}
           <div className="relative flex justify-center py-0">
@@ -64,7 +64,7 @@ export default function SignatureCustomDesignPage() {
         <div className="bg-black">
           
           {/* Thick black bar below the overlapping image */}
-          <div className="h-[60px] md:h-[80px] lg:h-[100px]" />
+          <div className="h-[80px] md:h-[110px] lg:h-[130px]" />
 
           {/* Row 2: Split section - Text Left / Image Right */}
           <div className="flex justify-center">
