@@ -272,12 +272,12 @@ export default function SignatureCustomDesignPage() {
           {/* Carousel container */}
           <div 
             id="highlights-carousel"
-            className="flex gap-4 md:gap-5 lg:gap-6 overflow-x-auto scrollbar-hide scroll-smooth pl-1 md:pl-2 lg:pl-4 pr-6"
+            className="flex gap-6 md:gap-8 lg:gap-9 overflow-x-auto scrollbar-hide scroll-smooth pl-6 md:pl-12 lg:pl-[10%] pr-6"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {/* Card 1 */}
-            <div className="flex-shrink-0 w-[456px] sm:w-[576px] md:w-[720px] lg:w-[840px] xl:w-[920px]">
-              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Premium Materials"
@@ -294,8 +294,8 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 2 */}
-            <div className="flex-shrink-0 w-[456px] sm:w-[576px] md:w-[720px] lg:w-[840px] xl:w-[920px]">
-              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Expert Craftsmanship"
@@ -312,8 +312,8 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 3 */}
-            <div className="flex-shrink-0 w-[456px] sm:w-[576px] md:w-[720px] lg:w-[840px] xl:w-[920px]">
-              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Smart Home Integration"
@@ -330,8 +330,8 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 4 */}
-            <div className="flex-shrink-0 w-[456px] sm:w-[576px] md:w-[720px] lg:w-[840px] xl:w-[920px]">
-              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px]">
+              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Sustainable Design"
@@ -348,8 +348,8 @@ export default function SignatureCustomDesignPage() {
             </div>
 
             {/* Card 5 */}
-            <div className="flex-shrink-0 w-[456px] sm:w-[576px] md:w-[720px] lg:w-[840px] xl:w-[920px] pr-6">
-              <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[480px] lg:w-[560px] xl:w-[620px] pr-6">
+              <div className="relative w-full aspect-[16/10] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Personalized Service"
@@ -368,11 +368,11 @@ export default function SignatureCustomDesignPage() {
 
           {/* Right arrow overlay on carousel */}
           <button 
-            className="absolute right-4 md:right-8 top-[25%] -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+            className="absolute right-4 md:right-8 top-[30%] -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
             aria-label="Next"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
-              if (container) container.scrollBy({ left: 850, behavior: 'smooth' })
+              if (container) container.scrollBy({ left: 650, behavior: 'smooth' })
             }}
           >
             <svg className="w-5 h-5 md:w-6 md:h-6 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
