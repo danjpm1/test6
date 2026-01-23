@@ -31,7 +31,7 @@ export default function SignatureCustomDesignPage() {
         {/* White background area with title and top of image */}
         <div className="bg-white">
           {/* Script Title */}
-          <div className="pt-12 pb-6 md:pt-20 md:pb-8 lg:pt-24 lg:pb-10 flex justify-center">
+          <div className="pt-12 pb-16 md:pt-20 md:pb-24 lg:pt-24 lg:pb-28 flex justify-center">
             <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
               Signature Custom Design
             </h1>
@@ -40,10 +40,10 @@ export default function SignatureCustomDesignPage() {
 
         {/* Image that overlaps white and black sections */}
         <div className="relative">
-          {/* White top portion - 70% of image height */}
-          <div className="absolute top-0 left-0 right-0 h-[72%] bg-white" />
-          {/* Black bottom portion - 30% of image height */}
-          <div className="absolute bottom-0 left-0 right-0 h-[28%] bg-black" />
+          {/* White top portion - 85% of image height */}
+          <div className="absolute top-0 left-0 right-0 h-[85%] bg-white" />
+          {/* Black bottom portion - 15% of image height */}
+          <div className="absolute bottom-0 left-0 right-0 h-[15%] bg-black" />
           
           {/* The image itself - centered, wider width ~65% */}
           <div className="relative flex justify-center py-0">
