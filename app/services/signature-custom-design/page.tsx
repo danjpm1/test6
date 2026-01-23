@@ -93,7 +93,8 @@ export default function SignatureCustomDesignPage() {
         {/* === BLACK FRAME CONTAINER - continues below image === */}
         <div className="bg-black overflow-visible relative">
           
-          {/* No gap - second image overlaps into first image via negative margin */}
+          {/* Small gap before parallax section */}
+          <div className="h-[20px] md:h-[30px] lg:h-[40px]" />
 
           {/* Row 2: Split section - second image has scroll-driven parallax */}
           <div ref={splitSectionRef} className="flex justify-center overflow-visible">
