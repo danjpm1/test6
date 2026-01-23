@@ -71,6 +71,87 @@ export default function SignatureCustomDesignPage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
+  // Carousel arrow visibility based on scroll position
+  useEffect(() => {
+    const carousel = document.getElementById('highlights-carousel')
+    const leftArrow = document.getElementById('carousel-left-arrow')
+    const rightArrow = document.getElementById('carousel-right-arrow')
+
+    const updateArrows = () => {
+      if (!carousel || !leftArrow || !rightArrow) return
+      
+      const scrollLeft = carousel.scrollLeft
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth
+      
+      // Show left arrow if scrolled
+      if (scrollLeft > 50) {
+        leftArrow.style.opacity = '1'
+        leftArrow.style.pointerEvents = 'auto'
+      } else {
+        leftArrow.style.opacity = '0'
+        leftArrow.style.pointerEvents = 'none'
+      }
+      
+      // Hide right arrow if at end
+      if (scrollLeft >= maxScroll - 50) {
+        rightArrow.style.opacity = '0'
+        rightArrow.style.pointerEvents = 'none'
+      } else {
+        rightArrow.style.opacity = '1'
+        rightArrow.style.pointerEvents = 'auto'
+      }
+    }
+
+    if (carousel) {
+      carousel.addEventListener('scroll', updateArrows)
+      updateArrows()
+    }
+
+    return () => {
+      if (carousel) carousel.removeEventListener('scroll', updateArrows)
+    }
+  }, [])
+
+  // Carousel arrow visibility
+  useEffect(() => {
+    const carousel = document.getElementById('highlights-carousel')
+    const leftArrow = document.getElementById('carousel-left-arrow')
+    const rightArrow = document.getElementById('carousel-right-arrow')
+    
+    const handleCarouselScroll = () => {
+      if (carousel && leftArrow && rightArrow) {
+        // Show left arrow if scrolled
+        if (carousel.scrollLeft > 50) {
+          leftArrow.style.opacity = '1'
+          leftArrow.style.pointerEvents = 'auto'
+        } else {
+          leftArrow.style.opacity = '0'
+          leftArrow.style.pointerEvents = 'none'
+        }
+        
+        // Hide right arrow if at end
+        if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 50) {
+          rightArrow.style.opacity = '0'
+          rightArrow.style.pointerEvents = 'none'
+        } else {
+          rightArrow.style.opacity = '1'
+          rightArrow.style.pointerEvents = 'auto'
+        }
+      }
+    }
+    
+    if (carousel) {
+      carousel.addEventListener('scroll', handleCarouselScroll)
+      handleCarouselScroll() // Initial check
+    }
+    
+    return () => {
+      if (carousel) {
+        carousel.removeEventListener('scroll', handleCarouselScroll)
+      }
+    }
+  }, [])
+
   return (
     <div className="w-full bg-white">
       <style jsx global>{`
@@ -366,13 +447,33 @@ export default function SignatureCustomDesignPage() {
             </div>
           </div>
 
-          {/* Right arrow overlay on carousel */}
+          {/* Left arrow - hidden initially, shows after scrolling */}
           <button 
-            className="absolute right-4 md:right-8 top-[30%] -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+            id="carousel-left-arrow"
+            className="absolute left-0 top-[28%] -translate-y-1/2 w-12 h-14 md:w-14 md:h-16 bg-white flex items-center justify-center hover:bg-gray-100 transition-all duration-300 z-10 opacity-0 pointer-events-none"
+            aria-label="Previous"
+            onClick={() => {
+              const container = document.getElementById('highlights-carousel')
+              if (container) {
+                container.scrollBy({ left: -830, behavior: 'smooth' })
+              }
+            }}
+          >
+            <svg className="w-5 h-5 md:w-6 md:h-6 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          {/* Right arrow */}
+          <button 
+            id="carousel-right-arrow"
+            className="absolute right-0 top-[28%] -translate-y-1/2 w-12 h-14 md:w-14 md:h-16 bg-white flex items-center justify-center hover:bg-gray-100 transition-all duration-300 z-10"
             aria-label="Next"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
-              if (container) container.scrollBy({ left: 830, behavior: 'smooth' })
+              if (container) {
+                container.scrollBy({ left: 830, behavior: 'smooth' })
+              }
             }}
           >
             <svg className="w-5 h-5 md:w-6 md:h-6 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
