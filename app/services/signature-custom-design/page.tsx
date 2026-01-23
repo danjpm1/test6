@@ -63,14 +63,14 @@ export default function SignatureCustomDesignPage() {
         {/* === BLACK FRAME CONTAINER - continues below image === */}
         <div className="bg-black">
           
-          {/* Thick black bar below the overlapping image */}
-          <div className="h-[80px] md:h-[110px] lg:h-[130px]" />
+          {/* Small black gap below the overlapping image */}
+          <div className="h-[30px] md:h-[35px] lg:h-[40px]" />
 
           {/* Row 2: Split section - Text Left / Image Right with Parallax */}
           <div className="flex justify-center">
-            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
-              {/* Text block - 40% of content, on black background */}
-              <div className="w-full md:w-[40%] py-8 md:py-10 lg:py-12">
+            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] flex flex-col md:flex-row md:items-start">
+              {/* Text block - 40% of content, on black background, aligned left */}
+              <div className="w-full md:w-[40%] py-8 md:py-10 lg:py-12 md:pr-6">
                 <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[3rem] font-light text-white leading-[1.1] mb-6 md:mb-8 italic">
                   More drive. For<br />
                   ambitious<br />
@@ -84,9 +84,9 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* Image block - 60% of content, MUCH TALLER with sticky parallax */}
-              <div className="w-full md:w-[60%] relative md:sticky md:top-24" style={{ alignSelf: 'flex-start' }}>
-                <div className="relative w-full" style={{ aspectRatio: '3/4' }}>
+              {/* Image block - 60% of content, aligned to right edge with sticky parallax */}
+              <div className="w-full md:w-[60%] relative md:sticky md:top-24 flex justify-end" style={{ alignSelf: 'flex-start' }}>
+                <div className="relative w-full md:w-[95%]" style={{ aspectRatio: '3/4' }}>
                   <Image
                     src="/signature-showcase-2.png"
                     alt="Custom home lifestyle"
