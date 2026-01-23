@@ -143,8 +143,8 @@ export default function SignatureCustomDesignPage() {
           {/* Thin black separator */}
           <div className="h-[8px] md:h-[10px] lg:h-[12px]" />
 
-          {/* Row 3: Bottom Video - shifted up to overlap second image */}
-          <div className="flex justify-center -mt-[200px] md:-mt-[250px] lg:-mt-[300px] relative z-30">
+          {/* Row 3: Bottom Video - positioned to straddle black/white boundary */}
+          <div className="flex justify-center -mt-[200px] md:-mt-[250px] lg:-mt-[300px] relative z-30 mb-[-180px] md:mb-[-220px] lg:mb-[-260px]">
             <div className="w-[67%] sm:w-[58%] md:w-[50%] lg:w-[47%] relative mr-[6%] md:mr-[9%]">
               <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
                 <video
@@ -153,14 +153,13 @@ export default function SignatureCustomDesignPage() {
                   muted
                   loop
                   playsInline
-                  className="absolute inset-0 w-full h-full object-cover"
+                  className="absolute inset-0 w-full h-full object-cover rounded-[8px] md:rounded-[10px]"
                 />
               </div>
             </div>
           </div>
 
-          {/* Bottom black bar */}
-          <div className="h-[12px] md:h-[16px] lg:h-[20px]" />
+          {/* Bottom space removed - video straddles the black/white boundary */}
 
         </div>
         {/* === END BLACK FRAME CONTAINER === */}
@@ -168,7 +167,7 @@ export default function SignatureCustomDesignPage() {
       </section>
 
       {/* Begin Your Vision CTA Section */}
-      <section className="bg-[#f9f8f6] pt-[200px] md:pt-[220px] lg:pt-[250px] pb-20 md:pb-28 lg:pb-36">
+      <section className="bg-[#f9f8f6] pt-[280px] md:pt-[320px] lg:pt-[380px] pb-20 md:pb-28 lg:pb-36">
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
           <p className="text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-6">
             Signature Custom Design
