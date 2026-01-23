@@ -1,18 +1,48 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
 export default function SignatureCustomDesignPage() {
+  const [parallaxOffset, setParallaxOffset] = useState(0)
+  const splitSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      if (splitSectionRef.current) {
+        const rect = splitSectionRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        
+        // Start: image at normal position (offset = 0)
+        // As section scrolls up, image moves up faster (negative offset)
+        // Maximum offset: -220px (image rises 220px into first image)
+        
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          // Progress: 0 when section just enters bottom, 1 when it's at top
+          const progress = 1 - (rect.top / windowHeight)
+          // Clamp progress between 0 and 1
+          const clampedProgress = Math.min(Math.max(progress, 0), 1)
+          // Move image up by up to 220px
+          const offset = clampedProgress * -220
+          setParallaxOffset(offset)
+        }
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll() // Initial call
+    
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <div className="w-full overflow-x-hidden bg-white">
+    <div className="w-full bg-white">
       <style jsx global>{`
         @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400;1,600;1,700&display=swap');
 
@@ -26,7 +56,7 @@ export default function SignatureCustomDesignPage() {
       <Navbar />
 
       {/* Porsche-style Editorial Layout */}
-      <section className="pt-24 md:pt-28">
+      <section className="pt-24 md:pt-28 overflow-visible">
         
         {/* White background area with title */}
         <div className="bg-white">
@@ -61,15 +91,15 @@ export default function SignatureCustomDesignPage() {
         </div>
 
         {/* === BLACK FRAME CONTAINER - continues below image === */}
-        <div className="bg-black">
+        <div className="bg-black overflow-visible relative">
           
           {/* No gap - second image overlaps into first image via negative margin */}
 
-          {/* Row 2: Split section - wider container so image extends beyond first image */}
-          <div className="flex justify-center -mt-[100px] md:-mt-[150px] lg:-mt-[200px] relative z-10">
-            <div className="w-[92%] sm:w-[85%] md:w-[80%] lg:w-[75%] flex flex-col md:flex-row md:items-start">
-              {/* Text block - on black background, starts at same position as first image left edge */}
-              <div className="w-full md:w-[35%] py-8 md:py-10 lg:py-12 md:pl-[8%] lg:pl-[10%] mt-[100px] md:mt-[150px] lg:mt-[200px]">
+          {/* Row 2: Split section - second image has scroll-driven parallax */}
+          <div ref={splitSectionRef} className="flex justify-center overflow-visible">
+            <div className="w-[92%] sm:w-[85%] md:w-[80%] lg:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
+              {/* Text block - on black background */}
+              <div className="w-full md:w-[35%] py-8 md:py-10 lg:py-12 md:pl-[8%] lg:pl-[10%]">
                 <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[3rem] font-light text-white leading-[1.1] mb-6 md:mb-8 italic">
                   More drive. For<br />
                   ambitious<br />
@@ -83,8 +113,14 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* Image block - overlaps into first image area with negative margin */}
-              <div className="w-full md:w-[52%] relative md:ml-auto" style={{ alignSelf: 'flex-start' }}>
+              {/* Image block - parallax transform applied */}
+              <div 
+                className="w-full md:w-[52%] md:ml-auto relative z-20"
+                style={{ 
+                  transform: `translateY(${parallaxOffset}px)`,
+                  transition: 'transform 0.05s linear'
+                }}
+              >
                 <div className="relative w-full" style={{ aspectRatio: '3/4' }}>
                   <Image
                     src="/signature-showcase-2.png"
