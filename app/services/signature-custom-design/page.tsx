@@ -222,21 +222,12 @@ export default function SignatureCustomDesignPage() {
               {/* Text block */}
               <div className="w-full md:w-[45%] lg:w-[42%] py-6 sm:py-8 md:py-10 lg:py-12 px-2 md:pl-[2%] lg:pl-[3%] xl:pl-[4%]">
                 <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.8rem] xl:text-[3.5rem] font-normal text-white leading-[1.1] mb-6 sm:mb-8 md:mb-10 italic">
-                  More drive. For<br />
-                  ambitious<br />
-                  destinations.
+                  More vision. For<br />
+                  extraordinary<br />
+                  homes.
                 </h2>
                 <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px]">
-                  The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
-                </p>
-                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px] mt-5 md:mt-6">
-                  We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
-                </p>
-                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px] mt-5 md:mt-6">
-                  If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
-                </p>
-                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px] mt-5 md:mt-6">
-                  Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
+                  We've built our reputation on transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits—combining bold creativity, extraordinary craftsmanship, and fearless execution to make ambitious dreams happen.
                 </p>
               </div>
 
