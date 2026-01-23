@@ -449,19 +449,19 @@ export default function SignatureCustomDesignPage() {
       <section className="bg-[#f9f8f6] py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36">
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
           <p className="text-[12px] sm:text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">
-            Signature Custom Design
+            Your Legacy Awaits
           </p>
           <h2 className="text-[1.5rem] sm:text-[1.75rem] md:text-[2rem] lg:text-[2.25rem] font-bold text-black leading-tight mb-6 sm:mb-8">
-            More vision. For extraordinary homes.
+            Where Vision Meets Mastery.
           </h2>
           <p className="text-[14px] sm:text-[15px] md:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12">
-            We've built our reputation on transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits—combining bold creativity, extraordinary craftsmanship, and fearless execution to make ambitious dreams happen.
+            The finest homes aren't built—they're crafted. For those who refuse to compromise, who see their home as a reflection of their highest aspirations, we invite you to experience what becomes possible when unparalleled craftsmanship meets boundless imagination.
           </p>
           <a 
             href="/contact"
             className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-[#c6912c] transition-colors duration-300"
           >
-            Begin Your Vision
+            Schedule Your Consultation
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
