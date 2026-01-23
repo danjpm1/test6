@@ -422,7 +422,9 @@ export default function SignatureCustomDesignPage() {
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
               if (container) {
-                container.scrollBy({ left: -830, behavior: 'smooth' })
+                const firstCard = container.querySelector('div.flex-shrink-0') as HTMLElement
+                const scrollAmount = firstCard ? firstCard.offsetWidth + 27 : 820
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
               }
             }}
           >
@@ -439,7 +441,9 @@ export default function SignatureCustomDesignPage() {
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
               if (container) {
-                container.scrollBy({ left: 830, behavior: 'smooth' })
+                const firstCard = container.querySelector('div.flex-shrink-0') as HTMLElement
+                const scrollAmount = firstCard ? firstCard.offsetWidth + 27 : 820
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' })
               }
             }}
           >
