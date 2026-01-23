@@ -149,21 +149,55 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* Image block - right aligned on mobile, extends to edge */}
+              {/* On MOBILE: Video first (order-2), then image (order-3) */}
+              {/* On DESKTOP: Image on right side (order-2) */}
+              
+              {/* Mobile Video - LEFT aligned, bigger, shows on mobile only */}
+              <div className="block md:hidden w-[70%] mr-auto order-2 mt-4">
+                <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
+                  <video
+                    src="/renovation-showcase.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover rounded-r-[8px] rounded-l-none"
+                  />
+                </div>
+              </div>
+
+              {/* Mobile Second Image - RIGHT aligned, smaller, overlaps video */}
               <div 
-                className="w-[65%] md:w-[50%] lg:w-[52%] ml-auto -mr-0 md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20 order-2 -mt-4 md:mt-0"
+                className="block md:hidden w-[55%] ml-auto order-3 -mt-20 relative z-20"
                 style={{ 
                   transform: `translateY(${parallaxOffset}px)`,
                   transition: 'transform 0.05s linear'
                 }}
               >
-                {/* Taller on mobile to match Porsche, square on small laptops, portrait on large */}
-                <div className="relative w-full aspect-[3/4] md:aspect-[1/1] lg:aspect-[3/3.5] xl:aspect-[3/4]">
+                <div className="relative w-full aspect-[3/4]">
                   <Image
                     src="/signature-showcase-2.png"
                     alt="Custom home lifestyle"
                     fill
-                    className="object-cover object-center rounded-l-[8px] rounded-r-none md:rounded-[10px]"
+                    className="object-cover object-center rounded-l-[8px] rounded-r-none"
+                  />
+                </div>
+              </div>
+
+              {/* Desktop Image - shows on desktop only */}
+              <div 
+                className="hidden md:block md:w-[50%] lg:w-[52%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
+                style={{ 
+                  transform: `translateY(${parallaxOffset}px)`,
+                  transition: 'transform 0.05s linear'
+                }}
+              >
+                <div className="relative w-full md:aspect-[1/1] lg:aspect-[3/3.5] xl:aspect-[3/4]">
+                  <Image
+                    src="/signature-showcase-2.png"
+                    alt="Custom home lifestyle"
+                    fill
+                    className="object-cover object-center rounded-[10px]"
                   />
                 </div>
               </div>
@@ -178,9 +212,9 @@ export default function SignatureCustomDesignPage() {
 
       </section>
 
-      {/* Video Section - overlaps second image, 50/50 black/white */}
+      {/* Video Section - DESKTOP ONLY, overlaps second image, 50/50 black/white */}
       <section 
-        className="relative"
+        className="relative hidden md:block"
         style={{ marginTop: `-${videoMargin}px` }}
       >
         {/* Split backgrounds - each takes exactly 50% */}
@@ -189,10 +223,10 @@ export default function SignatureCustomDesignPage() {
           <div className="flex-1 bg-[#f9f8f6]" />
         </div>
         
-        {/* Video - left aligned on mobile, centered-left on desktop */}
-        <div className="relative z-50 flex justify-start md:justify-center" style={{ padding: 'clamp(30px, 6vh, 100px) 0' }}>
+        {/* Video - centered-left on desktop */}
+        <div className="relative z-50 flex justify-center" style={{ padding: 'clamp(30px, 6vh, 100px) 0' }}>
           <div 
-            className="w-[70%] md:w-[52%] lg:w-[50%] xl:w-[48%] relative ml-0 md:mr-[clamp(3%,6vw,9%)]"
+            className="w-[52%] lg:w-[50%] xl:w-[48%] relative mr-[clamp(3%,6vw,9%)]"
           >
             <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
               <video
@@ -201,11 +235,25 @@ export default function SignatureCustomDesignPage() {
                 muted
                 loop
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover rounded-r-[8px] rounded-l-none md:rounded-[10px]"
+                className="absolute inset-0 w-full h-full object-cover rounded-[10px]"
               />
             </div>
           </div>
         </div>
+      </section>
+
+      {/* Mobile Video Section - 50/50 black/white, shown only on mobile */}
+      <section 
+        className="relative block md:hidden -mt-16"
+      >
+        {/* Split backgrounds - each takes exactly 50% */}
+        <div className="absolute inset-0 flex flex-col">
+          <div className="flex-1 bg-black" />
+          <div className="flex-1 bg-[#f9f8f6]" />
+        </div>
+        
+        {/* Empty space to create the 50/50 split effect */}
+        <div className="relative z-10 h-[100px]" />
       </section>
 
       {/* Begin Your Vision CTA Section */}
