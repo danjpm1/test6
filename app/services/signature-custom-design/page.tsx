@@ -66,32 +66,34 @@ export default function SignatureCustomDesignPage() {
           {/* Thick black bar below the overlapping image */}
           <div className="h-[80px] md:h-[110px] lg:h-[130px]" />
 
-          {/* Row 2: Split section - Text Left / Image Right */}
+          {/* Row 2: Split section - Text Left / Image Right with Parallax */}
           <div className="flex justify-center">
-            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] flex flex-col md:flex-row">
-              {/* Text block - 40% of content */}
-              <div className="w-full md:w-[42%] bg-white px-5 md:px-8 lg:px-10 py-8 md:py-10 lg:py-14 flex flex-col justify-center">
-                <h2 className="text-[1.4rem] sm:text-[1.6rem] md:text-[1.5rem] lg:text-[1.75rem] xl:text-[2rem] font-normal text-black leading-[1.15] mb-4 md:mb-5">
+            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] flex flex-col md:flex-row md:items-start gap-4 md:gap-6">
+              {/* Text block - 40% of content, on black background */}
+              <div className="w-full md:w-[40%] py-8 md:py-10 lg:py-12">
+                <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[3rem] font-light text-white leading-[1.1] mb-6 md:mb-8 italic">
                   More drive. For<br />
                   ambitious<br />
                   destinations.
                 </h2>
-                <p className="text-[10px] md:text-[11px] lg:text-[12px] text-gray-500 leading-[1.7] max-w-[280px]">
+                <p className="text-[12px] md:text-[13px] lg:text-[14px] text-gray-300 leading-[1.8] max-w-[400px]">
                   The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
                 </p>
-                <p className="text-[10px] md:text-[11px] lg:text-[12px] text-gray-500 leading-[1.7] max-w-[280px] mt-3">
+                <p className="text-[12px] md:text-[13px] lg:text-[14px] text-gray-300 leading-[1.8] max-w-[400px] mt-4">
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
                 </p>
               </div>
 
-              {/* Image block - 58% of content */}
-              <div className="w-full md:w-[58%] relative min-h-[220px] md:min-h-0">
-                <Image
-                  src="/signature-showcase-2.png"
-                  alt="Custom home lifestyle"
-                  fill
-                  className="object-cover object-center"
-                />
+              {/* Image block - 60% of content, MUCH TALLER with sticky parallax */}
+              <div className="w-full md:w-[60%] relative md:sticky md:top-24" style={{ alignSelf: 'flex-start' }}>
+                <div className="relative w-full" style={{ aspectRatio: '3/4' }}>
+                  <Image
+                    src="/signature-showcase-2.png"
+                    alt="Custom home lifestyle"
+                    fill
+                    className="object-cover object-center"
+                  />
+                </div>
               </div>
             </div>
           </div>
