@@ -116,7 +116,7 @@ export default function SignatureCustomDesignPage() {
 
               {/* Image block - parallax transform applied */}
               <div 
-                className="w-full md:w-[52%] md:ml-auto relative z-20"
+                className="w-full md:w-[52%] md:ml-auto md:-mr-[2%] relative z-20"
                 style={{ 
                   transform: `translateY(${parallaxOffset}px)`,
                   transition: 'transform 0.05s linear'
@@ -127,7 +127,7 @@ export default function SignatureCustomDesignPage() {
                     src="/signature-showcase-2.png"
                     alt="Custom home lifestyle"
                     fill
-                    className="object-cover object-center"
+                    className="object-cover object-center rounded-[8px] md:rounded-[10px]"
                   />
                 </div>
               </div>
