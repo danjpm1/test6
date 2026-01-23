@@ -268,15 +268,15 @@ export default function SignatureCustomDesignPage() {
         </div>
 
         {/* Carousel */}
-        <div className="relative mt-8 md:mt-12">
+        <div className="relative mt-10 md:mt-14">
           {/* Carousel container */}
           <div 
             id="highlights-carousel"
-            className="flex gap-4 md:gap-6 overflow-x-auto scrollbar-hide scroll-smooth pl-6 md:pl-12 lg:pl-[calc((100vw-1280px)/2+48px)] pr-6"
+            className="flex gap-6 md:gap-8 lg:gap-10 overflow-x-auto scrollbar-hide scroll-smooth pl-6 md:pl-12 lg:pl-[calc((100vw-1280px)/2+48px)] pr-6"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {/* Card 1 */}
-            <div className="flex-shrink-0 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[500px]">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[500px] lg:w-[580px] xl:w-[640px]">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -285,16 +285,16 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] font-bold text-black mt-4 md:mt-6">
+              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
                 Premium Materials
               </h3>
-              <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 We source only the finest materials from trusted suppliers worldwide. Every beam, stone, and fixture meets our exacting standards for quality and durability.
               </p>
             </div>
 
             {/* Card 2 */}
-            <div className="flex-shrink-0 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[500px]">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[500px] lg:w-[580px] xl:w-[640px]">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -303,16 +303,16 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] font-bold text-black mt-4 md:mt-6">
+              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
                 Expert Craftsmanship
               </h3>
-              <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 Our master craftsmen bring decades of experience to every project. Their attention to detail transforms architectural visions into flawless reality.
               </p>
             </div>
 
             {/* Card 3 */}
-            <div className="flex-shrink-0 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[500px]">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[500px] lg:w-[580px] xl:w-[640px]">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -321,16 +321,16 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] font-bold text-black mt-4 md:mt-6">
+              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
                 Smart Home Integration
               </h3>
-              <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 Seamlessly integrated technology throughout your home. Control lighting, climate, security, and entertainment from anywhere with intuitive systems.
               </p>
             </div>
 
             {/* Card 4 */}
-            <div className="flex-shrink-0 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[500px]">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[500px] lg:w-[580px] xl:w-[640px]">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -339,16 +339,16 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] font-bold text-black mt-4 md:mt-6">
+              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
                 Sustainable Design
               </h3>
-              <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 Energy-efficient construction meets luxury living. Solar integration, superior insulation, and eco-friendly materials reduce your footprint without compromise.
               </p>
             </div>
 
             {/* Card 5 */}
-            <div className="flex-shrink-0 w-[280px] sm:w-[340px] md:w-[400px] lg:w-[500px] pr-6">
+            <div className="flex-shrink-0 w-[320px] sm:w-[400px] md:w-[500px] lg:w-[580px] xl:w-[640px] pr-6">
               <div className="relative w-full aspect-[4/3] rounded-lg overflow-hidden">
                 <Image
                   src="/signature-showcase-1.png"
@@ -357,10 +357,10 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] font-bold text-black mt-4 md:mt-6">
+              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
                 Personalized Service
               </h3>
-              <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 A dedicated project manager guides you from concept to completion. Regular updates, transparent communication, and unwavering commitment to your vision.
               </p>
             </div>
@@ -368,11 +368,11 @@ export default function SignatureCustomDesignPage() {
 
           {/* Right arrow overlay on carousel */}
           <button 
-            className="absolute right-4 md:right-8 top-1/3 -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
+            className="absolute right-4 md:right-8 top-[25%] -translate-y-1/2 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-gray-50 transition-colors z-10"
             aria-label="Next"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
-              if (container) container.scrollBy({ left: 400, behavior: 'smooth' })
+              if (container) container.scrollBy({ left: 600, behavior: 'smooth' })
             }}
           >
             <svg className="w-5 h-5 md:w-6 md:h-6 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
