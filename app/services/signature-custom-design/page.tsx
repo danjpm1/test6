@@ -63,14 +63,13 @@ export default function SignatureCustomDesignPage() {
         {/* === BLACK FRAME CONTAINER - continues below image === */}
         <div className="bg-black">
           
-          {/* Tiny black gap below the overlapping image */}
-          <div className="h-[8px] md:h-[10px] lg:h-[12px]" />
+          {/* No gap - second image overlaps into first image via negative margin */}
 
           {/* Row 2: Split section - wider container so image extends beyond first image */}
-          <div className="flex justify-center">
+          <div className="flex justify-center -mt-[100px] md:-mt-[150px] lg:-mt-[200px] relative z-10">
             <div className="w-[92%] sm:w-[85%] md:w-[80%] lg:w-[75%] flex flex-col md:flex-row md:items-start">
               {/* Text block - on black background, starts at same position as first image left edge */}
-              <div className="w-full md:w-[35%] py-8 md:py-10 lg:py-12 md:pl-[8%] lg:pl-[10%]">
+              <div className="w-full md:w-[35%] py-8 md:py-10 lg:py-12 md:pl-[8%] lg:pl-[10%] mt-[100px] md:mt-[150px] lg:mt-[200px]">
                 <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.5rem] xl:text-[3rem] font-light text-white leading-[1.1] mb-6 md:mb-8 italic">
                   More drive. For<br />
                   ambitious<br />
@@ -84,8 +83,8 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* Image block - 20% smaller, pushed to right edge */}
-              <div className="w-full md:w-[52%] relative md:sticky md:top-24 md:ml-auto" style={{ alignSelf: 'flex-start' }}>
+              {/* Image block - overlaps into first image area with negative margin */}
+              <div className="w-full md:w-[52%] relative md:ml-auto" style={{ alignSelf: 'flex-start' }}>
                 <div className="relative w-full" style={{ aspectRatio: '3/4' }}>
                   <Image
                     src="/signature-showcase-2.png"
