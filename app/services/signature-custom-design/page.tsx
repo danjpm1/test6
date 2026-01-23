@@ -353,7 +353,7 @@ export default function SignatureCustomDesignPage() {
           {/* Carousel container */}
           <div 
             id="highlights-carousel"
-            className="flex gap-[23px] md:gap-[31px] lg:gap-[35px] overflow-x-auto scrollbar-hide scroll-smooth pl-6 md:pl-12 lg:pl-[10%] pr-6"
+            className="flex gap-[21px] md:gap-[28px] lg:gap-[32px] overflow-x-auto scrollbar-hide scroll-smooth pl-6 md:pl-12 lg:pl-[10%] pr-6"
             style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
           >
             {/* Card 1 */}
