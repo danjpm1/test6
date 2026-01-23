@@ -84,8 +84,8 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* Image block - 20% smaller, extends further right than first image */}
-              <div className="w-full md:w-[52%] relative md:sticky md:top-24" style={{ alignSelf: 'flex-start' }}>
+              {/* Image block - 20% smaller, pushed to right edge */}
+              <div className="w-full md:w-[52%] relative md:sticky md:top-24 md:ml-auto" style={{ alignSelf: 'flex-start' }}>
                 <div className="relative w-full" style={{ aspectRatio: '3/4' }}>
                   <Image
                     src="/signature-showcase-2.png"
