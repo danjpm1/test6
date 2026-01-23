@@ -48,7 +48,7 @@ export default function SignatureCustomDesignPage() {
           {/* The image itself - centered, wider width ~65% */}
           <div className="relative flex justify-center py-0">
             <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] relative z-10">
-              <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
+              <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Breathtaking custom designed home"
