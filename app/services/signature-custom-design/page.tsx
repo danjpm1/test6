@@ -100,7 +100,7 @@ export default function SignatureCustomDesignPage() {
           <div ref={splitSectionRef} className="flex justify-center overflow-visible">
             <div className="w-[92%] sm:w-[85%] md:w-[80%] lg:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
               {/* Text block - on black background, aligned with first image left edge */}
-              <div className="w-full md:w-[42%] py-8 md:py-10 lg:py-12 md:pl-[12%] lg:pl-[14%]">
+              <div className="w-full md:w-[42%] py-8 md:py-10 lg:py-12 md:pl-[3%] lg:pl-[4%]">
                 <h2 className="text-[2.2rem] sm:text-[2.8rem] md:text-[2.5rem] lg:text-[3.2rem] xl:text-[3.8rem] font-normal text-white leading-[1.1] mb-8 md:mb-10 italic">
                   More drive. For<br />
                   ambitious<br />
