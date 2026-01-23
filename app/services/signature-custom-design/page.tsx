@@ -250,6 +250,36 @@ export default function SignatureCustomDesignPage() {
         <div className="relative z-10 h-[60px]" />
       </section>
 
+      {/* ============ Highlights Section ============ */}
+      <section className="bg-[#f9f8f6] pt-20 md:pt-28 lg:pt-36 pb-12 md:pb-16 lg:pb-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          {/* Title centered */}
+          <h2 className="text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] font-bold text-black text-center tracking-tight">
+            Antova Builders highlights.
+          </h2>
+          
+          {/* Navigation arrows - right aligned */}
+          <div className="flex justify-end mt-6 md:mt-8 gap-4">
+            <button 
+              className="p-2 text-gray-400 hover:text-black transition-colors"
+              aria-label="Previous"
+            >
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+              </svg>
+            </button>
+            <button 
+              className="p-2 text-black hover:text-gray-600 transition-colors"
+              aria-label="Next"
+            >
+              <svg className="w-5 h-5 md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Begin Your Vision CTA Section */}
       <section className="bg-[#f9f8f6] py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36">
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
@@ -278,3 +308,4 @@ export default function SignatureCustomDesignPage() {
     </div>
   )
 }
+
