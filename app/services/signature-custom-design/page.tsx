@@ -40,10 +40,10 @@ export default function SignatureCustomDesignPage() {
 
         {/* Image that overlaps white and black sections */}
         <div className="relative">
-          {/* White top portion - 55% of image height */}
-          <div className="absolute top-0 left-0 right-0 h-[55%] bg-white" />
-          {/* Black bottom portion - 45% of image height */}
-          <div className="absolute bottom-0 left-0 right-0 h-[45%] bg-black" />
+          {/* White top portion - 92% of image height */}
+          <div className="absolute top-0 left-0 right-0 h-[92%] bg-white" />
+          {/* Black bottom portion - 8% of image height */}
+          <div className="absolute bottom-0 left-0 right-0 h-[8%] bg-black" />
           
           {/* The image itself - centered, wider width ~65% */}
           <div className="relative flex justify-center py-0">
