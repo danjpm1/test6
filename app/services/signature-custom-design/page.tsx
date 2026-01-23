@@ -450,7 +450,7 @@ export default function SignatureCustomDesignPage() {
           {/* Left arrow - hidden initially, shows after scrolling */}
           <button 
             id="carousel-left-arrow"
-            className="absolute left-0 top-[28%] -translate-y-1/2 w-12 h-14 md:w-14 md:h-16 bg-white flex items-center justify-center hover:bg-gray-100 transition-all duration-300 z-10 opacity-0 pointer-events-none"
+            className="absolute left-0 top-[30%] w-[32px] h-[35px] md:w-[35px] md:h-[42px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 opacity-0 pointer-events-none"
             aria-label="Previous"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
@@ -459,7 +459,7 @@ export default function SignatureCustomDesignPage() {
               }
             }}
           >
-            <svg className="w-5 h-5 md:w-6 md:h-6 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
             </svg>
           </button>
@@ -467,7 +467,7 @@ export default function SignatureCustomDesignPage() {
           {/* Right arrow */}
           <button 
             id="carousel-right-arrow"
-            className="absolute right-0 top-[28%] -translate-y-1/2 w-12 h-14 md:w-14 md:h-16 bg-white flex items-center justify-center hover:bg-gray-100 transition-all duration-300 z-10"
+            className="absolute right-0 top-[30%] w-[32px] h-[35px] md:w-[35px] md:h-[42px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10"
             aria-label="Next"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
@@ -476,7 +476,7 @@ export default function SignatureCustomDesignPage() {
               }
             }}
           >
-            <svg className="w-5 h-5 md:w-6 md:h-6 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <svg className="w-3.5 h-3.5 md:w-4 md:h-4 text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
             </svg>
           </button>
