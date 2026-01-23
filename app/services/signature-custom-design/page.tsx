@@ -19,7 +19,15 @@ export default function SignatureCustomDesignPage() {
     const updateVideoMargin = () => {
       const vh = window.innerHeight
       const vw = window.innerWidth
-      // Scale video overlap based on viewport - needs to overlap into second image
+      
+      // Smaller overlap on mobile, larger on desktop
+      if (vw < 768) {
+        const margin = Math.min(vw * 0.15, vh * 0.2, 150)
+        setVideoMargin(margin)
+        return
+      }
+      
+      // Desktop overlap
       const margin = Math.min(vw * 0.25, vh * 0.45, 500)
       setVideoMargin(margin)
     }
@@ -36,9 +44,10 @@ export default function SignatureCustomDesignPage() {
         const windowHeight = window.innerHeight
         const windowWidth = window.innerWidth
         
-        // Make parallax offset responsive to both viewport height and width
-        // Smaller screens get much smaller parallax effect
-        const maxOffset = Math.min(windowHeight * 0.2, windowWidth * 0.12, 200)
+        // Smaller parallax on mobile, larger on desktop
+        const maxOffset = windowWidth < 768 
+          ? Math.min(windowHeight * 0.1, 80) 
+          : Math.min(windowHeight * 0.2, windowWidth * 0.12, 200)
         
         if (rect.top < windowHeight && rect.bottom > 0) {
           const progress = 1 - (rect.top / windowHeight)
@@ -113,11 +122,11 @@ export default function SignatureCustomDesignPage() {
           {/* Small gap before parallax section - scales with viewport */}
           <div style={{ height: 'clamp(15px, 3vw, 40px)' }} />
 
-          {/* Row 2: Split section - second image has scroll-driven parallax */}
+          {/* Row 2: Split section - stacked on mobile, side by side on desktop */}
           <div ref={splitSectionRef} className="flex justify-center overflow-visible">
-            <div style={{ width: 'clamp(75%, 80vw, 78%)' }} className="flex flex-col md:flex-row md:items-start overflow-visible">
-              {/* Text block - on black background, aligned with first image left edge */}
-              <div className="w-full md:w-[45%] lg:w-[42%]" style={{ padding: 'clamp(1.5rem, 3vw, 3rem) clamp(0.5rem, 2vw, 1.5rem)' }}>
+            <div className="w-full md:w-[82%] lg:w-[78%] xl:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
+              {/* Text block - on black background */}
+              <div className="w-full md:w-[45%] lg:w-[42%] order-1 px-5 md:px-0" style={{ padding: 'clamp(1.5rem, 3vw, 3rem) clamp(0.5rem, 2vw, 1.5rem)' }}>
                 <h2 
                   className="font-normal text-white leading-[1.1] italic"
                   style={{ fontSize: 'clamp(1.8rem, 4vw, 3.5rem)', marginBottom: 'clamp(1.5rem, 3vw, 2.5rem)' }}
@@ -140,21 +149,21 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* Image block - parallax transform applied */}
+              {/* Image block - right aligned on mobile, extends to edge */}
               <div 
-                className="w-full md:w-[50%] lg:w-[52%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
+                className="w-[65%] md:w-[50%] lg:w-[52%] ml-auto -mr-0 md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20 order-2 -mt-4 md:mt-0"
                 style={{ 
                   transform: `translateY(${parallaxOffset}px)`,
                   transition: 'transform 0.05s linear'
                 }}
               >
-                {/* Aspect ratio scales from 1:1 on small laptops to 3:4 on large screens */}
-                <div className="relative w-full aspect-[4/3] md:aspect-[1/1] lg:aspect-[3/3.5] xl:aspect-[3/4]">
+                {/* Taller on mobile to match Porsche, square on small laptops, portrait on large */}
+                <div className="relative w-full aspect-[3/4] md:aspect-[1/1] lg:aspect-[3/3.5] xl:aspect-[3/4]">
                   <Image
                     src="/signature-showcase-2.png"
                     alt="Custom home lifestyle"
                     fill
-                    className="object-cover object-center rounded-[8px] md:rounded-[10px]"
+                    className="object-cover object-center rounded-l-[8px] rounded-r-none md:rounded-[10px]"
                   />
                 </div>
               </div>
@@ -180,9 +189,11 @@ export default function SignatureCustomDesignPage() {
           <div className="flex-1 bg-[#f9f8f6]" />
         </div>
         
-        {/* Video centered on the boundary - high z-index to be above second image */}
-        <div className="relative z-50 flex justify-center items-center" style={{ padding: 'clamp(40px, 8vh, 100px) 0' }}>
-          <div style={{ width: 'clamp(48%, 52vw, 52%)', marginRight: 'clamp(3%, 6vw, 9%)' }} className="relative">
+        {/* Video - left aligned on mobile, centered-left on desktop */}
+        <div className="relative z-50 flex justify-start md:justify-center" style={{ padding: 'clamp(30px, 6vh, 100px) 0' }}>
+          <div 
+            className="w-[70%] md:w-[52%] lg:w-[50%] xl:w-[48%] relative ml-0 md:mr-[clamp(3%,6vw,9%)]"
+          >
             <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
               <video
                 src="/renovation-showcase.mp4"
@@ -190,7 +201,7 @@ export default function SignatureCustomDesignPage() {
                 muted
                 loop
                 playsInline
-                className="absolute inset-0 w-full h-full object-cover rounded-[8px] md:rounded-[10px]"
+                className="absolute inset-0 w-full h-full object-cover rounded-r-[8px] rounded-l-none md:rounded-[10px]"
               />
             </div>
           </div>
