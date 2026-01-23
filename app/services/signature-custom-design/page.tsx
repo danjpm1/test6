@@ -19,8 +19,8 @@ export default function SignatureCustomDesignPage() {
     const updateVideoMargin = () => {
       const vh = window.innerHeight
       const vw = window.innerWidth
-      // Scale video overlap based on viewport - smaller screens get less overlap
-      const margin = Math.min(vw * 0.15, vh * 0.35, 400)
+      // Scale video overlap based on viewport - needs to overlap into second image
+      const margin = Math.min(vw * 0.25, vh * 0.45, 500)
       setVideoMargin(margin)
     }
     
