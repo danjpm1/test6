@@ -148,15 +148,15 @@ export default function SignatureCustomDesignPage() {
 
       </section>
 
-      {/* Video Section - 50% black top, 50% white bottom */}
-      <section className="relative">
-        {/* Top half - black background */}
-        <div className="absolute top-0 left-0 right-0 h-1/2 bg-black" />
+      {/* Video Section - overlaps second image, 50/50 black/white */}
+      <section className="relative -mt-[250px] md:-mt-[320px] lg:-mt-[400px]">
+        {/* Top half - black background at z-0 (second image at z-20 shows above) */}
+        <div className="absolute top-0 left-0 right-0 h-1/2 bg-black -z-10" />
         {/* Bottom half - white/cream background */}
-        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#f9f8f6]" />
+        <div className="absolute bottom-0 left-0 right-0 h-1/2 bg-[#f9f8f6] -z-10" />
         
-        {/* Video centered on the boundary */}
-        <div className="relative z-10 flex justify-center py-[60px] md:py-[80px] lg:py-[100px]">
+        {/* Video centered on the boundary - high z-index to be above second image */}
+        <div className="relative z-50 flex justify-center py-[60px] md:py-[80px] lg:py-[100px]">
           <div className="w-[67%] sm:w-[58%] md:w-[50%] lg:w-[47%] relative mr-[6%] md:mr-[9%]">
             <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
               <video
