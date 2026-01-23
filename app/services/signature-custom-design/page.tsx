@@ -75,15 +75,15 @@ export default function SignatureCustomDesignPage() {
           {/* Black bottom portion - 30% of image height */}
           <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-black" />
           
-          {/* The image itself - centered, wider width ~65% */}
+          {/* The image itself - centered, slightly wider ~68% */}
           <div className="relative flex justify-center py-0">
-            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] relative z-10">
+            <div className="w-[92%] sm:w-[82%] md:w-[72%] lg:w-[68%] relative z-10">
               <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
                 <Image
                   src="/signature-showcase-1.png"
                   alt="Breathtaking custom designed home"
                   fill
-                  className="object-cover object-center rounded-tr-[8px] rounded-bl-[8px] md:rounded-tr-[10px] md:rounded-bl-[10px]"
+                  className="object-cover object-center rounded-[8px] md:rounded-[10px]"
                 />
               </div>
             </div>
