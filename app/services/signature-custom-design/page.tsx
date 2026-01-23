@@ -31,7 +31,7 @@ export default function SignatureCustomDesignPage() {
         {/* White background area with title */}
         <div className="bg-white">
           {/* Script Title */}
-          <div className="pt-12 pb-8 md:pt-20 md:pb-12 lg:pt-24 lg:pb-14 flex justify-center">
+          <div className="pt-6 pb-8 md:pt-10 md:pb-12 lg:pt-12 lg:pb-14 flex justify-center">
             <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
               Signature Custom Design
             </h1>
