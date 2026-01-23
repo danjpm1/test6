@@ -40,14 +40,14 @@ export default function SignatureCustomDesignPage() {
 
         {/* Image that overlaps white and black sections */}
         <div className="relative">
-          {/* White top portion */}
-          <div className="absolute top-0 left-0 right-0 h-[40%] bg-white" />
-          {/* Black bottom portion */}
-          <div className="absolute bottom-0 left-0 right-0 h-[60%] bg-black" />
+          {/* White top portion - 70% of image height */}
+          <div className="absolute top-0 left-0 right-0 h-[72%] bg-white" />
+          {/* Black bottom portion - 30% of image height */}
+          <div className="absolute bottom-0 left-0 right-0 h-[28%] bg-black" />
           
-          {/* The image itself - centered, narrower width */}
+          {/* The image itself - centered, wider width ~65% */}
           <div className="relative flex justify-center py-0">
-            <div className="w-[85%] sm:w-[70%] md:w-[60%] lg:w-[52%] relative z-10">
+            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] relative z-10">
               <div className="relative w-full" style={{ aspectRatio: '4/3' }}>
                 <Image
                   src="/signature-showcase-1.png"
@@ -63,12 +63,12 @@ export default function SignatureCustomDesignPage() {
         {/* === BLACK FRAME CONTAINER - continues below image === */}
         <div className="bg-black">
           
-          {/* Space below the overlapping image */}
-          <div className="h-[40px] md:h-[50px] lg:h-[60px]" />
+          {/* Thick black bar below the overlapping image */}
+          <div className="h-[60px] md:h-[80px] lg:h-[100px]" />
 
           {/* Row 2: Split section - Text Left / Image Right */}
           <div className="flex justify-center">
-            <div className="w-[85%] sm:w-[70%] md:w-[60%] lg:w-[52%] flex flex-col md:flex-row">
+            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] flex flex-col md:flex-row">
               {/* Text block - 40% of content */}
               <div className="w-full md:w-[42%] bg-white px-5 md:px-8 lg:px-10 py-8 md:py-10 lg:py-14 flex flex-col justify-center">
                 <h2 className="text-[1.4rem] sm:text-[1.6rem] md:text-[1.5rem] lg:text-[1.75rem] xl:text-[2rem] font-normal text-black leading-[1.15] mb-4 md:mb-5">
@@ -84,7 +84,7 @@ export default function SignatureCustomDesignPage() {
                 </p>
               </div>
 
-              {/* Image block - 60% of content */}
+              {/* Image block - 58% of content */}
               <div className="w-full md:w-[58%] relative min-h-[220px] md:min-h-0">
                 <Image
                   src="/signature-showcase-2.png"
@@ -101,7 +101,7 @@ export default function SignatureCustomDesignPage() {
 
           {/* Row 3: Bottom Video */}
           <div className="flex justify-center">
-            <div className="w-[85%] sm:w-[70%] md:w-[60%] lg:w-[52%] relative">
+            <div className="w-[92%] sm:w-[80%] md:w-[70%] lg:w-[65%] relative">
               <div className="relative w-full" style={{ aspectRatio: '2.5/1' }}>
                 <video
                   src="/renovation-showcase.mp4"
