@@ -118,9 +118,6 @@ export default function SignatureCustomDesignPage() {
                 <p className="text-[15px] md:text-[16px] lg:text-[17px] text-gray-200 leading-[1.9] max-w-[520px] mt-5">
                   Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
                 </p>
-                <p className="text-[16px] md:text-[17px] lg:text-[18px] text-white font-semibold leading-[1.8] max-w-[520px] mt-8">
-                  "Imagination Isn't Limited. Neither Are We."
-                </p>
               </div>
 
               {/* Image block - parallax transform applied */}
