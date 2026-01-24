@@ -155,10 +155,10 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Title - centered on mobile, right-aligned on desktop */}
-        <div className="absolute top-[40%] sm:top-[38%] md:top-[34%] inset-x-4 md:inset-x-auto md:right-[5%] text-center md:text-right">
+        {/* Title - bottom right to match other service pages */}
+        <div className="absolute bottom-[18%] sm:bottom-[16%] md:bottom-[15%] inset-x-4 md:inset-x-auto md:right-[5%] text-center md:text-right">
           <h1 
-            className="font-display text-4xl sm:text-5xl md:text-7xl lg:text-8xl xl:text-9xl font-bold tracking-tight"
+            className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
             style={{ 
               color: '#D4F1F9',
               textShadow: '0 2px 40px rgba(0,0,0,0.4)',
