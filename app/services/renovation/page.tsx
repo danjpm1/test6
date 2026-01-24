@@ -79,10 +79,8 @@ export default function RemoteBuildsPage() {
   }, [])
 
   return (
-    <div className="w-full overflow-x-hidden bg-[#080a0f] relative">
-      {/* Main content wrapper */}
-      <div className="relative z-0">
-        <style jsx global>{`
+    <div className="w-full overflow-x-hidden bg-[#080a0f]">
+      <style jsx global>{`
         @keyframes scroll-wheel {
           0% {
             opacity: 1;
@@ -328,36 +326,6 @@ export default function RemoteBuildsPage() {
       </section>
 
       <Footer />
-      </div>
-
-      {/* Unified atmospheric overlay - sits on TOP of all content */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-50"
-        style={{
-          background: `
-            radial-gradient(ellipse 120% 100% at 50% 50%, 
-              transparent 0%, 
-              transparent 25%,
-              rgba(5,10,18,0.15) 50%,
-              rgba(3,8,15,0.4) 75%,
-              rgba(0,5,12,0.7) 100%
-            )
-          `,
-          willChange: 'auto',
-          contain: 'strict',
-        }}
-      />
-      
-      {/* Subtle blue tint */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-50"
-        style={{
-          background: 'linear-gradient(180deg, rgba(20,40,60,0.08) 0%, rgba(15,30,50,0.05) 100%)',
-          mixBlendMode: 'overlay',
-          willChange: 'auto',
-          contain: 'strict',
-        }}
-      />
     </div>
   )
 }
