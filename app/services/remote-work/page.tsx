@@ -134,7 +134,7 @@ export default function RemoteBuildsPage() {
 
       <Navbar />
 
-      {/* Hero Section - Tesla Style Full Bleed */}
+      {/* Hero Section */}
       <section className="relative w-full h-screen">
         <Image
           src="/remote-builds.png"
@@ -143,11 +143,9 @@ export default function RemoteBuildsPage() {
           sizes="100vw"
           className="object-cover object-top"
           priority
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAAIAAoDASIAAhEBAxEB/8QAFgABAQEAAAAAAAAAAAAAAAAAAAUH/8QAIhAAAgEDAwUBAAAAAAAAAAAAAQIDAAQRBRIhBhMiMUFR/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAZEQACAwEAAAAAAAAAAAAAAAABAgADESH/2gAMAwEAAhEDEEA/AKOm9RXNvbRQy2sUrxoFLl2XcQOTgDj9qrF1Pd/nl/tKVLuGwKYZ//Z"
         />
         
-        {/* Bottom gradient fade - Tesla style */}
+        {/* Bottom gradient fade */}
         <div 
           className="absolute inset-x-0 bottom-0 h-[35%]"
           style={{
@@ -155,7 +153,7 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Title - bottom right to match other service pages */}
+        {/* Title - bottom right */}
         <div className="absolute bottom-[18%] sm:bottom-[16%] md:bottom-[15%] inset-x-4 md:inset-x-auto md:right-[5%] text-center md:text-right">
           <h1 
             className="font-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight"
@@ -183,7 +181,6 @@ export default function RemoteBuildsPage() {
                 key={index}
                 className="group relative aspect-[3/4] rounded-2xl overflow-hidden cursor-pointer"
               >
-                {/* Background Image */}
                 <Image
                   src={card.image}
                   alt={card.title}
@@ -193,10 +190,8 @@ export default function RemoteBuildsPage() {
                   className="object-cover transition-transform duration-700 group-hover:scale-105"
                 />
                 
-                {/* Gradient Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                 
-                {/* Content */}
                 <div className="absolute inset-x-0 bottom-0 p-6 sm:p-8">
                   <h3 className="font-display text-xl sm:text-2xl font-bold text-white mb-2 tracking-wide uppercase">
                     {card.title}
@@ -206,7 +201,6 @@ export default function RemoteBuildsPage() {
                   </p>
                 </div>
 
-                {/* Hover Border Effect */}
                 <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[#c6912c]/50 transition-colors duration-300" />
               </div>
             ))}
@@ -225,7 +219,6 @@ export default function RemoteBuildsPage() {
           className="object-cover object-center"
         />
         
-        {/* Top gradient fade - smooth transition from section above */}
         <div 
           className="absolute inset-x-0 top-0 h-[25%]"
           style={{
@@ -233,7 +226,6 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Bottom gradient fade - smooth transition to section below */}
         <div 
           className="absolute inset-x-0 bottom-0 h-[20%]"
           style={{
@@ -241,13 +233,11 @@ export default function RemoteBuildsPage() {
           }}
         />
         
-        {/* Left gradient for text readability */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/50 to-transparent" />
         
         <div className="relative z-10 w-full mx-auto max-w-7xl px-6 sm:px-8 py-16">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             
-            {/* Left Content */}
             <div className="space-y-8">
               <h2 className="font-display text-3xl sm:text-4xl md:text-5xl font-bold text-white leading-tight tracking-tight">
                 BUILD YOUR
@@ -270,7 +260,6 @@ export default function RemoteBuildsPage() {
               </div>
             </div>
             
-            {/* Right Image Grid */}
             <div className="hidden lg:grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="relative aspect-video rounded-lg overflow-hidden group cursor-pointer">
