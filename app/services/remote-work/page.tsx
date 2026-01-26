@@ -10,21 +10,21 @@ export default function BuildDreamSection() {
         backgroundImage: "url('/forest.png')",
       }}
     >
-      {/* Dark overlay */}
-      <div className="absolute inset-0 bg-[#0a0f1a]/80" />
+      {/* Dark overlay - matching the existing style */}
+      <div className="absolute inset-0 bg-[#0a0f1a]/75" />
 
       <div className="relative z-10 max-w-7xl mx-auto px-6 lg:px-12">
-        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-20">
+        <div className="flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
           
-          {/* Left: Text Content */}
-          <div className="flex-1">
-            {/* Bebas Neue headline */}
-            <h2 className="font-bebas text-5xl md:text-6xl lg:text-7xl text-white uppercase tracking-wide leading-none mb-1">
+          {/* Left: Text Content - UNCHANGED */}
+          <div className="flex-1 max-w-xl">
+            {/* BUILD YOUR - Bebas Neue */}
+            <h2 className="font-bebas text-5xl md:text-6xl text-white uppercase tracking-wide leading-none mb-1">
               BUILD YOUR
             </h2>
-            {/* Playfair Display italic gold accent */}
+            {/* DREAM ANYWHERE - Playfair Display Italic */}
             <h2
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight leading-none mb-8"
+              className="text-4xl md:text-5xl font-bold tracking-tight leading-none mb-8"
               style={{
                 color: "#b48e57",
                 fontStyle: "italic",
@@ -34,8 +34,8 @@ export default function BuildDreamSection() {
               DREAM ANYWHERE
             </h2>
 
-            {/* Inter body text */}
-            <div className="space-y-5 font-sans text-gray-300 text-base md:text-lg leading-relaxed max-w-xl">
+            {/* Body text - Inter */}
+            <div className="space-y-5 font-sans text-gray-300 text-base md:text-lg leading-relaxed">
               <p>
                 Antova Builders specializes in building homes and structures in
                 the most challenging locations — mountaintops, remote mountain
@@ -60,28 +60,28 @@ export default function BuildDreamSection() {
             </p>
           </div>
 
-          {/* Right: Big Logo (replaces image grid) */}
+          {/* Right: LOGO (replacing the 4-image grid) */}
           <div className="flex-1 flex items-center justify-center">
             <div className="relative">
               {/* Ambient glow behind logo */}
               <div
-                className="absolute inset-0 blur-3xl"
+                className="absolute inset-0 blur-3xl opacity-60"
                 style={{
                   background:
-                    "radial-gradient(circle, rgba(180, 142, 87, 0.25) 0%, transparent 60%)",
-                  transform: "scale(1.8)",
+                    "radial-gradient(circle, rgba(180, 142, 87, 0.3) 0%, transparent 60%)",
+                  transform: "scale(2)",
                 }}
               />
 
-              {/* The geometric logo */}
+              {/* The geometric Antova logo */}
               <Image
                 src="/antova-logo-gold.svg"
                 alt="Antova Builders"
                 width={400}
                 height={400}
-                className="relative w-64 h-auto md:w-80 lg:w-96"
+                className="relative w-56 h-auto md:w-72 lg:w-80 xl:w-96"
                 style={{
-                  filter: "drop-shadow(0 0 80px rgba(180, 142, 87, 0.3))",
+                  filter: "drop-shadow(0 0 60px rgba(180, 142, 87, 0.25))",
                 }}
               />
             </div>
