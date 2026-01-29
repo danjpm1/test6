@@ -1,7 +1,6 @@
 "use client"
 
 import { useState, useEffect, useRef } from "react"
-import Image from "next/image"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
@@ -91,7 +90,7 @@ export default function CommercialPage() {
       {/* Stats Section */}
       <section 
         ref={statsRef}
-        className="flex items-center justify-center py-8 px-12 bg-white"
+        className="flex items-center justify-center pt-20 pb-12 px-12 bg-white"
       >
         <div className="flex items-center justify-center gap-12 max-w-[1000px] w-full flex-col md:flex-row">
           {stats.map((stat, index) => (
@@ -126,91 +125,6 @@ export default function CommercialPage() {
               )}
             </div>
           ))}
-        </div>
-      </section>
-
-      {/* 21:9 Image + Text Section - Tesla Style */}
-      <section className="pt-2 pb-16 px-12 bg-white max-w-[1400px] mx-auto">
-        <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg mb-8">
-          <Image
-            src="/commercial_wide1.png"
-            alt="Commercial construction project"
-            fill
-            className="object-cover"
-          />
-        </div>
-        
-        <div className="max-w-[1100px]">
-          <h2 className="text-[clamp(28px,4vw,44px)] font-semibold tracking-tight text-[#171a20] mb-3 leading-tight">
-            Building Your Business, One Project at a Time
-          </h2>
-          <p className="text-[clamp(13px,1.4vw,15px)] font-normal leading-[1.8] text-[#5c5e62]">
-            Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication.{' '}
-            <a href="#" className="text-[#171a20] underline">Learn more about our process</a>.
-          </p>
-        </div>
-      </section>
-
-      {/* 16:9 Video Section - Tesla Style */}
-      <section className="py-20 px-12 bg-white max-w-[1400px] mx-auto">
-        <div className="relative w-full aspect-video overflow-hidden rounded-lg">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="w-full h-full object-cover"
-          >
-            <source src="/newbuilds-video.mp4" type="video/mp4" />
-          </video>
-          <button
-            className="absolute bottom-6 left-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
-          >
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-              <rect x="6" y="4" width="4" height="16"/>
-              <rect x="14" y="4" width="4" height="16"/>
-            </svg>
-          </button>
-        </div>
-
-        {/* Title + Description */}
-        <div className="mt-16 mb-10">
-          <h2 className="text-[clamp(32px,5vw,56px)] font-medium tracking-tight text-[#171a20] mb-4">
-            Build More
-          </h2>
-          <p className="text-[clamp(14px,1.5vw,18px)] font-normal text-[#5c5e62] max-w-4xl">
-            Our commercial construction services are fully customizable and can be deployed at scale, making them suitable for a variety of project sizes, locations and applications.
-          </p>
-        </div>
-
-        {/* 3 Column Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="bg-[#f4f4f4] rounded-lg p-8">
-            <h3 className="text-[clamp(20px,2.5vw,28px)] font-medium text-[#171a20] mb-4">
-              Retail & Hospitality
-            </h3>
-            <p className="text-[clamp(13px,1.3vw,15px)] text-[#5c5e62] leading-relaxed">
-              Creates inviting customer experiences with functional layouts, premium finishes, and designs that strengthen your brand identity and drive foot traffic.
-            </p>
-          </div>
-
-          <div className="bg-[#f4f4f4] rounded-lg p-8">
-            <h3 className="text-[clamp(20px,2.5vw,28px)] font-medium text-[#171a20] mb-4">
-              Office & Corporate
-            </h3>
-            <p className="text-[clamp(13px,1.3vw,15px)] text-[#5c5e62] leading-relaxed">
-              Delivers productive work environments with modern amenities, flexible spaces, and infrastructure that supports your team's growth and collaboration.
-            </p>
-          </div>
-
-          <div className="bg-[#f4f4f4] rounded-lg p-8">
-            <h3 className="text-[clamp(20px,2.5vw,28px)] font-medium text-[#171a20] mb-4">
-              Industrial & Warehouse
-            </h3>
-            <p className="text-[clamp(13px,1.3vw,15px)] text-[#5c5e62] leading-relaxed">
-              Builds efficient operational facilities with optimized logistics flow, durable construction, and scalable designs that maximize your operational capacity.
-            </p>
-          </div>
         </div>
       </section>
 
