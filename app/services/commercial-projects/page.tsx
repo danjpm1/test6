@@ -130,8 +130,8 @@ export default function CommercialPage() {
       </section>
 
       {/* 21:9 Image + Text Section - Tesla Style */}
-      <section className="pt-4 pb-20 px-12 bg-white max-w-[1400px] mx-auto">
-        <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg mb-10">
+      <section className="pt-4 pb-16 px-12 bg-white max-w-[1400px] mx-auto">
+        <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg mb-8">
           <Image
             src="/commercial_wide1.png"
             alt="Commercial construction project"
@@ -140,12 +140,13 @@ export default function CommercialPage() {
           />
         </div>
         
-        <div className="max-w-[900px]">
-          <h2 className="text-[clamp(24px,4vw,40px)] font-medium tracking-tight text-[#171a20] mb-4 leading-tight">
-            Description:
+        <div className="max-w-[1100px]">
+          <h2 className="text-[clamp(28px,4vw,44px)] font-semibold tracking-tight text-[#171a20] mb-3 leading-tight">
+            Building Your Business, One Project at a Time
           </h2>
-          <p className="text-[clamp(14px,1.5vw,16px)] font-normal leading-relaxed text-[#5c5e62]">
-            Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that Your success is our success. In our building process we
+          <p className="text-[clamp(13px,1.4vw,15px)] font-normal leading-[1.8] text-[#5c5e62]">
+            Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication.{' '}
+            <a href="#" className="text-[#171a20] underline">Learn more about our process</a>.
           </p>
         </div>
       </section>
