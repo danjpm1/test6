@@ -218,31 +218,31 @@ export default function CommercialPage() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-24 md:py-32 bg-[#f5f5f5]">
+      <section className="py-20 md:py-24 bg-[#f5f5f5]">
         <div className="max-w-[1400px] mx-auto px-8 md:px-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-20">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-16">
             {/* Left Side - Text & Button */}
-            <div className="flex-1 text-center md:text-left">
-              <h2 className="text-[clamp(28px,4vw,44px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
+            <div className="flex-1 text-center md:text-left max-w-[600px]">
+              <h2 className="text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.1]">
                 Ready to Build?
               </h2>
-              <p className="text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62] mb-8 max-w-[500px]">
+              <p className="text-[clamp(15px,1.5vw,18px)] font-normal leading-[1.7] text-[#5c5e62] mb-8">
                 Let's discuss your commercial project and bring your vision to life.
               </p>
               <a 
                 href="/contact" 
-                className="inline-flex items-center justify-center px-8 py-4 bg-[#171a20] text-white text-[16px] font-medium rounded-full hover:bg-[#333] transition-all hover:scale-105"
+                className="inline-flex items-center justify-center px-10 py-4 bg-[#171a20] text-white text-[15px] font-medium rounded hover:bg-[#333] transition-all hover:scale-[1.02]"
               >
                 Schedule Consultation
               </a>
             </div>
 
             {/* Right Side - Logo */}
-            <div className="flex-1 flex justify-center md:justify-end">
+            <div className="flex-shrink-0 flex justify-center md:justify-end">
               <img
                 src="/antova-logo-gold.svg"
                 alt="Antova Builders"
-                className="w-full max-w-[400px] md:max-w-[500px] h-auto object-contain"
+                className="w-[200px] md:w-[280px] h-auto object-contain opacity-90"
               />
             </div>
           </div>
