@@ -130,7 +130,7 @@ export default function CommercialPage() {
 
       {/* 21:9 Image + Text Section - Tesla Style */}
       <section className="pt-8 pb-20 px-8 md:px-12 bg-white max-w-[1400px] mx-auto">
-        <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg mb-10">
+        <div className="relative w-full aspect-[3/1] overflow-hidden rounded-lg mb-10">
           <img
             src="/commercial_wide1.png"
             alt="Commercial construction project"
