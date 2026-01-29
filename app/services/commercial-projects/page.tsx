@@ -90,9 +90,9 @@ export default function CommercialPage() {
       {/* Stats Section */}
       <section 
         ref={statsRef}
-        className="flex items-center justify-center pt-[132px] pb-[77px] px-12 bg-white"
+        className="flex items-center justify-center pt-[100px] pb-[50px] px-12 bg-white"
       >
-        <div className="flex items-center justify-center gap-[92px] max-w-[1200px] w-full flex-col md:flex-row">
+        <div className="flex items-center justify-center gap-12 max-w-[1000px] w-full flex-col md:flex-row">
           {stats.map((stat, index) => (
             <div key={stat.label} className="contents">
               <div 
@@ -104,24 +104,24 @@ export default function CommercialPage() {
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div>
-                  <span className="text-[clamp(36px,5vw,60px)] font-medium tracking-tight text-[#171a20]">
+                  <span className="text-[clamp(32px,4.5vw,52px)] font-bold tracking-tight text-[#171a20]">
                     {stat.value}
                   </span>
                   {stat.unit && (
-                    <span className="text-[clamp(18px,2.5vw,28px)] font-normal text-[#171a20] ml-1">
+                    <span className="text-[clamp(16px,2vw,24px)] font-semibold text-[#171a20] ml-1">
                       {stat.unit}
                     </span>
                   )}
                 </div>
-                <div className="text-[clamp(12px,1.4vw,16px)] font-normal text-[#5c5e62] mt-4">
+                <div className="text-[clamp(11px,1.3vw,14px)] font-normal text-[#5c5e62] mt-1">
                   {stat.label}
                 </div>
               </div>
               {index < stats.length - 1 && (
-                <div className="w-px h-[92px] bg-black/15 hidden md:block" />
+                <div className="w-px h-14 bg-black/10 hidden md:block" />
               )}
               {index < stats.length - 1 && (
-                <div className="w-[74px] h-px bg-black/15 md:hidden" />
+                <div className="w-12 h-px bg-black/10 md:hidden" />
               )}
             </div>
           ))}
