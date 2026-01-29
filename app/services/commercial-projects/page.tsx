@@ -152,6 +152,31 @@ export default function CommercialPage() {
         </div>
       </section>
 
+      {/* Video Section */}
+      <section className="pt-14 pb-20 bg-white">
+        <div className="max-w-[1915px] mx-auto px-4 md:px-6">
+          <div className="relative w-full aspect-[3/1.045] overflow-hidden rounded-lg">
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              className="w-full h-full object-cover"
+            >
+              <source src="/newbuilds-video.mp4" type="video/mp4" />
+            </video>
+            <button
+              className="absolute bottom-6 left-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+                <rect x="6" y="4" width="4" height="16"/>
+                <rect x="14" y="4" width="4" height="16"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
