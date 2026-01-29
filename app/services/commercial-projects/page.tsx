@@ -61,7 +61,7 @@ export default function CommercialPage() {
 
         {/* Hero Content - Top Center */}
         <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 text-center px-6">
-          <h1 className="text-[clamp(32px,5vw,56px)] font-medium tracking-tight text-white mb-2">
+          <h1 className="text-[clamp(32px,5vw,56px)] font-semibold tracking-tight text-white mb-2">
             Commercial
           </h1>
           <p className="text-[clamp(14px,1.8vw,18px)] font-normal text-white">
