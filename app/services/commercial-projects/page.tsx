@@ -62,10 +62,10 @@ export default function CommercialPage() {
 
         {/* Hero Content - Top Center */}
         <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 text-center px-6">
-          <h1 className="text-[clamp(32px,5vw,56px)] font-medium tracking-tight text-[#171a20] mb-1 animate-fade-up">
+          <h1 className="text-[clamp(32px,5vw,56px)] font-medium tracking-tight text-white mb-1">
             Commercial
           </h1>
-          <p className="text-[clamp(12px,1.5vw,14px)] font-normal text-[#393c41] animate-fade-up-delay">
+          <p className="text-[clamp(12px,1.5vw,14px)] font-normal text-white/85">
             Large-Scale Construction Services
           </p>
         </div>
@@ -73,14 +73,14 @@ export default function CommercialPage() {
         {/* Pause Button */}
         <button
           onClick={toggleVideo}
-          className="absolute bottom-8 left-8 w-11 h-11 rounded-full bg-black/5 backdrop-blur-md flex items-center justify-center transition-all hover:bg-black/10 hover:scale-105 z-10"
+          className="absolute bottom-8 left-8 w-11 h-11 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105 z-10"
         >
           {isPaused ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#171a20">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
           ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="#171a20">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
               <rect x="6" y="4" width="4" height="16"/>
               <rect x="14" y="4" width="4" height="16"/>
             </svg>
@@ -91,7 +91,7 @@ export default function CommercialPage() {
       {/* Stats Section */}
       <section 
         ref={statsRef}
-        className="flex items-center justify-center py-16 px-12 bg-white"
+        className="flex items-center justify-center py-12 px-12 bg-white"
       >
         <div className="flex items-center justify-center gap-12 max-w-[1000px] w-full flex-col md:flex-row">
           {stats.map((stat, index) => (
@@ -130,7 +130,7 @@ export default function CommercialPage() {
       </section>
 
       {/* 21:9 Image + Text Section - Tesla Style */}
-      <section className="py-20 px-12 bg-white max-w-[1400px] mx-auto">
+      <section className="pt-4 pb-20 px-12 bg-white max-w-[1400px] mx-auto">
         <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg mb-10">
           <Image
             src="/commercial_wide1.png"
