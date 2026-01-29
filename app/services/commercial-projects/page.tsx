@@ -240,7 +240,7 @@ export default function CommercialPage() {
             {/* Right Side - Logo */}
             <div className="flex-1 flex justify-center md:justify-end">
               <img
-                src="/antova-consultation.png"
+                src="/antova-logo-gold.svg"
                 alt="Antova Builders"
                 className="w-full max-w-[400px] md:max-w-[500px] h-auto object-contain"
               />
