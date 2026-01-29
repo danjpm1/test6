@@ -128,6 +128,27 @@ export default function CommercialPage() {
         </div>
       </section>
 
+      {/* 21:9 Image + Text Section - Tesla Style */}
+      <section className="pt-8 pb-20 px-8 md:px-12 bg-white max-w-[1400px] mx-auto">
+        <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg mb-10">
+          <img
+            src="/commercial_wide1.png"
+            alt="Commercial construction project"
+            className="w-full h-full object-cover"
+          />
+        </div>
+        
+        <div className="max-w-[1200px]">
+          <h2 className="text-[clamp(28px,4vw,44px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
+            Building a Sustainable, More Resilient Grid
+          </h2>
+          <p className="text-[clamp(13px,1.3vw,15px)] font-normal leading-[1.75] text-[#5c5e62]">
+            The future of renewable energy relies on large-scale industrial energy storage. Megapack is a powerful, integrated battery system that provides clean, reliable, cost-effective energy storage to help stabilize the grid and prevent outages. Reducing our reliance on fossil fuels and strengthening our grid infrastructure will make sustainable energy more accessible and affordable for everyone on Earth.{' '}
+            <a href="#" className="text-[#171a20] underline">Learn more in our Master Plan Part 3</a>.
+          </p>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
