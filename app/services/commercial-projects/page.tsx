@@ -163,7 +163,7 @@ export default function CommercialPage() {
               playsInline
               className="w-full h-full object-cover"
             >
-              <source src="/newbuilds-video.mp4" type="video/mp4" />
+              <source src="/renovation-showcase.mp4" type="video/mp4" />
             </video>
             <button
               className="absolute bottom-6 left-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
