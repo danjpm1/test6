@@ -130,7 +130,7 @@ export default function CommercialPage() {
 
       {/* 21:9 Image + Text Section - Tesla Style */}
       <section className="pt-14 pb-20 bg-white">
-        <div className="max-w-[1820px] mx-auto px-6 md:px-10">
+        <div className="max-w-[2100px] mx-auto px-[92px] md:px-[120px]">
           <div className="relative w-full aspect-[3/1.045] overflow-hidden rounded-lg mb-11">
             <img
               src="/commercial_wide1.png"
@@ -154,7 +154,7 @@ export default function CommercialPage() {
 
       {/* Video Section */}
       <section className="pt-14 pb-20 bg-white">
-        <div className="max-w-[1820px] mx-auto px-6 md:px-10">
+        <div className="max-w-[2100px] mx-auto px-[92px] md:px-[120px]">
           <div className="relative w-full aspect-[3/1.045] overflow-hidden rounded-lg">
             <video
               autoPlay
