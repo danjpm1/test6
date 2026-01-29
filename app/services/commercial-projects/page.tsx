@@ -29,11 +29,15 @@ const STEPS = [
   },
 ]
 
-const ROTATION_INTERVAL = 4000
+const ROTATION_INTERVAL = 8000
 const SWIPE_THRESHOLD = 50
 
 export default function CommercialPage() {
   const [activeStep, setActiveStep] = useState(0)
+  const [isPaused, setIsPaused] = useState(false)
+  const [statsVisible, setStatsVisible] = useState(false)
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const statsRef = useRef<HTMLDivElement>(null)
   const touchStartX = useRef(0)
 
   useEffect(() => {
@@ -44,9 +48,30 @@ export default function CommercialPage() {
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % STEPS.length)
     }, ROTATION_INTERVAL)
-
     return () => clearInterval(interval)
   }, [])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) setStatsVisible(true)
+      },
+      { threshold: 0.3 }
+    )
+    if (statsRef.current) observer.observe(statsRef.current)
+    return () => observer.disconnect()
+  }, [])
+
+  const toggleVideo = () => {
+    if (videoRef.current) {
+      if (isPaused) {
+        videoRef.current.play()
+      } else {
+        videoRef.current.pause()
+      }
+      setIsPaused(!isPaused)
+    }
+  }
 
   const handleTouchStart = (e: React.TouchEvent) => {
     touchStartX.current = e.touches[0].clientX
@@ -55,64 +80,190 @@ export default function CommercialPage() {
   const handleTouchEnd = (e: React.TouchEvent) => {
     const deltaX = touchStartX.current - e.changedTouches[0].clientX
     if (Math.abs(deltaX) < SWIPE_THRESHOLD) return
-
     const direction = deltaX > 0 ? 1 : -1
     setActiveStep((prev) => (prev + direction + STEPS.length) % STEPS.length)
   }
 
+  const stats = [
+    { value: '100%', unit: '', label: 'Code Compliant' },
+    { value: 'Budget', unit: '', label: 'Driven' },
+    { value: '100%', unit: '', label: 'Customer Satisfaction' },
+  ]
+
   const currentStep = STEPS[activeStep]
 
   return (
-    <div className="w-full overflow-x-hidden bg-black">
+    <div className="w-full overflow-x-hidden bg-white">
       <Navbar />
 
-      <section className="relative w-full">
-        <div className="flex items-center justify-end px-4 sm:px-8 md:pr-24 lg:pr-32 pt-24 sm:pt-28 md:pt-20 lg:pt-24 pb-8 md:pb-16 lg:pb-20 bg-black">
-          <h1 className="text-[2.5rem] sm:text-[3.5rem] md:text-[5rem] lg:text-[6.5rem] font-bold text-white tracking-tight">
-            COMMERCIAL
+      {/* Hero Section - Tesla Style */}
+      <section className="relative h-screen w-full overflow-hidden">
+        <video
+          ref={videoRef}
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover"
+        >
+          <source src="/newbuilds-video.mp4" type="video/mp4" />
+        </video>
+
+        {/* Hero Content - Top Center */}
+        <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 text-center px-6">
+          <h1 className="text-[clamp(32px,5vw,56px)] font-medium tracking-tight text-[#171a20] mb-1 animate-fade-up">
+            Commercial
           </h1>
+          <p className="text-[clamp(12px,1.5vw,14px)] font-normal text-[#393c41] animate-fade-up-delay">
+            Large-Scale Construction Services
+          </p>
         </div>
 
-        <div className="relative w-full aspect-[16/9] md:aspect-[21/9] lg:aspect-[3/1]">
-          <Image
-            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
-            alt="Modern commercial space"
-            fill
-            className="object-cover object-center"
-            priority
-          />
+        {/* Pause Button */}
+        <button
+          onClick={toggleVideo}
+          className="absolute bottom-8 left-8 w-11 h-11 rounded-full bg-black/5 backdrop-blur-md flex items-center justify-center transition-all hover:bg-black/10 hover:scale-105 z-10"
+        >
+          {isPaused ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#171a20">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#171a20">
+              <rect x="6" y="4" width="4" height="16"/>
+              <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+          )}
+        </button>
+      </section>
+
+      {/* Stats Section */}
+      <section 
+        ref={statsRef}
+        className="flex items-center justify-center py-16 px-12 bg-white"
+      >
+        <div className="flex items-center justify-center gap-12 max-w-[1000px] w-full flex-col md:flex-row">
+          {stats.map((stat, index) => (
+            <div key={stat.label} className="contents">
+              <div 
+                className={`text-center transition-all duration-700 ${
+                  statsVisible 
+                    ? 'opacity-100 translate-y-0' 
+                    : 'opacity-0 translate-y-10'
+                }`}
+                style={{ transitionDelay: `${index * 100}ms` }}
+              >
+                <div>
+                  <span className="text-[clamp(28px,4vw,48px)] font-medium tracking-tight text-[#171a20]">
+                    {stat.value}
+                  </span>
+                  {stat.unit && (
+                    <span className="text-[clamp(16px,2vw,24px)] font-normal text-[#171a20] ml-1">
+                      {stat.unit}
+                    </span>
+                  )}
+                </div>
+                <div className="text-[clamp(11px,1.2vw,14px)] font-normal text-[#5c5e62] mt-2">
+                  {stat.label}
+                </div>
+              </div>
+              {index < stats.length - 1 && (
+                <div className="w-px h-16 bg-black/10 hidden md:block" />
+              )}
+              {index < stats.length - 1 && (
+                <div className="w-12 h-px bg-black/10 md:hidden" />
+              )}
+            </div>
+          ))}
         </div>
       </section>
 
-      <div className="bg-black h-16 md:h-32" />
-      <div className="w-full h-[2px] bg-[#D4A574]" />
+      {/* 21:9 Image + Text Section - Tesla Style */}
+      <section className="py-20 px-12 bg-white max-w-[1400px] mx-auto">
+        <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg mb-10">
+          <Image
+            src="/commercial_wide1.png"
+            alt="Commercial construction project"
+            fill
+            className="object-cover"
+          />
+        </div>
+        
+        <div className="max-w-[900px]">
+          <h2 className="text-[clamp(24px,4vw,40px)] font-medium tracking-tight text-[#171a20] mb-4 leading-tight">
+            Description:
+          </h2>
+          <p className="text-[clamp(14px,1.5vw,16px)] font-normal leading-relaxed text-[#5c5e62]">
+            Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that Your success is our success. In our building process we
+          </p>
+        </div>
+      </section>
 
-      <section className="bg-black text-white py-12 md:py-32">
-        <div className="container mx-auto px-5 md:px-6 max-w-7xl">
-          <div className="grid lg:grid-cols-2 gap-6 md:gap-16 mb-10 md:mb-20">
-            <div>
-              <h2 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-1 md:mb-4">
-                Spaces That Work.
-              </h2>
-              <p className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-light italic text-gray-400">
-                As Hard as You Do.
-              </p>
-            </div>
-
-            <div className="space-y-4 md:space-y-6 text-[15px] md:text-lg text-gray-300 mt-4 lg:mt-0">
-              <p className="leading-[1.7] md:leading-8">
-                Antova Builder delivers commercial construction that balances form with function — offices, retail
-                spaces, and facilities built to elevate your brand and operations.
-              </p>
-              <p className="leading-[1.7] md:leading-8">
-                Commercial projects demand precision timing and zero compromises. We understand that every day of
-                construction affects your bottom line, so we deliver exceptional quality without unnecessary delays.
-              </p>
-              <p className="font-semibold text-white pt-1 md:pt-2">Built for business. Designed to impress.</p>
-            </div>
-          </div>
+      {/* 16:9 Video Section - Tesla Style */}
+      <section className="py-20 px-12 bg-white max-w-[1400px] mx-auto">
+        <div className="relative w-full aspect-video overflow-hidden rounded-lg">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          >
+            <source src="/newbuilds-video.mp4" type="video/mp4" />
+          </video>
+          <button
+            className="absolute bottom-6 left-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
+          >
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
+              <rect x="6" y="4" width="4" height="16"/>
+              <rect x="14" y="4" width="4" height="16"/>
+            </svg>
+          </button>
         </div>
 
+        {/* Title + Description */}
+        <div className="mt-16 mb-10">
+          <h2 className="text-[clamp(32px,5vw,56px)] font-medium tracking-tight text-[#171a20] mb-4">
+            Build More
+          </h2>
+          <p className="text-[clamp(14px,1.5vw,18px)] font-normal text-[#5c5e62] max-w-4xl">
+            Our commercial construction services are fully customizable and can be deployed at scale, making them suitable for a variety of project sizes, locations and applications.
+          </p>
+        </div>
+
+        {/* 3 Column Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="bg-[#f4f4f4] rounded-lg p-8">
+            <h3 className="text-[clamp(20px,2.5vw,28px)] font-medium text-[#171a20] mb-4">
+              Retail & Hospitality
+            </h3>
+            <p className="text-[clamp(13px,1.3vw,15px)] text-[#5c5e62] leading-relaxed">
+              Creates inviting customer experiences with functional layouts, premium finishes, and designs that strengthen your brand identity and drive foot traffic.
+            </p>
+          </div>
+
+          <div className="bg-[#f4f4f4] rounded-lg p-8">
+            <h3 className="text-[clamp(20px,2.5vw,28px)] font-medium text-[#171a20] mb-4">
+              Office & Corporate
+            </h3>
+            <p className="text-[clamp(13px,1.3vw,15px)] text-[#5c5e62] leading-relaxed">
+              Delivers productive work environments with modern amenities, flexible spaces, and infrastructure that supports your team's growth and collaboration.
+            </p>
+          </div>
+
+          <div className="bg-[#f4f4f4] rounded-lg p-8">
+            <h3 className="text-[clamp(20px,2.5vw,28px)] font-medium text-[#171a20] mb-4">
+              Industrial & Warehouse
+            </h3>
+            <p className="text-[clamp(13px,1.3vw,15px)] text-[#5c5e62] leading-relaxed">
+              Builds efficient operational facilities with optimized logistics flow, durable construction, and scalable designs that maximize your operational capacity.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* 3-Step Carousel Section */}
+      <section className="bg-white py-20">
         {/* Mobile carousel */}
         <div className="md:hidden w-full px-5">
           <div
@@ -139,16 +290,16 @@ export default function CommercialPage() {
               const isActive = activeStep === i
               return (
                 <button key={i} onClick={() => setActiveStep(i)} className="flex flex-col cursor-pointer">
-                  <div className={`h-[2px] w-full transition-colors duration-300 ${isActive ? "bg-white" : "bg-gray-600"}`} />
+                  <div className={`h-[2px] w-full transition-colors duration-300 ${isActive ? "bg-[#171a20]" : "bg-gray-300"}`} />
                   <div className="flex items-center gap-2 mt-4">
                     <span
                       className={`flex items-center justify-center w-7 h-7 rounded-full text-xs font-bold transition-all duration-300 ${
-                        isActive ? "bg-[#c6912c] text-black" : "bg-transparent border border-gray-600 text-gray-600"
+                        isActive ? "bg-[#171a20] text-white" : "bg-transparent border border-gray-400 text-gray-400"
                       }`}
                     >
                       {step.number}
                     </span>
-                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isActive ? "text-white" : "text-gray-600"}`}>
+                    <h3 className={`text-sm font-semibold transition-colors duration-300 ${isActive ? "text-[#171a20]" : "text-gray-400"}`}>
                       {step.title}
                     </h3>
                   </div>
@@ -158,14 +309,14 @@ export default function CommercialPage() {
           </div>
 
           <div className="text-left pr-8 mt-2">
-            <p className="text-sm text-gray-300 leading-relaxed">{currentStep.description}</p>
+            <p className="text-sm text-[#5c5e62] leading-relaxed">{currentStep.description}</p>
           </div>
         </div>
 
         {/* Desktop carousel */}
         <div className="hidden md:flex w-full justify-center px-6">
           <div className="w-full max-w-[1400px]">
-            <div className="relative w-full aspect-[21/9]">
+            <div className="relative w-full aspect-[21/9] overflow-hidden rounded-lg">
               <Image
                 src={currentStep.image}
                 alt={currentStep.alt}
@@ -184,22 +335,22 @@ export default function CommercialPage() {
                     onClick={() => setActiveStep(i)}
                     className="relative text-center cursor-pointer transition-all hover:opacity-80"
                   >
-                    <div className={`absolute top-0 left-0 right-0 h-[2px] transition-colors ${isActive ? "bg-[#c6912c]" : "bg-gray-700"}`} />
+                    <div className={`absolute top-0 left-0 right-0 h-[2px] transition-colors ${isActive ? "bg-[#171a20]" : "bg-gray-300"}`} />
 
                     <div className="flex items-center justify-center gap-3 pt-6 pb-4">
                       <span
                         className={`flex items-center justify-center w-10 h-10 rounded-full text-lg font-bold transition-all duration-300 ${
-                          isActive ? "bg-[#c6912c] text-black" : "bg-transparent border-2 border-gray-600 text-gray-600"
+                          isActive ? "bg-[#171a20] text-white" : "bg-transparent border-2 border-gray-400 text-gray-400"
                         }`}
                       >
                         {step.number}
                       </span>
-                      <h3 className={`text-xl font-semibold transition-colors duration-300 ${isActive ? "text-white" : "text-gray-500"}`}>
+                      <h3 className={`text-xl font-semibold transition-colors duration-300 ${isActive ? "text-[#171a20]" : "text-gray-400"}`}>
                         {step.title}
                       </h3>
                     </div>
 
-                    <p className={`text-xs sm:text-sm leading-relaxed px-1 sm:px-0 transition-colors ${isActive ? "text-white" : "text-gray-500"}`}>
+                    <p className={`text-sm leading-relaxed px-1 transition-colors ${isActive ? "text-[#171a20]" : "text-gray-400"}`}>
                       {step.description}
                     </p>
                   </button>
