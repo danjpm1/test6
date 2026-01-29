@@ -56,7 +56,7 @@ export default function CommercialPage() {
           playsInline
           className="absolute inset-0 w-full h-full object-cover"
         >
-          <source src="/newbuilds-video.mp4" type="video/mp4" />
+          <source src="/renovation-showcase.mp4" type="video/mp4" />
         </video>
 
         {/* Hero Content - Top Center */}
