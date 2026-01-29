@@ -64,7 +64,7 @@ export default function CommercialPage() {
           <h1 className="text-[clamp(32px,5vw,56px)] font-semibold tracking-tight text-white mb-2">
             Commercial
           </h1>
-          <p className="text-[clamp(14px,1.8vw,18px)] font-normal text-white">
+          <p className="text-[15px] md:text-[clamp(14px,1.8vw,18px)] font-normal text-white/95">
             Over 50% of our projects are commercial
           </p>
         </div>
@@ -104,16 +104,16 @@ export default function CommercialPage() {
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div>
-                  <span className="text-[clamp(28px,4.5vw,52px)] font-bold tracking-tight text-[#171a20]">
+                  <span className="text-[36px] md:text-[clamp(36px,4.5vw,52px)] font-bold tracking-tight text-[#171a20]">
                     {stat.value}
                   </span>
                   {stat.unit && (
-                    <span className="text-[clamp(14px,2vw,24px)] font-semibold text-[#171a20] ml-1">
+                    <span className="text-[18px] md:text-[clamp(18px,2vw,24px)] font-semibold text-[#171a20] ml-1">
                       {stat.unit}
                     </span>
                   )}
                 </div>
-                <div className="text-[clamp(12px,1.4vw,16px)] font-medium text-[#5c5e62] mt-1">
+                <div className="text-[13px] md:text-[clamp(13px,1.4vw,16px)] font-medium text-[#393b3d] mt-1">
                   {stat.label}
                 </div>
               </div>
@@ -140,12 +140,12 @@ export default function CommercialPage() {
           </div>
         </div>
         
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-12">
           <div className="max-w-[1200px]">
-          <h2 className="text-[clamp(26px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.15]">
+          <h2 className="text-[28px] md:text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.2] md:leading-[1.15]">
             Your Success Is Our Success
           </h2>
-          <p className="text-[clamp(14px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62]">
+          <p className="text-[15px] md:text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.8] md:leading-[1.75] text-[#393b3d]">
             Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication to deliver spaces that elevate your business.
           </p>
           </div>
@@ -177,39 +177,39 @@ export default function CommercialPage() {
         </div>
 
         {/* Title + Description + 3 Columns */}
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12 mt-10 md:mt-16">
-          <h2 className="text-[clamp(26px,4.5vw,52px)] font-semibold tracking-tight text-[#171a20] mb-3 leading-[1.1]">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-12 mt-10 md:mt-16">
+          <h2 className="text-[26px] md:text-[clamp(32px,4.5vw,52px)] font-semibold tracking-tight text-[#171a20] mb-3 leading-[1.15] md:leading-[1.1]">
             Transforming Commercial Construction
           </h2>
-          <p className="text-[clamp(14px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62] max-w-[1100px] mb-10 md:mb-16">
+          <p className="text-[15px] md:text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.8] md:leading-[1.75] text-[#393b3d] max-w-[1100px] mb-10 md:mb-16">
             Antova Builders is changing the way commercial spaces are built. Operating across the Inland Northwest, we provide comprehensive construction support and can deliver projects of any scale.
           </p>
 
           {/* 3 Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
             <div>
-              <h3 className="text-[clamp(18px,2.5vw,28px)] font-semibold text-[#171a20] mb-3 md:mb-4">
+              <h3 className="text-[20px] md:text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-2 md:mb-4">
                 Easy to Plan
               </h3>
-              <p className="text-[clamp(13px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+              <p className="text-[15px] md:text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#393b3d]">
                 Each project begins with comprehensive planning and integrated design services, reducing coordination costs by 25%. Our flexible approach allows for faster approvals, and over 99% of projects are delivered on time. We also offer support during planning and throughout construction.
               </p>
             </div>
 
             <div>
-              <h3 className="text-[clamp(18px,2.5vw,28px)] font-semibold text-[#171a20] mb-3 md:mb-4">
+              <h3 className="text-[20px] md:text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-2 md:mb-4">
                 Safe to Build
               </h3>
-              <p className="text-[clamp(13px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+              <p className="text-[15px] md:text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#393b3d]">
                 Antova Builders maintains rigorous safety standards on every job site. We are designed as a single, vertically integrated system with protocols that reduce risk. We meet over 40 safety requirements, ensuring a safe environment for workers and local communities.
               </p>
             </div>
 
             <div>
-              <h3 className="text-[clamp(18px,2.5vw,28px)] font-semibold text-[#171a20] mb-3 md:mb-4">
+              <h3 className="text-[20px] md:text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-2 md:mb-4">
                 Built for Performance
               </h3>
-              <p className="text-[clamp(13px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+              <p className="text-[15px] md:text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#393b3d]">
                 Every project comes with our quality guarantee, ensuring operational excellence throughout the lifetime of your building. Each construction receives dedicated support and quality checks, with a track record of over 99% client satisfaction, even in challenging conditions.
               </p>
             </div>
@@ -219,19 +219,19 @@ export default function CommercialPage() {
 
       {/* Call to Action Section */}
       <section className="py-16 md:py-24 bg-[#f5f5f5]">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+        <div className="max-w-[1400px] mx-auto px-5 md:px-12">
           <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
             {/* Left Side - Text & Button */}
             <div className="flex-1 text-center md:text-left max-w-[600px]">
-              <h2 className="text-[clamp(28px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.1]">
+              <h2 className="text-[28px] md:text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.15] md:leading-[1.1]">
                 Ready to Build?
               </h2>
-              <p className="text-[clamp(14px,1.5vw,18px)] font-normal leading-[1.7] text-[#5c5e62] mb-6 md:mb-8">
+              <p className="text-[15px] md:text-[clamp(15px,1.5vw,18px)] font-normal leading-[1.7] text-[#393b3d] mb-6 md:mb-8">
                 Let's discuss your commercial project and bring your vision to life.
               </p>
               <a 
                 href="/contact" 
-                className="inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-4 bg-[#171a20] text-white text-[14px] md:text-[15px] font-medium rounded hover:bg-[#333] transition-all hover:scale-[1.02]"
+                className="inline-flex items-center justify-center px-8 md:px-10 py-3.5 md:py-4 bg-[#171a20] text-white text-[15px] md:text-[15px] font-medium rounded hover:bg-[#333] transition-all hover:scale-[1.02]"
               >
                 Schedule Consultation
               </a>
