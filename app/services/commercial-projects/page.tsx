@@ -90,7 +90,7 @@ export default function CommercialPage() {
       {/* Stats Section */}
       <section 
         ref={statsRef}
-        className="flex items-center justify-center pt-24 pb-14 px-12 bg-white"
+        className="flex items-center justify-center pt-[115px] pb-[67px] px-12 bg-white"
       >
         <div className="flex items-center justify-center gap-12 max-w-[1000px] w-full flex-col md:flex-row">
           {stats.map((stat, index) => (
@@ -129,7 +129,7 @@ export default function CommercialPage() {
       </section>
 
       {/* 21:9 Image + Text Section - Tesla Style */}
-      <section className="pt-10 pb-20 bg-white">
+      <section className="pt-12 pb-20 bg-white">
         <div className="max-w-[2016px] mx-auto px-4 md:px-6">
           <div className="relative w-full aspect-[3/1] overflow-hidden rounded-lg mb-10">
             <img
