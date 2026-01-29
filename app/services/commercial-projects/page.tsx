@@ -1,13 +1,24 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
+import Image from "next/image"
+import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
+// Move static data outside component to prevent re-creation
+const stats = [
+  { value: '100%', unit: '', label: 'Code Compliant' },
+  { value: 'Budget', unit: '', label: 'Driven' },
+  { value: '100%', unit: '', label: 'Customer Satisfaction' },
+]
+
 export default function CommercialPage() {
   const [isPaused, setIsPaused] = useState(false)
+  const [isSecondVideoPaused, setIsSecondVideoPaused] = useState(false)
   const [statsVisible, setStatsVisible] = useState(false)
   const videoRef = useRef<HTMLVideoElement>(null)
+  const secondVideoRef = useRef<HTMLVideoElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -15,17 +26,43 @@ export default function CommercialPage() {
   }, [])
 
   useEffect(() => {
+    const currentRef = statsRef.current
     const observer = new IntersectionObserver(
       ([entry]) => {
-        if (entry.isIntersecting) setStatsVisible(true)
+        if (entry.isIntersecting) {
+          setStatsVisible(true)
+          observer.disconnect()
+        }
       },
       { threshold: 0.3 }
     )
-    if (statsRef.current) observer.observe(statsRef.current)
+    if (currentRef) observer.observe(currentRef)
+    return () => {
+      if (currentRef) observer.unobserve(currentRef)
+    }
+  }, [])
+
+  // Lazy load second video when it comes into view
+  useEffect(() => {
+    const video = secondVideoRef.current
+    if (!video) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.preload = 'auto'
+          video.load()
+          video.play().catch(() => {})
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.1, rootMargin: '200px' }
+    )
+    observer.observe(video)
     return () => observer.disconnect()
   }, [])
 
-  const toggleVideo = () => {
+  const toggleVideo = useCallback(() => {
     if (videoRef.current) {
       if (isPaused) {
         videoRef.current.play()
@@ -34,13 +71,18 @@ export default function CommercialPage() {
       }
       setIsPaused(!isPaused)
     }
-  }
+  }, [isPaused])
 
-  const stats = [
-    { value: '100%', unit: '', label: 'Code Compliant' },
-    { value: 'Budget', unit: '', label: 'Driven' },
-    { value: '100%', unit: '', label: 'Customer Satisfaction' },
-  ]
+  const toggleSecondVideo = useCallback(() => {
+    if (secondVideoRef.current) {
+      if (isSecondVideoPaused) {
+        secondVideoRef.current.play()
+      } else {
+        secondVideoRef.current.pause()
+      }
+      setIsSecondVideoPaused(!isSecondVideoPaused)
+    }
+  }, [isSecondVideoPaused])
 
   return (
     <div className="w-full overflow-x-hidden bg-white">
@@ -54,6 +96,7 @@ export default function CommercialPage() {
           muted
           loop
           playsInline
+          preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
         >
           <source src="/renovation-showcase.mp4" type="video/mp4" />
@@ -72,14 +115,15 @@ export default function CommercialPage() {
         {/* Pause Button */}
         <button
           onClick={toggleVideo}
+          aria-label={isPaused ? "Play video" : "Pause video"}
           className="absolute bottom-8 left-8 w-11 h-11 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105 z-10"
         >
           {isPaused ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" aria-hidden="true">
               <polygon points="5 3 19 12 5 21 5 3"/>
             </svg>
           ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="white">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="white" aria-hidden="true">
               <rect x="6" y="4" width="4" height="16"/>
               <rect x="14" y="4" width="4" height="16"/>
             </svg>
@@ -96,7 +140,7 @@ export default function CommercialPage() {
           {stats.map((stat, index) => (
             <div key={stat.label} className="contents">
               <div 
-                className={`text-center transition-all duration-700 ${
+                className={`text-center transition-all duration-700 will-change-transform ${
                   statsVisible 
                     ? 'opacity-100 translate-y-0' 
                     : 'opacity-0 translate-y-10'
@@ -132,10 +176,14 @@ export default function CommercialPage() {
       <section className="pt-8 md:pt-[67px] pb-16 md:pb-[150px] bg-white">
         <div className="max-w-[1915px] mx-auto px-0 md:px-6">
           <div className="relative w-full aspect-[16/10] md:aspect-[3/1.045] overflow-hidden md:rounded-lg mb-8 md:mb-11">
-            <img
+            <Image
               src="/commercial_wide1.png"
               alt="Commercial construction project"
-              className="w-full h-full object-cover"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              priority={false}
+              quality={80}
             />
           </div>
         </div>
@@ -157,21 +205,30 @@ export default function CommercialPage() {
         <div className="max-w-[1915px] mx-auto px-0 md:px-6">
           <div className="relative w-full aspect-[16/10] md:aspect-[3/1.045] overflow-hidden md:rounded-lg">
             <video
-              autoPlay
+              ref={secondVideoRef}
               muted
               loop
               playsInline
+              preload="none"
               className="w-full h-full object-cover"
             >
               <source src="/renovation-showcase.mp4" type="video/mp4" />
             </video>
             <button
+              onClick={toggleSecondVideo}
+              aria-label={isSecondVideoPaused ? "Play video" : "Pause video"}
               className="absolute bottom-4 left-4 md:bottom-6 md:left-6 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
             >
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
-                <rect x="6" y="4" width="4" height="16"/>
-                <rect x="14" y="4" width="4" height="16"/>
-              </svg>
+              {isSecondVideoPaused ? (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                  <polygon points="5 3 19 12 5 21 5 3"/>
+                </svg>
+              ) : (
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="white" aria-hidden="true">
+                  <rect x="6" y="4" width="4" height="16"/>
+                  <rect x="14" y="4" width="4" height="16"/>
+                </svg>
+              )}
             </button>
           </div>
         </div>
@@ -229,20 +286,23 @@ export default function CommercialPage() {
               <p className="text-[15px] md:text-[clamp(15px,1.5vw,18px)] font-normal leading-[1.7] text-[#393b3d] mb-6 md:mb-8">
                 Let's discuss your commercial project and bring your vision to life.
               </p>
-              <a 
+              <Link 
                 href="/contact" 
                 className="inline-flex items-center justify-center px-8 md:px-10 py-3.5 md:py-4 bg-[#171a20] text-white text-[15px] md:text-[15px] font-medium rounded hover:bg-[#333] transition-all hover:scale-[1.02]"
               >
                 Schedule Consultation
-              </a>
+              </Link>
             </div>
 
             {/* Right Side - Logo */}
             <div className="flex-shrink-0 flex justify-center md:justify-end mt-4 md:mt-0">
-              <img
+              <Image
                 src="/antova-logo-gold.svg"
                 alt="Antova Builders"
+                width={280}
+                height={280}
                 className="w-[140px] md:w-[280px] h-auto object-contain opacity-90"
+                loading="lazy"
               />
             </div>
           </div>
