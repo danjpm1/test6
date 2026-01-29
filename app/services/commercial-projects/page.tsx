@@ -90,9 +90,9 @@ export default function CommercialPage() {
       {/* Stats Section */}
       <section 
         ref={statsRef}
-        className="flex items-center justify-center pt-[120px] pb-[60px] px-12 bg-white"
+        className="flex items-center justify-center pt-16 md:pt-[120px] pb-10 md:pb-[60px] px-6 md:px-12 bg-white"
       >
-        <div className="flex items-center justify-center gap-12 max-w-[1000px] w-full flex-col md:flex-row">
+        <div className="flex items-center justify-center gap-6 md:gap-12 max-w-[1000px] w-full flex-col md:flex-row">
           {stats.map((stat, index) => (
             <div key={stat.label} className="contents">
               <div 
@@ -104,16 +104,16 @@ export default function CommercialPage() {
                 style={{ transitionDelay: `${index * 100}ms` }}
               >
                 <div>
-                  <span className="text-[clamp(32px,4.5vw,52px)] font-bold tracking-tight text-[#171a20]">
+                  <span className="text-[clamp(28px,4.5vw,52px)] font-bold tracking-tight text-[#171a20]">
                     {stat.value}
                   </span>
                   {stat.unit && (
-                    <span className="text-[clamp(16px,2vw,24px)] font-semibold text-[#171a20] ml-1">
+                    <span className="text-[clamp(14px,2vw,24px)] font-semibold text-[#171a20] ml-1">
                       {stat.unit}
                     </span>
                   )}
                 </div>
-                <div className="text-[clamp(13px,1.4vw,16px)] font-medium text-[#5c5e62] mt-1">
+                <div className="text-[clamp(12px,1.4vw,16px)] font-medium text-[#5c5e62] mt-1">
                   {stat.label}
                 </div>
               </div>
@@ -121,7 +121,7 @@ export default function CommercialPage() {
                 <div className="w-px h-14 bg-black/10 hidden md:block" />
               )}
               {index < stats.length - 1 && (
-                <div className="w-12 h-px bg-black/10 md:hidden" />
+                <div className="w-10 h-px bg-black/10 md:hidden" />
               )}
             </div>
           ))}
@@ -129,9 +129,9 @@ export default function CommercialPage() {
       </section>
 
       {/* 21:9 Image + Text Section - Tesla Style */}
-      <section className="pt-[67px] pb-[150px] bg-white">
-        <div className="max-w-[1915px] mx-auto px-4 md:px-6">
-          <div className="relative w-full aspect-[3/1.045] overflow-hidden rounded-lg mb-11">
+      <section className="pt-8 md:pt-[67px] pb-16 md:pb-[150px] bg-white">
+        <div className="max-w-[1915px] mx-auto px-0 md:px-6">
+          <div className="relative w-full aspect-[16/10] md:aspect-[3/1.045] overflow-hidden md:rounded-lg mb-8 md:mb-11">
             <img
               src="/commercial_wide1.png"
               alt="Commercial construction project"
@@ -140,12 +140,12 @@ export default function CommercialPage() {
           </div>
         </div>
         
-        <div className="max-w-[1400px] mx-auto px-8 md:px-12">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
           <div className="max-w-[1200px]">
-          <h2 className="text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
+          <h2 className="text-[clamp(26px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.15]">
             Your Success Is Our Success
           </h2>
-          <p className="text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62]">
+          <p className="text-[clamp(14px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62]">
             Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication to deliver spaces that elevate your business.
           </p>
           </div>
@@ -153,9 +153,9 @@ export default function CommercialPage() {
       </section>
 
       {/* Video Section */}
-      <section className="pt-[106px] pb-20 bg-white">
-        <div className="max-w-[1915px] mx-auto px-4 md:px-6">
-          <div className="relative w-full aspect-[3/1.045] overflow-hidden rounded-lg">
+      <section className="pt-12 md:pt-[106px] pb-12 md:pb-20 bg-white">
+        <div className="max-w-[1915px] mx-auto px-0 md:px-6">
+          <div className="relative w-full aspect-[16/10] md:aspect-[3/1.045] overflow-hidden md:rounded-lg">
             <video
               autoPlay
               muted
@@ -166,7 +166,7 @@ export default function CommercialPage() {
               <source src="/renovation-showcase.mp4" type="video/mp4" />
             </video>
             <button
-              className="absolute bottom-6 left-6 w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
+              className="absolute bottom-4 left-4 md:bottom-6 md:left-6 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="white">
                 <rect x="6" y="4" width="4" height="16"/>
@@ -177,39 +177,39 @@ export default function CommercialPage() {
         </div>
 
         {/* Title + Description + 3 Columns */}
-        <div className="max-w-[1400px] mx-auto px-8 md:px-12 mt-16">
-          <h2 className="text-[clamp(32px,4.5vw,52px)] font-semibold tracking-tight text-[#171a20] mb-3 leading-[1.1]">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12 mt-10 md:mt-16">
+          <h2 className="text-[clamp(26px,4.5vw,52px)] font-semibold tracking-tight text-[#171a20] mb-3 leading-[1.1]">
             Transforming Commercial Construction
           </h2>
-          <p className="text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62] max-w-[1100px] mb-16">
+          <p className="text-[clamp(14px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62] max-w-[1100px] mb-10 md:mb-16">
             Antova Builders is changing the way commercial spaces are built. Operating across the Inland Northwest, we provide comprehensive construction support and can deliver projects of any scale.
           </p>
 
           {/* 3 Columns */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-16">
             <div>
-              <h3 className="text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-4">
+              <h3 className="text-[clamp(18px,2.5vw,28px)] font-semibold text-[#171a20] mb-3 md:mb-4">
                 Easy to Plan
               </h3>
-              <p className="text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+              <p className="text-[clamp(13px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
                 Each project begins with comprehensive planning and integrated design services, reducing coordination costs by 25%. Our flexible approach allows for faster approvals, and over 99% of projects are delivered on time. We also offer support during planning and throughout construction.
               </p>
             </div>
 
             <div>
-              <h3 className="text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-4">
+              <h3 className="text-[clamp(18px,2.5vw,28px)] font-semibold text-[#171a20] mb-3 md:mb-4">
                 Safe to Build
               </h3>
-              <p className="text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+              <p className="text-[clamp(13px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
                 Antova Builders maintains rigorous safety standards on every job site. We are designed as a single, vertically integrated system with protocols that reduce risk. We meet over 40 safety requirements, ensuring a safe environment for workers and local communities.
               </p>
             </div>
 
             <div>
-              <h3 className="text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-4">
+              <h3 className="text-[clamp(18px,2.5vw,28px)] font-semibold text-[#171a20] mb-3 md:mb-4">
                 Built for Performance
               </h3>
-              <p className="text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+              <p className="text-[clamp(13px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
                 Every project comes with our quality guarantee, ensuring operational excellence throughout the lifetime of your building. Each construction receives dedicated support and quality checks, with a track record of over 99% client satisfaction, even in challenging conditions.
               </p>
             </div>
@@ -218,31 +218,31 @@ export default function CommercialPage() {
       </section>
 
       {/* Call to Action Section */}
-      <section className="py-20 md:py-24 bg-[#f5f5f5]">
-        <div className="max-w-[1400px] mx-auto px-8 md:px-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-10 md:gap-16">
+      <section className="py-16 md:py-24 bg-[#f5f5f5]">
+        <div className="max-w-[1400px] mx-auto px-6 md:px-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
             {/* Left Side - Text & Button */}
             <div className="flex-1 text-center md:text-left max-w-[600px]">
-              <h2 className="text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.1]">
+              <h2 className="text-[clamp(28px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.1]">
                 Ready to Build?
               </h2>
-              <p className="text-[clamp(15px,1.5vw,18px)] font-normal leading-[1.7] text-[#5c5e62] mb-8">
+              <p className="text-[clamp(14px,1.5vw,18px)] font-normal leading-[1.7] text-[#5c5e62] mb-6 md:mb-8">
                 Let's discuss your commercial project and bring your vision to life.
               </p>
               <a 
                 href="/contact" 
-                className="inline-flex items-center justify-center px-10 py-4 bg-[#171a20] text-white text-[15px] font-medium rounded hover:bg-[#333] transition-all hover:scale-[1.02]"
+                className="inline-flex items-center justify-center px-8 md:px-10 py-3 md:py-4 bg-[#171a20] text-white text-[14px] md:text-[15px] font-medium rounded hover:bg-[#333] transition-all hover:scale-[1.02]"
               >
                 Schedule Consultation
               </a>
             </div>
 
             {/* Right Side - Logo */}
-            <div className="flex-shrink-0 flex justify-center md:justify-end">
+            <div className="flex-shrink-0 flex justify-center md:justify-end mt-4 md:mt-0">
               <img
                 src="/antova-logo-gold.svg"
                 alt="Antova Builders"
-                className="w-[200px] md:w-[280px] h-auto object-contain opacity-90"
+                className="w-[140px] md:w-[280px] h-auto object-contain opacity-90"
               />
             </div>
           </div>
