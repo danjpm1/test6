@@ -217,6 +217,38 @@ export default function CommercialPage() {
         </div>
       </section>
 
+      {/* Call to Action Section */}
+      <section className="py-24 md:py-32 bg-[#f5f5f5]">
+        <div className="max-w-[1400px] mx-auto px-8 md:px-12">
+          <div className="flex flex-col md:flex-row items-center justify-between gap-12 md:gap-20">
+            {/* Left Side - Text & Button */}
+            <div className="flex-1 text-center md:text-left">
+              <h2 className="text-[clamp(28px,4vw,44px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
+                Ready to Build?
+              </h2>
+              <p className="text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62] mb-8 max-w-[500px]">
+                Let's discuss your commercial project and bring your vision to life.
+              </p>
+              <a 
+                href="/contact" 
+                className="inline-flex items-center justify-center px-8 py-4 bg-[#171a20] text-white text-[16px] font-medium rounded-full hover:bg-[#333] transition-all hover:scale-105"
+              >
+                Schedule Consultation
+              </a>
+            </div>
+
+            {/* Right Side - Logo */}
+            <div className="flex-1 flex justify-center md:justify-end">
+              <img
+                src="/antova-consultation.png"
+                alt="Antova Builders"
+                className="w-full max-w-[400px] md:max-w-[500px] h-auto object-contain"
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
       <Footer />
     </div>
   )
