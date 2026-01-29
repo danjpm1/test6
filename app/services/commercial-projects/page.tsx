@@ -90,9 +90,9 @@ export default function CommercialPage() {
       {/* Stats Section */}
       <section 
         ref={statsRef}
-        className="flex items-center justify-center pt-[115px] pb-[67px] px-12 bg-white"
+        className="flex items-center justify-center pt-[132px] pb-[77px] px-12 bg-white"
       >
-        <div className="flex items-center justify-center gap-20 max-w-[1200px] w-full flex-col md:flex-row">
+        <div className="flex items-center justify-center gap-[92px] max-w-[1200px] w-full flex-col md:flex-row">
           {stats.map((stat, index) => (
             <div key={stat.label} className="contents">
               <div 
@@ -113,15 +113,15 @@ export default function CommercialPage() {
                     </span>
                   )}
                 </div>
-                <div className="text-[clamp(12px,1.4vw,16px)] font-normal text-[#5c5e62] mt-3">
+                <div className="text-[clamp(12px,1.4vw,16px)] font-normal text-[#5c5e62] mt-4">
                   {stat.label}
                 </div>
               </div>
               {index < stats.length - 1 && (
-                <div className="w-px h-20 bg-black/15 hidden md:block" />
+                <div className="w-px h-[92px] bg-black/15 hidden md:block" />
               )}
               {index < stats.length - 1 && (
-                <div className="w-16 h-px bg-black/15 md:hidden" />
+                <div className="w-[74px] h-px bg-black/15 md:hidden" />
               )}
             </div>
           ))}
@@ -129,7 +129,7 @@ export default function CommercialPage() {
       </section>
 
       {/* 21:9 Image + Text Section - Tesla Style */}
-      <section className="pt-12 pb-20 bg-white">
+      <section className="pt-14 pb-20 bg-white">
         <div className="max-w-[2016px] mx-auto px-4 md:px-6">
           <div className="relative w-full aspect-[3/1] overflow-hidden rounded-lg mb-10">
             <img
