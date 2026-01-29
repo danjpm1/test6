@@ -113,7 +113,7 @@ export default function CommercialPage() {
                     </span>
                   )}
                 </div>
-                <div className="text-[clamp(11px,1.3vw,14px)] font-normal text-[#5c5e62] mt-1">
+                <div className="text-[clamp(13px,1.4vw,16px)] font-medium text-[#5c5e62] mt-1">
                   {stat.label}
                 </div>
               </div>
