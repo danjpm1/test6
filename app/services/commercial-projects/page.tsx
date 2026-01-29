@@ -60,7 +60,7 @@ export default function CommercialPage() {
         </video>
 
         {/* Hero Content - Top Center */}
-        <div className="absolute top-24 left-1/2 -translate-x-1/2 z-10 text-center px-6">
+        <div className="absolute top-32 left-1/2 -translate-x-1/2 z-10 text-center px-6">
           <h1 className="text-[clamp(32px,5vw,56px)] font-semibold tracking-tight text-white mb-2">
             Commercial
           </h1>
