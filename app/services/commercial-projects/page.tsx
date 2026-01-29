@@ -142,10 +142,10 @@ export default function CommercialPage() {
         
         <div className="max-w-[1400px] mx-auto px-8 md:px-12">
           <div className="max-w-[1200px]">
-          <h2 className="text-[clamp(28px,4vw,44px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
+          <h2 className="text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
             Your Success Is Our Success
           </h2>
-          <p className="text-[clamp(13px,1.3vw,15px)] font-normal leading-[1.75] text-[#5c5e62]">
+          <p className="text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62]">
             Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication to deliver spaces that elevate your business.
           </p>
           </div>
