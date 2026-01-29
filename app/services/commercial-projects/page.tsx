@@ -175,6 +175,46 @@ export default function CommercialPage() {
             </button>
           </div>
         </div>
+
+        {/* Title + Description + 3 Columns */}
+        <div className="max-w-[1400px] mx-auto px-8 md:px-12 mt-16">
+          <h2 className="text-[clamp(32px,4.5vw,52px)] font-semibold tracking-tight text-[#171a20] mb-3 leading-[1.1]">
+            Transforming Commercial Construction
+          </h2>
+          <p className="text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.75] text-[#5c5e62] max-w-[1100px] mb-16">
+            Antova Builders is changing the way commercial spaces are built. Operating across the Inland Northwest, we provide comprehensive construction support and can deliver projects of any scale.
+          </p>
+
+          {/* 3 Columns */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16">
+            <div>
+              <h3 className="text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-4">
+                Easy to Plan
+              </h3>
+              <p className="text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+                Each project begins with comprehensive planning and integrated design services, reducing coordination costs by 25%. Our flexible approach allows for faster approvals, and over 99% of projects are delivered on time. We also offer support during planning and throughout construction.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-4">
+                Safe to Build
+              </h3>
+              <p className="text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+                Antova Builders maintains rigorous safety standards on every job site. We are designed as a single, vertically integrated system with protocols that reduce risk. We meet over 40 safety requirements, ensuring a safe environment for workers and local communities.
+              </p>
+            </div>
+
+            <div>
+              <h3 className="text-[clamp(20px,2.5vw,28px)] font-semibold text-[#171a20] mb-4">
+                Built for Performance
+              </h3>
+              <p className="text-[clamp(14px,1.4vw,16px)] font-normal leading-[1.8] text-[#5c5e62]">
+                Every project comes with our quality guarantee, ensuring operational excellence throughout the lifetime of your building. Each construction receives dedicated support and quality checks, with a track record of over 99% client satisfaction, even in challenging conditions.
+              </p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <Footer />
