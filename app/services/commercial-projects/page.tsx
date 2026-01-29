@@ -143,11 +143,10 @@ export default function CommercialPage() {
         <div className="max-w-[1400px] mx-auto px-8 md:px-12">
           <div className="max-w-[1200px]">
           <h2 className="text-[clamp(28px,4vw,44px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
-            Building a Sustainable, More Resilient Grid
+            Your Success Is Our Success
           </h2>
           <p className="text-[clamp(13px,1.3vw,15px)] font-normal leading-[1.75] text-[#5c5e62]">
-            The future of renewable energy relies on large-scale industrial energy storage. Megapack is a powerful, integrated battery system that provides clean, reliable, cost-effective energy storage to help stabilize the grid and prevent outages. Reducing our reliance on fossil fuels and strengthening our grid infrastructure will make sustainable energy more accessible and affordable for everyone on Earth.{' '}
-            <a href="#" className="text-[#171a20] underline">Learn more in our Master Plan Part 3</a>.
+            Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication to deliver spaces that elevate your business.
           </p>
           </div>
         </div>
