@@ -153,16 +153,8 @@ export default function SignatureCustomDesignPage() {
   }, [])
 
   return (
-    <div className="w-full bg-white">
+    <div className="w-full bg-white font-sans">
       <style jsx global>{`
-        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,300;1,400;1,600;1,700&display=swap');
-
-        .script-title {
-          font-family: 'Cormorant Garamond', Georgia, serif;
-          font-style: italic;
-          font-weight: 700;
-        }
-
         .scrollbar-hide::-webkit-scrollbar {
           display: none;
         }
@@ -179,11 +171,20 @@ export default function SignatureCustomDesignPage() {
         
         {/* White background area with title */}
         <div className="bg-white">
-          {/* Script Title */}
-          <div className="pt-6 pb-8 md:pt-10 md:pb-12 lg:pt-12 lg:pb-14 flex justify-center">
-            <h1 className="script-title text-[2.25rem] sm:text-[3rem] md:text-[3.75rem] lg:text-[4.5rem] text-black">
+          {/* Title - Luxury styled */}
+          <div className="pt-10 pb-10 md:pt-14 md:pb-14 lg:pt-16 lg:pb-16 flex flex-col items-center">
+            {/* Small overline */}
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.35em] mb-3 md:mb-4">
+              Antova Builders
+            </p>
+            
+            {/* Main title */}
+            <h1 className="font-bebas text-[2.25rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] text-black uppercase tracking-[0.04em] text-center">
               Signature Custom Design
             </h1>
+            
+            {/* Gold accent line */}
+            <div className="mt-5 md:mt-6 lg:mt-7 w-[60px] md:w-[80px] h-[2px] bg-[#c6912c]" />
           </div>
         </div>
 
@@ -220,14 +221,22 @@ export default function SignatureCustomDesignPage() {
             <div className="w-[92%] sm:w-[88%] md:w-[82%] lg:w-[78%] xl:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
               
               {/* Text block */}
-              <div className="w-full md:w-[45%] lg:w-[42%] py-6 sm:py-8 md:py-10 lg:py-12 px-2 md:pl-[2%] lg:pl-[3%] xl:pl-[4%]">
-                <h2 className="text-[1.8rem] sm:text-[2.2rem] md:text-[2rem] lg:text-[2.8rem] xl:text-[3.5rem] font-normal text-white leading-[1.1] mb-6 sm:mb-8 md:mb-10 italic">
+              <div className="w-full md:w-[48%] lg:w-[45%] py-6 sm:py-8 md:py-10 lg:py-12 px-2 md:pl-[2%] lg:pl-[3%] xl:pl-[4%] flex-shrink-0">
+                <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[1.85rem] lg:text-[2.25rem] xl:text-[2.75rem] text-white leading-[1.1] mb-5 sm:mb-6 md:mb-8 uppercase">
                   More vision. For<br />
                   extraordinary<br />
                   homes.
                 </h2>
-                <p className="text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2] max-w-[520px]">
-                  We've built our reputation on transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits—combining bold creativity, extraordinary craftsmanship, and fearless execution to make ambitious dreams happen.
+                <p className="font-sans text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2]">
+                  The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
+                  <br /><br />
+                  We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
+                  <br /><br />
+                  If your dream demands creativity that breaks the mold, extraordinary craftsmanship, and fearless execution, we're the team that makes it happen.
+                  <br /><br />
+                  Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
+                  <br /><br />
+                  <span className="italic">"Imagination Isn't Limited. Neither Are We."</span>
                 </p>
               </div>
 
@@ -267,7 +276,7 @@ export default function SignatureCustomDesignPage() {
 
               {/* ============ DESKTOP ONLY: Second Image ============ */}
               <div 
-                className="hidden md:block md:w-[50%] lg:w-[52%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
+                className="hidden md:block md:w-[48%] lg:w-[50%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
                 style={{ 
                   transform: `translateY(${parallaxOffset}px)`,
                   transition: 'transform 0.05s linear'
@@ -333,8 +342,8 @@ export default function SignatureCustomDesignPage() {
       {/* ============ Highlights Section ============ */}
       <section className="bg-[#f9f8f6] pt-20 md:pt-28 lg:pt-36 pb-12 md:pb-16 lg:pb-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
-          {/* Title centered */}
-          <h2 className="text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] font-bold text-black text-center tracking-tight">
+          {/* Title centered - Bebas Neue */}
+          <h2 className="font-bebas text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-black text-center tracking-wide uppercase">
             Antova Builders highlights.
           </h2>
         </div>
@@ -357,10 +366,10 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
+              <h3 className="font-bebas text-[1.5rem] md:text-[1.75rem] lg:text-[2rem] text-black mt-5 md:mt-7 uppercase tracking-wide">
                 Premium Materials
               </h3>
-              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="font-sans text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 We source only the finest materials from trusted suppliers worldwide. Every beam, stone, and fixture meets our exacting standards for quality and durability.
               </p>
             </div>
@@ -375,10 +384,10 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
+              <h3 className="font-bebas text-[1.5rem] md:text-[1.75rem] lg:text-[2rem] text-black mt-5 md:mt-7 uppercase tracking-wide">
                 Expert Craftsmanship
               </h3>
-              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="font-sans text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 Our master craftsmen bring decades of experience to every project. Their attention to detail transforms architectural visions into flawless reality.
               </p>
             </div>
@@ -393,10 +402,10 @@ export default function SignatureCustomDesignPage() {
                   className="object-cover"
                 />
               </div>
-              <h3 className="text-[1.25rem] md:text-[1.5rem] lg:text-[1.75rem] font-bold text-black mt-5 md:mt-7">
+              <h3 className="font-bebas text-[1.5rem] md:text-[1.75rem] lg:text-[2rem] text-black mt-5 md:mt-7 uppercase tracking-wide">
                 Smart Home Integration
               </h3>
-              <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+              <p className="font-sans text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
                 Seamlessly integrated technology throughout your home. Control lighting, climate, security, and entertainment from anywhere with intuitive systems.
               </p>
             </div>
@@ -448,20 +457,17 @@ export default function SignatureCustomDesignPage() {
       {/* Begin Your Vision CTA Section */}
       <section className="bg-[#f9f8f6] py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36">
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
-          <p className="text-[12px] sm:text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">
-            Your Legacy Awaits
+          <p className="font-sans text-[12px] sm:text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">
+            Signature Custom Design
           </p>
-          <h2 className="text-[1.5rem] sm:text-[1.75rem] md:text-[2rem] lg:text-[2.25rem] font-bold text-black leading-tight mb-6 sm:mb-8">
-            Where Vision Meets Mastery.
+          <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] text-black leading-tight mb-8 sm:mb-10 md:mb-12 uppercase tracking-wide">
+            Imagination Isn't Limited. Neither Are We.
           </h2>
-          <p className="text-[14px] sm:text-[15px] md:text-base text-gray-600 leading-relaxed max-w-2xl mx-auto mb-8 sm:mb-10 md:mb-12">
-            The finest homes aren't built—they're crafted. For those who refuse to compromise, who see their home as a reflection of their highest aspirations, we invite you to experience what becomes possible when unparalleled craftsmanship meets boundless imagination.
-          </p>
           <a 
             href="/contact"
-            className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-[#c6912c] transition-colors duration-300"
+            className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-[#c6912c] transition-colors duration-300 font-sans"
           >
-            Schedule Your Consultation
+            Begin Your Vision
             <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
