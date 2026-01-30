@@ -221,13 +221,13 @@ export default function SignatureCustomDesignPage() {
             <div className="w-[92%] sm:w-[88%] md:w-[82%] lg:w-[78%] xl:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
               
               {/* Text block */}
-              <div className="w-full md:w-[48%] lg:w-[45%] py-6 sm:py-8 md:py-10 lg:py-12 px-2 md:pl-[2%] lg:pl-[3%] xl:pl-[4%] flex-shrink-0">
-                <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[1.85rem] lg:text-[2.25rem] xl:text-[2.75rem] text-white leading-[1.1] mb-5 sm:mb-6 md:mb-8 uppercase">
+              <div className="w-full md:w-[50%] lg:w-[48%] py-6 sm:py-8 md:py-8 lg:py-10 px-2 md:pl-[2%] lg:pl-[3%] xl:pl-[4%] flex-shrink-0">
+                <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[1.65rem] lg:text-[2rem] xl:text-[2.25rem] text-white leading-[1.1] mb-4 sm:mb-5 md:mb-6 uppercase">
                   More vision. For<br />
                   extraordinary<br />
                   homes.
                 </h2>
-                <p className="font-sans text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2]">
+                <p className="font-sans text-[14px] sm:text-[15px] md:text-[14px] lg:text-[15px] xl:text-[16px] text-gray-200 leading-[1.7] md:leading-[1.75]">
                   The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
                   <br /><br />
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
@@ -236,7 +236,7 @@ export default function SignatureCustomDesignPage() {
                   <br /><br />
                   Dream bigger. We'll design it, engineer it, and build it—exactly where you envision it.
                   <br /><br />
-                  <span className="italic">"Imagination Isn't Limited. Neither Are We."</span>
+                  <span className="font-semibold italic">"Imagination Isn't Limited. Neither Are We."</span>
                 </p>
               </div>
 
