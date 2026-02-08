@@ -94,7 +94,7 @@ const RESULTS = [
     icon: "shield"
   },
   {
-    stat: "Design & structural Solutions",
+    stat: "Design & Structural Solutions",
     title: "",
     shortDesc: "Fast-tracked permitting for luxury residential project",
     fullDesc: "Too often there's a disconnect between what looks beautiful on paper and what actually works in the field. We close that gap. We don't just fix disputes — we create the most practical, high-performing structural solutions that truly honor our clients' vision. By partnering closely with designers and offering our own in-house design expertise, we ensure every detail is both inspiring and buildable, without ever sacrificing structural integrity or safety.",
@@ -534,7 +534,7 @@ export default function EngineeringConsultingPage() {
                     </svg>
                   )}
                 </div>
-                <p className="font-display text-[#c6912c] text-[40px] sm:text-[56px] md:text-[64px] leading-none mb-2 sm:mb-4">
+                <p className="font-display text-[#c6912c] text-[28px] sm:text-[36px] md:text-[42px] leading-none mb-2 sm:mb-4">
                   {result.stat}
                 </p>
                 <h3 className="font-display text-[#1a1a1a] text-base sm:text-2xl md:text-[26px] mb-2 sm:mb-3 tracking-wide">
@@ -645,7 +645,7 @@ export default function EngineeringConsultingPage() {
 
             {/* Stat header area */}
             <div className="bg-[#1a1a1a] rounded-t-xl sm:rounded-t-2xl p-6 sm:p-12">
-              <p className="font-display text-[#c6912c] text-[56px] sm:text-[100px] leading-none mb-1 sm:mb-2">
+              <p className="font-display text-[#c6912c] text-[36px] sm:text-[56px] leading-none mb-1 sm:mb-2">
                 {RESULTS[selectedResult].stat}
               </p>
               <h3 className="font-display text-white text-lg sm:text-3xl tracking-wide">
