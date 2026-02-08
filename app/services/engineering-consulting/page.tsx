@@ -101,7 +101,7 @@ const RESULTS = [
     client: "Beverly Hills Residence",
     duration: "2 weeks",
     services: ["Permit Expediting", "Agency Liaison", "Documentation"],
-    icon: "clock"
+    icon: "design"
   },
   {
     stat: "100%",
@@ -518,6 +518,11 @@ export default function EngineeringConsultingPage() {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   )}
+                  {result.icon === "design" && (
+                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                  )}
                   {result.icon === "clock" && (
                     <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -534,7 +539,7 @@ export default function EngineeringConsultingPage() {
                     </svg>
                   )}
                 </div>
-                <p className="font-display text-[#c6912c] text-[28px] sm:text-[36px] md:text-[42px] leading-none mb-2 sm:mb-4">
+                <p className="font-display text-[#c6912c] text-[40px] sm:text-[56px] md:text-[64px] leading-none mb-2 sm:mb-4">
                   {result.stat}
                 </p>
                 <h3 className="font-display text-[#1a1a1a] text-base sm:text-2xl md:text-[26px] mb-2 sm:mb-3 tracking-wide">
@@ -645,7 +650,7 @@ export default function EngineeringConsultingPage() {
 
             {/* Stat header area */}
             <div className="bg-[#1a1a1a] rounded-t-xl sm:rounded-t-2xl p-6 sm:p-12">
-              <p className="font-display text-[#c6912c] text-[36px] sm:text-[56px] leading-none mb-1 sm:mb-2">
+              <p className="font-display text-[#c6912c] text-[56px] sm:text-[100px] leading-none mb-1 sm:mb-2">
                 {RESULTS[selectedResult].stat}
               </p>
               <h3 className="font-display text-white text-lg sm:text-3xl tracking-wide">
