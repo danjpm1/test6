@@ -53,9 +53,9 @@ function AnimatedCounter({
 }
 
 const STATS = [
-  { end: 500, prefix: "$", suffix: "K+", label: "CLIENT SAVINGS" },
+  { end: 620, prefix: "$", suffix: "K+", label: "CLIENT SAVINGS" },
   { end: 100, prefix: "", suffix: "%", label: "PERMITTING\nSUCCESS" },
-  { end: 10, prefix: "", suffix: "+", label: "DISPUTES\nRESOLVED" },
+  { end: 9, prefix: "", suffix: "", label: "DISPUTES\nRESOLVED" },
 ]
 
 const SERVICES = [
@@ -94,10 +94,10 @@ const RESULTS = [
     icon: "shield"
   },
   {
-    stat: "2 WEEKS",
-    title: "PERMIT APPROVAL TIME",
+    stat: "Design & structural Solutions",
+    title: "",
     shortDesc: "Fast-tracked permitting for luxury residential project",
-    fullDesc: "When a high-end residential client needed urgent permit approval for a time-sensitive renovation, our team mobilized immediately. We prepared comprehensive documentation, coordinated directly with city officials, and addressed all compliance concerns proactively. What typically takes 8-12 weeks was accomplished in just 2 weeks, keeping the project on schedule for the client's move-in date.",
+    fullDesc: "Too often there's a disconnect between what looks beautiful on paper and what actually works in the field. We close that gap. We don't just fix disputes — we create the most practical, high-performing structural solutions that truly honor our clients' vision. By partnering closely with designers and offering our own in-house design expertise, we ensure every detail is both inspiring and buildable, without ever sacrificing structural integrity or safety.",
     client: "Beverly Hills Residence",
     duration: "2 weeks",
     services: ["Permit Expediting", "Agency Liaison", "Documentation"],
@@ -272,7 +272,7 @@ export default function EngineeringConsultingPage() {
         {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
-            src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
+            src="/ConsultingPage.png"
             alt="Complex engineering project"
             fill
             className="object-cover object-center opacity-60"
@@ -324,11 +324,11 @@ export default function EngineeringConsultingPage() {
             {/* HEADLINE - Shows first on mobile, second on desktop */}
             <div className="order-1 lg:order-2 border-l-2 border-[#c6912c] pl-6 sm:pl-8 lg:pl-12">
               <h2 className="font-display tracking-tight leading-[0.95] text-[32px] sm:text-[48px] md:text-[64px]">
-                <span className="text-[#6b6b6b]">WHAT CAN</span>
+                <span className="text-[#6b6b6b]">OUR TEAM IS</span>
                 <br />
-                <span className="text-[#c6912c]">ANTOVA BUILDERS</span>
+                <span className="text-[#c6912c]">ON YOUR SIDE.</span>
                 <br />
-                <span className="text-[#6b6b6b]">DO FOR YOU?</span>
+                <span className="text-[#6b6b6b]">WE ARE RELENTLESS</span>
               </h2>
             </div>
 
@@ -699,7 +699,7 @@ export default function EngineeringConsultingPage() {
               href="/contact"
               className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
             >
-              Get Expert Consultation
+              Start Your New Build
             </a>
             <a
               href="/estimator"
@@ -710,7 +710,7 @@ export default function EngineeringConsultingPage() {
           </div>
 
           <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-6">
-            Let's Solve Your <span className="text-[#c6912c]">Challenge</span>
+            Let's Start Making Your <span className="text-[#c6912c]">Dream Home</span> a Reality
           </h2>
           <p className="font-sans text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
             From complex disputes to fast-track permitting, our team delivers results. Get in touch today.
