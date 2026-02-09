@@ -94,14 +94,14 @@ const RESULTS = [
     icon: "shield"
   },
   {
-    stat: "Design & Structural Solutions",
-    title: "",
+    stat: "2 WEEKS",
+    title: "PERMIT APPROVAL TIME",
     shortDesc: "Fast-tracked permitting for luxury residential project",
     fullDesc: "Too often there's a disconnect between what looks beautiful on paper and what actually works in the field. We close that gap. We don't just fix disputes — we create the most practical, high-performing structural solutions that truly honor our clients' vision. By partnering closely with designers and offering our own in-house design expertise, we ensure every detail is both inspiring and buildable, without ever sacrificing structural integrity or safety.",
     client: "Beverly Hills Residence",
     duration: "2 weeks",
     services: ["Permit Expediting", "Agency Liaison", "Documentation"],
-    icon: "design"
+    icon: "clock"
   },
   {
     stat: "100%",
