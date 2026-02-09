@@ -117,7 +117,7 @@ const RESULTS = [
     stat: "30%",
     title: "COST REDUCTION",
     shortDesc: "Value engineering without compromising quality",
-    fullDesc: "A commercial construction project was significantly over budget before breaking ground. Our value engineering team analyzed every aspect of the design and specifications, identifying opportunities to reduce costs while maintaining the client's vision and quality standards. Through material substitutions, design optimizations, and contractor negotiations, we reduced the total project cost by 30% — a savings of over $2 million.",
+    fullDesc: "Facing substantial budget overruns before final approvals, our internal team conducted an in-depth review of the design and specifications. By implementing targeted material alternatives, optimized detailing, and skilled contractor negotiations, we achieved a 30% reduction in total project costs—saving the client over $120,000—without sacrificing the intended vision or quality standards.",
     client: "Commercial Office Building",
     duration: "2 months",
     services: ["Value Engineering", "Cost Analysis", "Specification Review"],
