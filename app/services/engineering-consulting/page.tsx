@@ -94,7 +94,7 @@ const RESULTS = [
     icon: "shield"
   },
   {
-    stat: "Design & Structural Solutions",
+    stat: "Design & Structural\nSolutions",
     title: "",
     shortDesc: "Fast-tracked permitting for luxury residential project",
     fullDesc: "Too often there's a disconnect between what looks beautiful on paper and what actually works in the field. We close that gap. We don't just fix disputes — we create the most practical, high-performing structural solutions that truly honor our clients' vision. By partnering closely with designers and offering our own in-house design expertise, we ensure every detail is both inspiring and buildable, without ever sacrificing structural integrity or safety.",
@@ -534,7 +534,7 @@ export default function EngineeringConsultingPage() {
                     </svg>
                   )}
                 </div>
-                <p className={`font-display text-[#c6912c] leading-tight mb-2 sm:mb-4 ${index === 1 ? 'text-[30px] sm:text-[38px] md:text-[44px] tracking-tight' : 'text-[40px] sm:text-[56px] md:text-[64px] leading-none'}`}>
+                <p className={`font-display text-[#c6912c] leading-none mb-2 sm:mb-4 ${index === 1 ? 'text-[28px] sm:text-[36px] md:text-[42px]' : 'text-[40px] sm:text-[56px] md:text-[64px]'}`}>
                   {result.stat}
                 </p>
                 <h3 className="font-display text-[#1a1a1a] text-base sm:text-2xl md:text-[26px] mb-2 sm:mb-3 tracking-wide">
@@ -645,7 +645,7 @@ export default function EngineeringConsultingPage() {
 
             {/* Stat header area */}
             <div className="bg-[#1a1a1a] rounded-t-xl sm:rounded-t-2xl p-6 sm:p-12">
-              <p className={`font-display text-[#c6912c] mb-1 sm:mb-2 ${selectedResult === 1 ? 'text-[38px] sm:text-[60px] leading-tight tracking-tight' : 'text-[56px] sm:text-[100px] leading-none'}`}>
+              <p className={`font-display text-[#c6912c] leading-none mb-1 sm:mb-2 ${selectedResult === 1 ? 'text-[36px] sm:text-[56px]' : 'text-[56px] sm:text-[100px]'}`}>
                 {RESULTS[selectedResult].stat}
               </p>
               <h3 className="font-display text-white text-lg sm:text-3xl tracking-wide">
