@@ -534,7 +534,7 @@ export default function EngineeringConsultingPage() {
                     </svg>
                   )}
                 </div>
-                <p className={`font-display text-[#c6912c] leading-none mb-2 sm:mb-4 ${index === 1 ? 'text-[28px] sm:text-[36px] md:text-[42px] whitespace-pre-line' : 'text-[40px] sm:text-[56px] md:text-[64px]'}`}>
+                <p className={`font-display text-[#c6912c] leading-none mb-2 sm:mb-4 ${index === 1 ? 'text-[30px] sm:text-[39px] md:text-[45px] whitespace-pre-line' : 'text-[40px] sm:text-[56px] md:text-[64px]'}`}>
                   {result.stat}
                 </p>
                 <h3 className="font-display text-[#1a1a1a] text-base sm:text-2xl md:text-[26px] mb-2 sm:mb-3 tracking-wide">
@@ -645,7 +645,7 @@ export default function EngineeringConsultingPage() {
 
             {/* Stat header area */}
             <div className="bg-[#1a1a1a] rounded-t-xl sm:rounded-t-2xl p-6 sm:p-12">
-              <p className={`font-display text-[#c6912c] leading-none mb-1 sm:mb-2 ${selectedResult === 1 ? 'text-[36px] sm:text-[56px] whitespace-pre-line' : 'text-[56px] sm:text-[100px]'}`}>
+              <p className={`font-display text-[#c6912c] leading-none mb-1 sm:mb-2 ${selectedResult === 1 ? 'text-[39px] sm:text-[60px] whitespace-pre-line' : 'text-[56px] sm:text-[100px]'}`}>
                 {RESULTS[selectedResult].stat}
               </p>
               <h3 className="font-display text-white text-lg sm:text-3xl tracking-wide">
