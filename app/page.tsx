@@ -543,7 +543,6 @@ export default function AntovaBuilders() {
   const serviceCardsRef = useRef<HTMLElement>(null)
   const testimonialsRef = useRef<HTMLElement>(null)
 
-  const isServiceCardsVisible = useScrollThreshold(serviceCardsRef, SERVICE_CARDS_THRESHOLD)
   const isTestimonialsVisible = useScrollThreshold(testimonialsRef, TESTIMONIALS_THRESHOLD)
 
   useEffect(() => {
@@ -567,11 +566,10 @@ export default function AntovaBuilders() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const topBgColor = isServiceCardsVisible ? "bg-white" : "bg-black"
   const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-white"
 
   return (
-    <div className={`min-h-screen ${topBgColor} transition-colors duration-300 ease-in-out overflow-x-hidden`}>
+    <div className={`min-h-screen bg-white overflow-x-hidden`}>
       {/* Custom animations for scroll indicator */}
       <style jsx global>{`
         @keyframes scroll-wheel {
@@ -682,7 +680,7 @@ export default function AntovaBuilders() {
         <ScrollIndicator show={showSubtitleAndButtons} />
       </section>
 
-      <section className="py-20 lg:py-28 bg-black">
+      <section className="py-20 lg:py-28 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
           <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
             {/* Gold accent line at top */}
@@ -736,13 +734,13 @@ export default function AntovaBuilders() {
 
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="max-w-[1000px] border-l-2 border-[#c6912c] pl-8 lg:pl-12">
-            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white leading-snug font-light">
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light">
               Luxury is the freedom to relax
             </p>
-            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-white leading-snug font-light mt-4">
+            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light mt-4">
               while experts handle every detail.
             </p>
-            <p className="text-lg md:text-xl text-white/60 mt-8 leading-relaxed">
+            <p className="text-lg md:text-xl text-black/50 mt-8 leading-relaxed">
               Antova delivers master craftsmanship, precise AI estimating, and seamless service — from blueprint to perfection.
             </p>
           </div>
@@ -752,7 +750,7 @@ export default function AntovaBuilders() {
       <section
         id="services"
         ref={serviceCardsRef}
-        className={`py-24 lg:py-32 ${topBgColor} transition-colors duration-300 ease-in-out`}
+        className={`py-24 lg:py-32 bg-white`}
       >
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
