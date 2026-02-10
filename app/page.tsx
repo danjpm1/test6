@@ -681,7 +681,7 @@ export default function AntovaBuilders() {
       </section>
 
       <section className="py-20 lg:py-28 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-20 lg:mb-24">
           <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#f4f4f5] border border-black/[0.06] rounded-2xl overflow-hidden shadow-sm">
             {/* Gold accent line at top */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
@@ -743,6 +743,28 @@ export default function AntovaBuilders() {
             <p className="text-lg md:text-xl text-black/50 mt-8 leading-relaxed">
               Antova delivers master craftsmanship, precise AI estimating, and seamless service — from blueprint to perfection.
             </p>
+          </div>
+        </div>
+
+        {/* Stats trust bar */}
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mt-16 lg:mt-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 py-10 border-t border-black/[0.06]">
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">150+</p>
+              <p className="text-black/50 text-sm mt-1.5">Projects Completed</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">12</p>
+              <p className="text-black/50 text-sm mt-1.5">Years Experience</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">98%</p>
+              <p className="text-black/50 text-sm mt-1.5">Client Satisfaction</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">$50M+</p>
+              <p className="text-black/50 text-sm mt-1.5">Total Value Built</p>
+            </div>
           </div>
         </div>
       </section>
