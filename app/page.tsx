@@ -684,12 +684,12 @@ export default function AntovaBuilders() {
 
       <section className="py-20 lg:py-28 bg-black">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
-          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 mb-16 bg-[#111] border border-white/10 rounded-2xl overflow-hidden hover:border-white/15 transition-colors duration-500">
+          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
             {/* Gold accent line at top */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
             
             {/* Left side - Content */}
-            <div className="flex-1 flex flex-col justify-center gap-4 p-8 lg:p-12">
+            <div className="flex-1 flex flex-col gap-4 p-8 lg:p-10">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-[#c6912c]/15 border border-[#c6912c]/40 rounded-full text-[#c6912c] text-xs font-semibold tracking-wide uppercase">
                 <span className="w-1.5 h-1.5 bg-[#c6912c] rounded-full animate-pulse" />
                 2 Active Offers
@@ -704,31 +704,26 @@ export default function AntovaBuilders() {
               </p>
             </div>
 
-            {/* Subtle vertical divider - desktop only */}
-            <div className="hidden sm:block w-px bg-gradient-to-b from-transparent via-white/10 to-transparent my-6" />
-
             {/* Right side - CTA area */}
-            <div className="sm:w-[300px] lg:w-[340px] flex flex-col items-center justify-center gap-4 p-8 lg:p-10 border-t sm:border-t-0 border-white/10">
-              <div className="text-center space-y-1">
-                <p className="text-white/60 text-sm font-medium">Save up to</p>
-                <p className="text-[#c6912c] text-5xl lg:text-6xl font-bold tracking-tight leading-none">15%</p>
-                <p className="text-white/35 text-xs">on select project packages</p>
+            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-8 lg:p-10 bg-white/[0.03] border-t sm:border-t-0 sm:border-l border-white/10">
+              <div className="text-center space-y-1.5">
+                <p className="text-white/80 text-sm font-medium">Save up to</p>
+                <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">15%</p>
+                <p className="text-white/40 text-xs">on select project packages</p>
               </div>
-              <div className="w-full space-y-2.5 pt-1">
-                <Link href="/offers" className="block w-full">
-                  <button className="flex items-center justify-center gap-3 w-full px-6 py-3.5 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-sm rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
-                    <span>View All Offers</span>
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </button>
-                </Link>
-                <Link href="/contact" className="block w-full">
-                  <button className="flex items-center justify-center w-full px-6 py-3 text-white/50 hover:text-white/80 font-medium text-xs rounded-[4px] transition-all">
-                    Or request a custom quote
-                  </button>
-                </Link>
-              </div>
+              <Link href="/offers" className="w-full">
+                <button className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-base rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
+                  <span>View All Offers</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+              </Link>
+              <Link href="/contact" className="w-full">
+                <button className="flex items-center justify-center gap-2 w-full px-8 py-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 font-medium text-sm rounded-[4px] transition-all">
+                  Or request a custom quote
+                </button>
+              </Link>
             </div>
           </div>
 
