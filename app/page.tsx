@@ -682,35 +682,35 @@ export default function AntovaBuilders() {
 
       <section className="py-20 lg:py-28 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
-          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#1c1c1e] border border-black/10 rounded-2xl overflow-hidden shadow-xl">
+          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#f4f4f5] border border-black/[0.06] rounded-2xl overflow-hidden shadow-sm">
             {/* Gold accent line at top */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
             
             {/* Left side - Content */}
             <div className="flex-1 flex flex-col gap-4 p-8 lg:p-10">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-[#c6912c]/15 border border-[#c6912c]/40 rounded-full text-[#c6912c] text-xs font-semibold tracking-wide uppercase">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-[#c6912c]/10 border border-[#c6912c]/30 rounded-full text-[#c6912c] text-xs font-semibold tracking-wide uppercase">
                 <span className="w-1.5 h-1.5 bg-[#c6912c] rounded-full animate-pulse" />
                 2 Active Offers
               </span>
               <Link href="/offers">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white hover:text-[#c6912c] transition-colors cursor-pointer leading-tight">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black hover:text-[#c6912c] transition-colors cursor-pointer leading-tight">
                   Get your offer now.
                 </h2>
               </Link>
-              <p className="text-white/50 text-base md:text-lg max-w-lg leading-relaxed">
+              <p className="text-black/50 text-base md:text-lg max-w-lg leading-relaxed">
                 Seasonal specials on custom builds and renovations — limited availability.
               </p>
             </div>
 
             {/* Right side - CTA area */}
-            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-8 lg:p-10 bg-white/[0.03] border-t sm:border-t-0 sm:border-l border-white/[0.06]">
+            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-8 lg:p-10 bg-black/[0.02] border-t sm:border-t-0 sm:border-l border-black/[0.06]">
               <div className="text-center space-y-1.5">
-                <p className="text-white/80 text-sm font-medium">Save up to</p>
+                <p className="text-black/60 text-sm font-medium">Save up to</p>
                 <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">15%</p>
-                <p className="text-white/40 text-xs">on select project packages</p>
+                <p className="text-black/40 text-xs">on select project packages</p>
               </div>
               <Link href="/offers" className="w-full">
-                <button className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-base rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
+                <button className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
                   <span>View All Offers</span>
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -718,7 +718,7 @@ export default function AntovaBuilders() {
                 </button>
               </Link>
               <Link href="/contact" className="w-full">
-                <button className="flex items-center justify-center gap-2 w-full px-8 py-3 border border-white/20 text-white/70 hover:text-white hover:border-white/40 font-medium text-sm rounded-[4px] transition-all">
+                <button className="flex items-center justify-center gap-2 w-full px-8 py-3 border border-black/15 text-black/60 hover:text-black hover:border-black/30 font-medium text-sm rounded-[4px] transition-all">
                   Or request a custom quote
                 </button>
               </Link>
