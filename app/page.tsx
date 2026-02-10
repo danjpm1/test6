@@ -15,20 +15,20 @@ const TESTIMONIALS_THRESHOLD = 0.5
 
 const SERVICE_CARDS = [
   {
-    title: "Custom Homes.",
+    title: "Signature Custom Design",
     image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
     alt: "Custom homes lifestyle",
     href: "/services/signature-custom-design",
   },
   {
-    title: "Renovations.",
-    image: "/luxury-modern-living-room-wood-ceiling-concrete-fi.jpg",
+    title: "Renovations",
+    image: "/renovation-human.png",
     alt: "Renovations lifestyle",
     href: "/services/renovation",
   },
   {
-    title: "New Construction.",
-    image: "/human3.jpg",
+    title: "New Builds",
+    image: "/new-builds.png",
     alt: "New construction lifestyle",
     href: "/services/new-builds",
   },
@@ -48,8 +48,8 @@ const OFFER_CARDS = [
     title: "Renovation",
     description: "Modern renovation spaces designed for business excellence.",
     price: "$2k-5k credits",
-    image: "/modern-luxury-home-at-night-with-warm-interior-lig.png",
-    alt: "Modern luxury home at night with mountains",
+    image: "/renovation-human.png",
+    alt: "Professional contractor reviewing renovation plans",
     exploreHref: "/services/renovation",
     exploreLabel: "Explore Renovation",
   },
@@ -624,7 +624,7 @@ export default function AntovaBuilders() {
           animation-delay: 0.2s;
         }
       `}</style>
-      
+
       <Navbar hidden={!showNavbar} />
 
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -684,26 +684,39 @@ export default function AntovaBuilders() {
 
       <section className="py-20 lg:py-28 bg-black">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
-          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-16">
+          {/* ===== MODIFIED OFFERS HEADER SECTION ===== */}
+          <div className="flex flex-col gap-5 mb-16">
+            <div className="flex items-center gap-3">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#c6912c]/15 border border-[#c6912c]/40 rounded-full text-[#c6912c] text-xs font-semibold tracking-wide uppercase">
+                <span className="w-1.5 h-1.5 bg-[#c6912c] rounded-full animate-pulse" />
+                2 Active Offers
+              </span>
+            </div>
             <Link href="/offers">
               <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-left text-white hover:text-[#c6912c] transition-colors cursor-pointer">
                 Get your offer now.
               </h2>
             </Link>
-            <Link href="/offers">
-              <button className="flex items-center gap-2 px-6 py-3 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-sm rounded transition-all hover:scale-105">
-                <span>View All Offers</span>
-                <svg 
-                  className="w-4 h-4" 
-                  fill="none" 
-                  stroke="currentColor" 
-                  viewBox="0 0 24 24"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-            </Link>
+            <p className="text-white/50 text-base md:text-lg max-w-xl">
+              Seasonal specials on custom builds and renovations — limited availability.
+            </p>
+            <div className="pt-2">
+              <Link href="/offers">
+                <button className="flex items-center gap-3 px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold text-base rounded-[4px] transition-all hover:scale-105 hover:shadow-lg hover:shadow-[#c6912c]/30">
+                  <span>View All Offers</span>
+                  <svg 
+                    className="w-5 h-5" 
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+              </Link>
+            </div>
           </div>
+          {/* ===== END MODIFIED OFFERS HEADER SECTION ===== */}
 
           <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
             {OFFER_CARDS.map((card) => (
