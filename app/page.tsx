@@ -682,7 +682,7 @@ export default function AntovaBuilders() {
 
       <section className="py-20 lg:py-28 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-32 lg:mb-40">
-          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#111] border border-white/10 rounded-2xl overflow-hidden">
+          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#1c1c1e] border border-black/10 rounded-2xl overflow-hidden shadow-xl">
             {/* Gold accent line at top */}
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
             
@@ -703,7 +703,7 @@ export default function AntovaBuilders() {
             </div>
 
             {/* Right side - CTA area */}
-            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-8 lg:p-10 bg-white/[0.03] border-t sm:border-t-0 sm:border-l border-white/10">
+            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-8 lg:p-10 bg-white/[0.03] border-t sm:border-t-0 sm:border-l border-white/[0.06]">
               <div className="text-center space-y-1.5">
                 <p className="text-white/80 text-sm font-medium">Save up to</p>
                 <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">15%</p>
