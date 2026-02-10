@@ -680,7 +680,7 @@ export default function AntovaBuilders() {
         <ScrollIndicator show={showSubtitleAndButtons} />
       </section>
 
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="pt-20 pb-12 lg:pt-28 lg:pb-16 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-20 lg:mb-24">
           <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-6 mb-16 bg-[#f4f4f5] border border-black/[0.06] rounded-2xl overflow-hidden shadow-sm">
             {/* Gold accent line at top */}
@@ -750,20 +750,20 @@ export default function AntovaBuilders() {
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mt-16 lg:mt-20">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 py-10 border-t border-black/[0.06]">
             <div className="text-center">
-              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">150+</p>
-              <p className="text-black/50 text-sm mt-1.5">Projects Completed</p>
+              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">150+</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Projects Completed</p>
             </div>
             <div className="text-center">
-              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">12</p>
-              <p className="text-black/50 text-sm mt-1.5">Years Experience</p>
+              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">12</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Years Experience</p>
             </div>
             <div className="text-center">
-              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">98%</p>
-              <p className="text-black/50 text-sm mt-1.5">Client Satisfaction</p>
+              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">98%</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Client Satisfaction</p>
             </div>
             <div className="text-center">
-              <p className="text-[#c6912c] text-3xl lg:text-4xl font-bold tracking-tight">$50M+</p>
-              <p className="text-black/50 text-sm mt-1.5">Total Value Built</p>
+              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">$50M+</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Total Value Built</p>
             </div>
           </div>
         </div>
@@ -772,7 +772,7 @@ export default function AntovaBuilders() {
       <section
         id="services"
         ref={serviceCardsRef}
-        className={`py-24 lg:py-32 bg-white`}
+        className={`py-12 lg:py-16 bg-white`}
       >
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
