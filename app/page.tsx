@@ -693,7 +693,7 @@ export default function AntovaBuilders() {
                   className="sm:min-w-[220px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
                   asChild
                 >
-                  <Link href="/cost-estimator">Try the Estimator — Free</Link>
+                  <Link href="/cost-estimator">Get Your Estimate</Link>
                 </Button>
                 <Button
                   size="lg"
@@ -701,7 +701,7 @@ export default function AntovaBuilders() {
                   className="sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
                   asChild
                 >
-                  <Link href="/about">How It Works</Link>
+                  <Link href="/contact">Book a Consultation</Link>
                 </Button>
               </div>
               <p className="hidden lg:block text-white/30 text-xs">Takes about 60 seconds · 4 simple questions · No email required</p>
@@ -741,7 +741,7 @@ export default function AntovaBuilders() {
                 className="w-full h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all"
                 asChild
               >
-                <Link href="/cost-estimator">Try the Estimator — Free</Link>
+                <Link href="/cost-estimator">Get Your Estimate</Link>
               </Button>
               <Button
                 size="lg"
@@ -749,7 +749,7 @@ export default function AntovaBuilders() {
                 className="w-full h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all"
                 asChild
               >
-                <Link href="/about">How It Works</Link>
+                <Link href="/contact">Book a Consultation</Link>
               </Button>
               <p className="text-white/30 text-xs text-center">Takes about 60 seconds · 4 simple questions · No email required</p>
             </div>
@@ -843,7 +843,7 @@ export default function AntovaBuilders() {
               className="h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105 px-10"
               asChild
             >
-              <Link href="/cost-estimator">Start with Step 1 — Get Your Estimate</Link>
+              <Link href="/cost-estimator">Get Your Estimate</Link>
             </Button>
           </div>
         </div>
@@ -883,7 +883,7 @@ export default function AntovaBuilders() {
               className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
               asChild
             >
-              <Link href="/projects" scroll={true}>View All Projects</Link>
+              <Link href="/cost-estimator">Get Your Estimate</Link>
             </Button>
             <Button
               size="lg"
@@ -891,7 +891,7 @@ export default function AntovaBuilders() {
               className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
               asChild
             >
-              <Link href="/contact" scroll={true}>Start Your Project</Link>
+              <Link href="/contact">Book a Consultation</Link>
             </Button>
           </div>
         </div>
@@ -934,7 +934,7 @@ export default function AntovaBuilders() {
               className="w-full sm:w-auto sm:min-w-[280px] h-[52px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
               asChild
             >
-              <Link href="/cost-estimator">Get Your Free Estimate</Link>
+              <Link href="/cost-estimator">Get Your Estimate</Link>
             </Button>
             <Button
               size="lg"
@@ -942,7 +942,7 @@ export default function AntovaBuilders() {
               className="w-full sm:w-auto sm:min-w-[280px] h-[52px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-base tracking-wide rounded-[4px] transition-all hover:scale-105"
               asChild
             >
-              <Link href="/contact">Schedule a Private Consultation</Link>
+              <Link href="/contact">Book a Consultation</Link>
             </Button>
           </div>
 
