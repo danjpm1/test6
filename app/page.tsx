@@ -576,70 +576,42 @@ export default function AntovaBuilders() {
           <div className="absolute inset-0 bg-black/30" />
         </div>
 
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-32 md:-mt-40 max-w-5xl mx-auto">
-          {/* Brand name - smaller, acts as label */}
-          <p 
-            className={`text-[#c6912c] text-sm font-medium tracking-[0.25em] uppercase mb-6 transition-all duration-700 ease-out ${
-              showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            Antova Builders
-          </p>
-
-          {/* Conversion headline - sells the transformation */}
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-32 md:-mt-40">
           <h1 
-            className={`text-3xl md:text-5xl lg:text-6xl font-bold mb-5 tracking-tight text-balance text-white leading-[1.15] transition-all duration-700 ease-out ${
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-3 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
               showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            Your vision, built without
-            <br className="hidden sm:block" />
-            {" "}compromise.
+            Your vision, built without compromise.
           </h1>
-
-          {/* Supporting line - clarity about what they do */}
           <p 
-            className={`text-base md:text-lg lg:text-xl mb-8 text-white/80 tracking-wide text-balance max-w-2xl mx-auto leading-relaxed transition-all duration-700 ease-out ${
+            className={`text-lg md:text-xl lg:text-2xl mb-6 text-white/80 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            Luxury custom homes and architectural renovations in the Pacific Northwest. 
-            Get an instant budget estimate — no contact info required.
+            Luxury custom homes & renovations · Pacific Northwest
           </p>
-
-          {/* CTAs */}
           <div 
             className={`flex flex-col sm:flex-row items-center justify-center gap-3 transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            {/* Primary CTA - AI Estimator (the micro-commitment entry point) */}
             <Button
               size="lg"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold px-[34px] py-0 text-sm tracking-wide rounded-[4px] shadow-lg hover:shadow-[#c6912c]/50 transition-all hover:scale-105"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] bg-[#c6912c] hover:bg-[#a67923] text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] shadow-lg hover:shadow-[#c6912c]/50 transition-all hover:scale-105"
               asChild
             >
               <Link href="/cost-estimator">Get Your Estimate</Link>
             </Button>
-            {/* Secondary CTA */}
             <Button
               size="lg"
               variant="outline"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border-2 border-white text-white hover:bg-white hover:text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] transition-all hover:scale-105 bg-transparent"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border-2 border-white text-white hover:bg-white hover:text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] transition-all hover:scale-105 bg-transparent"
               asChild
             >
               <Link href="/contact">Book a Consultation</Link>
             </Button>
           </div>
-
-          {/* Microcopy - reduces anxiety */}
-          <p 
-            className={`mt-4 text-white/40 text-xs tracking-wide transition-all duration-700 ease-out delay-200 ${
-              showSubtitleAndButtons ? "opacity-100" : "opacity-0"
-            }`}
-          >
-            Free AI-powered estimate in 60 seconds · No account needed
-          </p>
         </div>
 
         <ScrollIndicator show={showSubtitleAndButtons} />
@@ -647,9 +619,8 @@ export default function AntovaBuilders() {
 
 
       {/* ━━━ SECTION 2: CHOOSE YOUR PATH ━━━
-          Purpose: Intent routing. Let visitors self-select their project type.
-          Moved UP from lower on page — reduces bounce by giving immediate next step.
-          Emotional subtitles per lane (not just labels).
+          Purpose: Intent routing first — luxury clients think in project types, not budgets.
+          Cards link to dedicated service pages where the estimator is pushed harder.
       */}
       <section className="py-16 lg:py-24 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
@@ -669,10 +640,9 @@ export default function AntovaBuilders() {
       </section>
 
 
-      {/* ━━━ SECTION 3: AI ESTIMATOR — PRIMARY CONVERSION ━━━
-          Purpose: The main conversion mechanism. Moved UP from bottom of page.
-          This is the value-first hook: get something useful before giving contact info.
-          Framed as precision tool, not gimmick.
+      {/* ━━━ SECTION 3: AI ESTIMATOR ━━━
+          Purpose: For visitors who scroll past the lanes — still catch them with the estimator.
+          Also reinforces the estimator for those who come back from service pages.
       */}
       <section className="relative flex items-center overflow-hidden py-16 lg:py-24 lg:min-h-[80vh] bg-[#0a0a0a]">
         <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
