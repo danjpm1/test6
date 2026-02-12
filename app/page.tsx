@@ -783,13 +783,154 @@ export default function AntovaBuilders() {
         </div>
       </div>
 
-      <section className="pt-20 pb-12 lg:pt-28 lg:pb-16 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-20 lg:mb-24">
-          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 mb-16 bg-white border border-black/[0.06] rounded-2xl overflow-hidden">
-            {/* Gold accent line at top */}
+      {/* ━━━ PROBLEM → SOLUTION — Names the fear, then resolves it ━━━ */}
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          {/* Problem — call out the fears */}
+          <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Why homeowners hesitate</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 tracking-tight leading-tight">
+              Building a home shouldn't feel like a gamble.
+            </h2>
+            <p className="text-black/50 text-lg md:text-xl leading-relaxed">
+              Most homeowners delay their dream project because they've heard the horror stories — budgets that double, timelines that slip, contractors who disappear. We built Antova to eliminate every one of those fears.
+            </p>
+          </div>
+
+          {/* Solution — three fear-killers */}
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
+            {/* Fear 1: Budget overruns */}
+            <div className="text-center">
+              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
+                <svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-black mb-3">No budget surprises</h3>
+              <p className="text-black/50 text-base leading-relaxed">
+                Our AI estimator gives you a realistic investment range before you commit to anything. No hidden fees, no scope creep, no uncomfortable conversations later.
+              </p>
+            </div>
+
+            {/* Fear 2: Timeline slips */}
+            <div className="text-center">
+              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
+                <svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-black mb-3">On time, every time</h3>
+              <p className="text-black/50 text-base leading-relaxed">
+                12 years and 150+ projects have taught us how to plan realistically and deliver on schedule. You'll know the timeline upfront — and we'll stick to it.
+              </p>
+            </div>
+
+            {/* Fear 3: Quality / trust */}
+            <div className="text-center">
+              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
+                <svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-black mb-3">Craftsmanship guaranteed</h3>
+              <p className="text-black/50 text-base leading-relaxed">
+                98% client satisfaction across every project we've ever built. We don't disappear after the contract — we're with you from first sketch to final walkthrough.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ━━━ HOW IT WORKS — Reduces "what happens next?" anxiety ━━━ */}
+      <section className="py-20 lg:py-28 bg-[#fafafa] border-y border-black/[0.06]">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">How it works</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
+              Three steps to your dream home.
+            </h2>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-16 max-w-5xl mx-auto">
+            {/* Step 1 */}
+            <div className="text-center">
+              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">01</div>
+              <h3 className="text-xl font-bold text-black mb-3">See your investment range</h3>
+              <p className="text-black/50 text-base leading-relaxed">
+                Select your project type and get a realistic cost range in 60 seconds. No email, no obligation — just clarity.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="text-center">
+              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">02</div>
+              <h3 className="text-xl font-bold text-black mb-3">Meet your project team</h3>
+              <p className="text-black/50 text-base leading-relaxed">
+                Book a free design consultation. We'll walk through your vision, refine the scope, and create a detailed plan tailored to your goals.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="text-center">
+              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">03</div>
+              <h3 className="text-xl font-bold text-black mb-3">Build with confidence</h3>
+              <p className="text-black/50 text-base leading-relaxed">
+                Construction begins with a fixed timeline and transparent pricing. You'll have full visibility at every stage — from foundation to final walkthrough.
+              </p>
+            </div>
+          </div>
+
+          {/* CTA under steps */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-14 lg:mt-20">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-[240px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
+              onClick={() => {
+                const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
+                router.push(`/cost-estimator${param}`)
+              }}
+            >
+              Start with Step 1 →
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[240px] h-[48px] border border-black/15 text-black/70 hover:bg-black hover:text-white bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/contact">Skip to consultation</Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* ━━━ SERVICE LANES — Choose your path ━━━ */}
+      <section
+        id="services"
+        ref={serviceCardsRef}
+        className="py-16 lg:py-24 bg-white"
+      >
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-3xl mb-12 lg:mb-16">
+            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Our services</p>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
+              Choose your path.
+            </h2>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
+            {SERVICE_CARDS.map((card) => (
+              <ServiceCard key={card.title} {...card} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ━━━ SCHEDULING BANNER — Moved here between services and testimonials ━━━ */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 bg-white border border-black/[0.06] rounded-2xl overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
             
-            {/* Left side - Content */}
             <div className="flex-1 flex flex-col gap-4 p-6 sm:p-8 lg:p-10">
               <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-black/[0.03] border border-black/[0.08] rounded-full text-black/50 text-xs font-medium tracking-wide uppercase">
                 Spring 2026 · Limited Availability
@@ -804,7 +945,6 @@ export default function AntovaBuilders() {
               </p>
             </div>
 
-            {/* Right side - CTA area */}
             <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-6 sm:p-8 lg:p-10 border-t sm:border-t-0 sm:border-l border-black/[0.06]">
               <div className="text-center space-y-2">
                 <p className="text-black/40 text-xs tracking-wide uppercase">Included with every project</p>
@@ -839,35 +979,6 @@ export default function AntovaBuilders() {
             </div>
           </div>
         </div>
-
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-[1000px] border-l-2 border-[#c6912c] pl-6 sm:pl-8 lg:pl-12">
-            <p className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light">
-              Luxury is the freedom to relax
-            </p>
-            <p className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light mt-2 sm:mt-4">
-              while experts handle every detail.
-            </p>
-            <p className="text-base md:text-xl text-black/50 mt-5 sm:mt-8 leading-relaxed">
-              Antova delivers master craftsmanship, precise AI estimating, and seamless service — from blueprint to perfection.
-            </p>
-          </div>
-        </div>
-
-      </section>
-
-      <section
-        id="services"
-        ref={serviceCardsRef}
-        className={`py-12 lg:py-16 bg-white`}
-      >
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {SERVICE_CARDS.map((card) => (
-              <ServiceCard key={card.title} {...card} />
-            ))}
-          </div>
-        </div>
       </section>
 
       <section
@@ -880,10 +991,10 @@ export default function AntovaBuilders() {
           <div className="max-w-3xl mb-16 lg:mb-20">
             <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Testimonials</p>
             <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-              Stories of Excellence
+              Clients who built without compromise.
             </h2>
             <p className="text-white/60 text-lg md:text-xl leading-relaxed">
-              Hear from clients who trusted Antova with their most ambitious projects.
+              Real projects, real results — from homeowners who trusted Antova with their vision.
             </p>
           </div>
 
@@ -913,53 +1024,46 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
-      {/* Google Reviews Section */}
-      <GoogleReviewsSection />
 
-      {/* AI-Powered Section - Two column layout with video */}
-      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 lg:min-h-screen bg-[#0a0a0a]">
+      {/* ━━━ WHY AI — Differentiator, not duplicate CTA ━━━ */}
+      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 bg-[#0a0a0a]">
         <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
             {/* Left side - Text content */}
             <div className="space-y-6 order-1">
-              {/* Label */}
               <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">
-                AI-Powered Estimation
+                Why we're different
               </p>
               
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1]">
-                Turn ideas into<br />
-                <span className="text-[#c6912c]">architectural reality.</span>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
+                AI precision meets<br />
+                <span className="text-[#c6912c]">master craftsmanship.</span>
               </h2>
               
               <p className="text-base md:text-lg lg:text-xl text-white/60 leading-relaxed max-w-xl">
-                Begin with your vision. Our AI instantly transforms project details into accurate cost estimates, material insights, and construction timelines.
+                Traditional builders guess. We calculate. Our AI analyzes thousands of data points to deliver estimates that hold — so your project stays on track from day one.
               </p>
-              
-              {/* Buttons - Desktop only (hidden on mobile) */}
-              <div className="hidden lg:flex flex-row gap-3 pt-4">
-                <Button
-                  size="lg"
-                  className="sm:min-w-[200px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
-                  asChild
-                >
-                  <Link href="/cost-estimator">Try AI Estimator</Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
-                  asChild
-                >
-                  <Link href="/about">Learn More</Link>
-                </Button>
+
+              {/* Differentiators */}
+              <div className="space-y-4 pt-2">
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-[#c6912c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  <p className="text-white/70 text-base"><span className="text-white font-medium">Estimates that hold.</span> AI-powered scope analysis eliminates guesswork and budget surprises.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-[#c6912c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  <p className="text-white/70 text-base"><span className="text-white font-medium">Full transparency.</span> Real-time progress tracking and material cost breakdowns at every stage.</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-[#c6912c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  <p className="text-white/70 text-base"><span className="text-white font-medium">Human expertise + AI intelligence.</span> Technology handles the numbers. Our craftsmen handle the build.</p>
+                </div>
               </div>
             </div>
 
             {/* Right side - Video */}
             <div className="relative order-2">
               <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
-                {/* Video with poster and tap-to-play on mobile */}
                 <video
                   autoPlay
                   loop
@@ -976,34 +1080,48 @@ export default function AntovaBuilders() {
                 >
                   <source src="/ai-video.mp4" type="video/mp4" />
                 </video>
-                
-                {/* Gradient overlay for better blending */}
                 <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60 pointer-events-none" />
                 <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30 hidden lg:block pointer-events-none" />
               </div>
-              
-              {/* Glow effect */}
               <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10 hidden lg:block" />
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Buttons - Mobile only (below video) */}
-            <div className="flex lg:hidden flex-col gap-3 order-3 w-full">
-              <Button
-                size="lg"
-                className="w-full h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all"
-                asChild
-              >
-                <Link href="/cost-estimator">Try AI Estimator</Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all"
-                asChild
-              >
-                <Link href="/about">Learn More</Link>
-              </Button>
-            </div>
+      {/* Google Reviews Section */}
+      <GoogleReviewsSection />
+
+      {/* ━━━ FINAL CTA — Strong close for convinced visitors ━━━ */}
+      <section className="py-24 lg:py-32 bg-[#0a0a0a] relative overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
+        
+        <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto text-center">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">
+            Ready to build without compromise?
+          </h2>
+          <p className="text-white/50 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
+            See your realistic investment range in 60 seconds — or speak directly with our team about your vision.
+          </p>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+            <Button
+              size="lg"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[52px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
+              onClick={() => {
+                const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
+                router.push(`/cost-estimator${param}`)
+              }}
+            >
+              Reveal My Investment Range →
+            </Button>
+            <Button
+              size="lg"
+              variant="outline"
+              className="w-full sm:w-auto sm:min-w-[264px] h-[52px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-semibold text-base tracking-wide rounded-[4px] transition-all hover:scale-105"
+              asChild
+            >
+              <Link href="/contact">Book a Consultation</Link>
+            </Button>
           </div>
         </div>
       </section>
