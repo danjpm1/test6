@@ -658,7 +658,7 @@ export default function AntovaBuilders() {
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            See your realistic investment range in 60 seconds — free, no email required.
+            See your realistic investment range in 60 seconds — no email required.
           </p>
 
           {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
