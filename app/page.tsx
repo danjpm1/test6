@@ -443,73 +443,50 @@ function GoogleReviewCard({ author_name, rating, relative_time_description, text
 }
 
 function GoogleReviewsSection() {
-  const [showAll, setShowAll] = useState(false)
-  const displayedReviews = showAll ? GOOGLE_REVIEWS : GOOGLE_REVIEWS.slice(0, 3)
-
   const avgRating = GOOGLE_REVIEWS.reduce((sum, r) => sum + r.rating, 0) / GOOGLE_REVIEWS.length
 
   return (
-    <section className="py-24 lg:py-32 bg-black relative overflow-hidden">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
-
+    <section className="py-16 lg:py-20 bg-black relative overflow-hidden">
       <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 mb-16 lg:mb-20">
-          <div className="max-w-3xl">
-            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Client Reviews</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight">
-              Trusted by Our Clients
-            </h2>
-          </div>
-
-          <div className="flex items-center gap-4 bg-[#111] border border-white/10 rounded-xl px-5 py-4">
-            <div className="flex items-center gap-2">
-              <GoogleIcon />
-              <span className="text-white font-semibold text-lg">{avgRating.toFixed(1)}</span>
-            </div>
-            <div className="h-8 w-px bg-white/10" />
-            <div className="flex flex-col">
-              <StarRating rating={Math.round(avgRating)} />
-              <span className="text-white/50 text-xs mt-1">{GOOGLE_REVIEWS.length} reviews</span>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-          {displayedReviews.map((review, index) => (
-            <GoogleReviewCard key={index} {...review} />
-          ))}
-        </div>
-
-        {GOOGLE_REVIEWS.length > 3 && (
-          <div className="mt-12 text-center">
-            <button
-              onClick={() => setShowAll(!showAll)}
-              className="inline-flex items-center gap-2 px-8 py-4 text-sm text-[#c6912c] border border-[#c6912c]/50 rounded-[4px] hover:bg-[#c6912c]/10 transition-all duration-300"
-            >
-              {showAll ? "Show Less" : `View All ${GOOGLE_REVIEWS.length} Reviews`}
-              <svg
-                className={`w-4 h-4 transition-transform duration-300 ${showAll ? "rotate-180" : ""}`}
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-          </div>
-        )}
-
-        <div className="mt-16 text-center">
-          <p className="text-white/50 text-sm mb-4">Had a great experience with Antova?</p>
-          <a
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-[4px] hover:bg-white/90 transition-colors duration-300"
-          >
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
+          {/* Google badge */}
+          <div className="flex items-center gap-4">
             <GoogleIcon />
-            Write a Review on Google
-          </a>
+            <div>
+              <div className="flex items-center gap-2">
+                <span className="text-white font-bold text-2xl">{avgRating.toFixed(1)}</span>
+                <StarRating rating={Math.round(avgRating)} />
+              </div>
+              <span className="text-white/40 text-sm">{GOOGLE_REVIEWS.length} verified reviews</span>
+            </div>
+          </div>
+
+          {/* Divider */}
+          <div className="hidden sm:block h-12 w-px bg-white/10" />
+
+          {/* CTA */}
+          <div className="flex items-center gap-4">
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 text-sm text-white/70 border border-white/15 rounded-[4px] hover:bg-white/5 hover:border-white/30 transition-all duration-300"
+            >
+              View All Reviews
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
+            <a
+              href="#"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-[4px] hover:bg-white/90 transition-colors duration-300"
+            >
+              <GoogleIcon />
+              Write a Review
+            </a>
+          </div>
         </div>
       </div>
     </section>
