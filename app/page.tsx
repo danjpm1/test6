@@ -783,6 +783,62 @@ export default function AntovaBuilders() {
         </div>
       </div>
 
+      {/* ━━━ SCHEDULING BANNER — Right after trust strip ━━━ */}
+      <section className="py-12 lg:py-16 bg-white">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 bg-white border border-black/[0.06] rounded-2xl overflow-hidden">
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
+            
+            <div className="flex-1 flex flex-col gap-4 p-6 sm:p-8 lg:p-10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-black/[0.03] border border-black/[0.08] rounded-full text-black/50 text-xs font-medium tracking-wide uppercase">
+                Spring 2026 · Limited Availability
+              </span>
+              <Link href="/offers">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black hover:text-[#c6912c] transition-colors cursor-pointer leading-tight">
+                  Now scheduling spring 2026 projects.
+                </h2>
+              </Link>
+              <p className="text-black/50 text-base md:text-lg max-w-xl leading-relaxed">
+                Each project includes a complimentary design consultation and AI-powered scope analysis — so you know exactly what to expect before breaking ground.
+              </p>
+            </div>
+
+            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-6 sm:p-8 lg:p-10 border-t sm:border-t-0 sm:border-l border-black/[0.06]">
+              <div className="text-center space-y-2">
+                <p className="text-black/40 text-xs tracking-wide uppercase">Included with every project</p>
+                <div className="space-y-3 text-left">
+                  <div className="flex items-center gap-2.5">
+                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-black/70 text-sm">Design consultation</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-black/70 text-sm">AI scope analysis</span>
+                  </div>
+                  <div className="flex items-center gap-2.5">
+                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                    <span className="text-black/70 text-sm">Priority scheduling</span>
+                  </div>
+                </div>
+              </div>
+              <Link href="/offers" className="w-full">
+                <button className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
+                  <span>Check Availability</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+              </Link>
+              <Link href="/contact" className="w-full">
+                <button className="flex items-center justify-center gap-2 w-full px-8 py-3 border border-black/15 text-black/60 hover:text-black hover:border-black/30 font-medium text-sm rounded-[4px] transition-all">
+                  Or request a custom quote
+                </button>
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ━━━ PROBLEM → SOLUTION — Names the fear, then resolves it ━━━ */}
       <section className="py-20 lg:py-28 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
@@ -806,7 +862,7 @@ export default function AntovaBuilders() {
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
               </div>
-              <h3 className="text-xl font-bold text-black mb-3">No budget surprises</h3>
+              <h3 className="text-xl font-bold text-black mb-3">No investment surprises</h3>
               <p className="text-black/50 text-base leading-relaxed">
                 Our AI estimator gives you a realistic investment range before you commit to anything. No hidden fees, no scope creep, no uncomfortable conversations later.
               </p>
@@ -925,61 +981,6 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
-      {/* ━━━ SCHEDULING BANNER — Moved here between services and testimonials ━━━ */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 bg-white border border-black/[0.06] rounded-2xl overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
-            
-            <div className="flex-1 flex flex-col gap-4 p-6 sm:p-8 lg:p-10">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-black/[0.03] border border-black/[0.08] rounded-full text-black/50 text-xs font-medium tracking-wide uppercase">
-                Spring 2026 · Limited Availability
-              </span>
-              <Link href="/offers">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black hover:text-[#c6912c] transition-colors cursor-pointer leading-tight">
-                  Now scheduling spring 2026 projects.
-                </h2>
-              </Link>
-              <p className="text-black/50 text-base md:text-lg max-w-xl leading-relaxed">
-                Each project includes a complimentary design consultation and AI-powered scope analysis — so you know exactly what to expect before breaking ground.
-              </p>
-            </div>
-
-            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-6 sm:p-8 lg:p-10 border-t sm:border-t-0 sm:border-l border-black/[0.06]">
-              <div className="text-center space-y-2">
-                <p className="text-black/40 text-xs tracking-wide uppercase">Included with every project</p>
-                <div className="space-y-3 text-left">
-                  <div className="flex items-center gap-2.5">
-                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    <span className="text-black/70 text-sm">Design consultation</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    <span className="text-black/70 text-sm">AI scope analysis</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    <span className="text-black/70 text-sm">Priority scheduling</span>
-                  </div>
-                </div>
-              </div>
-              <Link href="/offers" className="w-full">
-                <button className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
-                  <span>Check Availability</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </button>
-              </Link>
-              <Link href="/contact" className="w-full">
-                <button className="flex items-center justify-center gap-2 w-full px-8 py-3 border border-black/15 text-black/60 hover:text-black hover:border-black/30 font-medium text-sm rounded-[4px] transition-all">
-                  Or request a custom quote
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
 
       <section
         ref={testimonialsRef}
