@@ -8,6 +8,7 @@ import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
 
 const SCROLL_THRESHOLD = 50
 const SERVICE_CARDS_THRESHOLD = 0.5
@@ -15,48 +16,43 @@ const TESTIMONIALS_THRESHOLD = 0.5
 
 const SERVICE_CARDS = [
   {
-    title: "Custom Homes",
-    subtitle: "Bring your vision to life",
+    title: "Signature Custom Design",
     image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
     alt: "Custom homes lifestyle",
     href: "/services/signature-custom-design",
   },
   {
     title: "Renovations",
-    subtitle: "Transform what you already love",
     image: "/renovation-human.png",
     alt: "Renovations lifestyle",
     href: "/services/renovation",
   },
   {
     title: "New Builds",
-    subtitle: "Precision from the ground up",
     image: "/new-builds.png",
     alt: "New construction lifestyle",
     href: "/services/new-builds",
   },
 ]
 
-const PROCESS_STEPS = [
+const OFFER_CARDS = [
   {
-    number: "01",
-    title: "Explore",
-    description: "Use our AI Estimator to get an instant budget range — no commitment, no contact info required.",
+    title: "Engineering & Consulting",
+    description: "Expert structural solutions and professional consulting for complex builds.",
+    price: "Consultation from $500",
+    image: "/images/engineering-blueprints.png",
+    alt: "Architects working on architectural blueprints and floor plans",
+    exploreHref: "/services/engineering-consulting",
+    exploreLabel: "Explore Engineering",
   },
   {
-    number: "02",
-    title: "Consult",
-    description: "Schedule a private design consultation to discuss your vision, timeline, and investment.",
-  },
-  {
-    number: "03",
-    title: "Design",
-    description: "Our architects craft a detailed plan tailored to your site, style, and budget parameters.",
-  },
-  {
-    number: "04",
-    title: "Build",
-    description: "Construction begins with transparent progress updates, on-time milestones, and zero surprises.",
+    title: "Renovation",
+    description: "Modern renovation spaces designed for business excellence.",
+    price: "$2k-5k credits",
+    image: "/renovation-human.png",
+    alt: "Professional contractor reviewing renovation plans",
+    exploreHref: "/services/renovation",
+    exploreLabel: "Explore Renovation",
   },
 ]
 
@@ -93,6 +89,7 @@ const TESTIMONIALS = [
   },
 ]
 
+// Placeholder Google reviews - will be replaced with real data when Google Business is set up
 const GOOGLE_REVIEWS = [
   {
     author_name: "David Morrison",
@@ -172,11 +169,15 @@ function ScrollIndicator({ show }: { show: boolean }) {
       onClick={scrollToContent}
     >
       <div className="flex flex-col items-center gap-4">
+        {/* Mouse icon with animated wheel */}
         <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
+          {/* Animated scroll wheel */}
           <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
+          {/* Glow effect on hover */}
           <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
         </div>
         
+        {/* Animated chevrons - bigger and brighter */}
         <div className="flex flex-col items-center -space-y-2">
           <svg 
             className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
@@ -250,16 +251,14 @@ function GoogleIcon() {
   )
 }
 
-/* ─── Service Card with emotional subtitle ─── */
 interface ServiceCardProps {
   title: string
-  subtitle: string
   image: string
   alt: string
   href: string
 }
 
-function ServiceCard({ title, subtitle, image, alt, href }: ServiceCardProps) {
+function ServiceCard({ title, image, alt, href }: ServiceCardProps) {
   return (
     <Link href={href}>
       <div className="group relative overflow-hidden rounded-xl cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.02] aspect-[4/3]">
@@ -268,29 +267,73 @@ function ServiceCard({ title, subtitle, image, alt, href }: ServiceCardProps) {
           alt={alt} 
           fill
           sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover object-center transition-transform duration-700 group-hover:scale-105" 
+          className="object-cover object-center" 
         />
         <div
           className="absolute inset-0"
           style={{
-            background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.35) 35%, transparent 60%)",
+            background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)",
           }}
         />
-        <div className="absolute bottom-0 left-0 right-0 p-6 flex items-end justify-between">
-          <div>
-            <h3 className="text-white font-semibold text-lg mb-1">{title}</h3>
-            <p className="text-white/60 text-sm">{subtitle}</p>
-          </div>
-          <div className="w-10 h-10 rounded-full border border-white/30 flex items-center justify-center group-hover:bg-[#c6912c] group-hover:border-[#c6912c] transition-all duration-300">
-            <ArrowIcon />
-          </div>
+        <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
+          <h3 className="text-white font-medium text-base">{title}</h3>
+          <ArrowIcon />
         </div>
       </div>
     </Link>
   )
 }
 
-/* ─── Testimonial Card ─── */
+interface OfferCardProps {
+  title: string
+  description: string
+  price: string
+  image: string
+  alt: string
+  exploreHref: string
+  exploreLabel: string
+}
+
+function OfferCard({ title, description, price, image, alt, exploreHref, exploreLabel }: OfferCardProps) {
+  return (
+    <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
+      <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
+        <Image
+          src={image}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 50vw"
+          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
+
+        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
+          <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
+          <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
+          <div className="flex gap-3 pt-2">
+            <Button
+              size="sm"
+              className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all"
+              asChild
+            >
+              <Link href={exploreHref}>{exploreLabel}</Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent"
+              asChild
+            >
+              <Link href="/contact">Get Quote</Link>
+            </Button>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 interface TestimonialCardProps {
   headline: string
   service: string
@@ -348,7 +391,6 @@ function TestimonialCard({ headline, service, quote, author, role, company, vide
   )
 }
 
-/* ─── Google Review Card ─── */
 interface GoogleReviewCardProps {
   author_name: string
   rating: number
@@ -400,7 +442,6 @@ function GoogleReviewCard({ author_name, rating, relative_time_description, text
   )
 }
 
-/* ─── Google Reviews Section ─── */
 function GoogleReviewsSection() {
   const [showAll, setShowAll] = useState(false)
   const displayedReviews = showAll ? GOOGLE_REVIEWS : GOOGLE_REVIEWS.slice(0, 3)
@@ -475,7 +516,6 @@ function GoogleReviewsSection() {
   )
 }
 
-/* ─── Hooks ─── */
 function useScrollThreshold(ref: React.RefObject<HTMLElement | null>, threshold: number) {
   const [isPastThreshold, setIsPastThreshold] = useState(false)
 
@@ -495,25 +535,15 @@ function useScrollThreshold(ref: React.RefObject<HTMLElement | null>, threshold:
   return isPastThreshold
 }
 
-/* ═══════════════════════════════════════════════════════════
-   MAIN PAGE COMPONENT — Conversion Funnel Structure
-   
-   Flow:
-   1. Hero → emotional hook + primary CTA (AI Estimator)
-   2. Choose Your Path → intent routing (Custom / Reno / New Build)
-   3. AI Estimator → primary conversion mechanism (moved UP)
-   4. Value Prop + Stats → trust + authority
-   5. How It Works → reduce anxiety, show process clarity
-   6. Testimonials → social proof
-   7. Google Reviews → external validation
-   8. Final CTA → capacity-based urgency
-   ═══════════════════════════════════════════════════════════ */
-
 export default function AntovaBuilders() {
+  const [isScrolled, setIsScrolled] = useState(false)
   const [showNavbar, setShowNavbar] = useState(false)
   const [showTitle, setShowTitle] = useState(false)
   const [showSubtitleAndButtons, setShowSubtitleAndButtons] = useState(false)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
+  const [selectedProjectType, setSelectedProjectType] = useState("")
+  const router = useRouter()
+  const serviceCardsRef = useRef<HTMLElement>(null)
   const testimonialsRef = useRef<HTMLElement>(null)
 
   const isTestimonialsVisible = useScrollThreshold(testimonialsRef, TESTIMONIALS_THRESHOLD)
@@ -530,39 +560,75 @@ export default function AntovaBuilders() {
     }
   }, [])
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
+    }
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
   const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-white"
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
-      {/* Scroll indicator animations */}
+    <div className={`min-h-screen bg-white overflow-x-hidden`}>
+      {/* Custom animations for scroll indicator */}
       <style jsx global>{`
         @keyframes scroll-wheel {
-          0% { opacity: 1; transform: translateY(0); }
-          50% { opacity: 0.5; transform: translateY(10px); }
-          100% { opacity: 0; transform: translateY(14px); }
+          0% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.5;
+            transform: translateY(10px);
+          }
+          100% {
+            opacity: 0;
+            transform: translateY(14px);
+          }
         }
+        
         @keyframes chevron-fade-1 {
-          0%, 100% { opacity: 0.8; transform: translateY(0); }
-          50% { opacity: 1; transform: translateY(6px); }
+          0%, 100% {
+            opacity: 0.8;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 1;
+            transform: translateY(6px);
+          }
         }
+        
         @keyframes chevron-fade-2 {
-          0%, 100% { opacity: 0.5; transform: translateY(0); }
-          50% { opacity: 0.9; transform: translateY(6px); }
+          0%, 100% {
+            opacity: 0.5;
+            transform: translateY(0);
+          }
+          50% {
+            opacity: 0.9;
+            transform: translateY(6px);
+          }
         }
-        .animate-scroll-wheel { animation: scroll-wheel 1.5s ease-in-out infinite; }
-        .animate-chevron-1 { animation: chevron-fade-1 1.5s ease-in-out infinite; }
-        .animate-chevron-2 { animation: chevron-fade-2 1.5s ease-in-out infinite; animation-delay: 0.2s; }
+        
+        .animate-scroll-wheel {
+          animation: scroll-wheel 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-1 {
+          animation: chevron-fade-1 1.5s ease-in-out infinite;
+        }
+        
+        .animate-chevron-2 {
+          animation: chevron-fade-2 1.5s ease-in-out infinite;
+          animation-delay: 0.2s;
+        }
       `}</style>
 
       <Navbar hidden={!showNavbar} />
 
-      {/* ━━━ SECTION 1: HERO ━━━
-          Purpose: Emotional hook. Orient the visitor. Drive ONE primary action.
-          Changes: 
-          - Headline rewritten: sells transformation, not just a tagline
-          - Microcopy under CTA reduces commitment anxiety
-          - Subtle capacity line creates exclusivity without discounts
-      */}
+      {/* ━━━ HERO ━━━ */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
@@ -573,10 +639,11 @@ export default function AntovaBuilders() {
             sizes="100vw"
             className="object-cover object-center"
           />
-          <div className="absolute inset-0 bg-black/30" />
+          <div className="absolute inset-0 bg-black/35" />
         </div>
 
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-32 md:-mt-40">
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-24 md:-mt-32">
+          {/* Headline — benefit-driven, answers "why should I care" */}
           <h1 
             className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-3 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
               showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
@@ -584,53 +651,209 @@ export default function AntovaBuilders() {
           >
             Your vision, built without compromise.
           </h1>
+
+          {/* Subline — packs benefit + speed + proof into one line */}
           <p 
-            className={`text-lg md:text-xl lg:text-2xl mb-6 text-white/80 tracking-wide transition-all duration-700 ease-out ${
+            className={`text-base md:text-lg lg:text-xl mb-8 text-white/80 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            Luxury custom homes & renovations · Pacific Northwest
+            Get your budget range in 60 seconds · 150+ homes built across the Pacific Northwest
           </p>
+
+          {/* Embedded estimator entry — starts the funnel right in the hero (Simply Business pattern) */}
           <div 
-            className={`flex flex-col sm:flex-row items-center justify-center gap-3 transition-all duration-700 ease-out ${
+            className={`flex flex-col items-center gap-4 transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <Button
-              size="lg"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] bg-[#c6912c] hover:bg-[#a67923] text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] shadow-lg hover:shadow-[#c6912c]/50 transition-all hover:scale-105"
-              asChild
+            {/* Form row: selector + button */}
+            <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full max-w-[540px]">
+              {/* Project type selector */}
+              <div className="relative flex-1">
+                <select
+                  value={selectedProjectType}
+                  onChange={(e) => setSelectedProjectType(e.target.value)}
+                  className="w-full h-[48px] px-4 pr-10 bg-white/95 backdrop-blur-sm text-black/80 text-sm font-medium rounded-[4px] border-0 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all"
+                >
+                  <option value="" disabled>What are you planning?</option>
+                  <option value="custom-home">Custom Home</option>
+                  <option value="renovation">Renovation</option>
+                  <option value="new-build">New Build</option>
+                </select>
+                {/* Dropdown arrow */}
+                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black/40 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                </svg>
+              </div>
+
+              {/* Primary CTA button */}
+              <Button
+                size="lg"
+                className="h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold px-8 text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40 whitespace-nowrap"
+                onClick={() => {
+                  const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
+                  router.push(`/cost-estimator${param}`)
+                }}
+              >
+                Get Your Estimate →
+              </Button>
+            </div>
+
+            {/* Microcopy — reduces FUD */}
+            <p className="text-white/40 text-xs tracking-wide">
+              Free · No email required · Takes 60 seconds
+            </p>
+
+            {/* Secondary CTA — consultation as text link, not competing button */}
+            <Link 
+              href="/contact" 
+              className="text-white/60 hover:text-white text-sm underline underline-offset-4 decoration-white/30 hover:decoration-white/60 transition-all mt-1"
             >
-              <Link href="/cost-estimator">Get Your Estimate</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[40px] border-2 border-white text-white hover:bg-white hover:text-black font-medium px-[34px] py-0 text-sm tracking-wide rounded-[4px] transition-all hover:scale-105 bg-transparent"
-              asChild
-            >
-              <Link href="/contact">Book a Consultation</Link>
-            </Button>
+              Or book a consultation directly
+            </Link>
           </div>
         </div>
 
+        {/* Scroll Indicator */}
         <ScrollIndicator show={showSubtitleAndButtons} />
       </section>
 
-
-      {/* ━━━ SECTION 2: CHOOSE YOUR PATH ━━━
-          Purpose: Intent routing first — luxury clients think in project types, not budgets.
-          Cards link to dedicated service pages where the estimator is pushed harder.
+      {/* ━━━ TRUST STRIP — immediately below hero ━━━
+          Every high-converting page has this. Catches the 60% who don't scroll further.
       */}
-      <section className="py-16 lg:py-24 bg-white">
+      <div className="bg-white border-b border-black/[0.06]">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="text-center mb-12 lg:mb-16">
-            <p className="text-[#c6912c] text-sm font-medium tracking-[0.2em] uppercase mb-4">What We Build</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
-              Choose your project path
-            </h2>
+          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 lg:gap-14 py-5">
+            {/* Google Rating */}
+            <div className="flex items-center gap-2">
+              <GoogleIcon />
+              <div className="flex items-center gap-1">
+                <span className="text-black font-semibold text-sm">5.0</span>
+                <div className="flex gap-0.5">
+                  {[1,2,3,4,5].map(i => (
+                    <svg key={i} className="w-3.5 h-3.5 text-[#c6912c]" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            <div className="hidden sm:block w-px h-5 bg-black/10" />
+            
+            <span className="text-black/50 text-sm font-medium">150+ Projects</span>
+            
+            <div className="hidden sm:block w-px h-5 bg-black/10" />
+            
+            <span className="text-black/50 text-sm font-medium">12 Years Experience</span>
+            
+            <div className="hidden sm:block w-px h-5 bg-black/10" />
+            
+            <span className="text-black/50 text-sm font-medium">98% Client Satisfaction</span>
+
+            <div className="hidden md:block w-px h-5 bg-black/10" />
+
+            <span className="text-black/50 text-sm font-medium">Pacific Northwest</span>
+          </div>
+        </div>
+      </div>
+
+      <section className="pt-20 pb-12 lg:pt-28 lg:pb-16 bg-white">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mb-20 lg:mb-24">
+          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 mb-16 bg-[#f4f4f5] border border-black/[0.06] rounded-2xl overflow-hidden shadow-sm">
+            {/* Gold accent line at top */}
+            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
+            
+            {/* Left side - Content */}
+            <div className="flex-1 flex flex-col gap-4 p-6 sm:p-8 lg:p-10">
+              <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-[#c6912c]/10 border border-[#c6912c]/30 rounded-full text-[#c6912c] text-xs font-semibold tracking-wide uppercase">
+                <span className="w-1.5 h-1.5 bg-[#c6912c] rounded-full animate-pulse" />
+                2 Active Offers
+              </span>
+              <Link href="/offers">
+                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black hover:text-[#c6912c] transition-colors cursor-pointer leading-tight">
+                  Get your offer now.
+                </h2>
+              </Link>
+              <p className="text-black/50 text-base md:text-lg max-w-lg leading-relaxed">
+                Seasonal specials on custom builds and renovations — limited availability.
+              </p>
+            </div>
+
+            {/* Right side - CTA area */}
+            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-6 sm:p-8 lg:p-10 bg-black/[0.02] border-t sm:border-t-0 sm:border-l border-black/[0.06]">
+              <div className="text-center space-y-1.5">
+                <p className="text-black/60 text-sm font-medium">Save up to</p>
+                <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">15%</p>
+                <p className="text-black/40 text-xs">on select project packages</p>
+              </div>
+              <Link href="/offers" className="w-full">
+                <button className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
+                  <span>View All Offers</span>
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </button>
+              </Link>
+              <Link href="/contact" className="w-full">
+                <button className="flex items-center justify-center gap-2 w-full px-8 py-3 border border-black/15 text-black/60 hover:text-black hover:border-black/30 font-medium text-sm rounded-[4px] transition-all">
+                  Or request a custom quote
+                </button>
+              </Link>
+            </div>
           </div>
 
+          <div className="grid md:grid-cols-2 gap-6 lg:gap-8">
+            {OFFER_CARDS.map((card) => (
+              <OfferCard key={card.title} {...card} />
+            ))}
+          </div>
+        </div>
+
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-[1000px] border-l-2 border-[#c6912c] pl-6 sm:pl-8 lg:pl-12">
+            <p className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light">
+              Luxury is the freedom to relax
+            </p>
+            <p className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light mt-2 sm:mt-4">
+              while experts handle every detail.
+            </p>
+            <p className="text-base md:text-xl text-black/50 mt-5 sm:mt-8 leading-relaxed">
+              Antova delivers master craftsmanship, precise AI estimating, and seamless service — from blueprint to perfection.
+            </p>
+          </div>
+        </div>
+
+        {/* Stats trust bar */}
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mt-16 lg:mt-20">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-12 py-10 border-t border-black/[0.06]">
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">150+</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Projects Completed</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">12</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Years Experience</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">98%</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Client Satisfaction</p>
+            </div>
+            <div className="text-center">
+              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">$50M+</p>
+              <p className="text-black/50 text-sm md:text-base mt-2">Total Value Built</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="services"
+        ref={serviceCardsRef}
+        className={`py-12 lg:py-16 bg-white`}
+      >
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
             {SERVICE_CARDS.map((card) => (
               <ServiceCard key={card.title} {...card} />
@@ -639,221 +862,6 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
-
-      {/* ━━━ SECTION 3: AI ESTIMATOR ━━━
-          Purpose: For visitors who scroll past the lanes — still catch them with the estimator.
-          Also reinforces the estimator for those who come back from service pages.
-      */}
-      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 lg:min-h-[80vh] bg-[#0a0a0a]">
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
-            {/* Left side - Text content */}
-            <div className="space-y-6 order-1">
-              <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">
-                AI-Powered Estimation
-              </p>
-              
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1]">
-                Know your budget<br />
-                <span className="text-[#c6912c]">before you commit.</span>
-              </h2>
-              
-              <p className="text-base md:text-lg lg:text-xl text-white/60 leading-relaxed max-w-xl">
-                Our AI analyzes your project details and delivers an accurate cost range, material insights, and realistic timeline — instantly. No forms, no calls, no pressure.
-              </p>
-
-              {/* Value preview: what they'll get */}
-              <div className="grid grid-cols-3 gap-4 pt-2 max-w-lg">
-                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
-                  <p className="text-[#c6912c] text-lg font-bold">$</p>
-                  <p className="text-white/50 text-xs mt-1">Budget Range</p>
-                </div>
-                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
-                  <p className="text-[#c6912c] text-lg font-bold">
-                    <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                  </p>
-                  <p className="text-white/50 text-xs mt-1">Timeline</p>
-                </div>
-                <div className="text-center p-4 rounded-xl bg-white/5 border border-white/10">
-                  <p className="text-[#c6912c] text-lg font-bold">
-                    <svg className="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
-                    </svg>
-                  </p>
-                  <p className="text-white/50 text-xs mt-1">Materials</p>
-                </div>
-              </div>
-              
-              {/* Buttons - Desktop */}
-              <div className="hidden lg:flex flex-row gap-3 pt-4">
-                <Button
-                  size="lg"
-                  className="sm:min-w-[220px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
-                  asChild
-                >
-                  <Link href="/cost-estimator">Get Your Estimate</Link>
-                </Button>
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
-                  asChild
-                >
-                  <Link href="/contact">Book a Consultation</Link>
-                </Button>
-              </div>
-              <p className="hidden lg:block text-white/30 text-xs">Takes about 60 seconds · 4 simple questions · No email required</p>
-            </div>
-
-            {/* Right side - Video */}
-            <div className="relative order-2">
-              <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster="/ai-video-poster.jpg"
-                  className="absolute inset-0 w-full h-full object-cover cursor-pointer"
-                  onClick={(e) => {
-                    const video = e.currentTarget;
-                    video.play();
-                    setIsVideoPlaying(true);
-                  }}
-                  onPlay={() => setIsVideoPlaying(true)}
-                >
-                  <source src="/ai-video.mp4" type="video/mp4" />
-                </video>
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30 hidden lg:block pointer-events-none" />
-              </div>
-              
-              <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10 hidden lg:block" />
-            </div>
-
-            {/* Buttons - Mobile */}
-            <div className="flex lg:hidden flex-col gap-3 order-3 w-full">
-              <Button
-                size="lg"
-                className="w-full h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all"
-                asChild
-              >
-                <Link href="/cost-estimator">Get Your Estimate</Link>
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all"
-                asChild
-              >
-                <Link href="/contact">Book a Consultation</Link>
-              </Button>
-              <p className="text-white/30 text-xs text-center">Takes about 60 seconds · 4 simple questions · No email required</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ━━━ SECTION 4: VALUE PROP + STATS ━━━
-          Purpose: Build trust and authority. 
-          "Luxury is the freedom to relax" is the strongest emotional copy on the page.
-          Stats back it up with concrete numbers.
-      */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-[1000px] border-l-2 border-[#c6912c] pl-8 lg:pl-12">
-            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light">
-              Luxury is the freedom to relax
-            </p>
-            <p className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black leading-snug font-light mt-4">
-              while experts handle every detail.
-            </p>
-            <p className="text-lg md:text-xl text-black/50 mt-8 leading-relaxed">
-              Antova delivers master craftsmanship, precise AI estimating, and seamless service — from blueprint to perfection.
-            </p>
-          </div>
-        </div>
-
-        {/* Stats trust bar */}
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mt-16 lg:mt-20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 lg:gap-12 py-10 border-t border-black/[0.06]">
-            <div className="text-center">
-              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">150+</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Projects Completed</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">12</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Years Experience</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">98%</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Client Satisfaction</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[#c6912c] text-4xl lg:text-5xl font-bold tracking-tight">$50M+</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Total Value Built</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ━━━ SECTION 5: HOW IT WORKS ━━━
-          Purpose: Reduce anxiety. Show process clarity and control.
-          Affluent clients fear chaos, delays, and poor communication.
-          This section says: "We have a system. You'll know what happens at every step."
-      */}
-      <section className="py-20 lg:py-28 bg-[#fafafa] border-t border-black/[0.04]">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="text-center mb-16 lg:mb-20">
-            <p className="text-[#c6912c] text-sm font-medium tracking-[0.2em] uppercase mb-4">Our Process</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
-              From vision to walkthrough
-            </h2>
-            <p className="text-black/50 text-lg mt-4 max-w-2xl mx-auto">
-              A clear, controlled process designed around your time and your standards.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
-            {PROCESS_STEPS.map((step) => (
-              <div 
-                key={step.number}
-                className="group relative"
-              >
-                {/* Step number */}
-                <p className="text-[#c6912c] text-5xl lg:text-6xl font-bold tracking-tight mb-4 opacity-20 group-hover:opacity-40 transition-opacity duration-300">
-                  {step.number}
-                </p>
-                {/* Accent line */}
-                <div className="w-12 h-[2px] bg-[#c6912c] mb-5 group-hover:w-20 transition-all duration-300" />
-                <h3 className="text-xl font-semibold text-black mb-3">{step.title}</h3>
-                <p className="text-black/50 text-sm leading-relaxed">{step.description}</p>
-              </div>
-            ))}
-          </div>
-
-          <div className="text-center mt-16">
-            <Button
-              size="lg"
-              className="h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105 px-10"
-              asChild
-            >
-              <Link href="/cost-estimator">Get Your Estimate</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ━━━ SECTION 6: TESTIMONIALS ━━━
-          Purpose: Social proof from real clients.
-          Kept intact from original — strong design.
-      */}
       <section
         ref={testimonialsRef}
         className={`py-24 lg:py-32 ${bottomBgColor} transition-colors duration-300 ease-in-out relative overflow-hidden`}
@@ -883,7 +891,7 @@ export default function AntovaBuilders() {
               className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
               asChild
             >
-              <Link href="/cost-estimator">Get Your Estimate</Link>
+              <Link href="/projects" scroll={true}>View All Projects</Link>
             </Button>
             <Button
               size="lg"
@@ -891,64 +899,104 @@ export default function AntovaBuilders() {
               className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
               asChild
             >
-              <Link href="/contact">Book a Consultation</Link>
+              <Link href="/contact" scroll={true}>Start Your Project</Link>
             </Button>
           </div>
         </div>
       </section>
 
-
-      {/* ━━━ SECTION 7: GOOGLE REVIEWS ━━━ */}
+      {/* Google Reviews Section */}
       <GoogleReviewsSection />
 
+      {/* AI-Powered Section - Two column layout with video */}
+      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 lg:min-h-screen bg-[#0a0a0a]">
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
+            {/* Left side - Text content */}
+            <div className="space-y-6 order-1">
+              {/* Label */}
+              <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">
+                AI-Powered Estimation
+              </p>
+              
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold tracking-tight text-white leading-[1.1]">
+                Turn ideas into<br />
+                <span className="text-[#c6912c]">architectural reality.</span>
+              </h2>
+              
+              <p className="text-base md:text-lg lg:text-xl text-white/60 leading-relaxed max-w-xl">
+                Begin with your vision. Our AI instantly transforms project details into accurate cost estimates, material insights, and construction timelines.
+              </p>
+              
+              {/* Buttons - Desktop only (hidden on mobile) */}
+              <div className="hidden lg:flex flex-row gap-3 pt-4">
+                <Button
+                  size="lg"
+                  className="sm:min-w-[200px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
+                  asChild
+                >
+                  <Link href="/cost-estimator">Try AI Estimator</Link>
+                </Button>
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="sm:min-w-[200px] h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
+                  asChild
+                >
+                  <Link href="/about">Learn More</Link>
+                </Button>
+              </div>
+            </div>
 
-      {/* ━━━ SECTION 8: FINAL CTA — CAPACITY-BASED URGENCY ━━━
-          Purpose: Close the page with one clear action + exclusivity.
-          Replaces the old discount section.
-          Uses capacity messaging: "limited build slots" not "15% off".
-      */}
-      <section className="relative py-24 lg:py-32 bg-[#0a0a0a] overflow-hidden">
-        {/* Subtle background glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-[#c6912c]/8 rounded-full blur-[120px] pointer-events-none" />
-        
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-4xl mx-auto text-center">
-          {/* Capacity badge */}
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-[#c6912c]/10 border border-[#c6912c]/30 rounded-full mb-8">
-            <span className="w-2 h-2 bg-[#c6912c] rounded-full animate-pulse" />
-            <span className="text-[#c6912c] text-xs font-medium tracking-wide">Now scheduling Q3 & Q4 2026 projects</span>
+            {/* Right side - Video */}
+            <div className="relative order-2">
+              <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
+                {/* Video with poster and tap-to-play on mobile */}
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  poster="/ai-video-poster.jpg"
+                  className="absolute inset-0 w-full h-full object-cover cursor-pointer"
+                  onClick={(e) => {
+                    const video = e.currentTarget;
+                    video.play();
+                    setIsVideoPlaying(true);
+                  }}
+                  onPlay={() => setIsVideoPlaying(true)}
+                >
+                  <source src="/ai-video.mp4" type="video/mp4" />
+                </video>
+                
+                {/* Gradient overlay for better blending */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60 pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30 hidden lg:block pointer-events-none" />
+              </div>
+              
+              {/* Glow effect */}
+              <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10 hidden lg:block" />
+            </div>
+
+            {/* Buttons - Mobile only (below video) */}
+            <div className="flex lg:hidden flex-col gap-3 order-3 w-full">
+              <Button
+                size="lg"
+                className="w-full h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all"
+                asChild
+              >
+                <Link href="/cost-estimator">Try AI Estimator</Link>
+              </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                className="w-full h-[48px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all"
+                asChild
+              >
+                <Link href="/about">Learn More</Link>
+              </Button>
+            </div>
           </div>
-
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white tracking-tight mb-6 leading-[1.15]">
-            Ready to build something
-            <br className="hidden sm:block" />
-            {" "}extraordinary?
-          </h2>
-          
-          <p className="text-white/50 text-base md:text-lg max-w-2xl mx-auto mb-10 leading-relaxed">
-            We accept a limited number of projects each season to maintain the quality and attention our clients expect. Start with a free estimate to see if we're the right fit.
-          </p>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto sm:min-w-[280px] h-[52px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
-              asChild
-            >
-              <Link href="/cost-estimator">Get Your Estimate</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto sm:min-w-[280px] h-[52px] border border-white/20 text-white hover:bg-white/10 hover:border-white/40 bg-transparent font-medium text-base tracking-wide rounded-[4px] transition-all hover:scale-105"
-              asChild
-            >
-              <Link href="/contact">Book a Consultation</Link>
-            </Button>
-          </div>
-
-          <p className="mt-6 text-white/30 text-xs tracking-wide">
-            No obligation · Response within 24 hours · Complimentary initial consultation
-          </p>
         </div>
       </section>
 
