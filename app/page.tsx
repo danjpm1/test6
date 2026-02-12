@@ -645,7 +645,7 @@ export default function AntovaBuilders() {
         <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-24 md:-mt-32">
           {/* Headline — benefit-driven, answers "why should I care" */}
           <h1 
-            className={`text-4xl md:text-5xl lg:text-6xl font-light mb-5 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
+            className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-5 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
               showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
