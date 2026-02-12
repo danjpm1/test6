@@ -654,61 +654,76 @@ export default function AntovaBuilders() {
 
           {/* Subline — packs benefit + speed + proof into one line */}
           <p 
-            className={`text-base md:text-lg lg:text-xl mb-8 text-white/80 tracking-wide transition-all duration-700 ease-out ${
+            className={`text-base md:text-lg lg:text-xl mb-10 text-white/80 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            Get your budget range in 60 seconds · 150+ homes built across the Pacific Northwest
+            See your realistic budget range in 60 seconds · 150+ homes built across the Pacific Northwest
           </p>
 
-          {/* Embedded estimator entry — starts the funnel right in the hero (Simply Business pattern) */}
+          {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
           <div 
-            className={`flex flex-col items-center gap-4 transition-all duration-700 ease-out ${
+            className={`flex flex-col items-center gap-5 transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            {/* Form row: selector + button */}
-            <div className="flex flex-col sm:flex-row items-stretch gap-3 w-full max-w-[540px]">
-              {/* Project type selector */}
-              <div className="relative flex-1">
-                <select
-                  value={selectedProjectType}
-                  onChange={(e) => setSelectedProjectType(e.target.value)}
-                  className="w-full h-[48px] px-4 pr-10 bg-white/95 backdrop-blur-sm text-black/80 text-sm font-medium rounded-[4px] border-0 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all"
-                >
-                  <option value="" disabled>What are you planning?</option>
-                  <option value="custom-home">Custom Home</option>
-                  <option value="renovation">Renovation</option>
-                  <option value="new-build">New Build</option>
-                </select>
-                {/* Dropdown arrow */}
-                <svg className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-black/40 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
+            {/* Frosted glass container — makes the estimator feel like a tool, not a form */}
+            <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-3 sm:p-4">
+              {/* Form row: selector + button */}
+              <div className="flex flex-col sm:flex-row items-stretch gap-3">
+                {/* Project type selector */}
+                <div className="relative flex-1">
+                  <select
+                    value={selectedProjectType}
+                    onChange={(e) => setSelectedProjectType(e.target.value)}
+                    className="w-full h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-0 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm"
+                  >
+                    <option value="" disabled>What are you planning?</option>
+                    <option value="custom-home">Custom Home</option>
+                    <option value="renovation">Major Renovation</option>
+                    <option value="new-build">New Build</option>
+                    <option value="consulting">Engineering & Consulting</option>
+                  </select>
+                  {/* Dropdown arrow */}
+                  <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/30 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
 
-              {/* Primary CTA button */}
-              <Button
-                size="lg"
-                className="h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold px-8 text-sm tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40 whitespace-nowrap"
-                onClick={() => {
-                  const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
-                  router.push(`/cost-estimator${param}`)
-                }}
-              >
-                Get Your Estimate →
-              </Button>
+                {/* Primary CTA button */}
+                <Button
+                  size="lg"
+                  className="h-[54px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold px-10 text-base tracking-wide rounded-lg shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-[1.02] hover:shadow-[#c6912c]/40 whitespace-nowrap"
+                  onClick={() => {
+                    const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
+                    router.push(`/cost-estimator${param}`)
+                  }}
+                >
+                  See My Budget Range →
+                </Button>
+              </div>
             </div>
 
             {/* Microcopy — reduces FUD */}
-            <p className="text-white/40 text-xs tracking-wide">
-              Free · No email required · Takes 60 seconds
-            </p>
+            <div className="flex flex-wrap items-center justify-center gap-4 text-white/40 text-xs tracking-wide">
+              <span className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                Free
+              </span>
+              <span className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                No email required
+              </span>
+              <span className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                Takes 60 seconds
+              </span>
+            </div>
 
             {/* Secondary CTA — consultation as text link, not competing button */}
             <Link 
               href="/contact" 
-              className="text-white/60 hover:text-white text-sm underline underline-offset-4 decoration-white/30 hover:decoration-white/60 transition-all mt-1"
+              className="text-white/50 hover:text-white text-sm underline underline-offset-4 decoration-white/20 hover:decoration-white/50 transition-all"
             >
               Or book a consultation directly
             </Link>
