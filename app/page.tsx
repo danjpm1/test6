@@ -658,7 +658,7 @@ export default function AntovaBuilders() {
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            See your realistic budget range in 60 seconds — before committing to anything
+            See your realistic investment range in 60 seconds — before committing to anything
           </p>
 
           {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
@@ -699,7 +699,7 @@ export default function AntovaBuilders() {
                     router.push(`/cost-estimator${param}`)
                   }}
                 >
-                  Reveal My Budget Range →
+                  Reveal My Investment Range →
                 </Button>
               </div>
             </div>
