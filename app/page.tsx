@@ -658,7 +658,7 @@ export default function AntovaBuilders() {
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            See your realistic budget range in 60 seconds · 150+ homes built across the Pacific Northwest
+            See your realistic budget range in 60 seconds — before committing to anything
           </p>
 
           {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
@@ -678,7 +678,7 @@ export default function AntovaBuilders() {
                     onChange={(e) => setSelectedProjectType(e.target.value)}
                     className="w-full h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-0 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm"
                   >
-                    <option value="" disabled>What are you planning?</option>
+                    <option value="" disabled>What are you building?</option>
                     <option value="custom-home">Custom Home</option>
                     <option value="renovation">Major Renovation</option>
                     <option value="new-build">New Build</option>
@@ -699,7 +699,7 @@ export default function AntovaBuilders() {
                     router.push(`/cost-estimator${param}`)
                   }}
                 >
-                  See My Budget Range →
+                  Reveal My Budget Range →
                 </Button>
               </div>
             </div>
@@ -718,6 +718,10 @@ export default function AntovaBuilders() {
                 <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 Takes 60 seconds
               </span>
+              <span className="flex items-center gap-1.5">
+                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                Trusted in 150+ builds
+              </span>
             </div>
 
             {/* Secondary CTA — consultation as text link, not competing button */}
@@ -735,41 +739,50 @@ export default function AntovaBuilders() {
       </section>
 
       {/* ━━━ TRUST STRIP — immediately below hero ━━━
-          Every high-converting page has this. Catches the 60% who don't scroll further.
+          Tesla-style: bold numbers, generous spacing, minimal decoration, confident.
       */}
-      <div className="bg-white border-b border-black/[0.06]">
+      <div className="bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="flex flex-wrap items-center justify-center gap-6 md:gap-10 lg:gap-14 py-5">
-            {/* Google Rating */}
-            <div className="flex items-center gap-2">
-              <GoogleIcon />
-              <div className="flex items-center gap-1">
-                <span className="text-black font-semibold text-sm">5.0</span>
-                <div className="flex gap-0.5">
-                  {[1,2,3,4,5].map(i => (
-                    <svg key={i} className="w-3.5 h-3.5 text-[#c6912c]" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                </div>
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-0 py-8 md:py-10 border-b border-black/[0.06]">
+            {/* Google Rating — special treatment */}
+            <div className="flex flex-col items-center justify-center gap-2 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
+              <div className="flex items-center gap-2">
+                <GoogleIcon />
+                <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">5.0</span>
               </div>
+              <div className="flex gap-0.5">
+                {[1,2,3,4,5].map(i => (
+                  <svg key={i} className="w-4 h-4 text-[#c6912c]" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <span className="text-black/40 text-xs tracking-wide uppercase">Google Rating</span>
             </div>
 
-            <div className="hidden sm:block w-px h-5 bg-black/10" />
-            
-            <span className="text-black/50 text-sm font-medium">150+ Projects</span>
-            
-            <div className="hidden sm:block w-px h-5 bg-black/10" />
-            
-            <span className="text-black/50 text-sm font-medium">12 Years Experience</span>
-            
-            <div className="hidden sm:block w-px h-5 bg-black/10" />
-            
-            <span className="text-black/50 text-sm font-medium">98% Client Satisfaction</span>
+            {/* 150+ Projects */}
+            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
+              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">150+</span>
+              <span className="text-black/40 text-xs tracking-wide uppercase">Projects Delivered</span>
+            </div>
 
-            <div className="hidden md:block w-px h-5 bg-black/10" />
+            {/* 12 Years */}
+            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
+              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">12 Yrs</span>
+              <span className="text-black/40 text-xs tracking-wide uppercase">Experience</span>
+            </div>
 
-            <span className="text-black/50 text-sm font-medium">Pacific Northwest</span>
+            {/* 98% Satisfaction */}
+            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
+              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">98%</span>
+              <span className="text-black/40 text-xs tracking-wide uppercase">Client Satisfaction</span>
+            </div>
+
+            {/* Pacific Northwest */}
+            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 col-span-2 md:col-span-1">
+              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">PNW</span>
+              <span className="text-black/40 text-xs tracking-wide uppercase">Pacific Northwest</span>
+            </div>
           </div>
         </div>
       </div>
