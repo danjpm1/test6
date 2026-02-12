@@ -800,7 +800,7 @@ export default function AntovaBuilders() {
               </span>
               <Link href="/offers">
                 <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black hover:text-[#c6912c] transition-colors cursor-pointer leading-tight">
-                  Currently accepting 3 new projects.
+                  Now scheduling spring 2026 projects.
                 </h2>
               </Link>
               <p className="text-black/50 text-base md:text-lg max-w-xl leading-relaxed">
