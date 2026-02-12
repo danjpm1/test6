@@ -1092,6 +1092,100 @@ export default function AntovaBuilders() {
       {/* Google Reviews Section */}
       <GoogleReviewsSection />
 
+      {/* ━━━ FAQ — Objection-handling before the close ━━━ */}
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-14 lg:mb-18">
+              <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Common questions</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
+                Before you decide.
+              </h2>
+            </div>
+
+            <div className="divide-y divide-black/[0.08]">
+              {/* Q1 — Budget fear */}
+              <details className="group py-6">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What if my project goes over budget?</h3>
+                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                  </span>
+                </summary>
+                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
+                  It won't. Our AI-powered scope analysis identifies cost variables before construction begins — not after. You'll receive a detailed investment range upfront, and we lock in pricing before breaking ground. In 150+ projects, our final costs have stayed within the original estimate.
+                </p>
+              </details>
+
+              {/* Q2 — Timeline fear */}
+              <details className="group py-6">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">How long does a typical project take?</h3>
+                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                  </span>
+                </summary>
+                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
+                  Timelines vary by scope — a major renovation typically runs 3–6 months, while a custom home build is 8–14 months. We provide a detailed construction timeline during your free consultation, and we've maintained a 98% on-time delivery rate across all projects.
+                </p>
+              </details>
+
+              {/* Q3 — Consultation commitment */}
+              <details className="group py-6">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What's included in the free consultation?</h3>
+                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                  </span>
+                </summary>
+                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
+                  A 45-minute session with your project team where we walk through your vision, review your AI estimate in detail, discuss materials and design options, and provide a preliminary timeline. You'll leave with a clear understanding of scope, investment, and next steps — with zero obligation to proceed.
+                </p>
+              </details>
+
+              {/* Q4 — Location */}
+              <details className="group py-6">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">Do you only work in the Pacific Northwest?</h3>
+                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                  </span>
+                </summary>
+                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
+                  Our primary service area covers the Inland Northwest — Eastern Washington, Northern Idaho, and surrounding regions. For select projects outside this area, we offer consulting and project management services. Use the estimator to start, and we'll discuss logistics during your consultation.
+                </p>
+              </details>
+
+              {/* Q5 — AI trust */}
+              <details className="group py-6">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">How accurate is the AI estimate?</h3>
+                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                  </span>
+                </summary>
+                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
+                  The online estimator provides a realistic investment range based on project type, size, and regional data. It's designed to give you directional clarity — not a final quote. During your consultation, we refine the numbers with site-specific details, material selections, and your exact specifications to produce a precise, locked-in estimate.
+                </p>
+              </details>
+
+              {/* Q6 — Post-build warranty */}
+              <details className="group py-6">
+                <summary className="flex items-center justify-between cursor-pointer list-none">
+                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What happens after the build is complete?</h3>
+                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
+                  </span>
+                </summary>
+                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
+                  We don't disappear after the final walkthrough. Every Antova project includes a comprehensive warranty and a dedicated point of contact for any post-construction needs. Many of our clients return for additional projects — that's why our satisfaction rate is 98%.
+                </p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ━━━ FINAL CTA — Strong close for convinced visitors ━━━ */}
       <section className="py-24 lg:py-32 bg-[#0a0a0a] relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
