@@ -739,16 +739,16 @@ export default function AntovaBuilders() {
       </section>
 
       {/* ━━━ TRUST STRIP — immediately below hero ━━━
-          Tesla-style: bold numbers, generous spacing, minimal decoration, confident.
+          Gold luxury style. Single source of truth for stats.
       */}
       <div className="bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-0 py-8 md:py-10 border-b border-black/[0.06]">
-            {/* Google Rating — special treatment */}
-            <div className="flex flex-col items-center justify-center gap-2 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-0 py-10 md:py-14 border-b border-black/[0.06]">
+            {/* Google Rating */}
+            <div className="flex flex-col items-center justify-center gap-2">
               <div className="flex items-center gap-2">
                 <GoogleIcon />
-                <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">5.0</span>
+                <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">5.0</span>
               </div>
               <div className="flex gap-0.5">
                 {[1,2,3,4,5].map(i => (
@@ -757,31 +757,31 @@ export default function AntovaBuilders() {
                   </svg>
                 ))}
               </div>
-              <span className="text-black/40 text-xs tracking-wide uppercase">Google Rating</span>
+              <span className="text-black/40 text-sm">Google Rating</span>
             </div>
 
             {/* 150+ Projects */}
-            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
-              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">150+</span>
-              <span className="text-black/40 text-xs tracking-wide uppercase">Projects Delivered</span>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">150+</span>
+              <span className="text-black/40 text-sm">Projects Completed</span>
             </div>
 
             {/* 12 Years */}
-            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
-              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">12 Yrs</span>
-              <span className="text-black/40 text-xs tracking-wide uppercase">Experience</span>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">12</span>
+              <span className="text-black/40 text-sm">Years Experience</span>
             </div>
 
             {/* 98% Satisfaction */}
-            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 border-r border-black/[0.06] last:border-r-0">
-              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">98%</span>
-              <span className="text-black/40 text-xs tracking-wide uppercase">Client Satisfaction</span>
+            <div className="flex flex-col items-center justify-center gap-2">
+              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">98%</span>
+              <span className="text-black/40 text-sm">Client Satisfaction</span>
             </div>
 
-            {/* Pacific Northwest */}
-            <div className="flex flex-col items-center justify-center gap-1.5 py-4 md:py-0 col-span-2 md:col-span-1">
-              <span className="text-black text-2xl md:text-3xl font-bold tracking-tight">PNW</span>
-              <span className="text-black/40 text-xs tracking-wide uppercase">Pacific Northwest</span>
+            {/* $50M+ */}
+            <div className="flex flex-col items-center justify-center gap-2 col-span-2 md:col-span-1">
+              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">$50M+</span>
+              <span className="text-black/40 text-sm">Total Value Built</span>
             </div>
           </div>
         </div>
@@ -858,27 +858,6 @@ export default function AntovaBuilders() {
           </div>
         </div>
 
-        {/* Stats trust bar */}
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto mt-16 lg:mt-20">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8 lg:gap-12 py-10 border-t border-black/[0.06]">
-            <div className="text-center">
-              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">150+</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Projects Completed</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">12</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Years Experience</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">98%</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Client Satisfaction</p>
-            </div>
-            <div className="text-center">
-              <p className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">$50M+</p>
-              <p className="text-black/50 text-sm md:text-base mt-2">Total Value Built</p>
-            </div>
-          </div>
-        </div>
       </section>
 
       <section
