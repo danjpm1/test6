@@ -645,7 +645,7 @@ export default function AntovaBuilders() {
         <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-24 md:-mt-32">
           {/* Headline — benefit-driven, answers "why should I care" */}
           <h1 
-            className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-3 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
+            className={`text-4xl md:text-5xl lg:text-6xl font-light mb-5 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
               showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
@@ -654,7 +654,7 @@ export default function AntovaBuilders() {
 
           {/* Subline — packs benefit + speed + proof into one line */}
           <p 
-            className={`text-base md:text-lg lg:text-xl mb-10 text-white/80 tracking-wide transition-all duration-700 ease-out ${
+            className={`text-base md:text-lg lg:text-xl mb-10 text-white/60 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
@@ -705,21 +705,21 @@ export default function AntovaBuilders() {
             </div>
 
             {/* Microcopy — reduces FUD */}
-            <div className="flex flex-wrap items-center justify-center gap-4 text-white/40 text-xs tracking-wide">
+            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/70 text-xs sm:text-sm tracking-wide">
               <span className="flex items-center gap-1.5">
-                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 Free
               </span>
               <span className="flex items-center gap-1.5">
-                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 No email required
               </span>
               <span className="flex items-center gap-1.5">
-                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 Takes 60 seconds
               </span>
               <span className="flex items-center gap-1.5">
-                <svg className="w-3.5 h-3.5 text-[#c6912c]/60" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
                 Trusted in 150+ builds
               </span>
             </div>
@@ -727,7 +727,7 @@ export default function AntovaBuilders() {
             {/* Secondary CTA — consultation as text link, not competing button */}
             <Link 
               href="/contact" 
-              className="text-white/50 hover:text-white text-sm underline underline-offset-4 decoration-white/20 hover:decoration-white/50 transition-all"
+              className="text-white/70 hover:text-white text-sm underline underline-offset-4 decoration-white/40 hover:decoration-white/70 transition-all"
             >
               Or book a consultation directly
             </Link>
