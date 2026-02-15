@@ -1,1217 +1,1810 @@
-"use client"
+"use client";
 
-import type React from "react"
+import { useState, useEffect, useRef, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
 
-import { useState, useEffect, useRef } from "react"
-import { Button } from "@/components/ui/button"
-import { Navbar } from "@/components/navbar"
-import { Footer } from "@/components/footer"
-import Link from "next/link"
-import Image from "next/image"
-import { useRouter } from "next/navigation"
+/* ─── Types & Config ───────────────────────────────────────────── */
 
-const SCROLL_THRESHOLD = 50
-const SERVICE_CARDS_THRESHOLD = 0.5
-const TESTIMONIALS_THRESHOLD = 0.5
+type ProjectType = "custom-home" | "new-build" | "renovation" | "consulting" | "";
 
-const SERVICE_CARDS = [
-  {
-    title: "Signature Custom Design",
-    image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
-    alt: "Custom homes lifestyle",
-    href: "/services/signature-custom-design",
-  },
-  {
-    title: "Renovations",
-    image: "/renovation-human.png",
-    alt: "Renovations lifestyle",
-    href: "/services/renovation",
-  },
-  {
-    title: "New Builds",
-    image: "/new-builds.png",
-    alt: "New construction lifestyle",
-    href: "/services/new-builds",
-  },
-]
-
-const OFFER_CARDS = [
-  {
-    title: "Engineering & Consulting",
-    description: "Expert structural solutions and professional consulting for complex builds.",
-    price: "Consultation from $500",
-    image: "/images/engineering-blueprints.png",
-    alt: "Architects working on architectural blueprints and floor plans",
-    exploreHref: "/services/engineering-consulting",
-    exploreLabel: "Explore Engineering",
-  },
-  {
-    title: "Renovation",
-    description: "Modern renovation spaces designed for business excellence.",
-    price: "$2k-5k credits",
-    image: "/renovation-human.png",
-    alt: "Professional contractor reviewing renovation plans",
-    exploreHref: "/services/renovation",
-    exploreLabel: "Explore Renovation",
-  },
-]
-
-const TESTIMONIALS = [
-  {
-    headline: "Expert Guidance",
-    service: "Consulting",
-    quote:
-      "Antova's consulting team transformed our vision into reality. Their AI-powered estimates were spot-on, and the structural insights saved us months of planning time.",
-    author: "Michael Chen",
-    role: "Owner",
-    company: "Aspen Horse Ranch",
-    videoThumbnail: "/luxury-modern-cabin-interior-with-large-windows-wo.jpg",
-  },
-  {
-    headline: "Flawless Renovation",
-    service: "Renovation",
-    quote:
-      "Our clinic needed a complete transformation without disrupting patient care. Antova delivered exceptional craftsmanship on schedule.— the attention to detail was extraordinary.",
-    author: "Sorin Isparesescu",
-    role: "CEO",
-    company: "Pain Clinic",
-    videoThumbnail: "/project-1.jpg",
-  },
-  {
-    headline: "Dream Home Delivered",
-    service: "New Construction",
-    quote:
-      "From foundation to final walkthrough, Antova exceeded every expectation. Their transparent process and craftsmanship made building our custom home genuinely enjoyable.",
-    author: "James Thornton",
-    role: "CEO",
-    company: "Thornton Capital",
-    videoThumbnail: "/project-2.jpg",
-  },
-]
-
-// Placeholder Google reviews - will be replaced with real data when Google Business is set up
-const GOOGLE_REVIEWS = [
-  {
-    author_name: "David Morrison",
-    rating: 5,
-    relative_time_description: "2 weeks ago",
-    text: "Antova exceeded every expectation. From the initial consultation to the final walkthrough, their team demonstrated remarkable professionalism. The craftsmanship on our mountain retreat is absolutely stunning.",
-    image: null,
-  },
-  {
-    author_name: "Elena Vasquez",
-    rating: 5,
-    relative_time_description: "1 month ago",
-    text: "We hired Antova for a complete renovation of our historic property. They preserved the original character while modernizing everything. Truly exceptional attention to detail.",
-    image: null,
-  },
-  {
-    author_name: "Robert Blackwood",
-    rating: 5,
-    relative_time_description: "1 month ago",
-    text: "The AI-powered estimates saved us weeks of back-and-forth. Accurate, transparent, and the build quality speaks for itself. Our new office headquarters is a masterpiece.",
-    image: null,
-  },
-  {
-    author_name: "Sarah Mitchell",
-    rating: 5,
-    relative_time_description: "2 months ago",
-    text: "Working with Antova felt like having a true partner in realizing our vision. They listened, adapted, and delivered beyond what we imagined possible.",
-    image: null,
-  },
-  {
-    author_name: "Marcus Chen",
-    rating: 5,
-    relative_time_description: "3 months ago",
-    text: "Professional team, excellent communication throughout the project. The final result on our lakeside cabin is beautiful. Would recommend for any premium construction needs.",
-    image: null,
-  },
-]
-
-function getInitials(name: string): string {
-  return name
-    .split(" ")
-    .map((n) => n[0])
-    .join("")
-    .slice(0, 2)
+interface FormState {
+  step: string;
+  projectType: ProjectType;
+  zipCode: string;
+  sqft: number;
+  exteriorQuality: string;
+  bedrooms: number;
+  bathrooms: number;
+  interiorFinish: string;
+  stories: number;
+  garageSpaces: number;
+  renoScope: string;
+  renoArea: number;
+  renoCondition: string;
+  renoFinish: string;
+  consultType: string;
+  consultComplexity: string;
+  consultTimeline: string;
 }
 
-function ArrowIcon() {
-  return (
-    <svg className="w-5 h-5 text-white flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-    </svg>
-  )
+interface EstimateResult {
+  total: number;
+  perUnit: number;
+  unitLabel: string;
+  breakdown: { name: string; value: number }[];
+  locationName: string;
+  tierName: string;
+  locationMultiplier: number;
+  projectLabel: string;
 }
 
-function PlayIcon() {
+/* ─── Pricing Data ─────────────────────────────────────────────── */
+
+const PRICING_TIERS: Record<string, { name: string; multiplier: number }> = {
+  premium: { name: "Premium Market", multiplier: 1.15 },
+  standard: { name: "Core Service Area", multiplier: 1.0 },
+  extended: { name: "Extended Area", multiplier: 1.1 },
+  remote: { name: "Remote Area", multiplier: 1.2 },
+};
+
+const CUSTOM_HOME_BASE = 280;
+const NEW_BUILD_BASE = 240;
+
+const RENO_BASE: Record<string, number> = {
+  kitchen: 45000,
+  bathroom: 28000,
+  addition: 220,
+  "full-gut": 180,
+  "whole-house": 160,
+};
+
+const CONSULT_BASE: Record<string, { low: number; high: number }> = {
+  structural: { low: 3500, high: 8000 },
+  feasibility: { low: 5000, high: 15000 },
+  permits: { low: 2500, high: 6000 },
+  "site-analysis": { low: 4000, high: 12000 },
+};
+
+const EXTERIOR_MULTIPLIERS: Record<string, number> = { basic: 1.0, standard: 1.2, premium: 1.45 };
+const INTERIOR_MULTIPLIERS: Record<string, number> = { basic: 1.0, standard: 1.15, premium: 1.35, luxury: 1.65 };
+const CONDITION_MULTIPLIERS: Record<string, number> = { good: 0.85, fair: 1.0, poor: 1.2, gutted: 1.4 };
+const COMPLEXITY_MULTIPLIERS: Record<string, number> = { standard: 1.0, moderate: 1.3, complex: 1.7 };
+const TIMELINE_MULTIPLIERS: Record<string, number> = { flexible: 0.9, standard: 1.0, rush: 1.25 };
+const FINISH_MULTIPLIERS: Record<string, number> = { basic: 1.0, standard: 1.15, premium: 1.4, luxury: 1.7 };
+
+const CONSTRAINTS = { minSqft: 500, maxSqft: 10000, sqftStep: 100, minRenoArea: 50, maxRenoArea: 5000, renoStep: 50 };
+
+const ZIP_TO_TIER: Record<string, string> = {
+  "83814":"premium","83815":"premium","83816":"premium",
+  "83835":"premium","83864":"premium","99019":"premium",
+  "99203":"premium","99223":"premium",
+  "83813":"standard","83860":"standard","83809":"standard","83801":"standard",
+  "83804":"standard","83852":"standard","83840":"standard","83841":"standard",
+  "83869":"standard","83854":"standard","83877":"standard","83858":"standard",
+  "99201":"standard","99202":"standard","99204":"standard","99205":"standard",
+  "99206":"standard","99207":"standard","99208":"standard","99212":"standard",
+  "99216":"standard","99217":"standard","99218":"standard","99224":"standard",
+  "99209":"standard","99210":"standard","99211":"standard","99213":"standard",
+  "99214":"standard","99215":"standard","99219":"standard","99220":"standard",
+  "99228":"standard",
+  "99001":"standard","99003":"standard","99004":"standard","99005":"standard",
+  "99006":"standard","99016":"standard","99021":"standard","99022":"standard",
+  "99027":"standard","99037":"standard",
+  "83805":"extended","83826":"extended","83845":"extended","83851":"extended",
+  "83856":"extended","83821":"extended","83865":"extended",
+  "83836":"extended","83811":"extended",
+  "83825":"extended","83868":"extended",
+  "83833":"extended","83861":"extended",
+  "83843":"extended","83844":"extended","99163":"extended","99164":"extended",
+  "99009":"extended","99025":"extended","99026":"extended","99029":"extended",
+  "99030":"extended","99031":"extended","99036":"extended",
+  "99156":"extended","99126":"extended",
+  "83870":"extended","83871":"extended","83824":"extended",
+  "83823":"extended","83832":"extended","83834":"extended","83855":"extended","83872":"extended",
+  "83837":"remote","83839":"remote","83842":"remote","83846":"remote",
+  "83849":"remote","83850":"remote","83866":"remote","83867":"remote",
+  "83873":"remote","83808":"remote","83812":"remote","83810":"remote",
+  "99109":"remote","99114":"remote","99137":"remote","99138":"remote",
+  "99140":"remote","99141":"remote","99148":"remote","99151":"remote",
+  "99166":"remote","99180":"remote","99181":"remote","99101":"remote",
+  "99110":"remote","99119":"remote","99153":"remote","99173":"remote",
+  "59872":"remote","59874":"remote","59831":"remote","59859":"remote",
+  "59867":"remote","59842":"remote","59847":"remote",
+};
+
+const LOCATION_NAMES: Record<string, string> = {
+  "83814":"Coeur d'Alene","83815":"Coeur d'Alene","83816":"Coeur d'Alene",
+  "83835":"Hayden","83864":"Sandpoint","99019":"Liberty Lake",
+  "99203":"Spokane","99223":"Spokane",
+  "83813":"Cocolalla","83860":"Sagle","83809":"Careywood",
+  "83801":"Athol","83869":"Spirit Lake","83854":"Post Falls","83858":"Rathdrum",
+  "83805":"Bonners Ferry","83856":"Priest River","83821":"Priest Lake",
+  "83843":"Moscow","83837":"Kellogg","83873":"Wallace",
+};
+
+function getZipTier(zip: string) {
+  const key = ZIP_TO_TIER[zip];
+  return key ? PRICING_TIERS[key] : null;
+}
+
+function getLocationName(zip: string) {
+  if (LOCATION_NAMES[zip]) return LOCATION_NAMES[zip];
+  if (zip.startsWith("838")) return "North Idaho";
+  if (zip.startsWith("99")) return "Spokane Area";
+  if (zip.startsWith("598")) return "Western Montana";
+  return "Your Area";
+}
+
+/* ─── Step Orders Per Type ─────────────────────────────────────── */
+
+const STEP_ORDERS: Record<string, string[]> = {
+  "custom-home": ["type-select", "sqft", "exterior", "interior", "zip", "analyzing", "results"],
+  "new-build": ["type-select", "sqft", "build-details", "exterior", "interior", "zip", "analyzing", "results"],
+  "renovation": ["type-select", "reno-scope", "reno-details", "zip", "analyzing", "results"],
+  "consulting": ["type-select", "consult-type", "consult-details", "analyzing", "results"],
+};
+
+/* ─── Calculation Functions ────────────────────────────────────── */
+
+function calcCustomHome(st: FormState): EstimateResult {
+  const tier = getZipTier(st.zipCode);
+  const locMult = tier?.multiplier ?? 1.0;
+  const avg = (EXTERIOR_MULTIPLIERS[st.exteriorQuality] + INTERIOR_MULTIPLIERS[st.interiorFinish]) / 2;
+  const total = Math.round(st.sqft * CUSTOM_HOME_BASE * avg * locMult);
+  return {
+    total,
+    perUnit: Math.round(total / st.sqft),
+    unitLabel: "/ SF",
+    breakdown: [
+      { name: "Shell & Structure", value: Math.round(total * 0.35) },
+      { name: "MEP Systems", value: Math.round(total * 0.25) },
+      { name: "Interior Finishes", value: Math.round(total * 0.30) },
+      { name: "Site & Foundation", value: Math.round(total * 0.10) },
+    ],
+    locationName: getLocationName(st.zipCode),
+    tierName: tier?.name ?? "Standard",
+    locationMultiplier: locMult,
+    projectLabel: "Custom Home",
+  };
+}
+
+function calcNewBuild(st: FormState): EstimateResult {
+  const tier = getZipTier(st.zipCode);
+  const locMult = tier?.multiplier ?? 1.0;
+  const avg = (EXTERIOR_MULTIPLIERS[st.exteriorQuality] + INTERIOR_MULTIPLIERS[st.interiorFinish]) / 2;
+  const storiesMult = st.stories === 1 ? 1.0 : st.stories === 2 ? 1.08 : 1.15;
+  const garageCost = st.garageSpaces * 18000;
+  const baseCost = Math.round(st.sqft * NEW_BUILD_BASE * avg * locMult * storiesMult);
+  const total = baseCost + garageCost;
+  return {
+    total,
+    perUnit: Math.round(total / st.sqft),
+    unitLabel: "/ SF",
+    breakdown: [
+      { name: "Foundation & Frame", value: Math.round(baseCost * 0.32) },
+      { name: "MEP Systems", value: Math.round(baseCost * 0.22) },
+      { name: "Interior Finishes", value: Math.round(baseCost * 0.28) },
+      { name: "Site Work", value: Math.round(baseCost * 0.12) },
+      ...(garageCost > 0 ? [{ name: "Garage", value: garageCost }] : []),
+      { name: "Permits & Fees", value: Math.round(baseCost * 0.06) },
+    ],
+    locationName: getLocationName(st.zipCode),
+    tierName: tier?.name ?? "Standard",
+    locationMultiplier: locMult,
+    projectLabel: "New Build",
+  };
+}
+
+function calcRenovation(st: FormState): EstimateResult {
+  const tier = getZipTier(st.zipCode);
+  const locMult = tier?.multiplier ?? 1.0;
+  const condMult = CONDITION_MULTIPLIERS[st.renoCondition] ?? 1.0;
+  const finMult = FINISH_MULTIPLIERS[st.renoFinish] ?? 1.0;
+
+  let base: number;
+  const scope = st.renoScope;
+  if (scope === "kitchen" || scope === "bathroom") {
+    base = (RENO_BASE[scope] ?? 30000) * finMult * condMult;
+  } else {
+    base = st.renoArea * (RENO_BASE[scope] ?? 160) * finMult * condMult;
+  }
+
+  const total = Math.round(base * locMult);
+  const isPerSF = scope !== "kitchen" && scope !== "bathroom";
+
+  return {
+    total,
+    perUnit: isPerSF ? Math.round(total / st.renoArea) : total,
+    unitLabel: isPerSF ? "/ SF" : "flat",
+    breakdown: [
+      { name: "Demolition", value: Math.round(total * 0.15) },
+      { name: "Structural", value: Math.round(total * 0.25) },
+      { name: "Finishes", value: Math.round(total * 0.40) },
+      { name: "Permits & Misc", value: Math.round(total * 0.20) },
+    ],
+    locationName: getLocationName(st.zipCode),
+    tierName: tier?.name ?? "Standard",
+    locationMultiplier: locMult,
+    projectLabel: "Renovation",
+  };
+}
+
+function calcConsulting(st: FormState): EstimateResult {
+  const range = CONSULT_BASE[st.consultType] ?? { low: 3000, high: 10000 };
+  const compMult = COMPLEXITY_MULTIPLIERS[st.consultComplexity] ?? 1.0;
+  const timeMult = TIMELINE_MULTIPLIERS[st.consultTimeline] ?? 1.0;
+  const mid = (range.low + range.high) / 2;
+  const total = Math.round(mid * compMult * timeMult);
+
+  const consultLabels: Record<string, string> = {
+    structural: "Structural Assessment",
+    feasibility: "Feasibility Study",
+    permits: "Permit Support",
+    "site-analysis": "Site Analysis",
+  };
+
+  return {
+    total,
+    perUnit: total,
+    unitLabel: "flat fee",
+    breakdown: [
+      { name: "Assessment", value: Math.round(total * 0.35) },
+      { name: "Analysis", value: Math.round(total * 0.30) },
+      { name: "Deliverables", value: Math.round(total * 0.25) },
+      { name: "Consultation", value: Math.round(total * 0.10) },
+    ],
+    locationName: consultLabels[st.consultType] ?? "Consulting",
+    tierName: "",
+    locationMultiplier: 1.0,
+    projectLabel: "Engineering & Consulting",
+  };
+}
+
+function calcEstimate(st: FormState): EstimateResult | null {
+  switch (st.projectType) {
+    case "custom-home": return calcCustomHome(st);
+    case "new-build": return calcNewBuild(st);
+    case "renovation": return calcRenovation(st);
+    case "consulting": return calcConsulting(st);
+    default: return null;
+  }
+}
+
+/* ─── Shared Styles ────────────────────────────────────────────── */
+
+const gold = "#c6912c";
+const goldHover = "#d4a03a";
+const dark = "#0a0a0a";
+
+const globalStyles = `
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  @keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes progressGlow {
+    0%, 100% { box-shadow: 0 0 8px rgba(198,145,44,0.3); }
+    50% { box-shadow: 0 0 16px rgba(198,145,44,0.6); }
+  }
+  @keyframes subtlePing {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(2.5); opacity: 0; }
+  }
+  .fade-up { animation: fadeUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .fade-up-d1 { animation: fadeUp 0.6s 0.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .fade-up-d2 { animation: fadeUp 0.6s 0.2s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .fade-up-d3 { animation: fadeUp 0.6s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .fade-up-d4 { animation: fadeUp 0.6s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .fade-up-d5 { animation: fadeUp 0.6s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .fade-in { animation: fadeIn 0.5s ease both; }
+
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: ${dark};
+    border: 3px solid ${gold};
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+  }
+  input[type="range"]::-webkit-slider-thumb:hover {
+    background: ${gold};
+    transform: scale(1.15);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: ${dark};
+    border: 3px solid ${gold};
+    cursor: pointer;
+  }
+`;
+
+/* ─── Reusable Components ──────────────────────────────────────── */
+
+function GoldButton({ children, onClick, disabled, className = "" }: {
+  children: React.ReactNode; onClick: () => void; disabled?: boolean; className?: string;
+}) {
   return (
-    <div className="absolute inset-0 flex items-center justify-center">
-      <div className="w-14 h-14 bg-[#c6912c] rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform duration-300">
-        <svg className="w-5 h-5 text-white ml-0.5" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M8 5v14l11-7z" />
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={className}
+      style={{
+        background: disabled ? "#555" : gold,
+        color: "#fff", border: "none", padding: "16px 40px",
+        fontSize: "16px", fontFamily: "'DM Sans', sans-serif", fontWeight: 600,
+        letterSpacing: "0.03em", cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.4 : 1, transition: "all 0.3s",
+        boxShadow: disabled ? "none" : `0 4px 20px ${gold}44`,
+        display: "inline-flex", alignItems: "center", gap: "8px",
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = goldHover;
+          e.currentTarget.style.boxShadow = `0 6px 28px ${gold}66`;
+          e.currentTarget.style.transform = "translateY(-1px)";
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = gold;
+          e.currentTarget.style.boxShadow = `0 4px 20px ${gold}44`;
+          e.currentTarget.style.transform = "translateY(0)";
+        }
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function OutlineButton({ children, onClick, className = "" }: {
+  children: React.ReactNode; onClick: () => void; className?: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      className={className}
+      style={{
+        background: "transparent", color: dark, border: `2px solid ${dark}`,
+        padding: "14px 36px", fontSize: "16px", fontFamily: "'DM Sans', sans-serif",
+        fontWeight: 500, cursor: "pointer", transition: "all 0.3s",
+      }}
+      onMouseEnter={(e) => { e.currentTarget.style.background = "#f5f5f5"; }}
+      onMouseLeave={(e) => { e.currentTarget.style.background = "transparent"; }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function DarkButton({ children, onClick, disabled, className = "" }: {
+  children: React.ReactNode; onClick: () => void; disabled?: boolean; className?: string;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      disabled={disabled}
+      className={className}
+      style={{
+        background: disabled ? "#ccc" : dark, color: "#fff", border: "none",
+        padding: "16px 40px", fontSize: "16px", fontFamily: "'DM Sans', sans-serif",
+        fontWeight: 600, cursor: disabled ? "not-allowed" : "pointer",
+        opacity: disabled ? 0.4 : 1, transition: "all 0.3s",
+        boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
+      }}
+      onMouseEnter={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = gold;
+          e.currentTarget.style.boxShadow = `0 6px 24px ${gold}55`;
+        }
+      }}
+      onMouseLeave={(e) => {
+        if (!disabled) {
+          e.currentTarget.style.background = dark;
+          e.currentTarget.style.boxShadow = "0 4px 16px rgba(0,0,0,0.15)";
+        }
+      }}
+    >
+      {children}
+    </button>
+  );
+}
+
+function NavButtons({ onBack, onNext, nextDisabled, nextLabel = "Continue" }: {
+  onBack: () => void; onNext: () => void; nextDisabled?: boolean; nextLabel?: string;
+}) {
+  return (
+    <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 48 }}>
+      <OutlineButton onClick={onBack}>Back</OutlineButton>
+      <DarkButton onClick={onNext} disabled={nextDisabled}>{nextLabel}</DarkButton>
+    </div>
+  );
+}
+
+function StepHeadline({ children, subtitle }: { children: React.ReactNode; subtitle?: string }) {
+  return (
+    <div style={{ marginBottom: 48 }}>
+      <h1 style={{
+        fontFamily: "'Playfair Display', serif", fontWeight: 700,
+        fontSize: "clamp(28px, 5.5vw, 64px)", color: dark,
+        lineHeight: 1.1, margin: 0, letterSpacing: "-0.02em",
+      }}>
+        {children}
+      </h1>
+      {subtitle && (
+        <p style={{
+          fontFamily: "'DM Sans', sans-serif", fontSize: 16,
+          color: "#999", marginTop: 12, fontWeight: 400,
+        }}>
+          {subtitle}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function TypeBadge({ projectType }: { projectType: string }) {
+  const labels: Record<string, string> = {
+    "custom-home": "Custom Home Estimate",
+    "new-build": "New Build Estimate",
+    "renovation": "Renovation Estimate",
+    "consulting": "Consulting Estimate",
+  };
+  const icons: Record<string, string> = {
+    "custom-home": "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+    "new-build": "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+    "renovation": "M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1 2 2 0 110-4 1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z",
+    "consulting": "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
+  };
+  if (!labels[projectType]) return null;
+  return (
+    <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+      <div style={{
+        display: "inline-flex", alignItems: "center", gap: 8,
+        background: `${gold}0a`, border: `1px solid ${gold}25`,
+        padding: "8px 18px", borderRadius: 40,
+      }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={gold}
+          strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d={icons[projectType] ?? ""} />
         </svg>
+        <span style={{
+          fontSize: 13, fontWeight: 600, color: gold,
+          letterSpacing: "0.06em", fontFamily: "'DM Sans', sans-serif",
+        }}>
+          {labels[projectType]}
+        </span>
       </div>
     </div>
-  )
+  );
 }
 
-function ScrollIndicator({ show }: { show: boolean }) {
-  const scrollToContent = () => {
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
+/* ─── Type Select Card ─────────────────────────────────────────── */
+
+const PROJECT_TYPES: { id: ProjectType; label: string; desc: string; icon: string }[] = [
+  { id: "custom-home", label: "Custom Home", desc: "Design and build your dream home from scratch", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
+  { id: "new-build", label: "New Build", desc: "New construction on your lot or ours", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
+  { id: "renovation", label: "Renovation", desc: "Transform your existing space", icon: "M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1 2 2 0 110-4 1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" },
+  { id: "consulting", label: "Engineering & Consulting", desc: "Expert analysis and project guidance", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
+];
+
+function TypeSelectStep({ onSelect }: { onSelect: (type: ProjectType) => void }) {
+  return (
+    <div style={{ textAlign: "center", position: "relative" }}>
+      {/* Badge */}
+      <div className="fade-up" style={{ marginBottom: 32, display: "flex", justifyContent: "center" }}>
+        <div style={{
+          display: "inline-flex", alignItems: "center", gap: 8,
+          background: "rgba(255,255,255,0.06)", backdropFilter: "blur(12px)",
+          border: "1px solid rgba(255,255,255,0.12)", padding: "8px 20px", borderRadius: 40,
+        }}>
+          <span style={{ position: "relative", width: 8, height: 8, display: "inline-block" }}>
+            <span style={{
+              position: "absolute", inset: 0, borderRadius: "50%", background: gold,
+              animation: "subtlePing 2s infinite",
+            }} />
+            <span style={{
+              position: "relative", display: "block", width: 8, height: 8,
+              borderRadius: "50%", background: gold,
+            }} />
+          </span>
+          <span style={{
+            fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.75)",
+            letterSpacing: "0.12em", fontFamily: "'DM Sans', sans-serif",
+          }}>
+            AI-POWERED ESTIMATOR
+          </span>
+        </div>
+      </div>
+
+      {/* Headline */}
+      <div className="fade-up-d1">
+        <h1 style={{
+          fontFamily: "'Playfair Display', serif", fontWeight: 700,
+          fontSize: "clamp(36px, 7vw, 80px)", lineHeight: 1.05,
+          color: "#fff", margin: 0, letterSpacing: "-0.02em",
+        }}>
+          What are you
+        </h1>
+        <h1 style={{
+          fontFamily: "'Playfair Display', serif", fontWeight: 700,
+          fontSize: "clamp(36px, 7vw, 80px)", lineHeight: 1.05,
+          color: gold, margin: "4px 0 0", letterSpacing: "-0.02em",
+        }}>
+          building?
+        </h1>
+      </div>
+
+      <p className="fade-up-d2" style={{
+        fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(16px, 2.5vw, 20px)",
+        color: "rgba(255,255,255,0.5)", fontWeight: 300, maxWidth: 480,
+        margin: "24px auto 0", lineHeight: 1.6,
+      }}>
+        Select your project type for a tailored AI estimate.
+      </p>
+
+      {/* Cards */}
+      <div className="fade-up-d3" style={{
+        display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+        gap: 16, maxWidth: 860, margin: "40px auto 0",
+      }}>
+        {PROJECT_TYPES.map((pt) => (
+          <button
+            key={pt.id}
+            onClick={() => onSelect(pt.id)}
+            style={{
+              background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)",
+              padding: "32px 24px", cursor: "pointer", textAlign: "center",
+              transition: "all 0.3s", borderRadius: 4,
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = "rgba(255,255,255,0.08)";
+              e.currentTarget.style.borderColor = gold;
+              e.currentTarget.style.transform = "translateY(-4px)";
+              e.currentTarget.style.boxShadow = `0 8px 32px ${gold}22`;
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = "rgba(255,255,255,0.04)";
+              e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+              e.currentTarget.style.transform = "translateY(0)";
+              e.currentTarget.style.boxShadow = "none";
+            }}
+          >
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke={gold}
+              strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"
+              style={{ marginBottom: 16 }}>
+              <path d={pt.icon} />
+            </svg>
+            <div style={{
+              fontFamily: "'DM Sans', sans-serif", fontWeight: 700,
+              fontSize: 18, color: "#fff", marginBottom: 8,
+            }}>
+              {pt.label}
+            </div>
+            <div style={{
+              fontFamily: "'DM Sans', sans-serif", fontSize: 14,
+              color: "rgba(255,255,255,0.4)", lineHeight: 1.5,
+            }}>
+              {pt.desc}
+            </div>
+          </button>
+        ))}
+      </div>
+
+      {/* Trust pills */}
+      <div className="fade-up-d4" style={{
+        display: "flex", flexWrap: "wrap", justifyContent: "center",
+        gap: 10, marginTop: 32,
+      }}>
+        {["Instant Results", "No Signup Required", "150+ Builds"].map((t) => (
+          <span key={t} style={{
+            fontSize: 13, color: "rgba(255,255,255,0.4)", fontFamily: "'DM Sans', sans-serif",
+            border: "1px solid rgba(255,255,255,0.1)", padding: "7px 16px", borderRadius: 40,
+            fontWeight: 500,
+          }}>
+            {t}
+          </span>
+        ))}
+      </div>
+
+      <p className="fade-up-d5" style={{
+        fontFamily: "'DM Sans', sans-serif", fontSize: 14,
+        color: "rgba(255,255,255,0.8)", marginTop: 20, fontWeight: 500,
+      }}>
+        No email required • Under 60 seconds • Based on 50,000+ data points
+      </p>
+    </div>
+  );
+}
+
+/* ─── Shared Steps ─────────────────────────────────────────────── */
+
+function ZipCodeStep({ zipCode, onZipChange, onBack, onSubmit, projectType }: {
+  zipCode: string; onZipChange: (z: string) => void; onBack: () => void; onSubmit: () => void; projectType: string;
+}) {
+  const headlines: Record<string, string> = {
+    "custom-home": "Where will we build your custom home?",
+    "new-build": "Where is your new build site?",
+    "renovation": "Where is the property you're renovating?",
+    "consulting": "Where is your project?",
+  };
+  const subtitles: Record<string, string> = {
+    "custom-home": "Last step — your location determines final pricing for your custom home.",
+    "new-build": "Last step — your build location determines the final pricing tier.",
+    "renovation": "Last step — we'll tailor renovation costs to your local market.",
+    "consulting": "",
+  };
+
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Where is your project?"}</StepHeadline>
+      <input
+        type="text"
+        value={zipCode}
+        onChange={(e) => onZipChange(e.target.value.replace(/\D/g, "").slice(0, 5))}
+        placeholder="Enter ZIP code"
+        autoFocus
+        onKeyDown={(e) => { if (e.key === "Enter" && zipCode.length === 5) onSubmit(); }}
+        style={{
+          width: "100%", maxWidth: 420, display: "block", margin: "0 auto",
+          border: "2px solid #e0e0e0", padding: "20px 28px",
+          fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center",
+          fontFamily: "'DM Sans', sans-serif", fontWeight: 600,
+          color: dark, outline: "none", background: "#fff",
+          transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.08em",
+        }}
+        onFocus={(e) => {
+          e.target.style.borderColor = gold;
+          e.target.style.boxShadow = `0 0 0 4px ${gold}18`;
+        }}
+        onBlur={(e) => {
+          e.target.style.borderColor = "#e0e0e0";
+          e.target.style.boxShadow = "none";
+        }}
+      />
+      <p style={{
+        fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16,
+      }}>
+        Serving the Inland Northwest — Idaho, Eastern Washington & beyond
+      </p>
+      <NavButtons onBack={onBack} onNext={onSubmit} nextDisabled={zipCode.length !== 5} nextLabel="See My Estimate" />
+    </div>
+  );
+}
+
+function OutsideAreaStep({ zipCode, onRetry, onReset }: {
+  zipCode: string; onRetry: () => void; onReset: () => void;
+}) {
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <div style={{
+        width: 80, height: 80, borderRadius: "50%", background: "#f5f5f5",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        margin: "0 auto 24px",
+      }}>
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+          <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </div>
+      <h1 style={{
+        fontFamily: "'Playfair Display', serif", fontWeight: 700,
+        fontSize: "clamp(28px, 5vw, 48px)", color: dark, margin: "0 0 16px",
+      }}>
+        Outside Our Service Area
+      </h1>
+      <p style={{
+        fontFamily: "'DM Sans', sans-serif", fontSize: 18, color: "#666",
+        maxWidth: 480, margin: "0 auto 32px", lineHeight: 1.6,
+      }}>
+        We don&apos;t have data for <strong>{zipCode}</strong> yet, but we serve projects throughout the region.
+      </p>
+      <div style={{
+        background: "#fafafa", border: "1px solid #eee", borderRadius: 12,
+        padding: 32, maxWidth: 400, margin: "0 auto 32px",
+      }}>
+        <p style={{
+          fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, marginBottom: 16,
+        }}>
+          Want a custom quote?
+        </p>
+        <GoldButton onClick={() => window.location.href = "/contact"}>
+          Contact Us
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </GoldButton>
+      </div>
+      <div style={{ display: "flex", gap: 16, justifyContent: "center" }}>
+        <OutlineButton onClick={onRetry}>Try Different ZIP</OutlineButton>
+        <OutlineButton onClick={onReset}>Start Over</OutlineButton>
+      </div>
+    </div>
+  );
+}
+
+function SqftStep({ sqft, onSqftChange, onBack, onNext, projectType }: {
+  sqft: number; onSqftChange: (s: number) => void; onBack: () => void; onNext: () => void; projectType: string;
+}) {
+  const headlines: Record<string, string> = {
+    "custom-home": "How large is your dream home?",
+    "new-build": "What size new build are you planning?",
+  };
+  const subtitles: Record<string, string> = {
+    "custom-home": "Total living area for your custom home — we'll refine finishes next.",
+    "new-build": "Total square footage including all floors.",
+  };
+  const min = CONSTRAINTS.minSqft;
+  const max = CONSTRAINTS.maxSqft;
+  const step = CONSTRAINTS.sqftStep;
+  const pct = ((sqft - min) / (max - min)) * 100;
+
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Total square footage?"}</StepHeadline>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(16px, 4vw, 40px)" }}>
+        <button
+          onClick={() => onSqftChange(Math.max(min, sqft - step))}
+          style={{
+            width: 64, height: 64, background: dark, color: "#fff",
+            border: "none", fontSize: 28, fontWeight: 700, cursor: "pointer",
+            transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = gold; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = dark; }}
+        >−</button>
+        <div style={{ minWidth: "clamp(140px, 30vw, 300px)", textAlign: "center" }}>
+          <div style={{
+            fontFamily: "'Playfair Display', serif", fontWeight: 700,
+            fontSize: "clamp(48px, 9vw, 96px)", color: dark, letterSpacing: "-0.02em", lineHeight: 1,
+          }}>
+            {sqft.toLocaleString()}
+          </div>
+          <div style={{
+            fontFamily: "'DM Sans', sans-serif", fontSize: 18, color: "#999", marginTop: 8, letterSpacing: "0.05em",
+          }}>
+            square feet
+          </div>
+        </div>
+        <button
+          onClick={() => onSqftChange(Math.min(max, sqft + step))}
+          style={{
+            width: 64, height: 64, background: dark, color: "#fff",
+            border: "none", fontSize: 28, fontWeight: 700, cursor: "pointer",
+            transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center",
+          }}
+          onMouseEnter={(e) => { e.currentTarget.style.background = gold; }}
+          onMouseLeave={(e) => { e.currentTarget.style.background = dark; }}
+        >+</button>
+      </div>
+      <div style={{ maxWidth: 560, margin: "40px auto 0", padding: "0 8px" }}>
+        <input
+          type="range" min={min} max={max} step={step} value={sqft}
+          onChange={(e) => onSqftChange(+e.target.value)}
+          style={{
+            width: "100%", height: 6, appearance: "none", borderRadius: 3,
+            background: `linear-gradient(to right, ${dark} 0%, ${dark} ${pct}%, #e5e7eb ${pct}%, #e5e7eb 100%)`,
+            cursor: "pointer", outline: "none",
+          }}
+        />
+        <div style={{
+          display: "flex", justifyContent: "space-between",
+          fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#bbb", marginTop: 8,
+        }}>
+          <span>{min} SF</span>
+          <span>{max.toLocaleString()} SF</span>
+        </div>
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
+
+function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext, projectType }: {
+  exteriorQuality: string; onQualityChange: (q: string) => void; onBack: () => void; onNext: () => void; projectType: string;
+}) {
+  const headlines: Record<string, string> = {
+    "custom-home": "Choose your custom home's exterior",
+    "new-build": "Exterior finish for your new build",
+  };
+  const opts = [
+    { id: "basic", label: "Basic", desc: "Standard materials", mult: "1.0×" },
+    { id: "standard", label: "Standard", desc: "Quality finishes", mult: "1.2×" },
+    { id: "premium", label: "Premium", desc: "Luxury materials", mult: "1.45×" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline>{headlines[projectType] ?? "Exterior finish quality"}</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(8px, 2vw, 20px)" }}>
+        {opts.map((o) => {
+          const active = exteriorQuality === o.id;
+          return (
+            <button key={o.id} onClick={() => onQualityChange(o.id)} style={{
+              padding: "clamp(20px, 4vw, 48px) 16px",
+              border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+              background: active ? dark : "#fff", color: active ? "#fff" : dark,
+              cursor: "pointer", transition: "all 0.25s", textAlign: "center",
+            }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
+            >
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "clamp(16px, 2.5vw, 28px)", marginBottom: 4 }}>{o.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(12px, 1.5vw, 15px)", color: active ? "rgba(255,255,255,0.5)" : "#999", marginBottom: 8 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "clamp(14px, 2vw, 20px)", color: active ? gold : "#bbb" }}>{o.mult}</div>
+            </button>
+          );
+        })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
+
+function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, onBathroomsChange, onFinishChange, onBack, onNext, projectType }: {
+  bedrooms: number; bathrooms: number; interiorFinish: string;
+  onBedroomsChange: (b: number) => void; onBathroomsChange: (b: number) => void;
+  onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void; projectType: string;
+}) {
+  const headlines: Record<string, string> = {
+    "custom-home": "Design your custom home's interior",
+    "new-build": "Interior specs for your new build",
+  };
+  const inputStyle: React.CSSProperties = {
+    width: "100%", border: "2px solid #e5e5e5", padding: "16px 20px",
+    fontSize: 20, fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
+    color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s",
+  };
+  const labelStyle: React.CSSProperties = {
+    display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: 16,
+    fontWeight: 600, color: dark, marginBottom: 10, letterSpacing: "0.02em",
+  };
+  function handleFocus(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
+    e.target.style.borderColor = gold;
+    e.target.style.boxShadow = `0 0 0 4px ${gold}18`;
+  }
+  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
+    e.target.style.borderColor = "#e5e5e5";
+    e.target.style.boxShadow = "none";
   }
 
   return (
-    <div 
-      className={`absolute bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      onClick={scrollToContent}
-    >
-      <div className="flex flex-col items-center gap-4">
-        {/* Mouse icon with animated wheel */}
-        <div className="relative w-9 h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
-          {/* Animated scroll wheel */}
-          <div className="w-1.5 h-3 bg-[#c6912c] rounded-full mt-2.5 animate-scroll-wheel" />
-          {/* Glow effect on hover */}
-          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 480, margin: "0 auto" }}>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline>{headlines[projectType] ?? "Interior details"}</StepHeadline>
+      <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 28 }}>
+        <div>
+          <label style={labelStyle}>Bedrooms</label>
+          <input type="number" value={bedrooms} onChange={(e) => onBedroomsChange(Math.max(1, +e.target.value || 1))} style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
         </div>
-        
-        {/* Animated chevrons - bigger and brighter */}
-        <div className="flex flex-col items-center -space-y-2">
-          <svg 
-            className="w-7 h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth={2.5}
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-          <svg 
-            className="w-7 h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth={2.5}
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
+        <div>
+          <label style={labelStyle}>Bathrooms</label>
+          <input type="number" value={bathrooms} onChange={(e) => onBathroomsChange(Math.max(1, +e.target.value || 1))} style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
+        </div>
+        <div>
+          <label style={labelStyle}>Interior Finish Level</label>
+          <select value={interiorFinish} onChange={(e) => onFinishChange(e.target.value)} style={{ ...inputStyle, appearance: "none", cursor: "pointer" }} onFocus={handleFocus} onBlur={handleBlur}>
+            <option value="basic">Basic</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+            <option value="luxury">Luxury</option>
+          </select>
         </div>
       </div>
+      <NavButtons onBack={onBack} onNext={onNext} />
     </div>
-  )
+  );
 }
 
-function QuoteIcon() {
+/* ─── New Build: Build Details Step ────────────────────────────── */
+
+function BuildDetailsStep({ stories, garageSpaces, onStoriesChange, onGarageChange, onBack, onNext }: {
+  stories: number; garageSpaces: number;
+  onStoriesChange: (s: number) => void; onGarageChange: (g: number) => void;
+  onBack: () => void; onNext: () => void;
+}) {
+  const storyOpts = [
+    { id: 1, label: "Single Story", desc: "Ranch style" },
+    { id: 2, label: "Two Story", desc: "Most common" },
+    { id: 3, label: "Three Story", desc: "Maximum space" },
+  ];
+
   return (
-    <svg className="w-8 h-8 text-[#c6912c]/30" fill="currentColor" viewBox="0 0 24 24">
-      <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
-    </svg>
-  )
-}
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
+      <TypeBadge projectType="new-build" />
+      <StepHeadline subtitle="These options affect structural costs and overall footprint.">Configure your new build</StepHeadline>
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex gap-0.5">
-      {[1, 2, 3, 4, 5].map((star) => (
-        <svg
-          key={star}
-          className={`w-4 h-4 ${star <= rating ? "text-[#c6912c]" : "text-white/20"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      ))}
-    </div>
-  )
-}
-
-function GoogleIcon() {
-  return (
-    <svg className="w-4 h-4" viewBox="0 0 24 24">
-      <path
-        fill="#4285F4"
-        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-      />
-      <path
-        fill="#34A853"
-        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-      />
-      <path
-        fill="#FBBC05"
-        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-      />
-      <path
-        fill="#EA4335"
-        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-      />
-    </svg>
-  )
-}
-
-interface ServiceCardProps {
-  title: string
-  image: string
-  alt: string
-  href: string
-}
-
-function ServiceCard({ title, image, alt, href }: ServiceCardProps) {
-  return (
-    <Link href={href}>
-      <div className="group relative overflow-hidden rounded-xl cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.02] aspect-[4/3]">
-        <Image 
-          src={image} 
-          alt={alt} 
-          fill
-          sizes="(max-width: 768px) 100vw, 33vw"
-          className="object-cover object-center" 
-        />
-        <div
-          className="absolute inset-0"
-          style={{
-            background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)",
-          }}
-        />
-        <div className="absolute bottom-0 left-0 right-0 p-5 flex items-center justify-between">
-          <h3 className="text-white font-medium text-base">{title}</h3>
-          <ArrowIcon />
-        </div>
-      </div>
-    </Link>
-  )
-}
-
-interface OfferCardProps {
-  title: string
-  description: string
-  price: string
-  image: string
-  alt: string
-  exploreHref: string
-  exploreLabel: string
-}
-
-function OfferCard({ title, description, price, image, alt, exploreHref, exploreLabel }: OfferCardProps) {
-  return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
-      <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
-        <Image
-          src={image}
-          alt={alt}
-          fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
-
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
-          <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
-          <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
-          <div className="flex gap-3 pt-2">
-            <Button
-              size="sm"
-              className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all"
-              asChild
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>
+        Number of stories
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 36 }}>
+        {storyOpts.map((o) => {
+          const active = stories === o.id;
+          return (
+            <button key={o.id} onClick={() => onStoriesChange(o.id)} style={{
+              padding: "24px 16px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+              background: active ? dark : "#fff", color: active ? "#fff" : dark,
+              cursor: "pointer", transition: "all 0.25s", textAlign: "center",
+            }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
             >
-              <Link href={exploreHref}>{exploreLabel}</Link>
-            </Button>
-            <Button
-              size="sm"
-              variant="outline"
-              className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent"
-              asChild
-            >
-              <Link href="/contact">Get Quote</Link>
-            </Button>
-          </div>
-        </div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20 }}>{o.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: active ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div>
+            </button>
+          );
+        })}
       </div>
+
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>
+        Garage spaces
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>
+        {[0, 1, 2, 3].map((g) => {
+          const active = garageSpaces === g;
+          return (
+            <button key={g} onClick={() => onGarageChange(g)} style={{
+              padding: "20px 12px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+              background: active ? dark : "#fff", color: active ? "#fff" : dark,
+              cursor: "pointer", transition: "all 0.25s", textAlign: "center",
+              fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20,
+            }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
+            >
+              {g === 0 ? "None" : g}
+            </button>
+          );
+        })}
+      </div>
+
+      <NavButtons onBack={onBack} onNext={onNext} />
     </div>
-  )
+  );
 }
 
-interface TestimonialCardProps {
-  headline: string
-  service: string
-  quote: string
-  author: string
-  role: string
-  company: string
-  videoThumbnail: string
-}
+/* ─── Renovation Steps ─────────────────────────────────────────── */
 
-function TestimonialCard({ headline, service, quote, author, role, company, videoThumbnail }: TestimonialCardProps) {
+function RenoScopeStep({ renoScope, onScopeChange, onBack, onNext }: {
+  renoScope: string; onScopeChange: (s: string) => void; onBack: () => void; onNext: () => void;
+}) {
+  const scopes = [
+    { id: "kitchen", label: "Kitchen", desc: "Full kitchen remodel" },
+    { id: "bathroom", label: "Bathroom", desc: "Complete bath renovation" },
+    { id: "addition", label: "Addition", desc: "Expand your home" },
+    { id: "full-gut", label: "Full Gut Reno", desc: "Strip to studs and rebuild" },
+    { id: "whole-house", label: "Whole House", desc: "Comprehensive renovation" },
+  ];
+
   return (
-    <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType="renovation" />
+      <StepHeadline subtitle="Different renovation types have different cost structures.">What are you renovating?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, maxWidth: 640, margin: "0 auto" }}>
+        {scopes.map((s) => {
+          const active = renoScope === s.id;
+          return (
+            <button key={s.id} onClick={() => onScopeChange(s.id)} style={{
+              padding: "28px 16px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+              background: active ? dark : "#fff", color: active ? "#fff" : dark,
+              cursor: "pointer", transition: "all 0.25s", textAlign: "center",
+            }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
+            >
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{s.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: active ? "rgba(255,255,255,0.5)" : "#999", marginTop: 6 }}>{s.desc}</div>
+            </button>
+          );
+        })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!renoScope} />
+    </div>
+  );
+}
 
-      <div className="p-8 lg:p-10">
-        <div className="flex items-center justify-between mb-6">
-          <span className="text-[#c6912c] text-xs font-medium tracking-[0.2em] uppercase">{service}</span>
-          <QuoteIcon />
-        </div>
+function RenoDetailsStep({ renoScope, renoArea, renoCondition, renoFinish, onAreaChange, onConditionChange, onFinishChange, onBack, onNext }: {
+  renoScope: string; renoArea: number; renoCondition: string; renoFinish: string;
+  onAreaChange: (a: number) => void; onConditionChange: (c: string) => void;
+  onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void;
+}) {
+  const needsArea = renoScope !== "kitchen" && renoScope !== "bathroom";
+  const inputStyle: React.CSSProperties = {
+    width: "100%", border: "2px solid #e5e5e5", padding: "16px 20px",
+    fontSize: 20, fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
+    color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s",
+  };
+  const labelStyle: React.CSSProperties = {
+    display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: 16,
+    fontWeight: 600, color: dark, marginBottom: 10,
+  };
+  function handleFocus(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
+    e.target.style.borderColor = gold;
+    e.target.style.boxShadow = `0 0 0 4px ${gold}18`;
+  }
+  function handleBlur(e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) {
+    e.target.style.borderColor = "#e5e5e5";
+    e.target.style.boxShadow = "none";
+  }
 
-        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-5 tracking-tight">{headline}</h3>
+  const conditionOpts = [
+    { id: "good", label: "Good", desc: "Mostly cosmetic updates" },
+    { id: "fair", label: "Fair", desc: "Some structural needs" },
+    { id: "poor", label: "Poor", desc: "Significant work needed" },
+    { id: "gutted", label: "Gutted", desc: "Down to studs" },
+  ];
 
-        <blockquote className="text-white/70 text-base leading-relaxed mb-8">"{quote}"</blockquote>
+  const scopeLabels: Record<string, string> = {
+    kitchen: "kitchen renovation", bathroom: "bathroom renovation",
+    addition: "home addition", "full-gut": "full gut renovation", "whole-house": "whole house renovation",
+  };
 
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
-            <span className="text-[#c6912c] font-semibold text-sm">{getInitials(author)}</span>
-          </div>
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
+      <TypeBadge projectType="renovation" />
+      <StepHeadline subtitle={`Fine-tune the details for your ${scopeLabels[renoScope] ?? "renovation"}.`}>
+        Renovation details
+      </StepHeadline>
+      <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 28 }}>
+        {needsArea && (
           <div>
-            <p className="text-white font-medium">{author}</p>
-            <p className="text-white/50 text-sm">
-              {role}, {company}
-            </p>
-          </div>
-        </div>
-
-        <div className="relative aspect-[2/1] rounded-xl overflow-hidden cursor-pointer">
-          <Image
-            src={videoThumbnail}
-            alt={`${author} testimonial video`}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-          />
-          <div className="absolute inset-0 bg-black/40 group-hover:bg-black/30 transition-colors duration-300" />
-          <PlayIcon />
-
-          <div className="absolute bottom-3 right-3 px-2 py-1 bg-black/70 rounded text-white/90 text-xs font-medium">
-            2:34
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-interface GoogleReviewCardProps {
-  author_name: string
-  rating: number
-  relative_time_description: string
-  text: string
-  image: string | null
-}
-
-function GoogleReviewCard({ author_name, rating, relative_time_description, text, image }: GoogleReviewCardProps) {
-  return (
-    <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
-      <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-      <div className="p-8 lg:p-10">
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
-              <span className="text-[#c6912c] font-semibold text-sm">{getInitials(author_name)}</span>
-            </div>
-            <div>
-              <p className="text-white font-medium">{author_name}</p>
-              <p className="text-white/50 text-sm">{relative_time_description}</p>
-            </div>
-          </div>
-          <StarRating rating={rating} />
-        </div>
-
-        <blockquote className="text-white/70 text-base leading-relaxed mb-6">"{text}"</blockquote>
-
-        {image && (
-          <div className="relative aspect-[2/1] rounded-xl overflow-hidden mb-6">
-            <Image
-              src={image}
-              alt={`Project by ${author_name}`}
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover object-center group-hover:scale-105 transition-transform duration-700"
-            />
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
+            <label style={labelStyle}>Renovation area (SF)</label>
+            <input type="number" value={renoArea} onChange={(e) => onAreaChange(Math.max(50, Math.min(5000, +e.target.value || 50)))} style={inputStyle} onFocus={handleFocus} onBlur={handleBlur} />
           </div>
         )}
 
-        <div className="pt-6 border-t border-white/10 flex items-center gap-2">
-          <GoogleIcon />
-          <span className="text-white/40 text-xs">Google Review</span>
+        <div>
+          <label style={labelStyle}>Current condition</label>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>
+            {conditionOpts.map((c) => {
+              const active = renoCondition === c.id;
+              return (
+                <button key={c.id} onClick={() => onConditionChange(c.id)} style={{
+                  padding: "16px 12px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+                  background: active ? dark : "#fff", color: active ? "#fff" : dark,
+                  cursor: "pointer", transition: "all 0.25s", textAlign: "center",
+                }}
+                  onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+                  onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
+                >
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{c.label}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: active ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{c.desc}</div>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Finish level</label>
+          <select value={renoFinish} onChange={(e) => onFinishChange(e.target.value)} style={{ ...inputStyle, appearance: "none", cursor: "pointer" }} onFocus={handleFocus} onBlur={handleBlur}>
+            <option value="basic">Basic</option>
+            <option value="standard">Standard</option>
+            <option value="premium">Premium</option>
+            <option value="luxury">Luxury</option>
+          </select>
         </div>
       </div>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!renoCondition} />
     </div>
-  )
+  );
 }
 
-function GoogleReviewsSection() {
-  const avgRating = GOOGLE_REVIEWS.reduce((sum, r) => sum + r.rating, 0) / GOOGLE_REVIEWS.length
+/* ─── Consulting Steps ─────────────────────────────────────────── */
+
+function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: {
+  consultType: string; onTypeChange: (t: string) => void; onBack: () => void; onNext: () => void;
+}) {
+  const types = [
+    { id: "structural", label: "Structural Assessment", desc: "Load analysis, foundation review, structural integrity", range: "$3.5K – $8K" },
+    { id: "feasibility", label: "Feasibility Study", desc: "Project viability, cost projections, risk analysis", range: "$5K – $15K" },
+    { id: "permits", label: "Permit Support", desc: "Permit applications, code compliance, regulatory guidance", range: "$2.5K – $6K" },
+    { id: "site-analysis", label: "Site Analysis", desc: "Soil testing, grading plans, environmental review", range: "$4K – $12K" },
+  ];
 
   return (
-    <section className="py-16 lg:py-20 bg-black relative overflow-hidden">
-      <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
-          {/* Google badge */}
-          <div className="flex items-center gap-4">
-            <GoogleIcon />
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-white font-bold text-2xl">{avgRating.toFixed(1)}</span>
-                <StarRating rating={Math.round(avgRating)} />
-              </div>
-              <span className="text-white/40 text-sm">{GOOGLE_REVIEWS.length} verified reviews</span>
-            </div>
-          </div>
-
-          {/* Divider */}
-          <div className="hidden sm:block h-12 w-px bg-white/10" />
-
-          {/* CTA */}
-          <div className="flex items-center gap-4">
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 text-sm text-white/70 border border-white/15 rounded-[4px] hover:bg-white/5 hover:border-white/30 transition-all duration-300"
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType="consulting" />
+      <StepHeadline subtitle="Select the engineering service that matches your project needs.">What do you need?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, maxWidth: 700, margin: "0 auto" }}>
+        {types.map((t) => {
+          const active = consultType === t.id;
+          return (
+            <button key={t.id} onClick={() => onTypeChange(t.id)} style={{
+              padding: "28px 20px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+              background: active ? dark : "#fff", color: active ? "#fff" : dark,
+              cursor: "pointer", transition: "all 0.25s", textAlign: "left",
+            }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
             >
-              View All Reviews
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-              </svg>
-            </a>
-            <a
-              href="#"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-[4px] hover:bg-white/90 transition-colors duration-300"
-            >
-              <GoogleIcon />
-              Write a Review
-            </a>
-          </div>
-        </div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 6 }}>{t.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: active ? "rgba(255,255,255,0.5)" : "#999", lineHeight: 1.5, marginBottom: 10 }}>{t.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: active ? gold : "#bbb" }}>{t.range}</div>
+            </button>
+          );
+        })}
       </div>
-    </section>
-  )
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!consultType} />
+    </div>
+  );
 }
 
-function useScrollThreshold(ref: React.RefObject<HTMLElement | null>, threshold: number) {
-  const [isPastThreshold, setIsPastThreshold] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (ref.current) {
-        const rect = ref.current.getBoundingClientRect()
-        setIsPastThreshold(rect.top <= window.innerHeight * threshold)
-      }
-    }
-
-    handleScroll()
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [ref, threshold])
-
-  return isPastThreshold
-}
-
-export default function AntovaBuilders() {
-  const [isScrolled, setIsScrolled] = useState(false)
-  const [showNavbar, setShowNavbar] = useState(false)
-  const [showTitle, setShowTitle] = useState(false)
-  const [showSubtitleAndButtons, setShowSubtitleAndButtons] = useState(false)
-  const [isVideoPlaying, setIsVideoPlaying] = useState(false)
-  const [selectedProjectType, setSelectedProjectType] = useState("")
-  const router = useRouter()
-  const serviceCardsRef = useRef<HTMLElement>(null)
-  const testimonialsRef = useRef<HTMLElement>(null)
-
-  const isTestimonialsVisible = useScrollThreshold(testimonialsRef, TESTIMONIALS_THRESHOLD)
-
-  useEffect(() => {
-    const titleTimer = setTimeout(() => setShowTitle(true), 300)
-    const subtitleTimer = setTimeout(() => setShowSubtitleAndButtons(true), 1000)
-    const navbarTimer = setTimeout(() => setShowNavbar(true), 1800)
-
-    return () => {
-      clearTimeout(titleTimer)
-      clearTimeout(subtitleTimer)
-      clearTimeout(navbarTimer)
-    }
-  }, [])
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
-    }
-    handleScroll()
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
-  const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-white"
+function ConsultDetailsStep({ consultComplexity, consultTimeline, onComplexityChange, onTimelineChange, onBack, onNext }: {
+  consultComplexity: string; consultTimeline: string;
+  onComplexityChange: (c: string) => void; onTimelineChange: (t: string) => void;
+  onBack: () => void; onNext: () => void;
+}) {
+  const complexOpts = [
+    { id: "standard", label: "Standard", desc: "Straightforward scope", mult: "1.0×" },
+    { id: "moderate", label: "Moderate", desc: "Multiple variables", mult: "1.3×" },
+    { id: "complex", label: "Complex", desc: "High difficulty", mult: "1.7×" },
+  ];
+  const timeOpts = [
+    { id: "flexible", label: "Flexible", desc: "No rush", mult: "0.9×" },
+    { id: "standard", label: "Standard", desc: "Normal timeline", mult: "1.0×" },
+    { id: "rush", label: "Rush", desc: "Expedited delivery", mult: "1.25×" },
+  ];
 
   return (
-    <div className={`min-h-screen bg-white overflow-x-hidden`}>
-      {/* Custom animations for scroll indicator */}
-      <style jsx global>{`
-        @keyframes scroll-wheel {
-          0% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 0.5;
-            transform: translateY(10px);
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(14px);
-          }
-        }
-        
-        @keyframes chevron-fade-1 {
-          0%, 100% {
-            opacity: 0.8;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 1;
-            transform: translateY(6px);
-          }
-        }
-        
-        @keyframes chevron-fade-2 {
-          0%, 100% {
-            opacity: 0.5;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 0.9;
-            transform: translateY(6px);
-          }
-        }
-        
-        .animate-scroll-wheel {
-          animation: scroll-wheel 1.5s ease-in-out infinite;
-        }
-        
-        .animate-chevron-1 {
-          animation: chevron-fade-1 1.5s ease-in-out infinite;
-        }
-        
-        .animate-chevron-2 {
-          animation: chevron-fade-2 1.5s ease-in-out infinite;
-          animation-delay: 0.2s;
-        }
-      `}</style>
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
+      <TypeBadge projectType="consulting" />
+      <StepHeadline subtitle="Complexity and timeline affect the scope of engineering work.">Project scope</StepHeadline>
 
-      <Navbar hidden={!showNavbar} />
-
-      {/* ━━━ HERO ━━━ */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/hero-winter-mountain-home.png"
-            alt="Luxury mountain chalet in winter with warm interior lighting"
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-black/35" />
-        </div>
-
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-24 md:-mt-32">
-          {/* Headline — benefit-driven, answers "why should I care" */}
-          <h1 
-            className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-5 tracking-tight text-balance text-white transition-all duration-700 ease-out ${
-              showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            Your vision, built without compromise.
-          </h1>
-
-          {/* Subline — packs benefit + speed + proof into one line */}
-          <p 
-            className={`text-base md:text-lg lg:text-xl mb-3 text-white/60 tracking-wide transition-all duration-700 ease-out ${
-              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            See your realistic investment range in 60 seconds — no email required.
-          </p>
-
-          {/* Offer — embedded as styled text in same animation group as subline */}
-          <p 
-            className={`text-sm md:text-base mb-8 transition-all duration-700 ease-out ${
-              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <span style={{color: "#c6912c", fontWeight: 600}}>Free Design Consultation</span>
-            <span style={{color: "rgba(255,255,255,0.45)"}}> — included with every spring 2026 project.{" "}</span>
-            <Link href="/offers" style={{color: "#c6912c", textDecoration: "underline", textUnderlineOffset: "3px"}}>
-              Learn more →
-            </Link>
-          </p>
-
-          {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
-          <div 
-            className={`flex flex-col items-center gap-5 transition-all duration-700 ease-out ${
-              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            {/* Frosted glass container — makes the estimator feel like a tool, not a form */}
-            <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-3 sm:p-4">
-              {/* Form row: selector + button */}
-              <div className="flex flex-col sm:flex-row items-stretch gap-3">
-                {/* Project type selector */}
-                <div className="relative flex-1">
-                  <select
-                    value={selectedProjectType}
-                    onChange={(e) => setSelectedProjectType(e.target.value)}
-                    className="w-full h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-0 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm"
-                  >
-                    <option value="" disabled>What are you building?</option>
-                    <option value="custom-home">Custom Home</option>
-                    <option value="renovation">Major Renovation</option>
-                    <option value="new-build">New Build</option>
-                    <option value="consulting">Engineering & Consulting</option>
-                  </select>
-                  {/* Dropdown arrow */}
-                  <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/30 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </div>
-
-                {/* Primary CTA button */}
-                <Button
-                  size="lg"
-                  className="h-[54px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold px-10 text-base tracking-wide rounded-lg shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-[1.02] hover:shadow-[#c6912c]/40 whitespace-nowrap"
-                  onClick={() => {
-                    const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
-                    router.push(`/cost-estimator${param}`)
-                  }}
-                >
-                  Reveal My Investment Range →
-                </Button>
-              </div>
-            </div>
-
-            {/* Microcopy — reinforces different points than subline */}
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/70 text-xs sm:text-sm tracking-wide">
-              <span className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                Instant results
-              </span>
-              <span className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                No sales calls
-              </span>
-              <span className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                Trusted in 150+ builds
-              </span>
-            </div>
-
-            {/* Secondary CTA — consultation as text link, not competing button */}
-            <Link 
-              href="/contact" 
-              className="text-white/70 hover:text-white text-sm underline underline-offset-4 decoration-white/40 hover:decoration-white/70 transition-all"
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>
+        Complexity
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 36 }}>
+        {complexOpts.map((o) => {
+          const active = consultComplexity === o.id;
+          return (
+            <button key={o.id} onClick={() => onComplexityChange(o.id)} style={{
+              padding: "24px 12px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+              background: active ? dark : "#fff", color: active ? "#fff" : dark,
+              cursor: "pointer", transition: "all 0.25s", textAlign: "center",
+            }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
             >
-              Or book a consultation directly
-            </Link>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: active ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: active ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
+            </button>
+          );
+        })}
+      </div>
+
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>
+        Timeline
+      </p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+        {timeOpts.map((o) => {
+          const active = consultTimeline === o.id;
+          return (
+            <button key={o.id} onClick={() => onTimelineChange(o.id)} style={{
+              padding: "24px 12px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5",
+              background: active ? dark : "#fff", color: active ? "#fff" : dark,
+              cursor: "pointer", transition: "all 0.25s", textAlign: "center",
+            }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = "#e5e5e5"; }}
+            >
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: active ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: active ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
+            </button>
+          );
+        })}
+      </div>
+
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!consultComplexity || !consultTimeline} />
+    </div>
+  );
+}
+
+/* ─── Analyzing ────────────────────────────────────────────────── */
+
+function AnalyzingStep({ projectType, zipCode }: { projectType: string; zipCode: string }) {
+  const labels: Record<string, string> = {
+    "custom-home": `Calculating costs for ${getLocationName(zipCode)}`,
+    "new-build": `Calculating build costs for ${getLocationName(zipCode)}`,
+    "renovation": `Estimating renovation costs for ${getLocationName(zipCode)}`,
+    "consulting": "Generating consulting estimate",
+  };
+
+  return (
+    <div className="fade-in" style={{ textAlign: "center" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 48 }}>
+        <div style={{ position: "relative", width: 160, height: 160 }}>
+          {[0, 0.3, 0.6].map((delay, i) => (
+            <div key={i} style={{
+              position: "absolute", inset: 0, borderRadius: "50%",
+              border: `2px solid ${gold}`, animation: `subtlePing 2s ${delay}s infinite`,
+              opacity: 0.6 - i * 0.15,
+            }} />
+          ))}
+          <div style={{
+            position: "absolute", inset: 24, borderRadius: "50%",
+            border: `3px solid ${gold}`, background: "#fff",
+            display: "flex", alignItems: "center", justifyContent: "center",
+          }}>
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="1.5">
+              <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
           </div>
         </div>
+      </div>
+      <h2 style={{
+        fontFamily: "'Playfair Display', serif", fontWeight: 700,
+        fontSize: "clamp(24px, 4.5vw, 48px)", color: dark, margin: "0 0 16px",
+      }}>
+        Analyzing your project...
+      </h2>
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 18, color: "#999", fontWeight: 300 }}>
+        {labels[projectType] ?? "Processing..."}
+      </p>
+    </div>
+  );
+}
 
-        {/* Scroll Indicator */}
-        <ScrollIndicator show={showSubtitleAndButtons} />
-      </section>
+/* ─── Results ──────────────────────────────────────────────────── */
 
-      {/* ━━━ TRUST STRIP — immediately below hero ━━━
-          Gold luxury style. Single source of truth for stats.
-      */}
-      <div className="bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-0 py-10 md:py-14 border-b border-black/[0.06]">
-            {/* Google Rating */}
-            <div className="flex flex-col items-center justify-center gap-2">
-              <div className="flex items-center gap-2">
-                <GoogleIcon />
-                <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">5.0</span>
-              </div>
-              <div className="flex gap-0.5">
-                {[1,2,3,4,5].map(i => (
-                  <svg key={i} className="w-4 h-4 text-[#c6912c]" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <span className="text-black/40 text-sm">Google Rating</span>
-            </div>
+function ResultsStep({ estimate, displayedTotal, onReset }: {
+  estimate: EstimateResult; displayedTotal: number; onReset: () => void;
+}) {
+  return (
+    <div className="fade-up" style={{ maxWidth: 720, margin: "0 auto" }}>
+      {/* Badge */}
+      <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
+        <div style={{
+          position: "relative", display: "inline-flex", alignItems: "center", gap: 8,
+          background: `linear-gradient(135deg, ${gold}, ${goldHover}, ${gold})`,
+          padding: "8px 20px", overflow: "hidden",
+        }}>
+          <div style={{
+            position: "absolute", inset: 0,
+            background: "linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent)",
+            animation: "shimmer 3s infinite",
+          }} />
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" style={{ position: "relative", zIndex: 1 }}>
+            <path d="M13 10V3L4 14h7v7l9-11h-7z" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+          <span style={{
+            fontSize: 11, fontWeight: 700, color: "#fff", letterSpacing: "0.12em",
+            fontFamily: "'DM Sans', sans-serif", position: "relative", zIndex: 1,
+          }}>
+            AI-POWERED ESTIMATE — {estimate.projectLabel.toUpperCase()}
+          </span>
+        </div>
+      </div>
 
-            {/* 150+ Projects */}
-            <div className="flex flex-col items-center justify-center gap-2">
-              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">150+</span>
-              <span className="text-black/40 text-sm">Projects Completed</span>
-            </div>
+      {/* Total */}
+      <div style={{ textAlign: "center", marginBottom: 24 }}>
+        <p style={{
+          fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600,
+          color: "#999", letterSpacing: "0.08em", marginBottom: 8,
+        }}>
+          YOUR ESTIMATE
+        </p>
+        <div style={{
+          fontFamily: "'Playfair Display', serif", fontWeight: 800,
+          fontSize: "clamp(48px, 10vw, 96px)", color: dark, letterSpacing: "-0.02em", lineHeight: 1,
+        }}>
+          ${displayedTotal.toLocaleString()}
+        </div>
+        {estimate.unitLabel !== "flat fee" && estimate.unitLabel !== "flat" && (
+          <div style={{
+            fontFamily: "'DM Sans', sans-serif", fontSize: 22,
+            color: "#999", fontWeight: 300, marginTop: 8,
+          }}>
+            ${estimate.perUnit.toLocaleString()} {estimate.unitLabel}
+          </div>
+        )}
 
-            {/* 12 Years */}
-            <div className="flex flex-col items-center justify-center gap-2">
-              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">12</span>
-              <span className="text-black/40 text-sm">Years Experience</span>
-            </div>
-
-            {/* 98% Satisfaction */}
-            <div className="flex flex-col items-center justify-center gap-2">
-              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">98%</span>
-              <span className="text-black/40 text-sm">Client Satisfaction</span>
-            </div>
-
-            {/* $50M+ */}
-            <div className="flex flex-col items-center justify-center gap-2 col-span-2 md:col-span-1">
-              <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">$50M+</span>
-              <span className="text-black/40 text-sm">Total Value Built</span>
-            </div>
+        {/* Location badge */}
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 8, marginTop: 16 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2">
+              <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" strokeLinecap="round" strokeLinejoin="round" />
+              <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#666" }}>
+              {estimate.tierName ? (
+                <>Pricing for <strong style={{ color: dark }}>{estimate.locationName}</strong> ({estimate.tierName})</>
+              ) : (
+                <strong style={{ color: dark }}>{estimate.locationName}</strong>
+              )}
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div style={{ width: 6, height: 6, borderRadius: "50%", background: gold }} />
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#999" }}>
+              Based on 50,000+ regional data points
+            </span>
           </div>
         </div>
       </div>
 
-      {/* ━━━ SCHEDULING BANNER — Right after trust strip ━━━ */}
-      <section className="py-12 lg:py-16 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 bg-white border border-black/[0.06] rounded-2xl overflow-hidden">
-            <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
-            
-            <div className="flex-1 flex flex-col gap-4 p-6 sm:p-8 lg:p-10">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 w-fit bg-black/[0.03] border border-black/[0.08] rounded-full text-black/50 text-xs font-medium tracking-wide uppercase">
-                Spring 2026 · Limited Availability
-              </span>
-              <Link href="/offers">
-                <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black hover:text-[#c6912c] transition-colors cursor-pointer leading-tight">
-                  Now scheduling spring 2026 projects.
-                </h2>
-              </Link>
-              <p className="text-black/50 text-base md:text-lg max-w-xl leading-relaxed">
-                Each project includes a complimentary design consultation and AI-powered scope analysis — so you know exactly what to expect before breaking ground.
-              </p>
-            </div>
+      {/* Chart */}
+      <div style={{
+        background: `linear-gradient(145deg, ${dark}, #1a1a1a)`,
+        padding: "clamp(24px, 4vw, 48px)", borderRadius: 12,
+        boxShadow: "0 20px 60px rgba(0,0,0,0.3)",
+      }}>
+        <h2 style={{
+          fontFamily: "'Playfair Display', serif", fontWeight: 700,
+          fontSize: "clamp(20px, 3vw, 30px)", color: "#fff",
+          textAlign: "center", marginBottom: 32,
+        }}>
+          Cost Breakdown
+        </h2>
+        <div style={{ width: "100%", height: 320 }}>
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={estimate.breakdown} margin={{ top: 20, right: 20, left: 10, bottom: 10 }} barCategoryGap="20%">
+              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.08)" vertical={false} />
+              <XAxis dataKey="name" tick={{ fill: "#d1d5db", fontSize: 13, fontWeight: 600, fontFamily: "'DM Sans', sans-serif" }} tickLine={false} axisLine={{ stroke: "rgba(255,255,255,0.15)" }} />
+              <YAxis tickFormatter={(v) => `$${(v / 1000).toFixed(0)}k`} tick={{ fill: "#9ca3af", fontSize: 13, fontWeight: 500, fontFamily: "'DM Sans', sans-serif" }} tickLine={false} axisLine={{ stroke: "rgba(255,255,255,0.15)" }} width={60} />
+              <Tooltip
+                formatter={(v: number) => [`$${v.toLocaleString()}`, "Cost"]}
+                contentStyle={{
+                  backgroundColor: "#1a1a1a", border: `1px solid ${gold}`,
+                  borderRadius: 8, boxShadow: `0 10px 40px ${gold}33`,
+                  padding: "12px 16px", fontSize: 14, color: "#fff",
+                }}
+                labelStyle={{ fontWeight: 700, marginBottom: 6, color: gold }}
+                cursor={{ fill: `${gold}11` }}
+              />
+              <Bar dataKey="value" fill={gold} radius={[6, 6, 0, 0]} barSize={60} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
 
-            <div className="sm:w-[320px] lg:w-[380px] flex flex-col items-center justify-center gap-5 p-6 sm:p-8 lg:p-10 border-t sm:border-t-0 sm:border-l border-black/[0.06]">
-              <div className="text-center space-y-2">
-                <p className="text-black/40 text-xs tracking-wide uppercase">Included with every project</p>
-                <div className="space-y-3 text-left">
-                  <div className="flex items-center gap-2.5">
-                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    <span className="text-black/70 text-sm">Design consultation</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    <span className="text-black/70 text-sm">AI scope analysis</span>
-                  </div>
-                  <div className="flex items-center gap-2.5">
-                    <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                    <span className="text-black/70 text-sm">Priority scheduling</span>
-                  </div>
-                </div>
+        {/* Grid */}
+        <div style={{
+          display: "grid", gridTemplateColumns: `repeat(${Math.min(estimate.breakdown.length, 4)}, 1fr)`,
+          gap: 16, marginTop: 32, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.1)",
+        }}>
+          {estimate.breakdown.map((item) => (
+            <div key={item.name} style={{ textAlign: "center" }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "clamp(18px, 2.5vw, 24px)", color: "#fff" }}>
+                ${(item.value / 1000).toFixed(0)}k
               </div>
-              <Link href="/offers" className="w-full">
-                <button className="flex items-center justify-center gap-3 w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base rounded-[4px] transition-all hover:scale-[1.02] hover:shadow-lg hover:shadow-[#c6912c]/30">
-                  <span>Check Availability</span>
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </button>
-              </Link>
-              <Link href="/contact" className="w-full">
-                <button className="flex items-center justify-center gap-2 w-full px-8 py-3 border border-black/15 text-black/60 hover:text-black hover:border-black/30 font-medium text-sm rounded-[4px] transition-all">
-                  Or request a custom quote
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ━━━ PROBLEM → SOLUTION — Names the fear, then resolves it ━━━ */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          {/* Problem — call out the fears */}
-          <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
-            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Why homeowners hesitate</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 tracking-tight leading-tight">
-              Building a home shouldn't feel like a gamble.
-            </h2>
-            <p className="text-black/50 text-lg md:text-xl leading-relaxed">
-              Most homeowners delay their dream project because they've heard the horror stories — budgets that double, timelines that slip, contractors who disappear. We built Antova to eliminate every one of those fears.
-            </p>
-          </div>
-
-          {/* Solution — three fear-killers */}
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-            {/* Fear 1: Budget overruns */}
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
-                <svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-black mb-3">No investment surprises</h3>
-              <p className="text-black/50 text-base leading-relaxed">
-                Our AI estimator gives you a realistic investment range before you commit to anything. No hidden fees, no scope creep, no uncomfortable conversations later.
-              </p>
-            </div>
-
-            {/* Fear 2: Timeline slips */}
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
-                <svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-black mb-3">On time, every time</h3>
-              <p className="text-black/50 text-base leading-relaxed">
-                12 years and 150+ projects have taught us how to plan realistically and deliver on schedule. You'll know the timeline upfront — and we'll stick to it.
-              </p>
-            </div>
-
-            {/* Fear 3: Quality / trust */}
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
-                <svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold text-black mb-3">Craftsmanship guaranteed</h3>
-              <p className="text-black/50 text-base leading-relaxed">
-                98% client satisfaction across every project we've ever built. We don't disappear after the contract — we're with you from first sketch to final walkthrough.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ━━━ HOW IT WORKS — Reduces "what happens next?" anxiety ━━━ */}
-      <section className="py-20 lg:py-28 bg-[#fafafa] border-y border-black/[0.06]">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
-            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">How it works</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
-              Three steps to your dream home.
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-16 max-w-5xl mx-auto">
-            {/* Step 1 */}
-            <div className="text-center">
-              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">01</div>
-              <h3 className="text-xl font-bold text-black mb-3">See your investment range</h3>
-              <p className="text-black/50 text-base leading-relaxed">
-                Select your project type and get a realistic cost range in 60 seconds. No email, no obligation — just clarity.
-              </p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="text-center">
-              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">02</div>
-              <h3 className="text-xl font-bold text-black mb-3">Meet your project team</h3>
-              <p className="text-black/50 text-base leading-relaxed">
-                Book a free design consultation. We'll walk through your vision, refine the scope, and create a detailed plan tailored to your goals.
-              </p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="text-center">
-              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">03</div>
-              <h3 className="text-xl font-bold text-black mb-3">Build with confidence</h3>
-              <p className="text-black/50 text-base leading-relaxed">
-                Construction begins with a fixed timeline and transparent pricing. You'll have full visibility at every stage — from foundation to final walkthrough.
-              </p>
-            </div>
-          </div>
-
-          {/* CTA under steps */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-14 lg:mt-20">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto sm:min-w-[240px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
-              onClick={() => {
-                const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
-                router.push(`/cost-estimator${param}`)
-              }}
-            >
-              Start with Step 1 →
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto sm:min-w-[240px] h-[48px] border border-black/15 text-black/70 hover:bg-black hover:text-white bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
-              asChild
-            >
-              <Link href="/contact">Skip to consultation</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* ━━━ SERVICE LANES — Choose your path ━━━ */}
-      <section
-        id="services"
-        ref={serviceCardsRef}
-        className="py-16 lg:py-24 bg-white"
-      >
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mb-12 lg:mb-16">
-            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Our services</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
-              Choose your path.
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {SERVICE_CARDS.map((card) => (
-              <ServiceCard key={card.title} {...card} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-
-      <section
-        ref={testimonialsRef}
-        className={`py-24 lg:py-32 ${bottomBgColor} transition-colors duration-300 ease-in-out relative overflow-hidden`}
-      >
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
-
-        <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mb-16 lg:mb-20">
-            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Testimonials</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-              Clients who built without compromise.
-            </h2>
-            <p className="text-white/60 text-lg md:text-xl leading-relaxed">
-              Real projects, real results — from homeowners who trusted Antova with their vision.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-            {TESTIMONIALS.map((testimonial) => (
-              <TestimonialCard key={testimonial.headline} {...testimonial} />
-            ))}
-          </div>
-
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-16 lg:mt-20">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
-              asChild
-            >
-              <Link href="/projects" scroll={true}>View All Projects</Link>
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105"
-              asChild
-            >
-              <Link href="/contact" scroll={true}>Start Your Project</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-
-      {/* ━━━ WHY AI — Differentiator, not duplicate CTA ━━━ */}
-      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 bg-[#0a0a0a]">
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
-          <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
-            {/* Left side - Text content */}
-            <div className="space-y-6 order-1">
-              <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">
-                Why we're different
-              </p>
-              
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-                AI precision meets<br />
-                <span className="text-[#c6912c]">master craftsmanship.</span>
-              </h2>
-              
-              <p className="text-base md:text-lg lg:text-xl text-white/60 leading-relaxed max-w-xl">
-                Traditional builders guess. We calculate. Our AI analyzes thousands of data points to deliver estimates that hold — so your project stays on track from day one.
-              </p>
-
-              {/* Differentiators */}
-              <div className="space-y-4 pt-2">
-                <div className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-[#c6912c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  <p className="text-white/70 text-base"><span className="text-white font-medium">Estimates that hold.</span> AI-powered scope analysis eliminates guesswork and budget surprises.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-[#c6912c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  <p className="text-white/70 text-base"><span className="text-white font-medium">Full transparency.</span> Real-time progress tracking and material cost breakdowns at every stage.</p>
-                </div>
-                <div className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-[#c6912c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                  <p className="text-white/70 text-base"><span className="text-white font-medium">Human expertise + AI intelligence.</span> Technology handles the numbers. Our craftsmen handle the build.</p>
-                </div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#888", marginTop: 4 }}>
+                {item.name}
               </div>
             </div>
-
-            {/* Right side - Video */}
-            <div className="relative order-2">
-              <div className="relative rounded-2xl overflow-hidden aspect-video lg:aspect-square">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  poster="/ai-video-poster.jpg"
-                  className="absolute inset-0 w-full h-full object-cover cursor-pointer"
-                  onClick={(e) => {
-                    const video = e.currentTarget;
-                    video.play();
-                    setIsVideoPlaying(true);
-                  }}
-                  onPlay={() => setIsVideoPlaying(true)}
-                >
-                  <source src="/ai-video.mp4" type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-transparent to-transparent opacity-60 pointer-events-none" />
-                <div className="absolute inset-0 bg-gradient-to-l from-transparent to-[#0a0a0a] opacity-30 hidden lg:block pointer-events-none" />
-              </div>
-              <div className="absolute -inset-4 bg-[#c6912c]/10 rounded-3xl blur-3xl -z-10 hidden lg:block" />
-            </div>
-          </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* Google Reviews Section */}
-      <GoogleReviewsSection />
+      {/* CTA row */}
+      <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 32, flexWrap: "wrap" }}>
+        <OutlineButton onClick={() => window.print()}>Download / Print</OutlineButton>
+        <DarkButton onClick={onReset}>New Estimate</DarkButton>
+      </div>
 
-      {/* ━━━ FAQ — Objection-handling before the close ━━━ */}
-      <section className="py-20 lg:py-28 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-14 lg:mb-18">
-              <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Common questions</p>
-              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">
-                Before you decide.
-              </h2>
-            </div>
-
-            <div className="divide-y divide-black/[0.08]">
-              {/* Q1 — Budget fear */}
-              <details className="group py-6">
-                <summary className="flex items-center justify-between cursor-pointer list-none">
-                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What if my project goes over budget?</h3>
-                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-                  </span>
-                </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
-                  It won't. Our AI-powered scope analysis identifies cost variables before construction begins — not after. You'll receive a detailed investment range upfront, and we lock in pricing before breaking ground. In 150+ projects, our final costs have stayed within the original estimate.
-                </p>
-              </details>
-
-              {/* Q2 — Timeline fear */}
-              <details className="group py-6">
-                <summary className="flex items-center justify-between cursor-pointer list-none">
-                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">How long does a typical project take?</h3>
-                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-                  </span>
-                </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
-                  Timelines vary by scope — a major renovation typically runs 3–6 months, while a custom home build is 8–14 months. We provide a detailed construction timeline during your free consultation, and we've maintained a 98% on-time delivery rate across all projects.
-                </p>
-              </details>
-
-              {/* Q3 — Consultation commitment */}
-              <details className="group py-6">
-                <summary className="flex items-center justify-between cursor-pointer list-none">
-                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What's included in the free consultation?</h3>
-                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-                  </span>
-                </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
-                  A 45-minute session with your project team where we walk through your vision, review your AI estimate in detail, discuss materials and design options, and provide a preliminary timeline. You'll leave with a clear understanding of scope, investment, and next steps — with zero obligation to proceed.
-                </p>
-              </details>
-
-              {/* Q4 — Location */}
-              <details className="group py-6">
-                <summary className="flex items-center justify-between cursor-pointer list-none">
-                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">Do you only work in the Pacific Northwest?</h3>
-                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-                  </span>
-                </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
-                  Our primary service area covers the Inland Northwest — Eastern Washington, Northern Idaho, and surrounding regions. For select projects outside this area, we offer consulting and project management services. Use the estimator to start, and we'll discuss logistics during your consultation.
-                </p>
-              </details>
-
-              {/* Q5 — AI trust */}
-              <details className="group py-6">
-                <summary className="flex items-center justify-between cursor-pointer list-none">
-                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">How accurate is the AI estimate?</h3>
-                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-                  </span>
-                </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
-                  The online estimator provides a realistic investment range based on project type, size, and regional data. It's designed to give you directional clarity — not a final quote. During your consultation, we refine the numbers with site-specific details, material selections, and your exact specifications to produce a precise, locked-in estimate.
-                </p>
-              </details>
-
-              {/* Q6 — Post-build warranty */}
-              <details className="group py-6">
-                <summary className="flex items-center justify-between cursor-pointer list-none">
-                  <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What happens after the build is complete?</h3>
-                  <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45">
-                    <svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg>
-                  </span>
-                </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">
-                  We don't disappear after the final walkthrough. Every Antova project includes a comprehensive warranty and a dedicated point of contact for any post-construction needs. Many of our clients return for additional projects — that's why our satisfaction rate is 98%.
-                </p>
-              </details>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ━━━ FINAL CTA — Strong close for convinced visitors ━━━ */}
-      <section className="py-24 lg:py-32 bg-[#0a0a0a] relative overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
-        
-        <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">
-            Ready to build without compromise?
-          </h2>
-          <p className="text-white/50 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">
-            See your realistic investment range in 60 seconds — or speak directly with our team about your vision.
-          </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button
-              size="lg"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[52px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
-              onClick={() => {
-                const param = selectedProjectType ? `?type=${selectedProjectType}` : ""
-                router.push(`/cost-estimator${param}`)
-              }}
-            >
-              Reveal My Investment Range →
-            </Button>
-            <Button
-              size="lg"
-              variant="outline"
-              className="w-full sm:w-auto sm:min-w-[264px] h-[52px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-semibold text-base tracking-wide rounded-[4px] transition-all hover:scale-105"
-              asChild
-            >
-              <Link href="/contact">Book a Consultation</Link>
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      <Footer />
+      {/* Consultation nudge */}
+      <div style={{
+        marginTop: 32, textAlign: "center",
+        background: "#fafafa", border: "1px solid #eee", borderRadius: 12, padding: "28px 24px",
+      }}>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: dark, fontWeight: 600, marginBottom: 4 }}>
+          Ready to bring this to life?
+        </p>
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#888", marginBottom: 16 }}>
+          Lock in your estimate with a free consultation — no commitment required.
+        </p>
+        <GoldButton onClick={() => window.location.href = "/contact"}>
+          Book Free Consultation
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <path d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </GoldButton>
+      </div>
     </div>
-  )
+  );
+}
+
+/* ─── Trust Bar ────────────────────────────────────────────────── */
+
+function TrustBar() {
+  const stats = [
+    { icon: "★", value: "5.0", label: "Google Rating" },
+    { value: "150+", label: "Projects Completed" },
+    { value: "12", label: "Years Experience" },
+    { value: "98%", label: "Client Satisfaction" },
+    { value: "$50M+", label: "Total Value Built" },
+  ];
+
+  return (
+    <div style={{ borderTop: "1px solid #f0f0f0", borderBottom: "1px solid #f0f0f0", padding: "36px 24px", background: "#fff" }}>
+      <div style={{
+        display: "flex", justifyContent: "center", alignItems: "center",
+        flexWrap: "wrap", gap: "clamp(20px, 4vw, 48px)", maxWidth: 1100, margin: "0 auto",
+      }}>
+        {stats.map((s, i) => (
+          <div key={i} style={{
+            textAlign: "center", position: "relative",
+            paddingLeft: i > 0 ? "clamp(20px, 4vw, 48px)" : 0,
+            borderLeft: i > 0 ? "1px solid #e5e5e5" : "none",
+          }}>
+            <div style={{
+              fontFamily: "'Playfair Display', serif", fontWeight: 700,
+              fontSize: "clamp(28px, 4vw, 44px)", color: gold, letterSpacing: "-0.02em", lineHeight: 1.1,
+            }}>
+              {s.icon && <span style={{ fontSize: "0.6em", marginRight: 4, verticalAlign: "middle" }}>{s.icon}</span>}
+              {s.value}
+            </div>
+            <div style={{
+              fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(11px, 1.2vw, 14px)",
+              color: "#999", marginTop: 6, fontWeight: 500,
+            }}>
+              {s.label}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Main Component ───────────────────────────────────────────── */
+
+function CostEstimatorInner() {
+  const searchParams = useSearchParams();
+  const urlType = (searchParams?.get("type") ?? "") as ProjectType;
+
+  const [state, setState] = useState<FormState>({
+    step: "type-select",
+    projectType: "",
+    zipCode: "",
+    sqft: 2000,
+    exteriorQuality: "standard",
+    bedrooms: 3,
+    bathrooms: 2,
+    interiorFinish: "standard",
+    stories: 2,
+    garageSpaces: 2,
+    renoScope: "",
+    renoArea: 500,
+    renoCondition: "",
+    renoFinish: "standard",
+    consultType: "",
+    consultComplexity: "",
+    consultTimeline: "standard",
+  });
+
+  const [displayedTotal, setDisplayedTotal] = useState(0);
+  const hasAnimated = useRef(false);
+  const hasReadUrl = useRef(false);
+
+  const update = (u: Partial<FormState>) => setState((p) => ({ ...p, ...u }));
+
+  // Read URL param on mount — if type is valid, skip type-select and go straight to first question
+  useEffect(() => {
+    if (hasReadUrl.current) return;
+    hasReadUrl.current = true;
+
+    const validTypes: ProjectType[] = ["custom-home", "new-build", "renovation", "consulting"];
+    if (validTypes.includes(urlType)) {
+      const steps = STEP_ORDERS[urlType];
+      const firstQuestionStep = steps[1]; // skip type-select
+      setState((p) => ({ ...p, projectType: urlType, step: firstQuestionStep }));
+    }
+  }, [urlType]);
+
+  // Get the step order for the current project type
+  const steps = state.projectType ? STEP_ORDERS[state.projectType] : ["type-select"];
+  const currentIdx = steps.indexOf(state.step);
+  const progress = steps.length > 1 ? (currentIdx / (steps.length - 1)) * 100 : 0;
+
+  const nextStep = () => {
+    if (currentIdx < steps.length - 1) update({ step: steps[currentIdx + 1] });
+  };
+  const prevStep = () => {
+    if (currentIdx > 0) {
+      update({ step: steps[currentIdx - 1] });
+    } else {
+      // If we're at the first question step, go back to type-select
+      update({ step: "type-select", projectType: "" });
+    }
+  };
+
+  const handleTypeSelect = (type: ProjectType) => {
+    const firstStep = STEP_ORDERS[type][1]; // skip type-select, go to first question
+    update({ projectType: type, step: firstStep });
+  };
+
+  const handleZipSubmit = () => {
+    if (!getZipTier(state.zipCode)) update({ step: "outside-area" });
+    else nextStep();
+  };
+
+  const estimate = state.step === "results" ? calcEstimate(state) : null;
+
+  // Analyzing → Results auto-transition
+  useEffect(() => {
+    if (state.step === "analyzing") {
+      hasAnimated.current = false;
+      const t = setTimeout(() => update({ step: "results" }), 3000);
+      return () => clearTimeout(t);
+    }
+  }, [state.step]);
+
+  // Animated counter on results
+  useEffect(() => {
+    if (state.step === "results" && estimate && !hasAnimated.current) {
+      hasAnimated.current = true;
+      setDisplayedTotal(0);
+      const dur = 1500;
+      const start = Date.now();
+      const tick = () => {
+        const p = Math.min((Date.now() - start) / dur, 1);
+        const eased = 1 - Math.pow(1 - p, 3);
+        setDisplayedTotal(Math.round(estimate.total * eased));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+  }, [state.step, estimate]);
+
+  const reset = () => {
+    setState({
+      step: "type-select", projectType: "", zipCode: "", sqft: 2000,
+      exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard",
+      stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500,
+      renoCondition: "", renoFinish: "standard", consultType: "",
+      consultComplexity: "", consultTimeline: "standard",
+    });
+  };
+
+  const isTypeSelect = state.step === "type-select";
+  const isOutside = state.step === "outside-area";
+  const showProgress = !isTypeSelect && !isOutside;
+
+  return (
+    <div style={{
+      minHeight: "100vh", display: "flex", flexDirection: "column",
+      fontFamily: "'DM Sans', sans-serif", background: "#fff", position: "relative",
+    }}>
+      <style>{globalStyles}</style>
+
+      {/* Progress bar */}
+      {showProgress && (
+        <div style={{
+          position: "fixed", top: 0, left: 0, right: 0, height: 3, background: "#eee", zIndex: 100,
+        }}>
+          <div style={{
+            height: "100%", background: dark, width: `${progress}%`,
+            transition: "width 0.5s cubic-bezier(0.22, 1, 0.36, 1)",
+            animation: "progressGlow 2s infinite",
+          }} />
+        </div>
+      )}
+
+      {/* Header */}
+      <header style={{ background: dark, borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
+        <div style={{
+          maxWidth: 1200, margin: "0 auto", padding: "16px 24px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+        }}>
+          <a href="/" style={{
+            textDecoration: "none", fontSize: 20, letterSpacing: "0.08em",
+            fontFamily: "'DM Sans', sans-serif", fontWeight: 700,
+          }}>
+            <span style={{ color: "#fff" }}>ANTOVA </span>
+            <span style={{ color: gold }}>BUILDERS</span>
+          </a>
+          {state.projectType && state.step !== "type-select" && (
+            <span style={{
+              fontFamily: "'DM Sans', sans-serif", fontSize: 13,
+              color: "rgba(255,255,255,0.4)", letterSpacing: "0.05em",
+            }}>
+              {PROJECT_TYPES.find(p => p.id === state.projectType)?.label ?? ""}
+            </span>
+          )}
+        </div>
+      </header>
+
+      {/* Main */}
+      <main style={{
+        flex: 1, display: "flex", flexDirection: "column", justifyContent: "center",
+        padding: "clamp(24px, 4vw, 64px) 24px",
+        background: isTypeSelect ? dark : "#fff",
+        transition: "background 0.5s", position: "relative", overflow: "hidden",
+      }}>
+        {/* Ambient effects for type-select */}
+        {isTypeSelect && (
+          <>
+            <div style={{
+              position: "absolute", top: "15%", right: "20%",
+              width: 500, height: 500, borderRadius: "50%",
+              background: `${gold}0d`, filter: "blur(120px)", pointerEvents: "none",
+            }} />
+            <div style={{
+              position: "absolute", bottom: "20%", left: "15%",
+              width: 400, height: 400, borderRadius: "50%",
+              background: `${gold}08`, filter: "blur(100px)", pointerEvents: "none",
+            }} />
+            <div style={{
+              position: "absolute", inset: 0, pointerEvents: "none",
+              backgroundImage: `linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)`,
+              backgroundSize: "60px 60px",
+            }} />
+          </>
+        )}
+
+        <div style={{ width: "100%", maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 10 }}>
+          {/* TYPE SELECT */}
+          {state.step === "type-select" && (
+            <TypeSelectStep onSelect={handleTypeSelect} />
+          )}
+
+          {/* SHARED: ZIP */}
+          {state.step === "zip" && (
+            <ZipCodeStep
+              zipCode={state.zipCode}
+              onZipChange={(z) => update({ zipCode: z })}
+              onBack={prevStep}
+              onSubmit={handleZipSubmit}
+              projectType={state.projectType}
+            />
+          )}
+
+          {/* SHARED: OUTSIDE AREA */}
+          {state.step === "outside-area" && (
+            <OutsideAreaStep
+              zipCode={state.zipCode}
+              onRetry={() => { update({ zipCode: "" }); update({ step: "zip" }); }}
+              onReset={reset}
+            />
+          )}
+
+          {/* CUSTOM HOME + NEW BUILD: SQFT */}
+          {state.step === "sqft" && (
+            <SqftStep
+              sqft={state.sqft}
+              onSqftChange={(s) => update({ sqft: s })}
+              onBack={prevStep}
+              onNext={nextStep}
+              projectType={state.projectType}
+            />
+          )}
+
+          {/* NEW BUILD: BUILD DETAILS */}
+          {state.step === "build-details" && (
+            <BuildDetailsStep
+              stories={state.stories}
+              garageSpaces={state.garageSpaces}
+              onStoriesChange={(s) => update({ stories: s })}
+              onGarageChange={(g) => update({ garageSpaces: g })}
+              onBack={prevStep}
+              onNext={nextStep}
+            />
+          )}
+
+          {/* CUSTOM HOME + NEW BUILD: EXTERIOR */}
+          {state.step === "exterior" && (
+            <ExteriorStep
+              exteriorQuality={state.exteriorQuality}
+              onQualityChange={(q) => update({ exteriorQuality: q })}
+              onBack={prevStep}
+              onNext={nextStep}
+              projectType={state.projectType}
+            />
+          )}
+
+          {/* CUSTOM HOME + NEW BUILD: INTERIOR */}
+          {state.step === "interior" && (
+            <InteriorStep
+              bedrooms={state.bedrooms}
+              bathrooms={state.bathrooms}
+              interiorFinish={state.interiorFinish}
+              onBedroomsChange={(b) => update({ bedrooms: b })}
+              onBathroomsChange={(b) => update({ bathrooms: b })}
+              onFinishChange={(f) => update({ interiorFinish: f })}
+              onBack={prevStep}
+              onNext={nextStep}
+              projectType={state.projectType}
+            />
+          )}
+
+          {/* RENOVATION: SCOPE */}
+          {state.step === "reno-scope" && (
+            <RenoScopeStep
+              renoScope={state.renoScope}
+              onScopeChange={(s) => update({ renoScope: s })}
+              onBack={prevStep}
+              onNext={nextStep}
+            />
+          )}
+
+          {/* RENOVATION: DETAILS */}
+          {state.step === "reno-details" && (
+            <RenoDetailsStep
+              renoScope={state.renoScope}
+              renoArea={state.renoArea}
+              renoCondition={state.renoCondition}
+              renoFinish={state.renoFinish}
+              onAreaChange={(a) => update({ renoArea: a })}
+              onConditionChange={(c) => update({ renoCondition: c })}
+              onFinishChange={(f) => update({ renoFinish: f })}
+              onBack={prevStep}
+              onNext={nextStep}
+            />
+          )}
+
+          {/* CONSULTING: TYPE */}
+          {state.step === "consult-type" && (
+            <ConsultTypeStep
+              consultType={state.consultType}
+              onTypeChange={(t) => update({ consultType: t })}
+              onBack={prevStep}
+              onNext={nextStep}
+            />
+          )}
+
+          {/* CONSULTING: DETAILS */}
+          {state.step === "consult-details" && (
+            <ConsultDetailsStep
+              consultComplexity={state.consultComplexity}
+              consultTimeline={state.consultTimeline}
+              onComplexityChange={(c) => update({ consultComplexity: c })}
+              onTimelineChange={(t) => update({ consultTimeline: t })}
+              onBack={prevStep}
+              onNext={nextStep}
+            />
+          )}
+
+          {/* SHARED: ANALYZING */}
+          {state.step === "analyzing" && (
+            <AnalyzingStep projectType={state.projectType} zipCode={state.zipCode} />
+          )}
+
+          {/* SHARED: RESULTS */}
+          {state.step === "results" && estimate && (
+            <ResultsStep estimate={estimate} displayedTotal={displayedTotal} onReset={reset} />
+          )}
+        </div>
+      </main>
+
+      {/* Trust bar */}
+      {(isTypeSelect || state.step === "results") && <TrustBar />}
+    </div>
+  );
+}
+
+export default function CostEstimator() {
+  return (
+    <Suspense fallback={
+      <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", background: dark }}>
+        <div style={{ fontFamily: "'DM Sans', sans-serif", color: "rgba(255,255,255,0.5)" }}>Loading estimator...</div>
+      </div>
+    }>
+      <CostEstimatorInner />
+    </Suspense>
+  );
 }
