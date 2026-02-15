@@ -607,6 +607,18 @@ export default function AntovaBuilders() {
 
       {/* ━━━ HERO ━━━ */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        {/* ANNOUNCEMENT BAR — inside hero, below navbar */}
+        <div className="absolute top-[56px] left-0 right-0 z-20 bg-[#c6912c] text-center py-2.5 px-4">
+          <Link href="/offers" className="inline-flex items-center justify-center gap-2 group">
+            <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
+              Free Design Consultation — included with every spring 2026 project.
+            </span>
+            <span className="text-white font-bold text-xs sm:text-sm underline underline-offset-2 group-hover:no-underline">
+              Learn More →
+            </span>
+          </Link>
+        </div>
+
         <div className="absolute inset-0 z-0">
           <Image
             src="/hero-winter-mountain-home.png"
@@ -629,17 +641,13 @@ export default function AntovaBuilders() {
             Your vision, built without compromise.
           </h1>
 
-          {/* Subline + offer — single paragraph ensures both render */}
+          {/* Subline */}
           <p 
             className={`text-base md:text-lg lg:text-xl mb-10 text-white/60 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
             See your realistic investment range in 60 seconds — no email required.
-            <br />
-            <span className="text-[#c6912c] font-semibold text-sm md:text-base">Free Design Consultation</span>
-            <span className="text-white/40 text-sm md:text-base"> — included with every spring 2026 project. </span>
-            <Link href="/offers" className="text-[#c6912c] text-sm md:text-base underline underline-offset-2">Learn more →</Link>
           </p>
 
           {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
