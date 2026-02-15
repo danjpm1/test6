@@ -603,6 +603,21 @@ export default function AntovaBuilders() {
         }
       `}</style>
 
+      {/* ━━━ ANNOUNCEMENT BAR — Offer at the very top ━━━ */}
+      <div className="w-full bg-[#c6912c] py-2.5 px-4 text-center relative z-[60]">
+        <Link href="/offers" className="inline-flex items-center gap-2 group">
+          <span className="text-white/90 text-sm font-medium tracking-wide">
+            Complimentary Design Consultation with every spring 2026 project
+          </span>
+          <span className="text-white font-semibold text-sm group-hover:underline flex items-center gap-1">
+            Learn More
+            <svg className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </span>
+        </Link>
+      </div>
+
       <Navbar hidden={!showNavbar} />
 
       {/* ━━━ HERO ━━━ */}
@@ -631,24 +646,11 @@ export default function AntovaBuilders() {
 
           {/* Subline — packs benefit + speed + proof into one line */}
           <p 
-            className={`text-base md:text-lg lg:text-xl mb-4 text-white/60 tracking-wide transition-all duration-700 ease-out ${
+            className={`text-base md:text-lg lg:text-xl mb-10 text-white/60 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
             See your realistic investment range in 60 seconds — no email required.
-          </p>
-
-          {/* Offer hook — Tesla-style one-liner between headline and CTA */}
-          <p 
-            className={`text-sm md:text-base mb-8 transition-all duration-700 ease-out ${
-              showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
-          >
-            <span className="inline-flex items-center gap-2 px-4 py-2 bg-[#c6912c]/15 backdrop-blur-sm border border-[#c6912c]/30 rounded-full">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#c6912c] animate-pulse" />
-              <span className="text-[#c6912c] font-semibold tracking-wide">Complimentary Design Consultation</span>
-              <span className="text-white/50">with every spring 2026 project</span>
-            </span>
           </p>
 
           {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
