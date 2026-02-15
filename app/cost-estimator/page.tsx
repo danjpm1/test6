@@ -631,38 +631,25 @@ export default function AntovaBuilders() {
 
           {/* Subline — packs benefit + speed + proof into one line */}
           <p 
-            className={`text-base md:text-lg lg:text-xl mb-5 text-white/60 tracking-wide transition-all duration-700 ease-out ${
+            className={`text-base md:text-lg lg:text-xl mb-3 text-white/60 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
             See your realistic investment range in 60 seconds — no email required.
           </p>
 
-          {/* Offer line — Tesla-style, between subline and CTA */}
-          <div 
-            className={`mb-8 transition-all duration-700 ease-out ${
+          {/* Offer — embedded as styled text in same animation group as subline */}
+          <p 
+            className={`text-sm md:text-base mb-8 transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            <Link 
-              href="/offers"
-              className="inline-flex items-center gap-3 px-5 py-2.5 bg-[#c6912c]/20 backdrop-blur-sm border border-[#c6912c]/40 rounded-full hover:bg-[#c6912c]/30 transition-all group"
-            >
-              <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c6912c] opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c6912c]"></span>
-              </span>
-              <span className="text-[#c6912c] font-semibold text-sm md:text-base tracking-wide">
-                Free Design Consultation
-              </span>
-              <span className="text-white/50 text-sm md:text-base">
-                — included with spring 2026 projects
-              </span>
-              <svg className="w-4 h-4 text-[#c6912c] group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-              </svg>
+            <span style={{color: "#c6912c", fontWeight: 600}}>Free Design Consultation</span>
+            <span style={{color: "rgba(255,255,255,0.45)"}}> — included with every spring 2026 project.{" "}</span>
+            <Link href="/offers" style={{color: "#c6912c", textDecoration: "underline", textUnderlineOffset: "3px"}}>
+              Learn more →
             </Link>
-          </div>
+          </p>
 
           {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
           <div 
