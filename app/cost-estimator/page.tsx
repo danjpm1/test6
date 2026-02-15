@@ -147,9 +147,9 @@ function getLocationName(zip: string) {
 /* ─── Step Orders Per Type ─────────────────────────────────────── */
 
 const STEP_ORDERS: Record<string, string[]> = {
-  "custom-home": ["type-select", "zip", "sqft", "exterior", "interior", "analyzing", "results"],
-  "new-build": ["type-select", "zip", "sqft", "build-details", "exterior", "interior", "analyzing", "results"],
-  "renovation": ["type-select", "zip", "reno-scope", "reno-details", "analyzing", "results"],
+  "custom-home": ["type-select", "sqft", "exterior", "interior", "zip", "analyzing", "results"],
+  "new-build": ["type-select", "sqft", "build-details", "exterior", "interior", "zip", "analyzing", "results"],
+  "renovation": ["type-select", "reno-scope", "reno-details", "zip", "analyzing", "results"],
   "consulting": ["type-select", "consult-type", "consult-details", "analyzing", "results"],
 };
 
@@ -442,15 +442,61 @@ function NavButtons({ onBack, onNext, nextDisabled, nextLabel = "Continue" }: {
   );
 }
 
-function StepHeadline({ children }: { children: React.ReactNode }) {
+function StepHeadline({ children, subtitle }: { children: React.ReactNode; subtitle?: string }) {
   return (
-    <h1 style={{
-      fontFamily: "'Playfair Display', serif", fontWeight: 700,
-      fontSize: "clamp(28px, 5.5vw, 64px)", color: dark,
-      lineHeight: 1.1, margin: "0 0 48px", letterSpacing: "-0.02em",
-    }}>
-      {children}
-    </h1>
+    <div style={{ marginBottom: 48 }}>
+      <h1 style={{
+        fontFamily: "'Playfair Display', serif", fontWeight: 700,
+        fontSize: "clamp(28px, 5.5vw, 64px)", color: dark,
+        lineHeight: 1.1, margin: 0, letterSpacing: "-0.02em",
+      }}>
+        {children}
+      </h1>
+      {subtitle && (
+        <p style={{
+          fontFamily: "'DM Sans', sans-serif", fontSize: 16,
+          color: "#999", marginTop: 12, fontWeight: 400,
+        }}>
+          {subtitle}
+        </p>
+      )}
+    </div>
+  );
+}
+
+function TypeBadge({ projectType }: { projectType: string }) {
+  const labels: Record<string, string> = {
+    "custom-home": "Custom Home Estimate",
+    "new-build": "New Build Estimate",
+    "renovation": "Renovation Estimate",
+    "consulting": "Consulting Estimate",
+  };
+  const icons: Record<string, string> = {
+    "custom-home": "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6",
+    "new-build": "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4",
+    "renovation": "M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1 2 2 0 110-4 1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z",
+    "consulting": "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
+  };
+  if (!labels[projectType]) return null;
+  return (
+    <div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}>
+      <div style={{
+        display: "inline-flex", alignItems: "center", gap: 8,
+        background: `${gold}0a`, border: `1px solid ${gold}25`,
+        padding: "8px 18px", borderRadius: 40,
+      }}>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={gold}
+          strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d={icons[projectType] ?? ""} />
+        </svg>
+        <span style={{
+          fontSize: 13, fontWeight: 600, color: gold,
+          letterSpacing: "0.06em", fontFamily: "'DM Sans', sans-serif",
+        }}>
+          {labels[projectType]}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -594,12 +640,26 @@ function TypeSelectStep({ onSelect }: { onSelect: (type: ProjectType) => void })
 
 /* ─── Shared Steps ─────────────────────────────────────────────── */
 
-function ZipCodeStep({ zipCode, onZipChange, onBack, onSubmit }: {
-  zipCode: string; onZipChange: (z: string) => void; onBack: () => void; onSubmit: () => void;
+function ZipCodeStep({ zipCode, onZipChange, onBack, onSubmit, projectType }: {
+  zipCode: string; onZipChange: (z: string) => void; onBack: () => void; onSubmit: () => void; projectType: string;
 }) {
+  const headlines: Record<string, string> = {
+    "custom-home": "Where will we build your custom home?",
+    "new-build": "Where is your new build site?",
+    "renovation": "Where is the property you're renovating?",
+    "consulting": "Where is your project?",
+  };
+  const subtitles: Record<string, string> = {
+    "custom-home": "Last step — your location determines final pricing for your custom home.",
+    "new-build": "Last step — your build location determines the final pricing tier.",
+    "renovation": "Last step — we'll tailor renovation costs to your local market.",
+    "consulting": "",
+  };
+
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <StepHeadline>Where is your project?</StepHeadline>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Where is your project?"}</StepHeadline>
       <input
         type="text"
         value={zipCode}
@@ -629,7 +689,7 @@ function ZipCodeStep({ zipCode, onZipChange, onBack, onSubmit }: {
       }}>
         Serving the Inland Northwest — Idaho, Eastern Washington & beyond
       </p>
-      <NavButtons onBack={onBack} onNext={onSubmit} nextDisabled={zipCode.length !== 5} />
+      <NavButtons onBack={onBack} onNext={onSubmit} nextDisabled={zipCode.length !== 5} nextLabel="See My Estimate" />
     </div>
   );
 }
@@ -685,9 +745,17 @@ function OutsideAreaStep({ zipCode, onRetry, onReset }: {
   );
 }
 
-function SqftStep({ sqft, onSqftChange, onBack, onNext, label = "Total square footage?" }: {
-  sqft: number; onSqftChange: (s: number) => void; onBack: () => void; onNext: () => void; label?: string;
+function SqftStep({ sqft, onSqftChange, onBack, onNext, projectType }: {
+  sqft: number; onSqftChange: (s: number) => void; onBack: () => void; onNext: () => void; projectType: string;
 }) {
+  const headlines: Record<string, string> = {
+    "custom-home": "How large is your dream home?",
+    "new-build": "What size new build are you planning?",
+  };
+  const subtitles: Record<string, string> = {
+    "custom-home": "Total living area for your custom home — we'll refine finishes next.",
+    "new-build": "Total square footage including all floors.",
+  };
   const min = CONSTRAINTS.minSqft;
   const max = CONSTRAINTS.maxSqft;
   const step = CONSTRAINTS.sqftStep;
@@ -695,7 +763,8 @@ function SqftStep({ sqft, onSqftChange, onBack, onNext, label = "Total square fo
 
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <StepHeadline>{label}</StepHeadline>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Total square footage?"}</StepHeadline>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(16px, 4vw, 40px)" }}>
         <button
           onClick={() => onSqftChange(Math.max(min, sqft - step))}
@@ -754,9 +823,13 @@ function SqftStep({ sqft, onSqftChange, onBack, onNext, label = "Total square fo
   );
 }
 
-function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext }: {
-  exteriorQuality: string; onQualityChange: (q: string) => void; onBack: () => void; onNext: () => void;
+function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext, projectType }: {
+  exteriorQuality: string; onQualityChange: (q: string) => void; onBack: () => void; onNext: () => void; projectType: string;
 }) {
+  const headlines: Record<string, string> = {
+    "custom-home": "Choose your custom home's exterior",
+    "new-build": "Exterior finish for your new build",
+  };
   const opts = [
     { id: "basic", label: "Basic", desc: "Standard materials", mult: "1.0×" },
     { id: "standard", label: "Standard", desc: "Quality finishes", mult: "1.2×" },
@@ -764,7 +837,8 @@ function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext }: {
   ];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <StepHeadline>Exterior finish quality</StepHeadline>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline>{headlines[projectType] ?? "Exterior finish quality"}</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(8px, 2vw, 20px)" }}>
         {opts.map((o) => {
           const active = exteriorQuality === o.id;
@@ -790,11 +864,15 @@ function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext }: {
   );
 }
 
-function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, onBathroomsChange, onFinishChange, onBack, onNext }: {
+function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, onBathroomsChange, onFinishChange, onBack, onNext, projectType }: {
   bedrooms: number; bathrooms: number; interiorFinish: string;
   onBedroomsChange: (b: number) => void; onBathroomsChange: (b: number) => void;
-  onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void;
+  onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void; projectType: string;
 }) {
+  const headlines: Record<string, string> = {
+    "custom-home": "Design your custom home's interior",
+    "new-build": "Interior specs for your new build",
+  };
   const inputStyle: React.CSSProperties = {
     width: "100%", border: "2px solid #e5e5e5", padding: "16px 20px",
     fontSize: 20, fontFamily: "'DM Sans', sans-serif", fontWeight: 500,
@@ -815,7 +893,8 @@ function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, o
 
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 480, margin: "0 auto" }}>
-      <StepHeadline>Interior details</StepHeadline>
+      <TypeBadge projectType={projectType} />
+      <StepHeadline>{headlines[projectType] ?? "Interior details"}</StepHeadline>
       <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 28 }}>
         <div>
           <label style={labelStyle}>Bedrooms</label>
@@ -855,7 +934,8 @@ function BuildDetailsStep({ stories, garageSpaces, onStoriesChange, onGarageChan
 
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
-      <StepHeadline>Build configuration</StepHeadline>
+      <TypeBadge projectType="new-build" />
+      <StepHeadline subtitle="These options affect structural costs and overall footprint.">Configure your new build</StepHeadline>
 
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>
         Number of stories
@@ -921,7 +1001,8 @@ function RenoScopeStep({ renoScope, onScopeChange, onBack, onNext }: {
 
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <StepHeadline>What are you renovating?</StepHeadline>
+      <TypeBadge projectType="renovation" />
+      <StepHeadline subtitle="Different renovation types have different cost structures.">What are you renovating?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, maxWidth: 640, margin: "0 auto" }}>
         {scopes.map((s) => {
           const active = renoScope === s.id;
@@ -976,9 +1057,17 @@ function RenoDetailsStep({ renoScope, renoArea, renoCondition, renoFinish, onAre
     { id: "gutted", label: "Gutted", desc: "Down to studs" },
   ];
 
+  const scopeLabels: Record<string, string> = {
+    kitchen: "kitchen renovation", bathroom: "bathroom renovation",
+    addition: "home addition", "full-gut": "full gut renovation", "whole-house": "whole house renovation",
+  };
+
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
-      <StepHeadline>Renovation details</StepHeadline>
+      <TypeBadge projectType="renovation" />
+      <StepHeadline subtitle={`Fine-tune the details for your ${scopeLabels[renoScope] ?? "renovation"}.`}>
+        Renovation details
+      </StepHeadline>
       <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 28 }}>
         {needsArea && (
           <div>
@@ -1038,7 +1127,8 @@ function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: {
 
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <StepHeadline>What do you need?</StepHeadline>
+      <TypeBadge projectType="consulting" />
+      <StepHeadline subtitle="Select the engineering service that matches your project needs.">What do you need?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, maxWidth: 700, margin: "0 auto" }}>
         {types.map((t) => {
           const active = consultType === t.id;
@@ -1081,7 +1171,8 @@ function ConsultDetailsStep({ consultComplexity, consultTimeline, onComplexityCh
 
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
-      <StepHeadline>Project scope</StepHeadline>
+      <TypeBadge projectType="consulting" />
+      <StepHeadline subtitle="Complexity and timeline affect the scope of engineering work.">Project scope</StepHeadline>
 
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>
         Complexity
@@ -1579,6 +1670,7 @@ function CostEstimatorInner() {
               onZipChange={(z) => update({ zipCode: z })}
               onBack={prevStep}
               onSubmit={handleZipSubmit}
+              projectType={state.projectType}
             />
           )}
 
@@ -1598,6 +1690,7 @@ function CostEstimatorInner() {
               onSqftChange={(s) => update({ sqft: s })}
               onBack={prevStep}
               onNext={nextStep}
+              projectType={state.projectType}
             />
           )}
 
@@ -1620,6 +1713,7 @@ function CostEstimatorInner() {
               onQualityChange={(q) => update({ exteriorQuality: q })}
               onBack={prevStep}
               onNext={nextStep}
+              projectType={state.projectType}
             />
           )}
 
@@ -1634,6 +1728,7 @@ function CostEstimatorInner() {
               onFinishChange={(f) => update({ interiorFinish: f })}
               onBack={prevStep}
               onNext={nextStep}
+              projectType={state.projectType}
             />
           )}
 
