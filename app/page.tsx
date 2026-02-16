@@ -607,15 +607,20 @@ export default function AntovaBuilders() {
 
       {/* ━━━ HERO ━━━ */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* ANNOUNCEMENT BAR — inside hero, below navbar */}
-        <div className="absolute top-[56px] left-0 right-0 z-20 bg-[#c6912c] text-center py-2.5 px-4">
-          <Link href="/offers" className="inline-flex items-center justify-center gap-2 group">
-            <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
-              Free Design Consultation — included with every spring 2026 project.
+        {/* ANNOUNCEMENT BAR — premium dark style with gold accent */}
+        <div className="absolute top-[56px] left-0 right-0 z-20 bg-black/80 backdrop-blur-sm border-b border-[#c6912c]/20 text-center py-2 px-4">
+          <Link href="/offers" className="inline-flex items-center justify-center gap-3 group">
+            <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#c6912c] animate-pulse" />
+            <span className="text-white/70 text-xs sm:text-sm tracking-wide">
+              Free Design Consultation
             </span>
-            <span className="text-white font-bold text-xs sm:text-sm underline underline-offset-2 group-hover:no-underline">
-              Learn More →
+            <span className="text-white/30 text-xs">—</span>
+            <span className="text-[#c6912c] text-xs sm:text-sm font-medium tracking-wide">
+              Included with every spring 2026 project
             </span>
+            <svg className="w-3.5 h-3.5 text-[#c6912c] group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
           </Link>
         </div>
 
