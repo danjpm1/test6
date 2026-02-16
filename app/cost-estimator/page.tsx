@@ -190,14 +190,9 @@ function DarkButton({ children, onClick, disabled, className = "" }: { children:
 }
 
 function NavButtons({ onBack, onNext, nextDisabled, nextLabel = "Continue" }: { onBack: () => void; onNext: () => void; nextDisabled?: boolean; nextLabel?: string }) {
-  return (<div style={{ marginTop: 48 }}>
-    <button onClick={onNext} disabled={nextDisabled} style={{ width: "100%", padding: "18px 40px", fontSize: 17, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "0.03em", border: "none", cursor: nextDisabled ? "not-allowed" : "pointer", transition: "all 0.3s", background: nextDisabled ? "#e5e5e5" : gold, color: nextDisabled ? "#aaa" : "#fff", boxShadow: nextDisabled ? "none" : `0 4px 20px ${gold}44`, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}
-      onMouseEnter={(e) => { if (!nextDisabled) { e.currentTarget.style.background = goldHover; e.currentTarget.style.boxShadow = `0 6px 28px ${gold}66`; e.currentTarget.style.transform = "translateY(-1px)"; } }}
-      onMouseLeave={(e) => { if (!nextDisabled) { e.currentTarget.style.background = gold; e.currentTarget.style.boxShadow = `0 4px 20px ${gold}44`; e.currentTarget.style.transform = "translateY(0)"; } }}>
-      {nextLabel} {!nextDisabled && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>}
-    </button>
-    <button onClick={onBack} style={{ width: "100%", marginTop: 10, padding: "12px", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500, color: "#999", background: "transparent", border: "none", cursor: "pointer", transition: "color 0.2s" }}
-      onMouseEnter={(e) => { e.currentTarget.style.color = dark; }} onMouseLeave={(e) => { e.currentTarget.style.color = "#999"; }}>← Back</button>
+  return (<div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 48 }}>
+    <OutlineButton onClick={onBack}>Back</OutlineButton>
+    <DarkButton onClick={onNext} disabled={nextDisabled}>{nextLabel}</DarkButton>
   </div>);
 }
 
