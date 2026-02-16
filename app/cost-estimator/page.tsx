@@ -413,10 +413,13 @@ function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: { consul
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb" }}>{t.range}</div>
           </button>); })}
       </div>
-      {/* Subtle credential line */}
-      <div style={{ marginTop: 40, display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-        <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#999", fontWeight: 500 }}>Licensed Engineers · 100% Permitting Success · Inland NW</span>
+      {/* Trust stats */}
+      <div style={{ marginTop: 48, paddingTop: 28, borderTop: "1px solid #eee", display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(24px, 4vw, 56px)", flexWrap: "wrap" }}>
+        {[{ value: "$620K+", label: "Client Savings" }, { value: "100%", label: "Permitting Success" }, { value: "9", label: "Disputes Resolved" }].map((s, i) => (
+          <div key={s.label} style={{ textAlign: "center", paddingLeft: i > 0 ? "clamp(24px, 4vw, 56px)" : 0, borderLeft: i > 0 ? "1px solid #e0e0e0" : "none" }}>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(24px, 3vw, 36px)", color: gold, letterSpacing: "-0.02em", lineHeight: 1 }}>{s.value}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#999", fontWeight: 500, marginTop: 6, letterSpacing: "0.04em" }}>{s.label}</div>
+          </div>))}
       </div>
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!consultType} />
     </div>
@@ -540,25 +543,14 @@ function ResultsStep({ estimate, displayedTotal, onReset, isConsulting }: { esti
         </div>
       </div>
 
-      {/* Consulting trust → convert block */}
+      {/* Consulting testimonial */}
       {isConsulting && (
-        <div style={{ marginTop: 32, background: "#fafafa", border: "1px solid #eee", borderRadius: 12, overflow: "hidden" }}>
-          {/* Stats row */}
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center", gap: "clamp(24px, 4vw, 56px)", padding: "28px 24px", borderBottom: "1px solid #eee" }}>
-            {[{ value: "$620K+", label: "Client Savings" }, { value: "100%", label: "Permitting Success" }, { value: "9", label: "Disputes Resolved" }].map((s, i) => (
-              <div key={s.label} style={{ textAlign: "center", paddingLeft: i > 0 ? "clamp(24px, 4vw, 56px)" : 0, borderLeft: i > 0 ? "1px solid #e0e0e0" : "none" }}>
-                <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(24px, 3vw, 36px)", color: gold, letterSpacing: "-0.02em", lineHeight: 1 }}>{s.value}</div>
-                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#999", fontWeight: 500, marginTop: 6, letterSpacing: "0.04em" }}>{s.label}</div>
-              </div>))}
-          </div>
-          {/* Testimonial */}
-          <div style={{ padding: "28px 32px", textAlign: "center" }}>
+        <div style={{ marginTop: 32, background: "#fafafa", border: "1px solid #eee", borderRadius: 12, padding: "28px 32px", textAlign: "center" }}>
             <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: "#666", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 16px", fontStyle: "italic" }}>
               &ldquo;Their technical expertise got us through a $600K dispute in under 3 months — without going to court.&rdquo;
             </p>
             <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: dark }}>Michael Chen</span>
             <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#999" }}> · Pacific Luxury Homes</span>
-          </div>
         </div>
       )}
 
