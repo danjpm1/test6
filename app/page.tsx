@@ -652,7 +652,7 @@ export default function AntovaBuilders() {
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            See your realistic investment range in 60 seconds — no email required.
+            See your realistic investment range in 60 seconds — no email or phone required.
           </p>
 
           {/* AI Estimator tool — the centerpiece */}
@@ -712,9 +712,9 @@ export default function AntovaBuilders() {
                 <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                 Results in 60 seconds
               </span>
-              <span className="flex items-center gap-1.5">
+              <span className="flex items-center gap-1.5 text-white font-medium">
                 <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-                No email or signup
+                No email, no phone number
               </span>
               <span className="flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
