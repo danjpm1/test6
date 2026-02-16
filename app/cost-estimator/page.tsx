@@ -14,7 +14,7 @@ interface FormState {
   step: string; projectType: ProjectType; zipCode: string; sqft: number;
   exteriorQuality: string; bedrooms: number; bathrooms: number; interiorFinish: string;
   stories: number; garageSpaces: number; renoScope: string; renoArea: number;
-  renoCondition: string; renoFinish: string; consultType: string;
+  renoCondition: string; renoFinish: string; renoFeatures: string[]; consultType: string;
   consultComplexity: string; consultTimeline: string;
   consultPropertyType: string; consultProjectValue: string;
   homeStyle: string; homeFeatures: string[];
@@ -51,6 +51,7 @@ const CONSULT_LOC_MULT: Record<string, number> = { premium: 1.0, standard: 1.0, 
 const CONSTRAINTS = { minSqft: 500, maxSqft: 10000, sqftStep: 100 };
 const HOME_STYLE_MULT: Record<string, number> = { modern: 1.15, craftsman: 1.05, farmhouse: 1.0, contemporary: 1.12, mediterranean: 1.18 };
 const HOME_FEATURE_COST: Record<string, number> = { "smart-home": 25000, "outdoor-kitchen": 35000, "home-theater": 28000, "wine-cellar": 22000, "ev-garage": 18000, "in-floor-heat": 15000, "solar": 32000, "pool": 65000 };
+const RENO_FEATURE_COST: Record<string, number> = { "open-concept": 12000, "new-windows": 8500, "hardwood": 7000, "custom-cabinets": 15000, "electrical": 6500, "plumbing": 9000, "insulation": 5500, "smart-lighting": 4500 };
 
 const ZIP_TO_TIER: Record<string, string> = {
   "83814":"premium","83815":"premium","83816":"premium","83835":"premium","83864":"premium","99019":"premium","99203":"premium","99223":"premium",
@@ -81,7 +82,7 @@ function getLocationName(zip: string) {
 const STEP_ORDERS: Record<string, string[]> = {
   "custom-home": ["type-select", "sqft", "home-style", "exterior", "interior", "home-features", "zip", "analyzing", "results"],
   "new-build": ["type-select", "sqft", "build-details", "exterior", "interior", "zip", "analyzing", "results"],
-  "renovation": ["type-select", "reno-scope", "reno-details", "zip", "analyzing", "results"],
+  "renovation": ["type-select", "reno-scope", "reno-details", "reno-features", "zip", "analyzing", "results"],
   "consulting": ["type-select", "consult-type", "consult-details", "consult-project", "zip", "analyzing", "results"],
 };
 
@@ -117,10 +118,12 @@ function calcRenovation(st: FormState): EstimateResult {
   const cm = CONDITION_MULT[st.renoCondition] ?? 1.0; const fm = FINISH_MULT[st.renoFinish] ?? 1.0;
   const scope = st.renoScope;
   const base = (scope === "kitchen" || scope === "bathroom") ? (RENO_BASE[scope] ?? 30000) * fm * cm : st.renoArea * (RENO_BASE[scope] ?? 160) * fm * cm;
-  const total = Math.round(base * lm); const isPerSF = scope !== "kitchen" && scope !== "bathroom";
+  const featureCost = st.renoFeatures.reduce((sum, f) => sum + (RENO_FEATURE_COST[f] ?? 0), 0);
+  const total = Math.round(base * lm) + featureCost; const isPerSF = scope !== "kitchen" && scope !== "bathroom";
+  const breakdown = [{ name: "Demolition", value: Math.round((total - featureCost) * 0.15) }, { name: "Structural", value: Math.round((total - featureCost) * 0.25) }, { name: "Finishes", value: Math.round((total - featureCost) * 0.40) }, { name: "Permits & Misc", value: Math.round((total - featureCost) * 0.20) }];
+  if (featureCost > 0) breakdown.push({ name: "Upgrades", value: featureCost });
   return { total, perUnit: isPerSF ? Math.round(total / st.renoArea) : total, unitLabel: isPerSF ? "/ SF" : "flat",
-    breakdown: [{ name: "Demolition", value: Math.round(total * 0.15) }, { name: "Structural", value: Math.round(total * 0.25) }, { name: "Finishes", value: Math.round(total * 0.40) }, { name: "Permits & Misc", value: Math.round(total * 0.20) }],
-    locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Renovation" };
+    breakdown, locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Renovation" };
 }
 
 function calcConsulting(st: FormState): EstimateResult {
@@ -438,6 +441,47 @@ function RenoDetailsStep({ renoScope, renoArea, renoCondition, renoFinish, onAre
 
 /* ─── Consulting Steps ─────────────────────────────────────────── */
 
+function RenoFeaturesStep({ features, renoScope, onToggle, onBack, onNext }: { features: string[]; renoScope: string; onToggle: (f: string) => void; onBack: () => void; onNext: () => void }) {
+  const allOpts = [
+    { id: "open-concept", label: "Open Concept", desc: "Remove walls, add support beams", cost: "$12K", icon: "M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4", scopes: ["kitchen", "full-gut", "whole-house"] },
+    { id: "new-windows", label: "New Windows", desc: "Energy-efficient, larger openings", cost: "$8.5K", icon: "M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z", scopes: ["kitchen", "bathroom", "addition", "full-gut", "whole-house"] },
+    { id: "hardwood", label: "Hardwood Floors", desc: "Solid hardwood throughout reno area", cost: "$7K", icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1v-2zM4 21a1 1 0 011-1h14a1 1 0 011 1v0a1 1 0 01-1 1H5a1 1 0 01-1-1v0z", scopes: ["kitchen", "addition", "full-gut", "whole-house"] },
+    { id: "custom-cabinets", label: "Custom Cabinetry", desc: "Built-to-order, soft-close, custom finish", cost: "$15K", icon: "M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4", scopes: ["kitchen", "bathroom", "full-gut", "whole-house"] },
+    { id: "electrical", label: "Electrical Upgrade", desc: "New panel, circuits, code compliance", cost: "$6.5K", icon: "M13 10V3L4 14h7v7l9-11h-7z", scopes: ["kitchen", "bathroom", "addition", "full-gut", "whole-house"] },
+    { id: "plumbing", label: "Plumbing Overhaul", desc: "New pipes, tankless water heater", cost: "$9K", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z", scopes: ["kitchen", "bathroom", "full-gut", "whole-house"] },
+    { id: "insulation", label: "Insulation & Envelope", desc: "Spray foam, vapor barrier, energy seal", cost: "$5.5K", icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z", scopes: ["addition", "full-gut", "whole-house"] },
+    { id: "smart-lighting", label: "Smart Lighting", desc: "Recessed, dimmers, app-controlled zones", cost: "$4.5K", icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z", scopes: ["kitchen", "bathroom", "addition", "full-gut", "whole-house"] },
+  ];
+  const opts = allOpts.filter((o) => o.scopes.includes(renoScope));
+  const scopeLabel: Record<string, string> = { kitchen: "kitchen reno", bathroom: "bath remodel", addition: "addition", "full-gut": "gut renovation", "whole-house": "whole-house reno" };
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType="renovation" /><StepHeadline subtitle={`Common upgrades to consider while walls are open for your ${scopeLabel[renoScope] ?? "renovation"}.`}>While we&apos;re at it&hellip;</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, maxWidth: 760, margin: "0 auto" }}>
+        {opts.map((o) => { const a = features.includes(o.id); return (
+          <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start" }}
+            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+            <div style={{ flexShrink: 0, width: 36, height: 36, borderRadius: "50%", background: a ? `${gold}22` : "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.25s" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#999"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={o.icon} /></svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15, marginBottom: 3 }}>{o.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? "rgba(255,255,255,0.45)" : "#999", lineHeight: 1.4, marginBottom: 6 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb" }}>+{o.cost}</div>
+            </div>
+            {a && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 2 }}><path d="M5 13l4 4L19 7" /></svg>}
+          </button>); })}
+      </div>
+      {features.length > 0 && (
+        <div style={{ marginTop: 20, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999" }}>
+          {features.length} upgrade{features.length > 1 ? "s" : ""} selected · +${features.reduce((s, f) => s + (RENO_FEATURE_COST[f] ?? 0), 0).toLocaleString()}
+        </div>
+      )}
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
+
 function HomeStyleStep({ homeStyle, onStyleChange, onBack, onNext }: { homeStyle: string; onStyleChange: (s: string) => void; onBack: () => void; onNext: () => void }) {
   const styles = [
     { id: "modern", label: "Modern", desc: "Clean lines, open spaces, walls of glass", mult: "1.15×", icon: "M4 6h16M4 12h16M4 18h16" },
@@ -715,7 +759,7 @@ function CostEstimatorInner() {
     step: "type-select", projectType: "", zipCode: "", sqft: 2000,
     exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard",
     stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500,
-    renoCondition: "", renoFinish: "standard", consultType: "",
+    renoCondition: "", renoFinish: "standard", renoFeatures: [], consultType: "",
     consultComplexity: "", consultTimeline: "standard",
     consultPropertyType: "", consultProjectValue: "",
     homeStyle: "", homeFeatures: [],
@@ -751,7 +795,7 @@ function CostEstimatorInner() {
     }
   }, [state.step, estimate]);
 
-  const reset = () => setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "", homeStyle: "", homeFeatures: [] });
+  const reset = () => setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", renoFeatures: [], consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "", homeStyle: "", homeFeatures: [] });
 
   const isTypeSelect = state.step === "type-select";
   const isOutside = state.step === "outside-area";
@@ -805,6 +849,7 @@ function CostEstimatorInner() {
           {state.step === "home-features" && <HomeFeaturesStep features={state.homeFeatures} onToggle={(f) => { const curr = state.homeFeatures; update({ homeFeatures: curr.includes(f) ? curr.filter(x => x !== f) : [...curr, f] }); }} onBack={prevStep} onNext={nextStep} />}
           {state.step === "reno-scope" && <RenoScopeStep renoScope={state.renoScope} onScopeChange={(s) => update({ renoScope: s })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "reno-details" && <RenoDetailsStep renoScope={state.renoScope} renoArea={state.renoArea} renoCondition={state.renoCondition} renoFinish={state.renoFinish} onAreaChange={(a) => update({ renoArea: a })} onConditionChange={(c) => update({ renoCondition: c })} onFinishChange={(f) => update({ renoFinish: f })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "reno-features" && <RenoFeaturesStep features={state.renoFeatures} renoScope={state.renoScope} onToggle={(f) => { const curr = state.renoFeatures; update({ renoFeatures: curr.includes(f) ? curr.filter(x => x !== f) : [...curr, f] }); }} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-type" && <ConsultTypeStep consultType={state.consultType} onTypeChange={(t) => update({ consultType: t })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-details" && <ConsultDetailsStep consultComplexity={state.consultComplexity} consultTimeline={state.consultTimeline} onComplexityChange={(c) => update({ consultComplexity: c })} onTimelineChange={(t) => update({ consultTimeline: t })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-project" && <ConsultProjectStep propertyType={state.consultPropertyType} projectValue={state.consultProjectValue} onPropertyChange={(p) => update({ consultPropertyType: p })} onValueChange={(v) => update({ consultProjectValue: v })} onBack={prevStep} onNext={nextStep} />}
