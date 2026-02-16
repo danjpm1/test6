@@ -612,6 +612,10 @@ export default function AntovaBuilders() {
             box-shadow: 0 0 12px 2px rgba(198, 145, 44, 0.15);
           }
         }
+
+        .animate-border-pulse {
+          animation: border-pulse 2s ease-in-out infinite;
+        }
       `}</style>
 
       <Navbar hidden={!showNavbar} />
@@ -672,12 +676,12 @@ export default function AntovaBuilders() {
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
-            {/* AI badge — brands the tool, not just a form */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/[0.06] border border-white/[0.1] rounded-full">
-              <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            {/* AI badge — prominent branding above the tool */}
+            <div className="inline-flex items-center gap-2.5 px-5 py-2 bg-[#c6912c]/15 border border-[#c6912c]/30 rounded-full">
+              <svg className="w-5 h-5 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
               </svg>
-              <span className="text-white/60 text-xs font-medium tracking-[0.15em] uppercase">AI-Powered Estimator</span>
+              <span className="text-[#c6912c] text-sm font-semibold tracking-[0.12em] uppercase">AI-Powered Estimator</span>
             </div>
 
             {/* Frosted glass container — makes the estimator feel like a tool, not a form */}
@@ -690,7 +694,7 @@ export default function AntovaBuilders() {
                     value={selectedProjectType}
                     onChange={(e) => setSelectedProjectType(e.target.value)}
                     className={`w-full h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-2 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm ${
-                      selectedProjectType ? "border-[#c6912c]/30" : "border-[#c6912c]/60 animate-[border-pulse_2s_ease-in-out_infinite]"
+                      selectedProjectType ? "border-[#c6912c]/30" : "animate-border-pulse"
                     }`}
                   >
                     <option value="" disabled>① Select your project type</option>
