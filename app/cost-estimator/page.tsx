@@ -17,6 +17,7 @@ interface FormState {
   renoCondition: string; renoFinish: string; consultType: string;
   consultComplexity: string; consultTimeline: string;
   consultPropertyType: string; consultProjectValue: string;
+  homeStyle: string; homeFeatures: string[];
 }
 
 interface EstimateResult {
@@ -48,6 +49,8 @@ const PROP_TYPE_MULT: Record<string, number> = { residential: 1.0, commercial: 1
 const PROJ_VALUE_MULT: Record<string, number> = { "under-500k": 0.85, "500k-1m": 1.0, "1m-5m": 1.2, "5m-plus": 1.45 };
 const CONSULT_LOC_MULT: Record<string, number> = { premium: 1.0, standard: 1.0, extended: 1.05, remote: 1.12 };
 const CONSTRAINTS = { minSqft: 500, maxSqft: 10000, sqftStep: 100 };
+const HOME_STYLE_MULT: Record<string, number> = { modern: 1.15, craftsman: 1.05, farmhouse: 1.0, contemporary: 1.12, mediterranean: 1.18 };
+const HOME_FEATURE_COST: Record<string, number> = { "smart-home": 25000, "outdoor-kitchen": 35000, "home-theater": 28000, "wine-cellar": 22000, "ev-garage": 18000, "in-floor-heat": 15000, "solar": 32000, "pool": 65000 };
 
 const ZIP_TO_TIER: Record<string, string> = {
   "83814":"premium","83815":"premium","83816":"premium","83835":"premium","83864":"premium","99019":"premium","99203":"premium","99223":"premium",
@@ -76,7 +79,7 @@ function getLocationName(zip: string) {
 /* ─── Step Orders — consulting now has 4 input steps + ZIP ───── */
 
 const STEP_ORDERS: Record<string, string[]> = {
-  "custom-home": ["type-select", "sqft", "exterior", "interior", "zip", "analyzing", "results"],
+  "custom-home": ["type-select", "sqft", "home-style", "exterior", "interior", "home-features", "zip", "analyzing", "results"],
   "new-build": ["type-select", "sqft", "build-details", "exterior", "interior", "zip", "analyzing", "results"],
   "renovation": ["type-select", "reno-scope", "reno-details", "zip", "analyzing", "results"],
   "consulting": ["type-select", "consult-type", "consult-details", "consult-project", "zip", "analyzing", "results"],
@@ -87,10 +90,14 @@ const STEP_ORDERS: Record<string, string[]> = {
 function calcCustomHome(st: FormState): EstimateResult {
   const tier = getZipTier(st.zipCode); const lm = tier?.multiplier ?? 1.0;
   const avg = (EXTERIOR_MULT[st.exteriorQuality] + INTERIOR_MULT[st.interiorFinish]) / 2;
-  const total = Math.round(st.sqft * CUSTOM_HOME_BASE * avg * lm);
+  const sm = HOME_STYLE_MULT[st.homeStyle] ?? 1.0;
+  const baseCost = Math.round(st.sqft * CUSTOM_HOME_BASE * avg * sm * lm);
+  const featureCost = st.homeFeatures.reduce((sum, f) => sum + (HOME_FEATURE_COST[f] ?? 0), 0);
+  const total = baseCost + featureCost;
+  const breakdown = [{ name: "Shell & Structure", value: Math.round(baseCost * 0.35) }, { name: "MEP Systems", value: Math.round(baseCost * 0.25) }, { name: "Interior Finishes", value: Math.round(baseCost * 0.30) }, { name: "Site & Foundation", value: Math.round(baseCost * 0.10) }];
+  if (featureCost > 0) breakdown.push({ name: "Features & Upgrades", value: featureCost });
   return { total, perUnit: Math.round(total / st.sqft), unitLabel: "/ SF",
-    breakdown: [{ name: "Shell & Structure", value: Math.round(total * 0.35) }, { name: "MEP Systems", value: Math.round(total * 0.25) }, { name: "Interior Finishes", value: Math.round(total * 0.30) }, { name: "Site & Foundation", value: Math.round(total * 0.10) }],
-    locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Custom Home" };
+    breakdown, locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Custom Home" };
 }
 
 function calcNewBuild(st: FormState): EstimateResult {
@@ -309,13 +316,25 @@ function SqftStep({ sqft, onSqftChange, onBack, onNext, projectType }: { sqft: n
 }
 
 function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext, projectType }: { exteriorQuality: string; onQualityChange: (q: string) => void; onBack: () => void; onNext: () => void; projectType: string }) {
-  const headlines: Record<string, string> = { "custom-home": "Choose your custom home's exterior", "new-build": "Exterior finish for your new build" };
-  const opts = [{ id: "basic", label: "Basic", desc: "Standard materials", mult: "1.0×" }, { id: "standard", label: "Standard", desc: "Quality finishes", mult: "1.2×" }, { id: "premium", label: "Premium", desc: "Luxury materials", mult: "1.45×" }];
+  const headlines: Record<string, string> = { "custom-home": "Choose your exterior finish", "new-build": "Exterior finish for your new build" };
+  const isCustom = projectType === "custom-home";
+  const opts = [
+    { id: "basic", label: "Essential", desc: isCustom ? "Vinyl siding, asphalt roof, standard windows" : "Standard materials", mult: "1.0×", accent: "#94a3b8" },
+    { id: "standard", label: "Classic", desc: isCustom ? "Fiber cement, architectural shingles, upgraded trim" : "Quality finishes", mult: "1.2×", accent: "#a8956e" },
+    { id: "premium", label: "Signature", desc: isCustom ? "Natural stone, standing seam metal, custom millwork" : "Luxury materials", mult: "1.45×", accent: gold },
+  ];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType={projectType} /><StepHeadline>{headlines[projectType] ?? "Exterior finish quality"}</StepHeadline>
+      <TypeBadge projectType={projectType} /><StepHeadline subtitle={isCustom ? "Exterior materials define your home's character and curb appeal." : undefined}>{headlines[projectType] ?? "Exterior finish quality"}</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(8px, 2vw, 20px)" }}>
-        {opts.map((o) => { const a = exteriorQuality === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onQualityChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "clamp(16px, 2.5vw, 28px)", marginBottom: 4 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(12px, 1.5vw, 15px)", color: a ? "rgba(255,255,255,0.5)" : "#999", marginBottom: 8 }}>{o.desc}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "clamp(14px, 2vw, 20px)", color: a ? gold : "#bbb" }}>{o.mult}</div></SelectCard>); })}
+        {opts.map((o) => { const a = exteriorQuality === o.id; return (
+          <button key={o.id} onClick={() => onQualityChange(o.id)} style={{ padding: "32px 20px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", position: "relative", overflow: "hidden" }}
+            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+            {isCustom && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: a ? gold : o.accent, transition: "background 0.25s" }} />}
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "clamp(16px, 2.5vw, 24px)", marginBottom: 8 }}>{o.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(12px, 1.3vw, 14px)", color: a ? "rgba(255,255,255,0.5)" : "#999", marginBottom: 12, lineHeight: 1.5 }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "clamp(14px, 2vw, 20px)", color: a ? gold : "#bbb" }}>{o.mult}</div>
+          </button>); })}
       </div>
       <NavButtons onBack={onBack} onNext={onNext} />
     </div>
@@ -323,18 +342,44 @@ function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext, projec
 }
 
 function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, onBathroomsChange, onFinishChange, onBack, onNext, projectType }: { bedrooms: number; bathrooms: number; interiorFinish: string; onBedroomsChange: (b: number) => void; onBathroomsChange: (b: number) => void; onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void; projectType: string }) {
-  const headlines: Record<string, string> = { "custom-home": "Design your custom home's interior", "new-build": "Interior specs for your new build" };
-  const is: React.CSSProperties = { width: "100%", border: "2px solid #e5e5e5", padding: "16px 20px", fontSize: 20, fontFamily: "'DM Sans', sans-serif", fontWeight: 500, color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s" };
-  const ls: React.CSSProperties = { display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 10, letterSpacing: "0.02em" };
-  const hf = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; };
-  const hb = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => { e.target.style.borderColor = "#e5e5e5"; e.target.style.boxShadow = "none"; };
+  const headlines: Record<string, string> = { "custom-home": "Design the interior", "new-build": "Interior specs for your new build" };
+  const isCustom = projectType === "custom-home";
+  const finishOpts = [
+    { id: "basic", label: "Essential", desc: isCustom ? "Builder-grade" : "Standard", mult: "1.0×" },
+    { id: "standard", label: "Classic", desc: isCustom ? "Upgraded fixtures" : "Quality", mult: "1.15×" },
+    { id: "premium", label: "Premium", desc: isCustom ? "Designer selections" : "High-end", mult: "1.35×" },
+    { id: "luxury", label: "Luxury", desc: isCustom ? "Bespoke finishes" : "Top tier", mult: "1.65×" },
+  ];
+  const counterStyle: React.CSSProperties = { width: 44, height: 44, background: "#fff", border: `2px solid #e5e5e5`, color: dark, fontSize: 22, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center" };
   return (
-    <div className="fade-up" style={{ textAlign: "center", maxWidth: 480, margin: "0 auto" }}>
-      <TypeBadge projectType={projectType} /><StepHeadline>{headlines[projectType] ?? "Interior details"}</StepHeadline>
-      <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 28 }}>
-        <div><label style={ls}>Bedrooms</label><input type="number" value={bedrooms} onChange={(e) => onBedroomsChange(Math.max(1, +e.target.value || 1))} style={is} onFocus={hf} onBlur={hb} /></div>
-        <div><label style={ls}>Bathrooms</label><input type="number" value={bathrooms} onChange={(e) => onBathroomsChange(Math.max(1, +e.target.value || 1))} style={is} onFocus={hf} onBlur={hb} /></div>
-        <div><label style={ls}>Interior Finish Level</label><select value={interiorFinish} onChange={(e) => onFinishChange(e.target.value)} style={{ ...is, appearance: "none", cursor: "pointer" }} onFocus={hf} onBlur={hb}><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option><option value="luxury">Luxury</option></select></div>
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
+      <TypeBadge projectType={projectType} /><StepHeadline subtitle={isCustom ? "Select your finish level and room layout." : undefined}>{headlines[projectType] ?? "Interior details"}</StepHeadline>
+
+      {/* Finish level cards */}
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Finish level</p>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 36 }}>
+        {finishOpts.map((o) => { const a = interiorFinish === o.id; return (
+          <button key={o.id} onClick={() => onFinishChange(o.id)} style={{ padding: "20px 8px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center" }}
+            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15 }}>{o.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: a ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
+          </button>); })}
+      </div>
+
+      {/* +/- counters for beds and baths */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
+        {[{ label: "Bedrooms", value: bedrooms, onChange: onBedroomsChange, min: 1, max: 8 }, { label: "Bathrooms", value: bathrooms, onChange: onBathroomsChange, min: 1, max: 8 }].map((c) => (
+          <div key={c.label} style={{ textAlign: "left" }}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 12 }}>{c.label}</p>
+            <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <button onClick={() => c.onChange(Math.max(c.min, c.value - 1))} style={counterStyle}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e5e5e5"; }}>−</button>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 36, color: dark, minWidth: 40, textAlign: "center" }}>{c.value}</span>
+              <button onClick={() => c.onChange(Math.min(c.max, c.value + 1))} style={counterStyle}
+                onMouseEnter={(e) => { e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { e.currentTarget.style.borderColor = "#e5e5e5"; }}>+</button>
+            </div>
+          </div>))}
       </div>
       <NavButtons onBack={onBack} onNext={onNext} />
     </div>
@@ -392,6 +437,71 @@ function RenoDetailsStep({ renoScope, renoArea, renoCondition, renoFinish, onAre
 }
 
 /* ─── Consulting Steps ─────────────────────────────────────────── */
+
+function HomeStyleStep({ homeStyle, onStyleChange, onBack, onNext }: { homeStyle: string; onStyleChange: (s: string) => void; onBack: () => void; onNext: () => void }) {
+  const styles = [
+    { id: "modern", label: "Modern", desc: "Clean lines, open spaces, walls of glass", mult: "1.15×", icon: "M4 6h16M4 12h16M4 18h16" },
+    { id: "craftsman", label: "Craftsman", desc: "Covered porches, natural wood, tapered columns", mult: "1.05×", icon: "M3 12l9-8 9 8M5 10v10h14V10" },
+    { id: "farmhouse", label: "Farmhouse", desc: "Gabled roof, board & batten, wraparound porch", mult: "1.0×", icon: "M3 21h18M5 21V7l7-4 7 4v14" },
+    { id: "contemporary", label: "Contemporary", desc: "Mixed materials, asymmetric forms, bold angles", mult: "1.12×", icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" },
+    { id: "mediterranean", label: "Mediterranean", desc: "Stucco walls, clay tile roof, arched openings", mult: "1.18×", icon: "M12 3c-4.97 0-9 2.69-9 6v9h18v-9c0-3.31-4.03-6-9-6z" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType="custom-home" /><StepHeadline subtitle="Architectural style shapes structure, materials, and pricing.">What&apos;s your vision?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14, maxWidth: 760, margin: "0 auto" }}>
+        {styles.map((s) => { const a = homeStyle === s.id; return (
+          <button key={s.id} onClick={() => onStyleChange(s.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative" }}
+            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#ccc"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 12, transition: "stroke 0.25s" }}><path d={s.icon} /></svg>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 6 }}>{s.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? "rgba(255,255,255,0.5)" : "#999", lineHeight: 1.5, marginBottom: 10 }}>{s.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb" }}>{s.mult}</div>
+          </button>); })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!homeStyle} />
+    </div>
+  );
+}
+
+function HomeFeaturesStep({ features, onToggle, onBack, onNext }: { features: string[]; onToggle: (f: string) => void; onBack: () => void; onNext: () => void }) {
+  const opts = [
+    { id: "smart-home", label: "Smart Home", desc: "Automated lighting, climate, security", cost: "$25K", icon: "M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" },
+    { id: "outdoor-kitchen", label: "Outdoor Kitchen", desc: "Built-in grill, counters, wet bar", cost: "$35K", icon: "M17 14v6m-3-3h6M6 10h2a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2zm10 0h2a2 2 0 002-2V6a2 2 0 00-2-2h-2a2 2 0 00-2 2v2a2 2 0 002 2zM6 20h2a2 2 0 002-2v-2a2 2 0 00-2-2H6a2 2 0 00-2 2v2a2 2 0 002 2z" },
+    { id: "home-theater", label: "Home Theater", desc: "Acoustic room, projection, seating", cost: "$28K", icon: "M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" },
+    { id: "wine-cellar", label: "Wine Cellar", desc: "Climate-controlled, custom racking", cost: "$22K", icon: "M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" },
+    { id: "ev-garage", label: "EV-Ready Garage", desc: "Level 2 charging, electrical panel upgrade", cost: "$18K", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+    { id: "in-floor-heat", label: "In-Floor Heating", desc: "Radiant heat throughout living areas", cost: "$15K", icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" },
+    { id: "solar", label: "Solar Array", desc: "Roof-mounted panels, battery storage", cost: "$32K", icon: "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" },
+    { id: "pool", label: "Pool & Spa", desc: "In-ground pool, heated spa, decking", cost: "$65K", icon: "M14 2a8 8 0 00-8 8 8 8 0 008 8 8 8 0 008-8 8 8 0 00-8-8zm0 12a4 4 0 110-8 4 4 0 010 8z" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <TypeBadge projectType="custom-home" /><StepHeadline subtitle="Select any features you'd like — or skip this step.">Premium features</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, maxWidth: 760, margin: "0 auto" }}>
+        {opts.map((o) => { const a = features.includes(o.id); return (
+          <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start" }}
+            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+            <div style={{ flexShrink: 0, width: 36, height: 36, borderRadius: "50%", background: a ? `${gold}22` : "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.25s" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#999"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={o.icon} /></svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15, marginBottom: 3 }}>{o.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? "rgba(255,255,255,0.45)" : "#999", lineHeight: 1.4, marginBottom: 6 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb" }}>+{o.cost}</div>
+            </div>
+            {a && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 2 }}><path d="M5 13l4 4L19 7" /></svg>}
+          </button>); })}
+      </div>
+      {features.length > 0 && (
+        <div style={{ marginTop: 20, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999" }}>
+          {features.length} feature{features.length > 1 ? "s" : ""} selected · +${features.reduce((s, f) => s + (HOME_FEATURE_COST[f] ?? 0), 0).toLocaleString()}
+        </div>
+      )}
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
 
 function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: { consultType: string; onTypeChange: (t: string) => void; onBack: () => void; onNext: () => void }) {
   const types = [
@@ -501,7 +611,7 @@ function AnalyzingStep({ projectType, zipCode }: { projectType: string; zipCode:
 
 /* ─── Results ──────────────────────────────────────────────────── */
 
-function ResultsStep({ estimate, displayedTotal, onReset, isConsulting }: { estimate: EstimateResult; displayedTotal: number; onReset: () => void; isConsulting?: boolean }) {
+function ResultsStep({ estimate, displayedTotal, onReset, isConsulting, isCustomHome }: { estimate: EstimateResult; displayedTotal: number; onReset: () => void; isConsulting?: boolean; isCustomHome?: boolean }) {
   return (
     <div className="fade-up" style={{ maxWidth: 720, margin: "0 auto" }}>
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 20 }}>
@@ -554,6 +664,17 @@ function ResultsStep({ estimate, displayedTotal, onReset, isConsulting }: { esti
         </div>
       )}
 
+      {/* Custom home testimonial */}
+      {isCustomHome && (
+        <div style={{ marginTop: 32, background: "#fafafa", border: "1px solid #eee", borderRadius: 12, padding: "28px 32px", textAlign: "center" }}>
+            <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: "#666", lineHeight: 1.7, maxWidth: 480, margin: "0 auto 16px", fontStyle: "italic" }}>
+              &ldquo;From first sketch to move-in day, Antova delivered a home that exceeded every expectation — on time and within budget.&rdquo;
+            </p>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, fontWeight: 600, color: dark }}>Sarah & David Thompson</span>
+            <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#999" }}> · Coeur d&apos;Alene, ID</span>
+        </div>
+      )}
+
       <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 32, flexWrap: "wrap" }}>
         <OutlineButton onClick={() => window.print()}>Download / Print</OutlineButton>
         <DarkButton onClick={onReset}>New Estimate</DarkButton>
@@ -597,6 +718,7 @@ function CostEstimatorInner() {
     renoCondition: "", renoFinish: "standard", consultType: "",
     consultComplexity: "", consultTimeline: "standard",
     consultPropertyType: "", consultProjectValue: "",
+    homeStyle: "", homeFeatures: [],
   });
 
   const [displayedTotal, setDisplayedTotal] = useState(0);
@@ -629,7 +751,7 @@ function CostEstimatorInner() {
     }
   }, [state.step, estimate]);
 
-  const reset = () => setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "" });
+  const reset = () => setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "", homeStyle: "", homeFeatures: [] });
 
   const isTypeSelect = state.step === "type-select";
   const isOutside = state.step === "outside-area";
@@ -668,7 +790,7 @@ function CostEstimatorInner() {
         </div>
       )}
 
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingBottom: state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
         {isTypeSelect && (<><div style={{ position: "absolute", top: "15%", right: "20%", width: 500, height: 500, borderRadius: "50%", background: `${gold}0d`, filter: "blur(120px)", pointerEvents: "none" }} /><div style={{ position: "absolute", bottom: "20%", left: "15%", width: 400, height: 400, borderRadius: "50%", background: `${gold}08`, filter: "blur(100px)", pointerEvents: "none" }} /><div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} /></>)}
 
         <div style={{ width: "100%", maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 10 }}>
@@ -676,17 +798,33 @@ function CostEstimatorInner() {
           {state.step === "zip" && <ZipCodeStep zipCode={state.zipCode} onZipChange={(z) => update({ zipCode: z })} onBack={prevStep} onSubmit={handleZipSubmit} projectType={state.projectType} />}
           {state.step === "outside-area" && <OutsideAreaStep zipCode={state.zipCode} onRetry={() => { update({ zipCode: "", step: "zip" }); }} onReset={reset} />}
           {state.step === "sqft" && <SqftStep sqft={state.sqft} onSqftChange={(s) => update({ sqft: s })} onBack={prevStep} onNext={nextStep} projectType={state.projectType} />}
+          {state.step === "home-style" && <HomeStyleStep homeStyle={state.homeStyle} onStyleChange={(s) => update({ homeStyle: s })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "build-details" && <BuildDetailsStep stories={state.stories} garageSpaces={state.garageSpaces} onStoriesChange={(s) => update({ stories: s })} onGarageChange={(g) => update({ garageSpaces: g })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "exterior" && <ExteriorStep exteriorQuality={state.exteriorQuality} onQualityChange={(q) => update({ exteriorQuality: q })} onBack={prevStep} onNext={nextStep} projectType={state.projectType} />}
           {state.step === "interior" && <InteriorStep bedrooms={state.bedrooms} bathrooms={state.bathrooms} interiorFinish={state.interiorFinish} onBedroomsChange={(b) => update({ bedrooms: b })} onBathroomsChange={(b) => update({ bathrooms: b })} onFinishChange={(f) => update({ interiorFinish: f })} onBack={prevStep} onNext={nextStep} projectType={state.projectType} />}
+          {state.step === "home-features" && <HomeFeaturesStep features={state.homeFeatures} onToggle={(f) => { const curr = state.homeFeatures; update({ homeFeatures: curr.includes(f) ? curr.filter(x => x !== f) : [...curr, f] }); }} onBack={prevStep} onNext={nextStep} />}
           {state.step === "reno-scope" && <RenoScopeStep renoScope={state.renoScope} onScopeChange={(s) => update({ renoScope: s })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "reno-details" && <RenoDetailsStep renoScope={state.renoScope} renoArea={state.renoArea} renoCondition={state.renoCondition} renoFinish={state.renoFinish} onAreaChange={(a) => update({ renoArea: a })} onConditionChange={(c) => update({ renoCondition: c })} onFinishChange={(f) => update({ renoFinish: f })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-type" && <ConsultTypeStep consultType={state.consultType} onTypeChange={(t) => update({ consultType: t })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-details" && <ConsultDetailsStep consultComplexity={state.consultComplexity} consultTimeline={state.consultTimeline} onComplexityChange={(c) => update({ consultComplexity: c })} onTimelineChange={(t) => update({ consultTimeline: t })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-project" && <ConsultProjectStep propertyType={state.consultPropertyType} projectValue={state.consultProjectValue} onPropertyChange={(p) => update({ consultPropertyType: p })} onValueChange={(v) => update({ consultProjectValue: v })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "analyzing" && <AnalyzingStep projectType={state.projectType} zipCode={state.zipCode} />}
-          {state.step === "results" && estimate && <ResultsStep estimate={estimate} displayedTotal={displayedTotal} onReset={reset} isConsulting={state.projectType === "consulting"} />}
+          {state.step === "results" && estimate && <ResultsStep estimate={estimate} displayedTotal={displayedTotal} onReset={reset} isConsulting={state.projectType === "consulting"} isCustomHome={state.projectType === "custom-home"} />}
         </div>
+
+        {/* Live running estimate ticker for custom-home */}
+        {state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) && (() => {
+          const avg = (EXTERIOR_MULT[state.exteriorQuality] ?? 1.1) + (INTERIOR_MULT[state.interiorFinish] ?? 1.075);
+          const sm = HOME_STYLE_MULT[state.homeStyle] ?? 1.0;
+          const fc = state.homeFeatures.reduce((s, f) => s + (HOME_FEATURE_COST[f] ?? 0), 0);
+          const running = Math.round(state.sqft * CUSTOM_HOME_BASE * (avg / 2) * sm) + fc;
+          return (
+            <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: dark, borderTop: `1px solid ${gold}33`, padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: 12, zIndex: 90 }}>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 500 }}>RUNNING ESTIMATE</span>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 22, color: gold, letterSpacing: "-0.02em" }}>${running.toLocaleString()}</span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.3)" }}>before location</span>
+            </div>);
+        })()}
       </main>
 
       {(isTypeSelect || state.step === "results") && <TrustBar />}
