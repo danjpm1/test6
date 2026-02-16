@@ -437,23 +437,24 @@ export default function AntovaBuilders() {
           <div className="absolute inset-0 bg-black/35" />
         </div>
 
-        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-24 md:-mt-32">
-          <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-5 tracking-tight text-balance text-white transition-all duration-700 ease-out ${showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        <div className="relative z-10 px-6 lg:px-12 xl:px-16 text-center w-full -mt-12 md:-mt-20">
+          <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance text-white transition-all duration-700 ease-out ${showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             Your vision, built without compromise.
           </h1>
-          <p className={`text-lg md:text-xl lg:text-2xl mb-10 text-white/80 tracking-wide transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <p className={`text-lg md:text-xl lg:text-2xl mb-14 text-white/80 tracking-wide transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             See your realistic investment range in 60 seconds — no email or phone required.
           </p>
 
-          <div className={`flex flex-col items-center gap-5 transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div className="inline-flex items-center gap-2.5 px-5 py-2 bg-[#c6912c]/15 border border-[#c6912c]/30 rounded-full">
-              <svg className="w-5 h-5 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
-              </svg>
-              <span className="text-[#c6912c] text-sm font-semibold tracking-[0.12em] uppercase">AI-Powered Estimator</span>
-            </div>
-
-            <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-3 sm:p-4">
+          <div className={`flex flex-col items-center gap-8 transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+            <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-3 sm:p-4 space-y-3">
+              {/* AI label inside the tool */}
+              <div className="flex items-center justify-center gap-2 pb-1">
+                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+                </svg>
+                <span className="text-[#c6912c] text-xs font-semibold tracking-[0.15em] uppercase">AI-Powered Estimator</span>
+              </div>
+              {/* Form row */}
               <div className="flex flex-col sm:flex-row items-stretch gap-3">
                 <div className="relative flex-1">
                   <select
@@ -474,26 +475,22 @@ export default function AntovaBuilders() {
                   Reveal My Investment Range →
                 </Button>
               </div>
+              {/* Trust cues inside the tool */}
+              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/60 text-xs tracking-wide pt-1">
+                <span className="flex items-center gap-1.5">
+                  <svg className="w-3.5 h-3.5 text-[#c6912c]/70" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                  60-second results
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <svg className="w-3.5 h-3.5 text-[#c6912c]/70" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+                  No email required
+                </span>
+                <span className="flex items-center gap-1.5">
+                  <svg className="w-3.5 h-3.5 text-[#c6912c]/70" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                  150+ builds delivered
+                </span>
+              </div>
             </div>
-
-            <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/70 text-xs sm:text-sm tracking-wide">
-              <span className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                Results in 60 seconds
-              </span>
-              <span className="flex items-center gap-1.5 text-white font-medium">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
-                No email, no phone number
-              </span>
-              <span className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                Trusted in 150+ builds
-              </span>
-            </div>
-
-            <Link href="/contact" className="text-white/70 hover:text-white text-sm underline underline-offset-4 decoration-white/40 hover:decoration-white/70 transition-all">
-              Or book a consultation directly
-            </Link>
           </div>
         </div>
         <ScrollIndicator show={showSubtitleAndButtons} />
