@@ -1148,6 +1148,79 @@ function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: {
           );
         })}
       </div>
+
+      {/* ── Consulting Trust Stats ── */}
+      <div style={{
+        marginTop: 56,
+        padding: "40px 0 0",
+        borderTop: "1px solid #eee",
+      }}>
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "clamp(24px, 5vw, 64px)",
+          flexWrap: "wrap",
+          marginBottom: 32,
+        }}>
+          {[
+            { value: "$620K+", label: "CLIENT SAVINGS" },
+            { value: "100%", label: "PERMITTING SUCCESS" },
+            { value: "9", label: "DISPUTES RESOLVED" },
+          ].map((stat) => (
+            <div key={stat.label} style={{ textAlign: "left" }}>
+              <div style={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 700,
+                fontSize: "clamp(32px, 5vw, 52px)",
+                color: gold,
+                letterSpacing: "-0.02em",
+                lineHeight: 1.1,
+              }}>
+                {stat.value}
+              </div>
+              <div style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 11,
+                fontWeight: 600,
+                color: "#999",
+                letterSpacing: "0.12em",
+                marginTop: 4,
+              }}>
+                {stat.label}
+              </div>
+            </div>
+          ))}
+
+          {/* Divider */}
+          <div style={{
+            width: 2,
+            height: 80,
+            background: `linear-gradient(to bottom, transparent, ${gold}40, transparent)`,
+            display: "none",
+          }}
+            className="consult-divider"
+          />
+
+          {/* Tagline */}
+          <div style={{ textAlign: "left", maxWidth: 280 }}>
+            <div style={{
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 800,
+              fontSize: "clamp(18px, 3vw, 26px)",
+              lineHeight: 1.2,
+              color: dark,
+              letterSpacing: "-0.01em",
+            }}>
+              OUR TEAM IS{" "}
+              <span style={{ color: gold }}>ON YOUR SIDE.</span>
+              <br />
+              WE ARE RELENTLESS
+            </div>
+          </div>
+        </div>
+      </div>
+
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!consultType} />
     </div>
   );
@@ -1220,6 +1293,135 @@ function ConsultDetailsStep({ consultComplexity, consultTimeline, onComplexityCh
         })}
       </div>
 
+      {/* ── Consulting Services Cards (dark numbered cards) ── */}
+      <div style={{
+        marginTop: 48,
+        paddingTop: 40,
+        borderTop: "1px solid #eee",
+      }}>
+        <p style={{
+          fontFamily: "'DM Sans', sans-serif",
+          fontSize: 11,
+          fontWeight: 600,
+          letterSpacing: "0.12em",
+          color: "#bbb",
+          marginBottom: 20,
+          textTransform: "uppercase",
+        }}>
+          Consulting Services
+        </p>
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(3, 1fr)",
+          gap: 12,
+        }}>
+          {[
+            { num: "01", title: "Engineering Solutions", desc: "Technical expertise for comprehensive engineering solutions to your construction challenges." },
+            { num: "02", title: "Solving Complex Issues", desc: "Strategic problem-solving for construction disputes and technical complications." },
+            { num: "03", title: "Permitting", desc: "Streamlined permitting with 100% success rate to keep your project compliant." },
+          ].map((card) => (
+            <div key={card.num} style={{
+              background: `linear-gradient(145deg, ${dark}, #1a1a1a)`,
+              border: `1px solid ${gold}25`,
+              padding: "24px 18px",
+              textAlign: "left",
+              position: "relative",
+              overflow: "hidden",
+            }}>
+              {/* Gold top accent line */}
+              <div style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 2,
+                background: `linear-gradient(90deg, ${gold}, ${gold}60, transparent)`,
+              }} />
+              <div style={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 700,
+                fontSize: 36,
+                color: `${gold}35`,
+                lineHeight: 1,
+                marginBottom: 12,
+              }}>
+                {card.num}
+              </div>
+              <div style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontWeight: 700,
+                fontSize: 13,
+                color: "#fff",
+                letterSpacing: "0.04em",
+                marginBottom: 8,
+                textTransform: "uppercase",
+              }}>
+                {card.title}
+              </div>
+              <div style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 12,
+                color: "rgba(255,255,255,0.45)",
+                lineHeight: 1.5,
+              }}>
+                {card.desc}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Results proof strip */}
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(4, 1fr)",
+          gap: 12,
+          marginTop: 16,
+        }}>
+          {[
+            { icon: "♡", value: "$500K+", label: "Saved in Disputes" },
+            { icon: "◎", value: "Design & Structural", label: "Solutions" },
+            { icon: "✓", value: "100%", label: "Compliance Achieved" },
+            { icon: "↗", value: "30%", label: "Cost Reduction" },
+          ].map((item) => (
+            <div key={item.label} style={{
+              padding: "16px 12px",
+              background: "#fafafa",
+              border: "1px solid #eee",
+              textAlign: "center",
+            }}>
+              <div style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 11,
+                color: gold,
+                marginBottom: 6,
+              }}>
+                {item.icon}
+              </div>
+              <div style={{
+                fontFamily: "'Playfair Display', serif",
+                fontWeight: 700,
+                fontSize: item.value.length > 6 ? 14 : 22,
+                color: gold,
+                lineHeight: 1.1,
+              }}>
+                {item.value}
+              </div>
+              <div style={{
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: 10,
+                fontWeight: 600,
+                color: "#999",
+                letterSpacing: "0.06em",
+                marginTop: 4,
+                textTransform: "uppercase",
+              }}>
+                {item.label}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!consultComplexity || !consultTimeline} />
     </div>
   );
@@ -1272,8 +1474,8 @@ function AnalyzingStep({ projectType, zipCode }: { projectType: string; zipCode:
 
 /* ─── Results ──────────────────────────────────────────────────── */
 
-function ResultsStep({ estimate, displayedTotal, onReset }: {
-  estimate: EstimateResult; displayedTotal: number; onReset: () => void;
+function ResultsStep({ estimate, displayedTotal, onReset, isConsulting }: {
+  estimate: EstimateResult; displayedTotal: number; onReset: () => void; isConsulting?: boolean;
 }) {
   return (
     <div className="fade-up" style={{ maxWidth: 720, margin: "0 auto" }}>
@@ -1399,6 +1601,87 @@ function ResultsStep({ estimate, displayedTotal, onReset }: {
           ))}
         </div>
       </div>
+
+      {/* ── Consulting Testimonial (only for consulting) ── */}
+      {isConsulting && (
+        <div style={{
+          marginTop: 32,
+          background: dark,
+          padding: "clamp(32px, 5vw, 56px) clamp(24px, 4vw, 48px)",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+        }}>
+          {/* Subtle ambient glow */}
+          <div style={{
+            position: "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+            width: 300,
+            height: 300,
+            borderRadius: "50%",
+            background: `${gold}08`,
+            filter: "blur(80px)",
+            pointerEvents: "none",
+          }} />
+
+          {/* Quote marks */}
+          <div style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: 48,
+            color: gold,
+            lineHeight: 1,
+            marginBottom: 20,
+            position: "relative",
+          }}>
+            {"\u201C\u201C"}
+          </div>
+
+          <p style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: "clamp(16px, 2.5vw, 22px)",
+            color: "rgba(255,255,255,0.9)",
+            lineHeight: 1.7,
+            maxWidth: 600,
+            margin: "0 auto 28px",
+            fontWeight: 300,
+            position: "relative",
+          }}>
+            Antova&apos;s engineering team saved our project. We were facing a $600K dispute that seemed impossible to resolve.
+            Their technical expertise and negotiation skills got us to a resolution in under 3 months — without going to court.
+          </p>
+
+          {/* Divider line */}
+          <div style={{
+            width: 40,
+            height: 2,
+            background: gold,
+            margin: "0 auto 20px",
+          }} />
+
+          <div style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 13,
+            fontWeight: 700,
+            color: "rgba(255,255,255,0.7)",
+            letterSpacing: "0.08em",
+            marginBottom: 4,
+            position: "relative",
+            textTransform: "uppercase",
+          }}>
+            Michael Chen
+          </div>
+          <div style={{
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 13,
+            color: "rgba(255,255,255,0.4)",
+            position: "relative",
+          }}>
+            Development Director, Pacific Luxury Homes
+          </div>
+        </div>
+      )}
 
       {/* CTA row */}
       <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 32, flexWrap: "wrap" }}>
@@ -1865,7 +2148,12 @@ function CostEstimatorInner() {
 
           {/* SHARED: RESULTS */}
           {state.step === "results" && estimate && (
-            <ResultsStep estimate={estimate} displayedTotal={displayedTotal} onReset={reset} />
+            <ResultsStep
+              estimate={estimate}
+              displayedTotal={displayedTotal}
+              onReset={reset}
+              isConsulting={state.projectType === "consulting"}
+            />
           )}
         </div>
       </main>
