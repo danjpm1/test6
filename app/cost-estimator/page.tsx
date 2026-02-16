@@ -190,7 +190,15 @@ function DarkButton({ children, onClick, disabled, className = "" }: { children:
 }
 
 function NavButtons({ onBack, onNext, nextDisabled, nextLabel = "Continue" }: { onBack: () => void; onNext: () => void; nextDisabled?: boolean; nextLabel?: string }) {
-  return (<div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 48 }}><OutlineButton onClick={onBack}>Back</OutlineButton><DarkButton onClick={onNext} disabled={nextDisabled}>{nextLabel}</DarkButton></div>);
+  return (<div style={{ marginTop: 48 }}>
+    <button onClick={onNext} disabled={nextDisabled} style={{ width: "100%", padding: "18px 40px", fontSize: 17, fontFamily: "'DM Sans', sans-serif", fontWeight: 700, letterSpacing: "0.03em", border: "none", cursor: nextDisabled ? "not-allowed" : "pointer", transition: "all 0.3s", background: nextDisabled ? "#e5e5e5" : gold, color: nextDisabled ? "#aaa" : "#fff", boxShadow: nextDisabled ? "none" : `0 4px 20px ${gold}44`, display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}
+      onMouseEnter={(e) => { if (!nextDisabled) { e.currentTarget.style.background = goldHover; e.currentTarget.style.boxShadow = `0 6px 28px ${gold}66`; e.currentTarget.style.transform = "translateY(-1px)"; } }}
+      onMouseLeave={(e) => { if (!nextDisabled) { e.currentTarget.style.background = gold; e.currentTarget.style.boxShadow = `0 4px 20px ${gold}44`; e.currentTarget.style.transform = "translateY(0)"; } }}>
+      {nextLabel} {!nextDisabled && <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M13 7l5 5m0 0l-5 5m5-5H6" /></svg>}
+    </button>
+    <button onClick={onBack} style={{ width: "100%", marginTop: 10, padding: "12px", fontSize: 14, fontFamily: "'DM Sans', sans-serif", fontWeight: 500, color: "#999", background: "transparent", border: "none", cursor: "pointer", transition: "color 0.2s" }}
+      onMouseEnter={(e) => { e.currentTarget.style.color = dark; }} onMouseLeave={(e) => { e.currentTarget.style.color = "#999"; }}>← Back</button>
+  </div>);
 }
 
 function StepHeadline({ children, subtitle }: { children: React.ReactNode; subtitle?: string }) {
@@ -208,9 +216,12 @@ function TypeBadge({ projectType }: { projectType: string }) {
 /* ─── Selection Card Helper ────────────────────────────────────── */
 
 function SelectCard({ active, onClick, children }: { active: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (<button onClick={onClick} style={{ padding: "24px 16px", border: active ? `2px solid ${dark}` : "2px solid #e5e5e5", background: active ? dark : "#fff", color: active ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center" }}
-    onMouseEnter={(e) => { if (!active) e.currentTarget.style.borderColor = gold; }}
-    onMouseLeave={(e) => { if (!active) e.currentTarget.style.borderColor = active ? dark : "#e5e5e5"; }}>{children}</button>);
+  return (<button onClick={onClick} style={{ padding: "24px 16px", border: active ? `2px solid ${gold}` : "2px solid #e5e5e5", background: active ? `${gold}0a` : "#fff", color: active ? dark : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", position: "relative", boxShadow: active ? `0 0 0 3px ${gold}15` : "none" }}
+    onMouseEnter={(e) => { if (!active) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }}
+    onMouseLeave={(e) => { if (!active) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+    {active && <div style={{ position: "absolute", top: 8, right: 8, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
+    {children}
+  </button>);
 }
 
 /* ─── Type Select ──────────────────────────────────────────────── */
@@ -331,11 +342,11 @@ function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext, projec
       <TypeBadge projectType={projectType} /><StepHeadline subtitle={isCustom ? "Exterior materials define your home's character and curb appeal." : undefined}>{headlines[projectType] ?? "Exterior finish quality"}</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(8px, 2vw, 20px)" }}>
         {opts.map((o) => { const a = exteriorQuality === o.id; return (
-          <button key={o.id} onClick={() => onQualityChange(o.id)} style={{ padding: "32px 20px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", position: "relative", overflow: "hidden" }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={o.id} onClick={() => onQualityChange(o.id)} style={{ padding: "32px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", position: "relative", overflow: "hidden", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
             {isCustom && <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: a ? gold : o.accent, transition: "background 0.25s" }} />}
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: "clamp(16px, 2.5vw, 24px)", marginBottom: 8 }}>{o.label}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(12px, 1.3vw, 14px)", color: a ? "rgba(255,255,255,0.5)" : "#999", marginBottom: 12, lineHeight: 1.5 }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "clamp(12px, 1.3vw, 14px)", color: a ? gold : "#999", marginBottom: 12, lineHeight: 1.5 }}>{o.desc}</div>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: "clamp(14px, 2vw, 20px)", color: a ? gold : "#bbb" }}>{o.mult}</div>
           </button>); })}
       </div>
@@ -362,10 +373,11 @@ function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, o
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Finish level</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 36 }}>
         {finishOpts.map((o) => { const a = interiorFinish === o.id; return (
-          <button key={o.id} onClick={() => onFinishChange(o.id)} style={{ padding: "20px 8px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center" }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={o.id} onClick={() => onFinishChange(o.id)} style={{ padding: "20px 8px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            {a && <div style={{ position: "absolute", top: 6, right: 6, width: 16, height: 16, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15 }}>{o.label}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: a ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
           </button>); })}
       </div>
@@ -395,7 +407,7 @@ function BuildDetailsStep({ stories, garageSpaces, onStoriesChange, onGarageChan
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
       <TypeBadge projectType="new-build" /><StepHeadline subtitle="These options affect structural costs and overall footprint.">Configure your new build</StepHeadline>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Number of stories</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 36 }}>{storyOpts.map((o) => { const a = stories === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onStoriesChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div></SelectCard>); })}</div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 36 }}>{storyOpts.map((o) => { const a = stories === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onStoriesChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div></SelectCard>); })}</div>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Garage spaces</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12 }}>{[0, 1, 2, 3].map((g) => { const a = garageSpaces === g; return (<SelectCard key={g} active={a} onClick={() => onGarageChange(g)}><span style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20 }}>{g === 0 ? "None" : g}</span></SelectCard>); })}</div>
       <NavButtons onBack={onBack} onNext={onNext} />
@@ -411,7 +423,7 @@ function RenoScopeStep({ renoScope, onScopeChange, onBack, onNext }: { renoScope
     <div className="fade-up" style={{ textAlign: "center" }}>
       <TypeBadge projectType="renovation" /><StepHeadline subtitle="Different renovation types have different cost structures.">What are you renovating?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, maxWidth: 640, margin: "0 auto" }}>
-        {scopes.map((s) => { const a = renoScope === s.id; return (<SelectCard key={s.id} active={a} onClick={() => onScopeChange(s.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{s.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? "rgba(255,255,255,0.5)" : "#999", marginTop: 6 }}>{s.desc}</div></SelectCard>); })}
+        {scopes.map((s) => { const a = renoScope === s.id; return (<SelectCard key={s.id} active={a} onClick={() => onScopeChange(s.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{s.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999", marginTop: 6 }}>{s.desc}</div></SelectCard>); })}
       </div>
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!renoScope} />
     </div>
@@ -431,8 +443,8 @@ function RenoDetailsStep({ renoScope, renoArea, renoCondition, renoFinish, onAre
       <TypeBadge projectType="renovation" /><StepHeadline subtitle={`Fine-tune the details for your ${scopeLabels[renoScope] ?? "renovation"}.`}>Renovation details</StepHeadline>
       <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 28 }}>
         {needsArea && <div><label style={ls}>Renovation area (SF)</label><input type="number" value={renoArea} onChange={(e) => onAreaChange(Math.max(50, Math.min(5000, +e.target.value || 50)))} style={is} onFocus={hf} onBlur={hb} /></div>}
-        <div><label style={ls}>Current condition</label><div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>{condOpts.map((c) => { const a = renoCondition === c.id; return (<SelectCard key={c.id} active={a} onClick={() => onConditionChange(c.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{c.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{c.desc}</div></SelectCard>); })}</div></div>
-        <div><label style={ls}>Finish level</label><select value={renoFinish} onChange={(e) => onFinishChange(e.target.value)} style={{ ...is, appearance: "none", cursor: "pointer" }} onFocus={hf} onBlur={hb}><option value="basic">Basic</option><option value="standard">Standard</option><option value="premium">Premium</option><option value="luxury">Luxury</option></select></div>
+        <div><label style={ls}>Current condition</label><div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>{condOpts.map((c) => { const a = renoCondition === c.id; return (<SelectCard key={c.id} active={a} onClick={() => onConditionChange(c.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{c.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{c.desc}</div></SelectCard>); })}</div></div>
+        <div><label style={ls}>Finish level</label><div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>{[{ id: "basic", label: "Basic", desc: "Builder-grade materials" }, { id: "standard", label: "Standard", desc: "Quality mid-range" }, { id: "premium", label: "Premium", desc: "High-end finishes" }, { id: "luxury", label: "Luxury", desc: "Designer-grade" }].map((f) => { const a = renoFinish === f.id; return (<SelectCard key={f.id} active={a} onClick={() => onFinishChange(f.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{f.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{f.desc}</div></SelectCard>); })}</div></div>
       </div>
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!renoCondition} />
     </div>
@@ -459,17 +471,17 @@ function RenoFeaturesStep({ features, renoScope, onToggle, onBack, onNext }: { f
       <TypeBadge projectType="renovation" /><StepHeadline subtitle={`Common upgrades to consider while walls are open for your ${scopeLabel[renoScope] ?? "renovation"}.`}>While we&apos;re at it&hellip;</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, maxWidth: 760, margin: "0 auto" }}>
         {opts.map((o) => { const a = features.includes(o.id); return (
-          <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start" }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
             <div style={{ flexShrink: 0, width: 36, height: 36, borderRadius: "50%", background: a ? `${gold}22` : "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.25s" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#999"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={o.icon} /></svg>
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15, marginBottom: 3 }}>{o.label}</div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? "rgba(255,255,255,0.45)" : "#999", lineHeight: 1.4, marginBottom: 6 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", lineHeight: 1.4, marginBottom: 6 }}>{o.desc}</div>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb" }}>+{o.cost}</div>
             </div>
-            {a && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 2 }}><path d="M5 13l4 4L19 7" /></svg>}
+            {a && <div style={{ flexShrink: 0, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 2 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
           </button>); })}
       </div>
       {features.length > 0 && (
@@ -495,11 +507,12 @@ function HomeStyleStep({ homeStyle, onStyleChange, onBack, onNext }: { homeStyle
       <TypeBadge projectType="custom-home" /><StepHeadline subtitle="Architectural style shapes structure, materials, and pricing.">What&apos;s your vision?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14, maxWidth: 760, margin: "0 auto" }}>
         {styles.map((s) => { const a = homeStyle === s.id; return (
-          <button key={s.id} onClick={() => onStyleChange(s.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative" }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={s.id} onClick={() => onStyleChange(s.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            {a && <div style={{ position: "absolute", top: 10, right: 10, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#ccc"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 12, transition: "stroke 0.25s" }}><path d={s.icon} /></svg>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 6 }}>{s.label}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? "rgba(255,255,255,0.5)" : "#999", lineHeight: 1.5, marginBottom: 10 }}>{s.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999", lineHeight: 1.5, marginBottom: 10 }}>{s.desc}</div>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb" }}>{s.mult}</div>
           </button>); })}
       </div>
@@ -524,17 +537,17 @@ function HomeFeaturesStep({ features, onToggle, onBack, onNext }: { features: st
       <TypeBadge projectType="custom-home" /><StepHeadline subtitle="Select any features you'd like — or skip this step.">Premium features</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, maxWidth: 760, margin: "0 auto" }}>
         {opts.map((o) => { const a = features.includes(o.id); return (
-          <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start" }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
             <div style={{ flexShrink: 0, width: 36, height: 36, borderRadius: "50%", background: a ? `${gold}22` : "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.25s" }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#999"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={o.icon} /></svg>
             </div>
             <div style={{ flex: 1 }}>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15, marginBottom: 3 }}>{o.label}</div>
-              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? "rgba(255,255,255,0.45)" : "#999", lineHeight: 1.4, marginBottom: 6 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", lineHeight: 1.4, marginBottom: 6 }}>{o.desc}</div>
               <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb" }}>+{o.cost}</div>
             </div>
-            {a && <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0, marginTop: 2 }}><path d="M5 13l4 4L19 7" /></svg>}
+            {a && <div style={{ flexShrink: 0, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 2 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
           </button>); })}
       </div>
       {features.length > 0 && (
@@ -559,11 +572,12 @@ function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: { consul
       <TypeBadge projectType="consulting" /><StepHeadline subtitle="Select the engineering service that matches your project needs.">What do you need?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, maxWidth: 700, margin: "0 auto" }}>
         {types.map((t) => { const a = consultType === t.id; return (
-          <button key={t.id} onClick={() => onTypeChange(t.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative" }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={t.id} onClick={() => onTypeChange(t.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            {a && <div style={{ position: "absolute", top: 10, right: 10, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#ccc"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 12, transition: "stroke 0.25s" }}><path d={t.icon} /></svg>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 6 }}>{t.label}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: a ? "rgba(255,255,255,0.5)" : "#999", lineHeight: 1.5, marginBottom: 10 }}>{t.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: a ? gold : "#999", lineHeight: 1.5, marginBottom: 10 }}>{t.desc}</div>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb" }}>{t.range}</div>
           </button>); })}
       </div>
@@ -588,11 +602,11 @@ function ConsultDetailsStep({ consultComplexity, consultTimeline, onComplexityCh
       <TypeBadge projectType="consulting" /><StepHeadline subtitle="Complexity and timeline affect the scope of engineering work.">Project scope</StepHeadline>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Complexity</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 36 }}>
-        {cOpts.map((o) => { const a = consultComplexity === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onComplexityChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div></SelectCard>); })}
+        {cOpts.map((o) => { const a = consultComplexity === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onComplexityChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div></SelectCard>); })}
       </div>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Timeline</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
-        {tOpts.map((o) => { const a = consultTimeline === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onTimelineChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? "rgba(255,255,255,0.5)" : "#999", marginTop: 4 }}>{o.desc}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div></SelectCard>); })}
+        {tOpts.map((o) => { const a = consultTimeline === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onTimelineChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div></SelectCard>); })}
       </div>
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!consultComplexity || !consultTimeline} />
     </div>
@@ -613,18 +627,20 @@ function ConsultProjectStep({ propertyType, projectValue, onPropertyChange, onVa
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Property type</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginBottom: 36 }}>
         {propOpts.map((o) => { const a = propertyType === o.id; return (
-          <button key={o.id} onClick={() => onPropertyChange(o.id)} style={{ padding: "24px 16px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 8 }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={o.id} onClick={() => onPropertyChange(o.id)} style={{ padding: "24px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            {a && <div style={{ position: "absolute", top: 8, right: 8, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#bbb"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={o.icon} /></svg>
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? "rgba(255,255,255,0.5)" : "#999" }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999" }}>{o.desc}</div>
           </button>); })}
       </div>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Estimated project value</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
         {valOpts.map((o) => { const a = projectValue === o.id; return (
-          <button key={o.id} onClick={() => onValueChange(o.id)} style={{ padding: "18px 16px", border: a ? `2px solid ${dark}` : "2px solid #e5e5e5", background: a ? dark : "#fff", color: a ? "#fff" : dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}
-            onMouseEnter={(e) => { if (!a) e.currentTarget.style.borderColor = gold; }} onMouseLeave={(e) => { if (!a) e.currentTarget.style.borderColor = a ? dark : "#e5e5e5"; }}>
+          <button key={o.id} onClick={() => onValueChange(o.id)} style={{ padding: "18px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16, position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            {a && <div style={{ position: "absolute", top: 6, right: 6, width: 18, height: 18, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
             {o.label}
           </button>); })}
       </div>
@@ -806,7 +822,27 @@ function CostEstimatorInner() {
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'DM Sans', sans-serif", background: "#fff", position: "relative" }}>
       <style>{globalStyles}</style>
 
-      {showProgress && <div style={{ position: "fixed", top: 0, left: 0, right: 0, height: 3, background: "#eee", zIndex: 100 }}><div style={{ height: "100%", background: dark, width: `${progress}%`, transition: "width 0.5s cubic-bezier(0.22, 1, 0.36, 1)", animation: "progressGlow 2s infinite" }} /></div>}
+      {showProgress && (
+        <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100 }}>
+          <div style={{ height: 3, background: "#eee" }}><div style={{ height: "100%", background: gold, width: `${progress}%`, transition: "width 0.5s cubic-bezier(0.22, 1, 0.36, 1)" }} /></div>
+          <div style={{ background: "#fff", borderBottom: "1px solid #f0f0f0", padding: "8px 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
+            {steps.filter(s => s !== "analyzing" && s !== "results").map((s, i, arr) => {
+              const stepIdx = steps.indexOf(s);
+              const done = currentIdx > stepIdx;
+              const active = currentIdx === stepIdx;
+              return (
+                <div key={s} style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ width: active ? 28 : 8, height: 8, borderRadius: active ? 4 : "50%", background: done ? gold : active ? gold : "#e5e5e5", transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)", boxShadow: active ? `0 0 8px ${gold}55` : "none" }} />
+                  {i < arr.length - 1 && <div style={{ width: 12, height: 1, background: done ? `${gold}60` : "#e5e5e5", transition: "background 0.4s" }} />}
+                </div>
+              );
+            })}
+            <span style={{ marginLeft: 10, fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#bbb", fontWeight: 500 }}>
+              {Math.min(currentIdx, steps.filter(s => s !== "analyzing" && s !== "results").length)} of {steps.filter(s => s !== "analyzing" && s !== "results").length}
+            </span>
+          </div>
+        </div>
+      )}
 
       <header style={{ background: dark, borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -834,7 +870,7 @@ function CostEstimatorInner() {
         </div>
       )}
 
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingBottom: state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingTop: showProgress ? "clamp(48px, 6vw, 80px)" : undefined, paddingBottom: state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
         {isTypeSelect && (<><div style={{ position: "absolute", top: "15%", right: "20%", width: 500, height: 500, borderRadius: "50%", background: `${gold}0d`, filter: "blur(120px)", pointerEvents: "none" }} /><div style={{ position: "absolute", bottom: "20%", left: "15%", width: 400, height: 400, borderRadius: "50%", background: `${gold}08`, filter: "blur(100px)", pointerEvents: "none" }} /><div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} /></>)}
 
         <div style={{ width: "100%", maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 10 }}>
@@ -875,12 +911,20 @@ function CostEstimatorInner() {
       {(isTypeSelect || state.step === "results") && <TrustBar />}
 
       {showBanners && (
-        <div style={{ borderTop: "1px solid #f0f0f0", padding: "24px 24px 28px", background: "#fafafa", textAlign: "center", flexShrink: 0 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "10px 24px", background: `linear-gradient(135deg, ${gold}12, ${gold}08)`, border: `1px solid ${gold}25`, borderRadius: 100, marginBottom: 14 }}>
-            <span style={{ fontSize: 15, color: gold }}>✦</span><span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: gold, fontWeight: 600, letterSpacing: "0.03em" }}>Free Design Consultation included with your estimate</span>
+        <div style={{ borderTop: "1px solid #f0f0f0", padding: "20px 24px 24px", background: "#fafafa", textAlign: "center", flexShrink: 0 }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "12px 24px", background: `${gold}0c`, border: `1.5px solid ${gold}40`, borderRadius: 8, marginBottom: 14 }}>
+            <div style={{ width: 22, height: 22, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+            </div>
+            <div style={{ textAlign: "left" }}>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: gold, fontWeight: 700, letterSpacing: "0.02em", display: "block" }}>Applied: Free Design Consultation + Priority Spring Scheduling</span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#999", display: "block", marginTop: 2 }}>Included automatically with your estimate</span>
+            </div>
           </div>
-          <div style={{ display: "flex", justifyContent: "center", gap: 24, flexWrap: "wrap", fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#999" }}>
-            <span>✓ No commitment required</span><span>✓ No sales calls</span><span>✓ 150+ projects completed</span>
+          <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap", fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#bbb" }}>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>No commitment</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>No sales calls</span>
+            <span style={{ display: "flex", alignItems: "center", gap: 4 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>150+ projects</span>
           </div>
         </div>
       )}
