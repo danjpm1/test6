@@ -607,15 +607,15 @@ export default function AntovaBuilders() {
 
       {/* ━━━ HERO ━━━ */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* ANNOUNCEMENT BAR — premium dark style with gold accent */}
-        <div className="absolute top-[56px] left-0 right-0 z-20 bg-black/80 backdrop-blur-sm border-b border-[#c6912c]/20 text-center py-2 px-4">
+        {/* ANNOUNCEMENT BAR — distinct from navbar with subtle gradient */}
+        <div className="absolute top-[56px] left-0 right-0 z-20 bg-gradient-to-r from-[#c6912c]/15 via-[#c6912c]/10 to-[#c6912c]/15 backdrop-blur-md border-y border-[#c6912c]/25 text-center py-2 px-4">
           <Link href="/offers" className="inline-flex items-center justify-center gap-3 group">
             <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#c6912c] animate-pulse" />
-            <span className="text-white/70 text-xs sm:text-sm tracking-wide">
+            <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
               Free Design Consultation
             </span>
-            <span className="text-white/30 text-xs">—</span>
-            <span className="text-[#c6912c] text-xs sm:text-sm font-medium tracking-wide">
+            <span className="text-white/30 text-xs">|</span>
+            <span className="text-[#c6912c] text-xs sm:text-sm font-semibold tracking-wide">
               Included with every spring 2026 project
             </span>
             <svg className="w-3.5 h-3.5 text-[#c6912c] group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
