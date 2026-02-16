@@ -1629,6 +1629,85 @@ function CostEstimatorInner() {
         </div>
       </header>
 
+      {/* Offer banner — persistent, like HelloFresh discount bar */}
+      {!isTypeSelect && state.step !== "results" && state.step !== "analyzing" && state.step !== "outside-area" && (
+        <div style={{
+          background: `linear-gradient(135deg, ${gold}18, ${gold}10)`,
+          borderBottom: `1px solid ${gold}30`,
+          padding: "10px 24px",
+          textAlign: "center",
+          flexShrink: 0,
+        }}>
+          <a href="/offers" style={{
+            textDecoration: "none",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            fontFamily: "'DM Sans', sans-serif",
+          }}>
+            <span style={{ fontSize: 14, color: gold }}>✦</span>
+            <span style={{ fontSize: 13, color: "#333", fontWeight: 500 }}>
+              Spring 2026 Now Booking
+            </span>
+            <span style={{ fontSize: 13, color: "#999" }}>—</span>
+            <span style={{ fontSize: 13, color: gold, fontWeight: 600 }}>
+              Free Design Consultation Included
+            </span>
+            <span style={{ fontSize: 12, color: gold }}>›</span>
+          </a>
+        </div>
+      )}
+
+      {/* Type-specific highlights — connects estimator to the service */}
+      {!isTypeSelect && state.step !== "results" && state.step !== "analyzing" && state.step !== "outside-area" && state.projectType && (
+        <div style={{
+          borderBottom: "1px solid #f0f0f0",
+          padding: "8px 24px",
+          textAlign: "center",
+          background: "#fff",
+          flexShrink: 0,
+        }}>
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 20,
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 11,
+            color: "#aaa",
+            letterSpacing: "0.03em",
+          }}>
+            {state.projectType === "custom-home" && (
+              <>
+                <span>◆ Premium Materials</span>
+                <span>◆ Expert Craftsmanship</span>
+                <span>◆ Smart Home Integration</span>
+              </>
+            )}
+            {state.projectType === "new-build" && (
+              <>
+                <span>◆ Site-Ready Plans</span>
+                <span>◆ Energy Efficient</span>
+                <span>◆ Code Compliant</span>
+              </>
+            )}
+            {state.projectType === "renovation" && (
+              <>
+                <span>◆ Minimal Disruption</span>
+                <span>◆ Structural Integrity</span>
+                <span>◆ Modern Finishes</span>
+              </>
+            )}
+            {state.projectType === "consulting" && (
+              <>
+                <span>◆ Licensed Engineers</span>
+                <span>◆ Permit Support</span>
+                <span>◆ Fast Turnaround</span>
+              </>
+            )}
+          </div>
+        </div>
+      )}
+
       {/* Main */}
       <main style={{
         flex: 1, display: "flex", flexDirection: "column", justifyContent: "center",
@@ -1793,6 +1872,55 @@ function CostEstimatorInner() {
 
       {/* Trust bar */}
       {(isTypeSelect || state.step === "results") && <TrustBar />}
+
+      {/* Bottom offer strip — persistent during questions, like HelloFresh promo area */}
+      {!isTypeSelect && state.step !== "results" && state.step !== "analyzing" && state.step !== "outside-area" && (
+        <div style={{
+          borderTop: "1px solid #f0f0f0",
+          padding: "24px 24px 28px",
+          background: "#fafafa",
+          textAlign: "center",
+          flexShrink: 0,
+        }}>
+          {/* Offer pill */}
+          <div style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: 10,
+            padding: "10px 24px",
+            background: `linear-gradient(135deg, ${gold}12, ${gold}08)`,
+            border: `1px solid ${gold}25`,
+            borderRadius: 100,
+            marginBottom: 14,
+          }}>
+            <span style={{ fontSize: 15, color: gold }}>✦</span>
+            <span style={{
+              fontFamily: "'DM Sans', sans-serif",
+              fontSize: 13,
+              color: gold,
+              fontWeight: 600,
+              letterSpacing: "0.03em",
+            }}>
+              Free Design Consultation included with your estimate
+            </span>
+          </div>
+
+          {/* Trust microcopy */}
+          <div style={{
+            display: "flex",
+            justifyContent: "center",
+            gap: 24,
+            flexWrap: "wrap",
+            fontFamily: "'DM Sans', sans-serif",
+            fontSize: 12,
+            color: "#999",
+          }}>
+            <span>✓ No commitment required</span>
+            <span>✓ No sales calls</span>
+            <span>✓ 150+ projects completed</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
