@@ -98,7 +98,7 @@ function calcCustomHome(st: FormState): EstimateResult {
   const breakdown = [{ name: "Shell & Structure", value: Math.round(baseCost * 0.35) }, { name: "MEP Systems", value: Math.round(baseCost * 0.25) }, { name: "Interior Finishes", value: Math.round(baseCost * 0.30) }, { name: "Site & Foundation", value: Math.round(baseCost * 0.10) }];
   if (featureCost > 0) breakdown.push({ name: "Features & Upgrades", value: featureCost });
   return { total, perUnit: Math.round(total / st.sqft), unitLabel: "/ SF",
-    breakdown, locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Custom Home" };
+    breakdown, locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Signature Custom Design" };
 }
 
 function calcNewBuild(st: FormState): EstimateResult {
@@ -140,7 +140,7 @@ function calcConsulting(st: FormState): EstimateResult {
   const labels: Record<string, string> = { structural: "Structural Assessment", feasibility: "Feasibility Study", permits: "Permit Support", "site-analysis": "Site Analysis" };
   return { total, perUnit: total, unitLabel: "flat fee",
     breakdown: [{ name: "Assessment", value: Math.round(total * 0.35) }, { name: "Analysis", value: Math.round(total * 0.30) }, { name: "Deliverables", value: Math.round(total * 0.25) }, { name: "Consultation", value: Math.round(total * 0.10) }],
-    locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Engineering & Consulting" };
+    locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: "Consulting & Engineering" };
 }
 
 function calcEstimate(st: FormState): EstimateResult | null {
@@ -199,7 +199,7 @@ function StepHeadline({ children, subtitle }: { children: React.ReactNode; subti
 }
 
 function TypeBadge({ projectType }: { projectType: string }) {
-  const labels: Record<string, string> = { "custom-home": "Custom Home Estimate", "new-build": "New Build Estimate", "renovation": "Renovation Estimate", "consulting": "Consulting Estimate" };
+  const labels: Record<string, string> = { "custom-home": "Signature Custom Design Estimate", "new-build": "New Build Estimate", "renovation": "Renovation Estimate", "consulting": "Consulting & Engineering Estimate" };
   const icons: Record<string, string> = { "custom-home": "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6", "new-build": "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4", "renovation": "M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1 2 2 0 110-4 1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z", "consulting": "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" };
   if (!labels[projectType]) return null;
   return (<div style={{ display: "flex", justifyContent: "center", marginBottom: 24 }}><div style={{ display: "inline-flex", alignItems: "center", gap: 8, background: `${gold}0a`, border: `1px solid ${gold}25`, padding: "8px 18px", borderRadius: 40 }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d={icons[projectType] ?? ""} /></svg><span style={{ fontSize: 13, fontWeight: 600, color: gold, letterSpacing: "0.06em", fontFamily: "'DM Sans', sans-serif" }}>{labels[projectType]}</span></div></div>);
@@ -216,10 +216,10 @@ function SelectCard({ active, onClick, children }: { active: boolean; onClick: (
 /* ─── Type Select ──────────────────────────────────────────────── */
 
 const PROJECT_TYPES: { id: ProjectType; label: string; desc: string; icon: string }[] = [
-  { id: "custom-home", label: "Custom Home", desc: "Design and build your dream home from scratch", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
+  { id: "custom-home", label: "Signature Custom Design", desc: "Design and build your dream home from scratch", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
   { id: "new-build", label: "New Build", desc: "New construction on your lot or ours", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
   { id: "renovation", label: "Renovation", desc: "Transform your existing space", icon: "M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1 2 2 0 110-4 1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" },
-  { id: "consulting", label: "Engineering & Consulting", desc: "Expert analysis and project guidance", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
+  { id: "consulting", label: "Consulting & Engineering", desc: "Expert analysis and project guidance", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
 ];
 
 function TypeSelectStep({ onSelect }: { onSelect: (type: ProjectType) => void }) {
