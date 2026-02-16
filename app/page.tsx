@@ -612,11 +612,11 @@ export default function AntovaBuilders() {
           <Link href="/offers" className="inline-flex items-center justify-center gap-3 group">
             <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-[#c6912c] animate-pulse" />
             <span className="text-white text-xs sm:text-sm font-medium tracking-wide">
-              Free Design Consultation
+              Spring 2026 Now Booking
             </span>
             <span className="text-white/30 text-xs">|</span>
             <span className="text-[#c6912c] text-xs sm:text-sm font-semibold tracking-wide">
-              Included with every spring 2026 project
+              Free Design Consultation Included
             </span>
             <svg className="w-3.5 h-3.5 text-[#c6912c] group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
@@ -646,21 +646,29 @@ export default function AntovaBuilders() {
             Your vision, built without compromise.
           </h1>
 
-          {/* Subline */}
+          {/* Subline — BIGGER, brighter, the real conversion weapon */}
           <p 
-            className={`text-base md:text-lg lg:text-xl mb-10 text-white/60 tracking-wide transition-all duration-700 ease-out ${
+            className={`text-lg md:text-xl lg:text-2xl mb-10 text-white/80 tracking-wide transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
             See your realistic investment range in 60 seconds — no email required.
           </p>
 
-          {/* Embedded estimator entry — wide tool-like bar (Simply Business pattern) */}
+          {/* AI Estimator tool — the centerpiece */}
           <div 
             className={`flex flex-col items-center gap-5 transition-all duration-700 ease-out ${
               showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
             }`}
           >
+            {/* AI badge — brands the tool, not just a form */}
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-white/[0.06] border border-white/[0.1] rounded-full">
+              <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+              </svg>
+              <span className="text-white/60 text-xs font-medium tracking-[0.15em] uppercase">AI-Powered Estimator</span>
+            </div>
+
             {/* Frosted glass container — makes the estimator feel like a tool, not a form */}
             <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-3 sm:p-4">
               {/* Form row: selector + button */}
@@ -698,15 +706,15 @@ export default function AntovaBuilders() {
               </div>
             </div>
 
-            {/* Microcopy — reinforces different points than subline */}
+            {/* Microcopy — reinforces speed + trust right at the action point */}
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/70 text-xs sm:text-sm tracking-wide">
               <span className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                Instant results
+                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                Results in 60 seconds
               </span>
               <span className="flex items-center gap-1.5">
-                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
-                No sales calls
+                <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" /></svg>
+                No email or signup
               </span>
               <span className="flex items-center gap-1.5">
                 <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
