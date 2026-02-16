@@ -601,6 +601,17 @@ export default function AntovaBuilders() {
           animation: chevron-fade-2 1.5s ease-in-out infinite;
           animation-delay: 0.2s;
         }
+
+        @keyframes border-pulse {
+          0%, 100% {
+            border-color: rgba(198, 145, 44, 0.3);
+            box-shadow: 0 0 0 0 rgba(198, 145, 44, 0);
+          }
+          50% {
+            border-color: rgba(198, 145, 44, 0.7);
+            box-shadow: 0 0 12px 2px rgba(198, 145, 44, 0.15);
+          }
+        }
       `}</style>
 
       <Navbar hidden={!showNavbar} />
@@ -678,9 +689,11 @@ export default function AntovaBuilders() {
                   <select
                     value={selectedProjectType}
                     onChange={(e) => setSelectedProjectType(e.target.value)}
-                    className="w-full h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-0 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm"
+                    className={`w-full h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-2 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm ${
+                      selectedProjectType ? "border-[#c6912c]/30" : "border-[#c6912c]/60 animate-[border-pulse_2s_ease-in-out_infinite]"
+                    }`}
                   >
-                    <option value="" disabled>What are you building?</option>
+                    <option value="" disabled>① Select your project type</option>
                     <option value="custom-home">Custom Home</option>
                     <option value="renovation">Major Renovation</option>
                     <option value="new-build">New Build</option>
