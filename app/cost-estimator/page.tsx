@@ -8,7 +8,7 @@ import {
 
 /* ─── Types & Config ───────────────────────────────────────────── */
 
-type ProjectType = "custom-home" | "new-build" | "renovation" | "consulting" | "";
+type ProjectType = "custom-home" | "new-build" | "renovation" | "consulting" | "commercial" | "remote" | "";
 
 interface FormState {
   step: string; projectType: ProjectType; zipCode: string; sqft: number;
@@ -18,6 +18,8 @@ interface FormState {
   consultComplexity: string; consultTimeline: string;
   consultPropertyType: string; consultProjectValue: string;
   homeStyle: string; homeFeatures: string[];
+  commercialType: string; commercialFinish: string;
+  remoteType: string; remoteAccess: string; remoteFeatures: string[];
 }
 
 interface EstimateResult {
@@ -53,6 +55,15 @@ const HOME_STYLE_MULT: Record<string, number> = { modern: 1.15, craftsman: 1.05,
 const HOME_FEATURE_COST: Record<string, number> = { "smart-home": 25000, "outdoor-kitchen": 35000, "home-theater": 28000, "wine-cellar": 22000, "ev-garage": 18000, "in-floor-heat": 15000, "solar": 32000, "pool": 65000 };
 const RENO_FEATURE_COST: Record<string, number> = { "open-concept": 12000, "new-windows": 8500, "hardwood": 7000, "custom-cabinets": 15000, "electrical": 6500, "plumbing": 9000, "insulation": 5500, "smart-lighting": 4500 };
 
+/* ─── Commercial Pricing ──────────────────────────────────────── */
+const COMMERCIAL_BASE: Record<string, number> = { office: 260, retail: 230, warehouse: 145, restaurant: 320 };
+const COMMERCIAL_FINISH_MULT: Record<string, number> = { standard: 1.0, premium: 1.3, "high-end": 1.6 };
+
+/* ─── Remote & Off-Grid Pricing ───────────────────────────────── */
+const REMOTE_BASE: Record<string, number> = { cabin: 210, adu: 245, workshop: 155, "off-grid-home": 295 };
+const REMOTE_ACCESS_MULT: Record<string, number> = { "road-access": 1.0, seasonal: 1.15, "no-road": 1.35 };
+const REMOTE_FEATURE_COST: Record<string, number> = { solar: 32000, "well-septic": 25000, generator: 12000, "satellite-internet": 5500, "propane-system": 8000, "rainwater": 9500 };
+
 const ZIP_TO_TIER: Record<string, string> = {
   "83814":"premium","83815":"premium","83816":"premium","83835":"premium","83864":"premium","99019":"premium","99203":"premium","99223":"premium",
   "83813":"standard","83860":"standard","83809":"standard","83801":"standard","83804":"standard","83852":"standard","83840":"standard","83841":"standard","83869":"standard","83854":"standard","83877":"standard","83858":"standard",
@@ -84,6 +95,8 @@ const STEP_ORDERS: Record<string, string[]> = {
   "new-build": ["type-select", "sqft", "build-details", "exterior", "interior-finish", "interior-rooms", "zip", "analyzing", "results"],
   "renovation": ["type-select", "reno-scope", "reno-area", "reno-condition", "reno-finish", "reno-features", "zip", "analyzing", "results"],
   "consulting": ["type-select", "consult-type", "consult-details", "consult-property", "consult-value", "zip", "analyzing", "results"],
+  "commercial": ["type-select", "commercial-type", "sqft", "commercial-finish", "zip", "analyzing", "results"],
+  "remote": ["type-select", "remote-type", "sqft", "remote-access", "remote-features", "zip", "analyzing", "results"],
 };
 
 /* ─── Calculations ─────────────────────────────────────────────── */
@@ -144,7 +157,32 @@ function calcConsulting(st: FormState): EstimateResult {
 }
 
 function calcEstimate(st: FormState): EstimateResult | null {
-  switch (st.projectType) { case "custom-home": return calcCustomHome(st); case "new-build": return calcNewBuild(st); case "renovation": return calcRenovation(st); case "consulting": return calcConsulting(st); default: return null; }
+  switch (st.projectType) { case "custom-home": return calcCustomHome(st); case "new-build": return calcNewBuild(st); case "renovation": return calcRenovation(st); case "consulting": return calcConsulting(st); case "commercial": return calcCommercial(st); case "remote": return calcRemote(st); default: return null; }
+}
+
+function calcCommercial(st: FormState): EstimateResult {
+  const tier = getZipTier(st.zipCode); const lm = tier?.multiplier ?? 1.0;
+  const base = COMMERCIAL_BASE[st.commercialType] ?? 230;
+  const fm = COMMERCIAL_FINISH_MULT[st.commercialFinish] ?? 1.0;
+  const total = Math.round(st.sqft * base * fm * lm);
+  const labels: Record<string, string> = { office: "Office Build-Out", retail: "Retail Space", warehouse: "Warehouse / Industrial", restaurant: "Restaurant Build" };
+  return { total, perUnit: Math.round(total / st.sqft), unitLabel: "/ SF",
+    breakdown: [{ name: "Shell & Structure", value: Math.round(total * 0.30) }, { name: "MEP Systems", value: Math.round(total * 0.25) }, { name: "Interior Build-Out", value: Math.round(total * 0.28) }, { name: "Site & Permits", value: Math.round(total * 0.10) }, { name: "Code Compliance", value: Math.round(total * 0.07) }],
+    locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: labels[st.commercialType] ?? "Commercial Project" };
+}
+
+function calcRemote(st: FormState): EstimateResult {
+  const tier = getZipTier(st.zipCode); const lm = tier?.multiplier ?? 1.0;
+  const base = REMOTE_BASE[st.remoteType] ?? 210;
+  const am = REMOTE_ACCESS_MULT[st.remoteAccess] ?? 1.0;
+  const baseCost = Math.round(st.sqft * base * am * lm);
+  const featureCost = st.remoteFeatures.reduce((sum, f) => sum + (REMOTE_FEATURE_COST[f] ?? 0), 0);
+  const total = baseCost + featureCost;
+  const labels: Record<string, string> = { cabin: "Remote Cabin", adu: "ADU / Guest House", workshop: "Workshop / Outbuilding", "off-grid-home": "Off-Grid Home" };
+  const breakdown = [{ name: "Structure & Shell", value: Math.round(baseCost * 0.35) }, { name: "Access & Site Work", value: Math.round(baseCost * 0.20) }, { name: "Interior Systems", value: Math.round(baseCost * 0.25) }, { name: "Foundation", value: Math.round(baseCost * 0.12) }, { name: "Permits & Transport", value: Math.round(baseCost * 0.08) }];
+  if (featureCost > 0) breakdown.push({ name: "Off-Grid Systems", value: featureCost });
+  return { total, perUnit: Math.round(total / st.sqft), unitLabel: "/ SF",
+    breakdown, locationName: getLocationName(st.zipCode), tierName: tier?.name ?? "Standard", locationMultiplier: lm, projectLabel: labels[st.remoteType] ?? "Remote Build" };
 }
 
 /* ─── Shared Styles ────────────────────────────────────────────── */
@@ -225,6 +263,8 @@ const PROJECT_TYPES: { id: ProjectType; label: string; desc: string; icon: strin
   { id: "custom-home", label: "Signature Custom Design", desc: "Design and build your dream home from scratch", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
   { id: "new-build", label: "New Build", desc: "New construction on your lot or ours", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
   { id: "renovation", label: "Renovation", desc: "Transform your existing space", icon: "M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1 2 2 0 110-4 1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z" },
+  { id: "commercial", label: "Commercial", desc: "Office, retail, warehouse, or restaurant", icon: "M3 21h18M3 10h18M3 7l9-4 9 4M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" },
+  { id: "remote", label: "Remote & Off-Grid", desc: "Cabins, ADUs, and off-grid structures", icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" },
   { id: "consulting", label: "Consulting & Engineering", desc: "Expert analysis and project guidance", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
 ];
 
@@ -264,8 +304,8 @@ function TypeSelectStep({ onSelect }: { onSelect: (type: ProjectType) => void })
 /* ─── Shared Steps ─────────────────────────────────────────────── */
 
 function ZipCodeStep({ zipCode, onZipChange, onBack, onSubmit, projectType }: { zipCode: string; onZipChange: (z: string) => void; onBack: () => void; onSubmit: () => void; projectType: string }) {
-  const headlines: Record<string, string> = { "custom-home": "Where will we build your custom home?", "new-build": "Where is your new build site?", "renovation": "Where is the property you're renovating?", "consulting": "Where is your project located?" };
-  const subtitles: Record<string, string> = { "custom-home": "Last step — your location determines final pricing for your custom home.", "new-build": "Last step — your build location determines the final pricing tier.", "renovation": "Last step — we'll tailor renovation costs to your local market.", "consulting": "Last step — location affects site visit and travel costs for your engagement." };
+  const headlines: Record<string, string> = { "custom-home": "Where will we build your custom home?", "new-build": "Where is your new build site?", "renovation": "Where is the property you're renovating?", "consulting": "Where is your project located?", "commercial": "Where is the commercial property?", "remote": "Where is the build site?" };
+  const subtitles: Record<string, string> = { "custom-home": "Last step — your location determines final pricing for your custom home.", "new-build": "Last step — your build location determines the final pricing tier.", "renovation": "Last step — we'll tailor renovation costs to your local market.", "consulting": "Last step — location affects site visit and travel costs for your engagement.", "commercial": "Last step — local labor and material costs vary by market.", "remote": "Last step — remoteness and local conditions affect final pricing." };
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
       <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Where is your project?"}</StepHeadline>
@@ -298,8 +338,8 @@ function OutsideAreaStep({ zipCode, onRetry, onReset }: { zipCode: string; onRet
 }
 
 function SqftStep({ sqft, onSqftChange, onBack, onNext, projectType }: { sqft: number; onSqftChange: (s: number) => void; onBack: () => void; onNext: () => void; projectType: string }) {
-  const headlines: Record<string, string> = { "custom-home": "How large is your dream home?", "new-build": "What size new build are you planning?" };
-  const subtitles: Record<string, string> = { "custom-home": "Total living area for your custom home — we'll refine finishes next.", "new-build": "Total square footage including all floors." };
+  const headlines: Record<string, string> = { "custom-home": "How large is your dream home?", "new-build": "What size new build are you planning?", "commercial": "How large is the commercial space?", "remote": "How large is the structure?" };
+  const subtitles: Record<string, string> = { "custom-home": "Total living area for your custom home — we'll refine finishes next.", "new-build": "Total square footage including all floors.", "commercial": "Total leasable or usable square footage.", "remote": "Total square footage including all living and utility areas." };
   const { minSqft: min, maxSqft: max, sqftStep: step } = CONSTRAINTS;
   const pct = ((sqft - min) / (max - min)) * 100;
   return (
@@ -669,10 +709,145 @@ function ConsultValueStep({ projectValue, onValueChange, onBack, onNext }: { pro
   );
 }
 
+/* ─── Commercial Steps ─────────────────────────────────────────── */
+
+function CommercialTypeStep({ commercialType, onTypeChange, onBack, onNext }: { commercialType: string; onTypeChange: (t: string) => void; onBack: () => void; onNext: () => void }) {
+  const types = [
+    { id: "office", label: "Office", desc: "Corporate, co-working, or professional space", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
+    { id: "retail", label: "Retail", desc: "Storefront, showroom, or gallery", icon: "M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" },
+    { id: "warehouse", label: "Warehouse", desc: "Industrial, storage, or distribution", icon: "M3 3h18v18H3V3zm0 6h18M9 3v18" },
+    { id: "restaurant", label: "Restaurant", desc: "Kitchen, dining, bar, or café", icon: "M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 100 4 2 2 0 000-4z" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
+      <StepHeadline subtitle="Each space type has different structural, MEP, and code requirements.">What type of commercial space?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+        {types.map((t) => { const a = commercialType === t.id; return (
+          <button key={t.id} onClick={() => onTypeChange(t.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            {a && <div style={{ position: "absolute", top: 10, right: 10, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#bbb"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={t.icon} /></svg>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{t.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999" }}>{t.desc}</div>
+          </button>); })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!commercialType} />
+    </div>
+  );
+}
+
+function CommercialFinishStep({ commercialFinish, onFinishChange, onBack, onNext }: { commercialFinish: string; onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void }) {
+  const opts = [
+    { id: "standard", label: "Standard", desc: "Functional, clean, code-compliant", mult: "1.0×" },
+    { id: "premium", label: "Premium", desc: "Upgraded materials, branded elements", mult: "1.3×" },
+    { id: "high-end", label: "High-End", desc: "Architect-designed, luxury finishes", mult: "1.6×" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
+      <StepHeadline subtitle="Finish level drives material cost, design complexity, and build time.">What finish level?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+        {opts.map((o) => { const a = commercialFinish === o.id; return (
+          <SelectCard key={o.id} active={a} onClick={() => onFinishChange(o.id)}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 16 }}>{o.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
+          </SelectCard>); })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
+
+/* ─── Remote & Off-Grid Steps ─────────────────────────────────── */
+
+function RemoteTypeStep({ remoteType, onTypeChange, onBack, onNext }: { remoteType: string; onTypeChange: (t: string) => void; onBack: () => void; onNext: () => void }) {
+  const types = [
+    { id: "cabin", label: "Cabin", desc: "Year-round or seasonal retreat", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
+    { id: "adu", label: "ADU / Guest House", desc: "Accessory dwelling, guest quarters", icon: "M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" },
+    { id: "workshop", label: "Workshop", desc: "Studio, barn, garage, or outbuilding", icon: "M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" },
+    { id: "off-grid-home", label: "Off-Grid Home", desc: "Fully self-sufficient residence", icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
+      <StepHeadline subtitle="Structure type determines foundation, insulation, and system requirements.">What are you building?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+        {types.map((t) => { const a = remoteType === t.id; return (
+          <button key={t.id} onClick={() => onTypeChange(t.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            {a && <div style={{ position: "absolute", top: 10, right: 10, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#bbb"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={t.icon} /></svg>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{t.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999" }}>{t.desc}</div>
+          </button>); })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!remoteType} />
+    </div>
+  );
+}
+
+function RemoteAccessStep({ remoteAccess, onAccessChange, onBack, onNext }: { remoteAccess: string; onAccessChange: (a: string) => void; onBack: () => void; onNext: () => void }) {
+  const opts = [
+    { id: "road-access", label: "Year-Round Road", desc: "Paved or maintained gravel access", mult: "1.0×" },
+    { id: "seasonal", label: "Seasonal Access", desc: "Dirt road, snow closures possible", mult: "1.15×" },
+    { id: "no-road", label: "No Road Access", desc: "Helicopter, ATV, or boat only", mult: "1.35×" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
+      <StepHeadline subtitle="Site accessibility directly impacts material delivery and labor costs.">How accessible is the site?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
+        {opts.map((o) => { const a = remoteAccess === o.id; return (
+          <SelectCard key={o.id} active={a} onClick={() => onAccessChange(o.id)}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 16 }}>{o.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
+          </SelectCard>); })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!remoteAccess} />
+    </div>
+  );
+}
+
+function RemoteFeaturesStep({ features, onToggle, onBack, onNext }: { features: string[]; onToggle: (f: string) => void; onBack: () => void; onNext: () => void }) {
+  const opts = [
+    { id: "solar", label: "Solar Power", desc: "Panels, inverter, battery bank", cost: "$32K", icon: "M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" },
+    { id: "well-septic", label: "Well & Septic", desc: "Drilled well, septic system", cost: "$25K", icon: "M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" },
+    { id: "generator", label: "Backup Generator", desc: "Propane or diesel standby", cost: "$12K", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+    { id: "satellite-internet", label: "Satellite Internet", desc: "Starlink or equivalent setup", cost: "$5.5K", icon: "M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.858 15.355-5.858 21.213 0" },
+    { id: "propane-system", label: "Propane System", desc: "Tank, lines, appliance hookup", cost: "$8K", icon: "M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" },
+    { id: "rainwater", label: "Rainwater Collection", desc: "Cistern, filtration, storage", cost: "$9.5K", icon: "M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" },
+  ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <StepHeadline subtitle="Select off-grid systems you need — or skip this step.">Off-grid systems</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, maxWidth: 760, margin: "0 auto" }}>
+        {opts.map((o) => { const a = features.includes(o.id); return (
+          <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
+            <div style={{ flexShrink: 0, width: 36, height: 36, borderRadius: "50%", background: a ? `${gold}22` : "#f5f5f5", display: "flex", alignItems: "center", justifyContent: "center", transition: "background 0.25s" }}>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#999"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ transition: "stroke 0.25s" }}><path d={o.icon} /></svg>
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15, marginBottom: 3 }}>{o.label}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", lineHeight: 1.4, marginBottom: 6 }}>{o.desc}</div>
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb" }}>+{o.cost}</div>
+            </div>
+            {a && <div style={{ flexShrink: 0, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center", marginTop: 2 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
+          </button>); })}
+      </div>
+      {features.length > 0 && (
+        <div style={{ marginTop: 20, fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999" }}>
+          {features.length} system{features.length > 1 ? "s" : ""} selected · +${features.reduce((s, f) => s + (REMOTE_FEATURE_COST[f] ?? 0), 0).toLocaleString()}
+        </div>
+      )}
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
+
 /* ─── Analyzing ────────────────────────────────────────────────── */
 
 function AnalyzingStep({ projectType, zipCode }: { projectType: string; zipCode: string }) {
-  const labels: Record<string, string> = { "custom-home": `Calculating costs for ${getLocationName(zipCode)}`, "new-build": `Calculating build costs for ${getLocationName(zipCode)}`, "renovation": `Estimating renovation costs for ${getLocationName(zipCode)}`, "consulting": `Generating consulting estimate for ${getLocationName(zipCode)}` };
+  const labels: Record<string, string> = { "custom-home": `Calculating costs for ${getLocationName(zipCode)}`, "new-build": `Calculating build costs for ${getLocationName(zipCode)}`, "renovation": `Estimating renovation costs for ${getLocationName(zipCode)}`, "consulting": `Generating consulting estimate for ${getLocationName(zipCode)}`, "commercial": `Estimating commercial build-out for ${getLocationName(zipCode)}`, "remote": `Calculating remote build costs for ${getLocationName(zipCode)}` };
   return (
     <div className="fade-in" style={{ textAlign: "center" }}>
       <div style={{ display: "flex", justifyContent: "center", marginBottom: 48 }}>
@@ -799,6 +974,8 @@ function CostEstimatorInner() {
     consultComplexity: "", consultTimeline: "standard",
     consultPropertyType: "", consultProjectValue: "",
     homeStyle: "", homeFeatures: [],
+    commercialType: "", commercialFinish: "standard",
+    remoteType: "", remoteAccess: "", remoteFeatures: [],
   });
 
   const [displayedTotal, setDisplayedTotal] = useState(0);
@@ -831,7 +1008,7 @@ function CostEstimatorInner() {
     }
   }, [state.step, estimate]);
 
-  const reset = () => setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", renoFeatures: [], consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "", homeStyle: "", homeFeatures: [] });
+  const reset = () => setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", renoFeatures: [], consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "", homeStyle: "", homeFeatures: [], commercialType: "", commercialFinish: "standard", remoteType: "", remoteAccess: "", remoteFeatures: [] });
 
   const isTypeSelect = state.step === "type-select";
   const isOutside = state.step === "outside-area";
@@ -876,6 +1053,11 @@ function CostEstimatorInner() {
           {state.step === "consult-details" && <ConsultDetailsStep consultComplexity={state.consultComplexity} consultTimeline={state.consultTimeline} onComplexityChange={(c) => update({ consultComplexity: c })} onTimelineChange={(t) => update({ consultTimeline: t })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-property" && <ConsultPropertyStep propertyType={state.consultPropertyType} onPropertyChange={(p) => update({ consultPropertyType: p })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-value" && <ConsultValueStep projectValue={state.consultProjectValue} onValueChange={(v) => update({ consultProjectValue: v })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "commercial-type" && <CommercialTypeStep commercialType={state.commercialType} onTypeChange={(t) => update({ commercialType: t })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "commercial-finish" && <CommercialFinishStep commercialFinish={state.commercialFinish} onFinishChange={(f) => update({ commercialFinish: f })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "remote-type" && <RemoteTypeStep remoteType={state.remoteType} onTypeChange={(t) => update({ remoteType: t })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "remote-access" && <RemoteAccessStep remoteAccess={state.remoteAccess} onAccessChange={(a) => update({ remoteAccess: a })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "remote-features" && <RemoteFeaturesStep features={state.remoteFeatures} onToggle={(f) => { const curr = state.remoteFeatures; update({ remoteFeatures: curr.includes(f) ? curr.filter(x => x !== f) : [...curr, f] }); }} onBack={prevStep} onNext={nextStep} />}
           {state.step === "analyzing" && <AnalyzingStep projectType={state.projectType} zipCode={state.zipCode} />}
           {state.step === "results" && estimate && <ResultsStep estimate={estimate} displayedTotal={displayedTotal} onReset={reset} isConsulting={state.projectType === "consulting"} isCustomHome={state.projectType === "custom-home"} />}
         </div>
