@@ -110,7 +110,7 @@ const services = [
     price: "From $2,500 per engagement",
     tags: ["Structural", "Feasibility", "Permits", "Site Analysis"],
     estimatorType: "consulting",
-    learnMoreLink: "/offers#engineering-consulting",
+    learnMoreLink: "/offers#consulting-engineering",
     image: "/images/engineering-blueprints.png",
   },
 ]
