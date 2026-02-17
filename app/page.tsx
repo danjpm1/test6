@@ -33,6 +33,25 @@ const SERVICE_CARDS = [
     alt: "New construction lifestyle",
     href: "/services/new-builds",
   },
+  {
+    title: "Consulting & Engineering",
+    image: "/images/engineering-blueprints.png",
+    alt: "Architects working on blueprints and structural plans",
+    href: "/services/engineering-consulting",
+  },
+]
+
+const SECONDARY_SERVICES = [
+  {
+    title: "Commercial Projects",
+    description: "Office, retail, and mixed-use builds designed around your business needs.",
+    href: "/services/commercial",
+  },
+  {
+    title: "Remote Builds",
+    description: "Full-service project management for builds outside the Inland Northwest.",
+    href: "/services/remote",
+  },
 ]
 
 const PROJECT_GALLERY = [
@@ -693,8 +712,36 @@ export default function AntovaBuilders() {
             <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Our services</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">Choose your path.</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-            {SERVICE_CARDS.map((card) => (<ServiceCard key={card.title} {...card} />))}
+          {/* Primary services — 2x2 grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5">
+            {SERVICE_CARDS.map((card) => (
+              <Link key={card.title} href={card.href}>
+                <div className="group relative overflow-hidden rounded-xl cursor-pointer transition-transform duration-300 ease-out hover:scale-[1.02] aspect-[16/10]">
+                  <Image src={card.image} alt={card.alt} fill sizes="(max-width: 640px) 100vw, 50vw" className="object-cover object-center transition-transform duration-500 group-hover:scale-105" />
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 30%, transparent 60%)" }} />
+                  <div className="absolute bottom-0 left-0 right-0 p-5 md:p-6 flex items-center justify-between">
+                    <h3 className="text-white font-medium text-base md:text-lg">{card.title}</h3>
+                    <ArrowIcon />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+          {/* Secondary services — compact row */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 mt-4 md:mt-5">
+            {SECONDARY_SERVICES.map((service) => (
+              <Link key={service.title} href={service.href}>
+                <div className="group flex items-center justify-between gap-4 p-5 md:p-6 bg-[#f4f4f0] rounded-xl hover:bg-[#eeeee8] transition-all duration-300 cursor-pointer">
+                  <div>
+                    <h3 className="text-base md:text-lg font-bold text-black mb-1 group-hover:text-[#c6912c] transition-colors">{service.title}</h3>
+                    <p className="text-black/45 text-sm leading-relaxed">{service.description}</p>
+                  </div>
+                  <svg className="w-5 h-5 text-black/30 flex-shrink-0 group-hover:text-[#c6912c] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
