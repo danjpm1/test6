@@ -1027,19 +1027,24 @@ export default function AntovaBuilders() {
               </div>
             ) : (
               <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Your name"
+                  value={formName}
+                  onChange={(e) => setFormName(e.target.value)}
+                  className="w-full px-5 py-4 bg-white/[0.07] border border-white/[0.1] rounded-lg text-white placeholder:text-white/30 text-base focus:outline-none focus:border-[#c6912c]/50 focus:ring-1 focus:ring-[#c6912c]/30 transition-all"
+                />
                 <div className="grid sm:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    placeholder="Your name"
-                    value={formName}
-                    onChange={(e) => setFormName(e.target.value)}
-                    className="w-full px-5 py-4 bg-white/[0.07] border border-white/[0.1] rounded-lg text-white placeholder:text-white/30 text-base focus:outline-none focus:border-[#c6912c]/50 focus:ring-1 focus:ring-[#c6912c]/30 transition-all"
-                  />
                   <input
                     type="email"
                     placeholder="Email address"
                     value={formEmail}
                     onChange={(e) => setFormEmail(e.target.value)}
+                    className="w-full px-5 py-4 bg-white/[0.07] border border-white/[0.1] rounded-lg text-white placeholder:text-white/30 text-base focus:outline-none focus:border-[#c6912c]/50 focus:ring-1 focus:ring-[#c6912c]/30 transition-all"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Phone (optional)"
                     className="w-full px-5 py-4 bg-white/[0.07] border border-white/[0.1] rounded-lg text-white placeholder:text-white/30 text-base focus:outline-none focus:border-[#c6912c]/50 focus:ring-1 focus:ring-[#c6912c]/30 transition-all"
                   />
                 </div>
@@ -1077,6 +1082,7 @@ export default function AntovaBuilders() {
                 Get an instant estimate with our AI tool
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
               </button>
+              <p className="text-white/25 text-xs mt-4">Or call us directly: <a href="tel:+12086258342" className="text-white/40 hover:text-[#c6912c] transition-colors">(208) 625-8342</a></p>
             </div>
           </div>
         </div>
