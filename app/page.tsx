@@ -68,12 +68,6 @@ const PROJECT_GALLERY = [
     href: "/projects",
   },
   {
-    title: "Heritage Clinic Renovation",
-    type: "Renovation",
-    image: "/luxury-modern-cabin-interior-with-large-windows-wo.jpg",
-    href: "/projects",
-  },
-  {
     title: "Alpine Timber Lodge",
     type: "Custom Home",
     image: "/hero-winter-mountain-home.png",
@@ -404,6 +398,41 @@ export default function AntovaBuilders() {
     handleScroll()
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
+  }, [])
+
+  // Projects carousel arrow visibility
+  useEffect(() => {
+    const carousel = document.getElementById('projects-carousel')
+    const leftArrow = document.getElementById('projects-carousel-left')
+    const rightArrow = document.getElementById('projects-carousel-right')
+
+    const updateArrows = () => {
+      if (!carousel || !leftArrow || !rightArrow) return
+      const scrollLeft = carousel.scrollLeft
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth
+
+      if (scrollLeft > 50) {
+        leftArrow.style.opacity = '1'
+        leftArrow.style.pointerEvents = 'auto'
+      } else {
+        leftArrow.style.opacity = '0'
+        leftArrow.style.pointerEvents = 'none'
+      }
+
+      if (scrollLeft >= maxScroll - 50) {
+        rightArrow.style.opacity = '0'
+        rightArrow.style.pointerEvents = 'none'
+      } else {
+        rightArrow.style.opacity = '1'
+        rightArrow.style.pointerEvents = 'auto'
+      }
+    }
+
+    if (carousel) {
+      carousel.addEventListener('scroll', updateArrows)
+      updateArrows()
+    }
+    return () => { if (carousel) carousel.removeEventListener('scroll', updateArrows) }
   }, [])
 
   const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-[#f5f5f0]"
@@ -746,10 +775,11 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
-      {/* ━━━ PROJECT GALLERY ━━━ */}
+      {/* ━━━ PROJECT GALLERY (carousel) ━━━ */}
       <section className="py-14 lg:py-18 bg-[#f5f5f0]">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10 lg:mb-12">
+        {/* Header */}
+        <div className="px-6 lg:px-12 xl:px-[10%] mb-10 lg:mb-12">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
             <div>
               <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Recent projects</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">Craftsmanship you can see.</h2>
@@ -759,20 +789,75 @@ export default function AntovaBuilders() {
               <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
             </Link>
           </div>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+        </div>
+
+        {/* Carousel */}
+        <div className="relative">
+          <div
+            id="projects-carousel"
+            className="flex gap-[18px] md:gap-[24px] lg:gap-[27px] overflow-x-auto scrollbar-hide scroll-smooth pl-6 md:pl-12 lg:pl-[10%] pr-6"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
             {PROJECT_GALLERY.map((project) => (
-              <Link key={project.title} href={project.href}>
-                <div className="group relative overflow-hidden rounded-xl cursor-pointer aspect-[3/4]">
-                  <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover object-center transition-transform duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
-                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
-                    <span className="text-[#c6912c] text-xs font-medium tracking-[0.15em] uppercase">{project.type}</span>
-                    <h3 className="text-white font-medium text-sm md:text-base mt-1">{project.title}</h3>
-                  </div>
+              <Link key={project.title} href={project.href} className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px] group">
+                <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
+                  <Image
+                    src={project.image}
+                    alt={project.title}
+                    fill
+                    sizes="(max-width: 640px) 409px, (max-width: 768px) 512px, (max-width: 1024px) 615px, (max-width: 1280px) 718px, 793px"
+                    className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                  />
                 </div>
+                <h3 className="text-[1.5rem] md:text-[1.75rem] lg:text-[2rem] text-black mt-5 md:mt-7 uppercase tracking-wide font-bold">
+                  {project.title}
+                </h3>
+                <p className="text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+                  {project.type}
+                </p>
               </Link>
             ))}
+            {/* End spacer */}
+            <div className="flex-shrink-0 w-6" />
           </div>
+
+          {/* Left arrow */}
+          <button
+            id="projects-carousel-left"
+            className="absolute left-0 top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 opacity-0 pointer-events-none"
+            aria-label="Previous project"
+            onClick={() => {
+              const c = document.getElementById('projects-carousel')
+              if (c) {
+                const firstCard = c.querySelector('a') as HTMLElement
+                const scrollAmount = firstCard ? firstCard.offsetWidth + 27 : 820
+                c.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
+              }
+            }}
+          >
+            <svg className="w-4 h-4 md:w-[18px] md:h-[18px] text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          {/* Right arrow */}
+          <button
+            id="projects-carousel-right"
+            className="absolute right-[2%] top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10"
+            aria-label="Next project"
+            onClick={() => {
+              const c = document.getElementById('projects-carousel')
+              if (c) {
+                const firstCard = c.querySelector('a') as HTMLElement
+                const scrollAmount = firstCard ? firstCard.offsetWidth + 27 : 820
+                c.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+              }
+            }}
+          >
+            <svg className="w-4 h-4 md:w-[18px] md:h-[18px] text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
         </div>
       </section>
 
