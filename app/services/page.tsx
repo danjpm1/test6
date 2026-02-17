@@ -50,7 +50,7 @@ const services = [
     price: "From $280 per square foot",
     tags: ["Architectural Design", "Smart Home", "Premium Materials", "Energy Efficient"],
     estimatorType: "custom-home",
-    learnMoreLink: "/services/signature-custom-design",
+    learnMoreLink: "/offers#signature-custom-design",
     image: "/luxury-custom-home-interior-design-modern-architec.jpg",
   },
   {
@@ -62,7 +62,7 @@ const services = [
     price: "Starting from $28,000 · $2K–$5K credits available",
     tags: ["Kitchen & Bath", "Whole House", "Additions", "Structural"],
     estimatorType: "renovation",
-    learnMoreLink: "/services/renovation",
+    learnMoreLink: "/offers#renovation",
     image: "/renovation-human.png",
   },
   {
@@ -74,7 +74,7 @@ const services = [
     price: "New homes from $250,000",
     tags: ["Site-Ready Plans", "Energy Efficient", "Code Compliant", "Your Lot or Ours"],
     estimatorType: "new-build",
-    learnMoreLink: "/services/new-builds",
+    learnMoreLink: "/offers#new-builds",
     image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
   },
   {
@@ -86,7 +86,7 @@ const services = [
     price: "From $145 per square foot",
     tags: ["Office", "Retail", "Restaurant", "Warehouse"],
     estimatorType: "commercial",
-    learnMoreLink: "/services/commercial-projects",
+    learnMoreLink: "/offers#commercial",
     image: "/modern-commercial-building-exterior-glass-facade.jpg",
   },
   {
@@ -98,7 +98,7 @@ const services = [
     price: "From $155 per square foot",
     tags: ["Cabins", "ADU / Guest House", "Solar & Off-Grid", "Remote Access"],
     estimatorType: "remote",
-    learnMoreLink: "/services/remote-work",
+    learnMoreLink: "/offers#remote",
     image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
   },
   {
@@ -110,7 +110,7 @@ const services = [
     price: "From $2,500 per engagement",
     tags: ["Structural", "Feasibility", "Permits", "Site Analysis"],
     estimatorType: "consulting",
-    learnMoreLink: "/services/engineering-consulting",
+    learnMoreLink: "/offers#engineering-consulting",
     image: "/images/engineering-blueprints.png",
   },
 ]
