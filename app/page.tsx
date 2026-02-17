@@ -537,30 +537,30 @@ export default function AntovaBuilders() {
       {/* ━━━ TRUST STRIP ━━━ */}
       <div className="bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-0 py-8 md:py-10 border-b border-black/[0.06]">
-            <div className="flex flex-col items-center justify-center gap-2">
+          <div className="flex overflow-x-auto md:overflow-visible md:grid md:grid-cols-5 gap-0 py-8 md:py-10 border-b border-black/[0.06] scrollbar-hide" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+            <div className="flex flex-col items-center justify-center gap-2 min-w-[140px] flex-shrink-0 px-4 md:px-0 border-r border-black/[0.06] md:border-r-0">
               <div className="flex items-center gap-2">
                 <GoogleIcon />
                 <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">5.0</span>
               </div>
               <div className="flex gap-0.5">{[1,2,3,4,5].map(i => (<svg key={i} className="w-4 h-4 text-[#c6912c]" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>))}</div>
-              <span className="text-black/40 text-sm">Google Rating</span>
+              <span className="text-black/40 text-sm whitespace-nowrap">Google Rating</span>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2">
+            <div className="flex flex-col items-center justify-center gap-2 min-w-[140px] flex-shrink-0 px-4 md:px-0 border-r border-black/[0.06] md:border-r-0">
               <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">150+</span>
-              <span className="text-black/40 text-sm">Projects Completed</span>
+              <span className="text-black/40 text-sm whitespace-nowrap">Projects Completed</span>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2">
+            <div className="flex flex-col items-center justify-center gap-2 min-w-[140px] flex-shrink-0 px-4 md:px-0 border-r border-black/[0.06] md:border-r-0">
               <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">12</span>
-              <span className="text-black/40 text-sm">Years Experience</span>
+              <span className="text-black/40 text-sm whitespace-nowrap">Years Experience</span>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2">
+            <div className="flex flex-col items-center justify-center gap-2 min-w-[140px] flex-shrink-0 px-4 md:px-0 border-r border-black/[0.06] md:border-r-0">
               <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">98%</span>
-              <span className="text-black/40 text-sm">Client Satisfaction</span>
+              <span className="text-black/40 text-sm whitespace-nowrap">Client Satisfaction</span>
             </div>
-            <div className="flex flex-col items-center justify-center gap-2 col-span-2 md:col-span-1">
+            <div className="flex flex-col items-center justify-center gap-2 min-w-[140px] flex-shrink-0 px-4 md:px-0">
               <span className="text-[#c6912c] text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">$50M+</span>
-              <span className="text-black/40 text-sm">Total Value Built</span>
+              <span className="text-black/40 text-sm whitespace-nowrap">Total Value Built</span>
             </div>
           </div>
         </div>
