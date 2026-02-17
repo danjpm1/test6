@@ -545,29 +545,73 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
-      {/* ━━━ PROBLEM → SOLUTION ━━━ */}
-      <section className="py-16 lg:py-20 bg-white">
-        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mx-auto text-center mb-10 lg:mb-14">
-            <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Why homeowners hesitate</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-5 tracking-tight leading-tight">Building a home shouldn't feel like a gamble.</h2>
-            <p className="text-black/50 text-lg md:text-xl leading-relaxed">Most homeowners delay their dream project because they've heard the horror stories — budgets that double, timelines that slip, contractors who disappear. We built Antova to eliminate every one of those fears.</p>
-          </div>
-          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-              <h3 className="text-xl font-bold text-black mb-2">No investment surprises</h3>
-              <p className="text-black/50 text-base leading-relaxed">Our AI estimator gives you a realistic investment range before you commit to anything. No hidden fees, no scope creep, no uncomfortable conversations later.</p>
+      {/* ━━━ PROBLEM → SOLUTION (Tesla-style split) ━━━ */}
+      <section className="bg-white overflow-hidden">
+        <div className="max-w-[1800px] mx-auto">
+          <div className="grid lg:grid-cols-2 min-h-[600px] lg:min-h-[700px]">
+            {/* Left: Image */}
+            <div className="relative min-h-[400px] lg:min-h-0 order-2 lg:order-1">
+              <Image
+                src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
+                alt="Luxury modern cabin interior showcasing Antova craftsmanship"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover object-center"
+              />
+              {/* Subtle gradient overlay on right edge for text blending on desktop */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-white/10 hidden lg:block" />
+              {/* Bottom gradient for mobile */}
+              <div className="absolute inset-0 bg-gradient-to-t from-white via-transparent to-transparent lg:hidden" />
             </div>
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-              <h3 className="text-xl font-bold text-black mb-2">On time, every time</h3>
-              <p className="text-black/50 text-base leading-relaxed">12 years and 150+ projects have taught us how to plan realistically and deliver on schedule. You'll know the timeline upfront — and we'll stick to it.</p>
-            </div>
-            <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg></div>
-              <h3 className="text-xl font-bold text-black mb-2">Craftsmanship guaranteed</h3>
-              <p className="text-black/50 text-base leading-relaxed">98% client satisfaction across every project we've ever built. We don't disappear after the contract — we're with you from first sketch to final walkthrough.</p>
+
+            {/* Right: Content */}
+            <div className="flex flex-col justify-center px-6 lg:px-16 xl:px-20 py-14 lg:py-20 order-1 lg:order-2">
+              <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Why homeowners hesitate</p>
+              <h2 className="text-3xl md:text-4xl lg:text-[2.75rem] xl:text-5xl font-bold text-black mb-5 tracking-tight leading-[1.15]">
+                Building a home shouldn't feel like a gamble.
+              </h2>
+              <p className="text-black/50 text-base lg:text-lg leading-relaxed mb-10 max-w-xl">
+                Most homeowners delay their dream project because they've heard the horror stories — budgets that double, timelines that slip, contractors who disappear. We built Antova to eliminate every one of those fears.
+              </p>
+
+              {/* Three promises — vertical stack with left-aligned icons */}
+              <div className="space-y-6">
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-full bg-[#c6912c]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-5 h-5 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-black mb-1">No investment surprises</h3>
+                    <p className="text-black/45 text-sm leading-relaxed">Our AI estimator gives you a realistic investment range before you commit. No hidden fees, no scope creep.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-full bg-[#c6912c]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-5 h-5 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-black mb-1">On time, every time</h3>
+                    <p className="text-black/45 text-sm leading-relaxed">150+ projects delivered on schedule. You'll know the timeline upfront — and we'll stick to it.</p>
+                  </div>
+                </div>
+
+                <div className="flex items-start gap-4">
+                  <div className="w-11 h-11 rounded-full bg-[#c6912c]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <svg className="w-5 h-5 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="text-lg font-bold text-black mb-1">Craftsmanship guaranteed</h3>
+                    <p className="text-black/45 text-sm leading-relaxed">98% client satisfaction across every project. We're with you from first sketch to final walkthrough.</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
