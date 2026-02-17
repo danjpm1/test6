@@ -35,24 +35,30 @@ const SERVICE_CARDS = [
   },
 ]
 
-const OFFER_CARDS = [
+const PROJECT_GALLERY = [
   {
-    title: "Consulting & Engineering",
-    description: "Expert structural solutions and professional consulting for complex builds.",
-    price: "Consultation from $500",
-    image: "/images/engineering-blueprints.png",
-    alt: "Architects working on architectural blueprints and floor plans",
-    exploreHref: "/services/engineering-consulting",
-    exploreLabel: "Explore Engineering",
+    title: "Lakeside Modern Retreat",
+    type: "Custom Home",
+    image: "/project-1.jpg",
+    href: "/projects",
   },
   {
-    title: "Renovation",
-    description: "Modern renovation spaces designed for business excellence.",
-    price: "$2k-5k credits",
-    image: "/renovation-human.png",
-    alt: "Professional contractor reviewing renovation plans",
-    exploreHref: "/services/renovation",
-    exploreLabel: "Explore Renovation",
+    title: "Mountain View Estate",
+    type: "New Build",
+    image: "/project-2.jpg",
+    href: "/projects",
+  },
+  {
+    title: "Heritage Clinic Renovation",
+    type: "Renovation",
+    image: "/luxury-modern-cabin-interior-with-large-windows-wo.jpg",
+    href: "/projects",
+  },
+  {
+    title: "Alpine Timber Lodge",
+    type: "Custom Home",
+    image: "/hero-winter-mountain-home.png",
+    href: "/projects",
   },
 ]
 
@@ -233,46 +239,20 @@ function ServiceCard({ title, image, alt, href }: ServiceCardProps) {
   )
 }
 
-interface OfferCardProps { title: string; description: string; price: string; image: string; alt: string; exploreHref: string; exploreLabel: string }
-
-function OfferCard({ title, description, price, image, alt, exploreHref, exploreLabel }: OfferCardProps) {
-  return (
-    <div className="group relative overflow-hidden rounded-2xl cursor-pointer">
-      <div className="relative aspect-[4/5] sm:aspect-[3/2] overflow-hidden">
-        <Image src={image} alt={alt} fill sizes="(max-width: 768px) 100vw, 50vw" className="object-cover object-center transition-transform duration-500 group-hover:scale-105" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/30" />
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8 space-y-3">
-          <h3 className="text-xl sm:text-2xl lg:text-3xl font-normal text-white tracking-wide">{title}</h3>
-          <p className="text-white/90 text-sm lg:text-base leading-relaxed">{description}</p>
-          <p className="text-white/70 text-xs sm:text-sm font-medium">{price}</p>
-          <div className="flex gap-3 pt-2">
-            <Button size="sm" className="bg-white text-black hover:bg-white/90 font-semibold text-xs px-4 py-2 transition-all" asChild>
-              <Link href={exploreHref}>{exploreLabel}</Link>
-            </Button>
-            <Button size="sm" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black text-xs px-4 py-2 transition-all bg-transparent" asChild>
-              <Link href="/contact">Get Quote</Link>
-            </Button>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 interface TestimonialCardProps { headline: string; service: string; quote: string; author: string; role: string; company: string; videoThumbnail: string }
 
 function TestimonialCard({ headline, service, quote, author, role, company, videoThumbnail }: TestimonialCardProps) {
   return (
     <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="p-8 lg:p-10">
-        <div className="flex items-center justify-between mb-6">
+      <div className="p-6 lg:p-8">
+        <div className="flex items-center justify-between mb-5">
           <span className="text-[#c6912c] text-xs font-medium tracking-[0.2em] uppercase">{service}</span>
           <QuoteIcon />
         </div>
-        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-5 tracking-tight">{headline}</h3>
-        <blockquote className="text-white/70 text-base leading-relaxed mb-8">"{quote}"</blockquote>
-        <div className="flex items-center gap-4 mb-8">
+        <h3 className="text-2xl lg:text-3xl font-bold text-white mb-4 tracking-tight">{headline}</h3>
+        <blockquote className="text-white/70 text-base leading-relaxed mb-6">"{quote}"</blockquote>
+        <div className="flex items-center gap-4 mb-6">
           <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
             <span className="text-[#c6912c] font-semibold text-sm">{getInitials(author)}</span>
           </div>
@@ -296,29 +276,23 @@ interface GoogleReviewCardProps { author_name: string; rating: number; relative_
 
 function GoogleReviewCard({ author_name, rating, relative_time_description, text, image }: GoogleReviewCardProps) {
   return (
-    <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500">
+    <div className="group relative bg-[#111] rounded-2xl overflow-hidden border border-white/10 hover:border-[#c6912c]/40 transition-all duration-500 flex-shrink-0 w-[340px] sm:w-[380px]">
       <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-[#c6912c] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      <div className="p-8 lg:p-10">
-        <div className="flex items-start justify-between mb-6">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
-              <span className="text-[#c6912c] font-semibold text-sm">{getInitials(author_name)}</span>
+      <div className="p-6 lg:p-8">
+        <div className="flex items-start justify-between mb-5">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
+              <span className="text-[#c6912c] font-semibold text-xs">{getInitials(author_name)}</span>
             </div>
             <div>
-              <p className="text-white font-medium">{author_name}</p>
-              <p className="text-white/50 text-sm">{relative_time_description}</p>
+              <p className="text-white font-medium text-sm">{author_name}</p>
+              <p className="text-white/40 text-xs">{relative_time_description}</p>
             </div>
           </div>
           <StarRating rating={rating} />
         </div>
-        <blockquote className="text-white/70 text-base leading-relaxed mb-6">"{text}"</blockquote>
-        {image && (
-          <div className="relative aspect-[2/1] rounded-xl overflow-hidden mb-6">
-            <Image src={image} alt={`Project by ${author_name}`} fill sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw" className="object-cover object-center group-hover:scale-105 transition-transform duration-700" />
-            <div className="absolute inset-0 bg-black/20 group-hover:bg-black/10 transition-colors duration-300" />
-          </div>
-        )}
-        <div className="pt-6 border-t border-white/10 flex items-center gap-2">
+        <blockquote className="text-white/60 text-sm leading-relaxed mb-5 line-clamp-4">"{text}"</blockquote>
+        <div className="pt-4 border-t border-white/10 flex items-center gap-2">
           <GoogleIcon />
           <span className="text-white/40 text-xs">Google Review</span>
         </div>
@@ -329,10 +303,13 @@ function GoogleReviewCard({ author_name, rating, relative_time_description, text
 
 function GoogleReviewsSection() {
   const avgRating = GOOGLE_REVIEWS.reduce((sum, r) => sum + r.rating, 0) / GOOGLE_REVIEWS.length
+  const scrollRef = useRef<HTMLDivElement>(null)
+
   return (
-    <section className="py-16 lg:py-20 bg-black relative overflow-hidden">
+    <section className="py-14 lg:py-18 bg-black relative overflow-hidden">
       <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-10">
+        {/* Header row */}
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 mb-10">
           <div className="flex items-center gap-4">
             <GoogleIcon />
             <div>
@@ -343,17 +320,24 @@ function GoogleReviewsSection() {
               <span className="text-white/40 text-sm">{GOOGLE_REVIEWS.length} verified reviews</span>
             </div>
           </div>
-          <div className="hidden sm:block h-12 w-px bg-white/10" />
-          <div className="flex items-center gap-4">
-            <a href="#" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 text-sm text-white/70 border border-white/15 rounded-[4px] hover:bg-white/5 hover:border-white/30 transition-all duration-300">
-              View All Reviews
+          <div className="flex items-center gap-3">
+            <a href="#" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 text-sm text-white/70 border border-white/15 rounded-[4px] hover:bg-white/5 hover:border-white/30 transition-all duration-300">
+              View All
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
             </a>
-            <a href="#" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-black text-sm font-medium rounded-[4px] hover:bg-white/90 transition-colors duration-300">
+            <a href="#" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-5 py-2.5 bg-white text-black text-sm font-medium rounded-[4px] hover:bg-white/90 transition-colors duration-300">
               <GoogleIcon />
               Write a Review
             </a>
           </div>
+        </div>
+        {/* Scrollable review cards */}
+        <div ref={scrollRef} className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+          {GOOGLE_REVIEWS.map((review) => (
+            <div key={review.author_name} className="snap-start">
+              <GoogleReviewCard {...review} />
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -403,7 +387,7 @@ export default function AntovaBuilders() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-white"
+  const bottomBgColor = isTestimonialsVisible ? "bg-black" : "bg-[#f5f5f0]"
 
   return (
     <div className={`min-h-screen bg-white overflow-x-hidden`}>
@@ -416,6 +400,7 @@ export default function AntovaBuilders() {
         .animate-chevron-2 { animation: chevron-fade-2 1.5s ease-in-out infinite; animation-delay: 0.2s; }
         @keyframes border-pulse { 0%, 100% { border-color: rgba(198, 145, 44, 0.3); box-shadow: 0 0 0 0 rgba(198, 145, 44, 0); } 50% { border-color: rgba(198, 145, 44, 0.7); box-shadow: 0 0 12px 2px rgba(198, 145, 44, 0.15); } }
         .animate-border-pulse { animation: border-pulse 2s ease-in-out infinite; }
+        .scrollbar-hide::-webkit-scrollbar { display: none; }
       `}</style>
 
       <Navbar hidden={!showNavbar} />
@@ -447,14 +432,12 @@ export default function AntovaBuilders() {
 
           <div className={`flex flex-col items-center gap-8 transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-3 sm:p-4 space-y-3">
-              {/* AI label inside the tool */}
               <div className="flex items-center justify-center gap-2 pb-1">
                 <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                 </svg>
                 <span className="text-[#c6912c] text-xs font-semibold tracking-[0.15em] uppercase">AI-Powered Estimator</span>
               </div>
-              {/* Form row */}
               <div className="flex flex-col sm:flex-row items-stretch gap-3">
                 <div className="relative flex-1">
                   <select
@@ -475,7 +458,6 @@ export default function AntovaBuilders() {
                   Reveal My Investment Range →
                 </Button>
               </div>
-              {/* Trust cues inside the tool */}
               <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/60 text-xs tracking-wide pt-1">
                 <span className="flex items-center gap-1.5">
                   <svg className="w-3.5 h-3.5 text-[#c6912c]/70" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
@@ -499,7 +481,7 @@ export default function AntovaBuilders() {
       {/* ━━━ TRUST STRIP ━━━ */}
       <div className="bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-0 py-10 md:py-14 border-b border-black/[0.06]">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-6 md:gap-0 py-8 md:py-10 border-b border-black/[0.06]">
             <div className="flex flex-col items-center justify-center gap-2">
               <div className="flex items-center gap-2">
                 <GoogleIcon />
@@ -529,7 +511,7 @@ export default function AntovaBuilders() {
       </div>
 
       {/* ━━━ SCHEDULING BANNER ━━━ */}
-      <section className="py-12 lg:py-16 bg-white">
+      <section className="py-10 lg:py-12 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="relative flex flex-col sm:flex-row sm:items-stretch gap-0 bg-white border border-black/[0.06] rounded-2xl overflow-hidden">
             <div className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-[#c6912c] via-[#c6912c]/60 to-transparent" />
@@ -564,27 +546,27 @@ export default function AntovaBuilders() {
       </section>
 
       {/* ━━━ PROBLEM → SOLUTION ━━━ */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-16 lg:py-20 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+          <div className="max-w-3xl mx-auto text-center mb-10 lg:mb-14">
             <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Why homeowners hesitate</p>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-6 tracking-tight leading-tight">Building a home shouldn't feel like a gamble.</h2>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black mb-5 tracking-tight leading-tight">Building a home shouldn't feel like a gamble.</h2>
             <p className="text-black/50 text-lg md:text-xl leading-relaxed">Most homeowners delay their dream project because they've heard the horror stories — budgets that double, timelines that slip, contractors who disappear. We built Antova to eliminate every one of those fears.</p>
           </div>
           <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-              <h3 className="text-xl font-bold text-black mb-3">No investment surprises</h3>
+              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+              <h3 className="text-xl font-bold text-black mb-2">No investment surprises</h3>
               <p className="text-black/50 text-base leading-relaxed">Our AI estimator gives you a realistic investment range before you commit to anything. No hidden fees, no scope creep, no uncomfortable conversations later.</p>
             </div>
             <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
-              <h3 className="text-xl font-bold text-black mb-3">On time, every time</h3>
+              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
+              <h3 className="text-xl font-bold text-black mb-2">On time, every time</h3>
               <p className="text-black/50 text-base leading-relaxed">12 years and 150+ projects have taught us how to plan realistically and deliver on schedule. You'll know the timeline upfront — and we'll stick to it.</p>
             </div>
             <div className="text-center">
-              <div className="w-14 h-14 mx-auto mb-5 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg></div>
-              <h3 className="text-xl font-bold text-black mb-3">Craftsmanship guaranteed</h3>
+              <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-[#c6912c]/10 flex items-center justify-center"><svg className="w-7 h-7 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={1.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg></div>
+              <h3 className="text-xl font-bold text-black mb-2">Craftsmanship guaranteed</h3>
               <p className="text-black/50 text-base leading-relaxed">98% client satisfaction across every project we've ever built. We don't disappear after the contract — we're with you from first sketch to final walkthrough.</p>
             </div>
           </div>
@@ -592,30 +574,30 @@ export default function AntovaBuilders() {
       </section>
 
       {/* ━━━ HOW IT WORKS ━━━ */}
-      <section className="py-20 lg:py-28 bg-[#fafafa] border-y border-black/[0.06]">
+      <section className="py-16 lg:py-20 bg-[#fafafa] border-y border-black/[0.06]">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mx-auto text-center mb-16 lg:mb-20">
+          <div className="max-w-3xl mx-auto text-center mb-10 lg:mb-14">
             <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">How it works</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">Three steps to your dream home.</h2>
           </div>
           <div className="grid md:grid-cols-3 gap-8 lg:gap-16 max-w-5xl mx-auto">
             <div className="text-center">
-              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">01</div>
-              <h3 className="text-xl font-bold text-black mb-3">See your investment range</h3>
+              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-3 tracking-tight">01</div>
+              <h3 className="text-xl font-bold text-black mb-2">See your investment range</h3>
               <p className="text-black/50 text-base leading-relaxed">Select your project type and get a realistic cost range in 60 seconds. No email, no obligation — just clarity.</p>
             </div>
             <div className="text-center">
-              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">02</div>
-              <h3 className="text-xl font-bold text-black mb-3">Meet your project team</h3>
+              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-3 tracking-tight">02</div>
+              <h3 className="text-xl font-bold text-black mb-2">Meet your project team</h3>
               <p className="text-black/50 text-base leading-relaxed">Book a free design consultation. We'll walk through your vision, refine the scope, and create a detailed plan tailored to your goals.</p>
             </div>
             <div className="text-center">
-              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-4 tracking-tight">03</div>
-              <h3 className="text-xl font-bold text-black mb-3">Build with confidence</h3>
+              <div className="text-[#c6912c] text-5xl lg:text-6xl font-bold mb-3 tracking-tight">03</div>
+              <h3 className="text-xl font-bold text-black mb-2">Build with confidence</h3>
               <p className="text-black/50 text-base leading-relaxed">Construction begins with a fixed timeline and transparent pricing. You'll have full visibility at every stage — from foundation to final walkthrough.</p>
             </div>
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-14 lg:mt-20">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 lg:mt-16">
             <Button size="lg" className="w-full sm:w-auto sm:min-w-[240px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
               onClick={() => { const param = selectedProjectType ? `?type=${selectedProjectType}` : ""; router.push(`/cost-estimator${param}`) }}>
               Start with Step 1 →
@@ -628,9 +610,9 @@ export default function AntovaBuilders() {
       </section>
 
       {/* ━━━ SERVICE LANES ━━━ */}
-      <section id="services" ref={serviceCardsRef} className="py-16 lg:py-24 bg-white">
+      <section id="services" ref={serviceCardsRef} className="py-14 lg:py-18 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mb-12 lg:mb-16">
+          <div className="max-w-3xl mb-10 lg:mb-12">
             <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Our services</p>
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">Choose your path.</h2>
           </div>
@@ -640,21 +622,52 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
+      {/* ━━━ PROJECT GALLERY ━━━ */}
+      <section className="py-14 lg:py-18 bg-[#f5f5f0]">
+        <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 mb-10 lg:mb-12">
+            <div>
+              <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Recent projects</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">Craftsmanship you can see.</h2>
+            </div>
+            <Link href="/projects" className="inline-flex items-center gap-2 text-black/50 hover:text-black text-sm font-medium transition-colors group">
+              View all projects
+              <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+            </Link>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
+            {PROJECT_GALLERY.map((project) => (
+              <Link key={project.title} href={project.href}>
+                <div className="group relative overflow-hidden rounded-xl cursor-pointer aspect-[3/4]">
+                  <Image src={project.image} alt={project.title} fill sizes="(max-width: 768px) 50vw, 25vw" className="object-cover object-center transition-transform duration-700 group-hover:scale-105" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-80 group-hover:opacity-90 transition-opacity duration-300" />
+                  <div className="absolute bottom-0 left-0 right-0 p-4 md:p-5">
+                    <span className="text-[#c6912c] text-xs font-medium tracking-[0.15em] uppercase">{project.type}</span>
+                    <h3 className="text-white font-medium text-sm md:text-base mt-1">{project.title}</h3>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ━━━ TESTIMONIALS ━━━ */}
-      <section ref={testimonialsRef} className={`py-24 lg:py-32 ${bottomBgColor} transition-colors duration-300 ease-in-out relative overflow-hidden`}>
+      <section ref={testimonialsRef} className={`py-16 lg:py-20 ${bottomBgColor} transition-colors duration-300 ease-in-out relative overflow-hidden`}>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
-          <div className="max-w-3xl mb-16 lg:mb-20">
+          <div className="max-w-3xl mb-10 lg:mb-14">
             <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Testimonials</p>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">Clients who built without compromise.</h2>
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 tracking-tight">Clients who built without compromise.</h2>
             <p className="text-white/60 text-lg md:text-xl leading-relaxed">Real projects, real results — from homeowners who trusted Antova with their vision.</p>
           </div>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
             {TESTIMONIALS.map((testimonial) => (<TestimonialCard key={testimonial.headline} {...testimonial} />))}
           </div>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-16 lg:mt-20">
-            <Button size="lg" className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105" asChild>
-              <Link href="/projects" scroll={true}>View All Projects</Link>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 lg:mt-16">
+            <Button size="lg" className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
+              onClick={() => { const param = selectedProjectType ? `?type=${selectedProjectType}` : ""; router.push(`/cost-estimator${param}`) }}>
+              Reveal My Investment Range →
             </Button>
             <Button size="lg" variant="outline" className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105" asChild>
               <Link href="/contact" scroll={true}>Start Your Project</Link>
@@ -664,10 +677,10 @@ export default function AntovaBuilders() {
       </section>
 
       {/* ━━━ WHY AI ━━━ */}
-      <section className="relative flex items-center overflow-hidden py-16 lg:py-24 bg-[#0a0a0a]">
+      <section className="relative flex items-center overflow-hidden py-14 lg:py-20 bg-[#0a0a0a]">
         <div className="relative z-10 px-6 lg:px-12 xl:px-16 w-full max-w-[1800px] mx-auto">
           <div className="grid lg:grid-cols-2 gap-10 lg:gap-20 items-center">
-            <div className="space-y-6 order-1">
+            <div className="space-y-5 order-1">
               <p className="text-[#c6912c] text-sm font-medium tracking-widest uppercase">Why we're different</p>
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
                 AI precision meets<br /><span className="text-[#c6912c]">master craftsmanship.</span>
@@ -706,55 +719,55 @@ export default function AntovaBuilders() {
       <GoogleReviewsSection />
 
       {/* ━━━ FAQ ━━━ */}
-      <section className="py-20 lg:py-28 bg-white">
+      <section className="py-16 lg:py-20 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="max-w-3xl mx-auto">
-            <div className="text-center mb-14 lg:mb-18">
+            <div className="text-center mb-10 lg:mb-14">
               <p className="text-[#c6912c] font-medium tracking-[0.2em] uppercase text-sm mb-4">Common questions</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-black tracking-tight">Before you decide.</h2>
             </div>
             <div className="divide-y divide-black/[0.08]">
-              <details className="group py-6">
+              <details className="group py-5">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What if my project goes over budget?</h3>
                   <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45"><svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg></span>
                 </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">It won't. Our AI-powered scope analysis identifies cost variables before construction begins — not after. You'll receive a detailed investment range upfront, and we lock in pricing before breaking ground. In 150+ projects, our final costs have stayed within the original estimate.</p>
+                <p className="text-black/50 text-base leading-relaxed mt-3 pr-14">It won't. Our AI-powered scope analysis identifies cost variables before construction begins — not after. You'll receive a detailed investment range upfront, and we lock in pricing before breaking ground. In 150+ projects, our final costs have stayed within the original estimate.</p>
               </details>
-              <details className="group py-6">
+              <details className="group py-5">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="text-lg md:text-xl font-semibold text-black pr-8">How long does a typical project take?</h3>
                   <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45"><svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg></span>
                 </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">Timelines vary by scope — a major renovation typically runs 3–6 months, while a custom home build is 8–14 months. We provide a detailed construction timeline during your free consultation, and we've maintained a 98% on-time delivery rate across all projects.</p>
+                <p className="text-black/50 text-base leading-relaxed mt-3 pr-14">Timelines vary by scope — a major renovation typically runs 3–6 months, while a custom home build is 8–14 months. We provide a detailed construction timeline during your free consultation, and we've maintained a 98% on-time delivery rate across all projects.</p>
               </details>
-              <details className="group py-6">
+              <details className="group py-5">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What's included in the free consultation?</h3>
                   <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45"><svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg></span>
                 </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">A 45-minute session with your project team where we walk through your vision, review your AI estimate in detail, discuss materials and design options, and provide a preliminary timeline. You'll leave with a clear understanding of scope, investment, and next steps — with zero obligation to proceed.</p>
+                <p className="text-black/50 text-base leading-relaxed mt-3 pr-14">A 45-minute session with your project team where we walk through your vision, review your AI estimate in detail, discuss materials and design options, and provide a preliminary timeline. You'll leave with a clear understanding of scope, investment, and next steps — with zero obligation to proceed.</p>
               </details>
-              <details className="group py-6">
+              <details className="group py-5">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="text-lg md:text-xl font-semibold text-black pr-8">Do you only work in the Pacific Northwest?</h3>
                   <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45"><svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg></span>
                 </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">Our primary service area covers the Inland Northwest — Eastern Washington, Northern Idaho, and surrounding regions. For select projects outside this area, we offer consulting and project management services. Use the estimator to start, and we'll discuss logistics during your consultation.</p>
+                <p className="text-black/50 text-base leading-relaxed mt-3 pr-14">Our primary service area covers the Inland Northwest — Eastern Washington, Northern Idaho, and surrounding regions. For select projects outside this area, we offer consulting and project management services. Use the estimator to start, and we'll discuss logistics during your consultation.</p>
               </details>
-              <details className="group py-6">
+              <details className="group py-5">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="text-lg md:text-xl font-semibold text-black pr-8">How accurate is the AI estimate?</h3>
                   <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45"><svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg></span>
                 </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">The online estimator provides a realistic investment range based on project type, size, and regional data. It's designed to give you directional clarity — not a final quote. During your consultation, we refine the numbers with site-specific details, material selections, and your exact specifications to produce a precise, locked-in estimate.</p>
+                <p className="text-black/50 text-base leading-relaxed mt-3 pr-14">The online estimator provides a realistic investment range based on project type, size, and regional data. It's designed to give you directional clarity — not a final quote. During your consultation, we refine the numbers with site-specific details, material selections, and your exact specifications to produce a precise, locked-in estimate.</p>
               </details>
-              <details className="group py-6">
+              <details className="group py-5">
                 <summary className="flex items-center justify-between cursor-pointer list-none">
                   <h3 className="text-lg md:text-xl font-semibold text-black pr-8">What happens after the build is complete?</h3>
                   <span className="text-[#c6912c] flex-shrink-0 transition-transform duration-200 group-open:rotate-45"><svg className="w-6 h-6" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" /></svg></span>
                 </summary>
-                <p className="text-black/50 text-base leading-relaxed mt-4 pr-14">We don't disappear after the final walkthrough. Every Antova project includes a comprehensive warranty and a dedicated point of contact for any post-construction needs. Many of our clients return for additional projects — that's why our satisfaction rate is 98%.</p>
+                <p className="text-black/50 text-base leading-relaxed mt-3 pr-14">We don't disappear after the final walkthrough. Every Antova project includes a comprehensive warranty and a dedicated point of contact for any post-construction needs. Many of our clients return for additional projects — that's why our satisfaction rate is 98%.</p>
               </details>
             </div>
           </div>
@@ -762,7 +775,7 @@ export default function AntovaBuilders() {
       </section>
 
       {/* ━━━ FINAL CTA ━━━ */}
-      <section className="py-24 lg:py-32 bg-[#0a0a0a] relative overflow-hidden">
+      <section className="py-20 lg:py-24 bg-[#0a0a0a] relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
         <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto text-center">
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Ready to build without compromise?</h2>
