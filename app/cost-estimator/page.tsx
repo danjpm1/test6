@@ -817,27 +817,7 @@ function CostEstimatorInner() {
     <div style={{ minHeight: "100vh", display: "flex", flexDirection: "column", fontFamily: "'DM Sans', sans-serif", background: "#fff", position: "relative" }}>
       <style>{globalStyles}</style>
 
-      {showProgress && (
-        <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100 }}>
-          <div style={{ height: 3, background: "#eee" }}><div style={{ height: "100%", background: gold, width: `${progress}%`, transition: "width 0.5s cubic-bezier(0.22, 1, 0.36, 1)" }} /></div>
-          <div style={{ background: "#fff", borderBottom: "1px solid #f0f0f0", padding: "8px 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: 6 }}>
-            {steps.filter(s => s !== "analyzing" && s !== "results").map((s, i, arr) => {
-              const stepIdx = steps.indexOf(s);
-              const done = currentIdx > stepIdx;
-              const active = currentIdx === stepIdx;
-              return (
-                <div key={s} style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <div style={{ width: active ? 28 : 8, height: 8, borderRadius: active ? 4 : "50%", background: done ? gold : active ? gold : "#e5e5e5", transition: "all 0.4s cubic-bezier(0.22, 1, 0.36, 1)", boxShadow: active ? `0 0 8px ${gold}55` : "none" }} />
-                  {i < arr.length - 1 && <div style={{ width: 12, height: 1, background: done ? `${gold}60` : "#e5e5e5", transition: "background 0.4s" }} />}
-                </div>
-              );
-            })}
-            <span style={{ marginLeft: 10, fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#bbb", fontWeight: 500 }}>
-              {Math.min(currentIdx, steps.filter(s => s !== "analyzing" && s !== "results").length)} of {steps.filter(s => s !== "analyzing" && s !== "results").length}
-            </span>
-          </div>
-        </div>
-      )}
+      {showProgress && <div style={{ height: 3, background: "#eee", flexShrink: 0 }}><div style={{ height: "100%", background: gold, width: `${progress}%`, transition: "width 0.5s cubic-bezier(0.22, 1, 0.36, 1)" }} /></div>}
 
       <header style={{ background: dark, borderBottom: "1px solid rgba(255,255,255,0.08)", flexShrink: 0 }}>
         <div style={{ maxWidth: 1200, margin: "0 auto", padding: "16px 24px", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
@@ -865,7 +845,7 @@ function CostEstimatorInner() {
         </div>
       )}
 
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingTop: showProgress ? "clamp(48px, 6vw, 80px)" : undefined, paddingBottom: state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingBottom: state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
         {isTypeSelect && (<><div style={{ position: "absolute", top: "15%", right: "20%", width: 500, height: 500, borderRadius: "50%", background: `${gold}0d`, filter: "blur(120px)", pointerEvents: "none" }} /><div style={{ position: "absolute", bottom: "20%", left: "15%", width: 400, height: 400, borderRadius: "50%", background: `${gold}08`, filter: "blur(100px)", pointerEvents: "none" }} /><div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} /></>)}
 
         <div style={{ width: "100%", maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 10 }}>
