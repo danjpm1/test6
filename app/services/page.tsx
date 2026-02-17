@@ -131,7 +131,7 @@ function FloatingPill() {
   }, [])
   return (
     <Link
-      href="/estimator"
+      href="/cost-estimator"
       className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-6 py-3.5 text-[13px] font-semibold tracking-wide text-white transition-all duration-300 hover:-translate-y-0.5"
       style={{
         background: "#c6912c",
@@ -145,7 +145,7 @@ function FloatingPill() {
         <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60" />
         <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
       </span>
-      Get AI Estimate
+      Get Free Estimate
     </Link>
   )
 }
@@ -246,7 +246,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
 
         <Reveal delay={0.34}>
           <div className="flex flex-wrap items-center gap-3">
-            <Link href={`/estimator?type=${service.estimatorType}`}>
+            <Link href={`/cost-estimator?type=${service.estimatorType}`}>
               <button
                 className="group/btn flex items-center gap-2 px-7 py-3.5 text-[13px] font-semibold text-white tracking-wide transition-all duration-300 hover:-translate-y-px"
                 style={{ background: "#c6912c" }}
@@ -261,7 +261,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
               href={service.learnMoreLink}
               className="px-7 py-3.5 text-[13px] font-semibold text-white tracking-wide border border-white/[0.15] transition-all duration-300 hover:border-[#c6912c] hover:text-[#c6912c]"
             >
-              Learn More
+              See Your Offer
             </Link>
           </div>
         </Reveal>
@@ -314,7 +314,7 @@ export default function ServicesPage() {
 
             <Reveal delay={0.3}>
               <div className="flex flex-wrap items-center gap-4">
-                <Link href="/estimator">
+                <Link href="/cost-estimator">
                   <button
                     className="flex items-center gap-2.5 px-9 py-4 text-[14px] font-semibold text-white tracking-wide transition-all duration-300 hover:-translate-y-0.5"
                     style={{ background: "#c6912c" }}
@@ -440,7 +440,7 @@ export default function ServicesPage() {
               </p>
             </Reveal>
             <Reveal delay={0.26}>
-              <Link href="/estimator">
+              <Link href="/cost-estimator">
                 <button
                   className="flex items-center gap-2.5 px-9 py-4 mx-auto text-[14px] font-semibold text-white tracking-wide transition-all duration-300 hover:-translate-y-0.5"
                   style={{ background: "#c6912c" }}
