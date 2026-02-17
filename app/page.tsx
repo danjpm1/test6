@@ -384,6 +384,10 @@ export default function AntovaBuilders() {
   const [showSubtitleAndButtons, setShowSubtitleAndButtons] = useState(false)
   const [isVideoPlaying, setIsVideoPlaying] = useState(false)
   const [selectedProjectType, setSelectedProjectType] = useState("")
+  const [formName, setFormName] = useState("")
+  const [formEmail, setFormEmail] = useState("")
+  const [formProjectType, setFormProjectType] = useState("")
+  const [formSubmitted, setFormSubmitted] = useState(false)
   const router = useRouter()
   const serviceCardsRef = useRef<HTMLElement>(null)
   const testimonialsRef = useRef<HTMLElement>(null)
@@ -894,10 +898,10 @@ export default function AntovaBuilders() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12 lg:mt-16">
             <Button size="lg" className="w-full sm:w-auto sm:min-w-[264px] h-[48px] bg-[#c6912c] hover:bg-[#a67923] text-white font-medium text-sm tracking-wide rounded-[4px] shadow-lg transition-all hover:scale-105"
               onClick={() => { const param = selectedProjectType ? `?type=${selectedProjectType}` : ""; router.push(`/cost-estimator${param}`) }}>
-              Reveal My Investment Range →
+              See What Your Build Costs →
             </Button>
             <Button size="lg" variant="outline" className="w-full sm:w-auto sm:min-w-[264px] h-[48px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-medium text-sm tracking-wide rounded-[4px] transition-all hover:scale-105" asChild>
-              <Link href="/contact" scroll={true}>Start Your Project</Link>
+              <Link href="/contact" scroll={true}>Talk to Our Team</Link>
             </Button>
           </div>
         </div>
@@ -1001,20 +1005,79 @@ export default function AntovaBuilders() {
         </div>
       </section>
 
-      {/* ━━━ FINAL CTA ━━━ */}
+      {/* ━━━ FINAL CTA — Inline Form ━━━ */}
       <section className="py-20 lg:py-24 bg-[#0a0a0a] relative overflow-hidden">
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#c6912c]/5 rounded-full blur-3xl pointer-events-none" />
-        <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Ready to build without compromise?</h2>
-          <p className="text-white/50 text-lg md:text-xl mb-10 max-w-2xl mx-auto leading-relaxed">See your realistic investment range in 60 seconds — or speak directly with our team about your vision.</p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button size="lg" className="w-full sm:w-auto sm:min-w-[264px] h-[52px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base tracking-wide rounded-[4px] shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-105 hover:shadow-[#c6912c]/40"
-              onClick={() => { const param = selectedProjectType ? `?type=${selectedProjectType}` : ""; router.push(`/cost-estimator${param}`) }}>
-              Reveal My Investment Range →
-            </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto sm:min-w-[264px] h-[52px] border border-white/20 text-white hover:bg-white hover:text-black bg-transparent font-semibold text-base tracking-wide rounded-[4px] transition-all hover:scale-105" asChild>
-              <Link href="/contact">Book a Consultation</Link>
-            </Button>
+        <div className="relative z-10 px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
+          <div className="max-w-3xl mx-auto">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 tracking-tight">Let's build something extraordinary.</h2>
+              <p className="text-white/50 text-lg md:text-xl leading-relaxed">Tell us about your project and we'll get back to you within 24 hours with next steps.</p>
+            </div>
+
+            {formSubmitted ? (
+              <div className="text-center py-10">
+                <div className="w-16 h-16 mx-auto mb-5 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
+                  <svg className="w-8 h-8 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <h3 className="text-2xl font-bold text-white mb-2">We've got your details.</h3>
+                <p className="text-white/50 text-base">Our team will reach out within 24 hours. In the meantime, try the <button onClick={() => router.push('/cost-estimator')} className="text-[#c6912c] hover:underline">AI Estimator</button> for an instant range.</p>
+              </div>
+            ) : (
+              <div className="space-y-4">
+                <div className="grid sm:grid-cols-2 gap-4">
+                  <input
+                    type="text"
+                    placeholder="Your name"
+                    value={formName}
+                    onChange={(e) => setFormName(e.target.value)}
+                    className="w-full px-5 py-4 bg-white/[0.07] border border-white/[0.1] rounded-lg text-white placeholder:text-white/30 text-base focus:outline-none focus:border-[#c6912c]/50 focus:ring-1 focus:ring-[#c6912c]/30 transition-all"
+                  />
+                  <input
+                    type="email"
+                    placeholder="Email address"
+                    value={formEmail}
+                    onChange={(e) => setFormEmail(e.target.value)}
+                    className="w-full px-5 py-4 bg-white/[0.07] border border-white/[0.1] rounded-lg text-white placeholder:text-white/30 text-base focus:outline-none focus:border-[#c6912c]/50 focus:ring-1 focus:ring-[#c6912c]/30 transition-all"
+                  />
+                </div>
+                <select
+                  value={formProjectType}
+                  onChange={(e) => setFormProjectType(e.target.value)}
+                  className="w-full px-5 py-4 bg-white/[0.07] border border-white/[0.1] rounded-lg text-white text-base focus:outline-none focus:border-[#c6912c]/50 focus:ring-1 focus:ring-[#c6912c]/30 transition-all appearance-none cursor-pointer"
+                  style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='rgba(255,255,255,0.3)' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E")`, backgroundRepeat: 'no-repeat', backgroundPosition: 'right 16px center' }}
+                >
+                  <option value="" className="bg-[#1a1a1a]">Select project type</option>
+                  <option value="custom-home" className="bg-[#1a1a1a]">Custom Home Design</option>
+                  <option value="renovation" className="bg-[#1a1a1a]">Renovation</option>
+                  <option value="new-build" className="bg-[#1a1a1a]">New Build</option>
+                  <option value="consulting" className="bg-[#1a1a1a]">Consulting & Engineering</option>
+                  <option value="commercial" className="bg-[#1a1a1a]">Commercial Project</option>
+                  <option value="remote" className="bg-[#1a1a1a]">Remote Build</option>
+                </select>
+                <button
+                  onClick={() => setFormSubmitted(true)}
+                  className="w-full px-8 py-4 bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold text-base rounded-lg transition-all hover:scale-[1.01] hover:shadow-lg hover:shadow-[#c6912c]/20"
+                >
+                  Start My Project →
+                </button>
+                <p className="text-white/25 text-xs text-center pt-1">No commitment required. We'll discuss your vision and provide a detailed scope.</p>
+              </div>
+            )}
+
+            {/* Or use estimator — secondary path */}
+            <div className="mt-8 pt-8 border-t border-white/[0.08] text-center">
+              <p className="text-white/35 text-sm mb-3">Not ready to talk yet?</p>
+              <button
+                onClick={() => { const param = selectedProjectType ? `?type=${selectedProjectType}` : ""; router.push(`/cost-estimator${param}`) }}
+                className="inline-flex items-center gap-2 text-sm font-semibold text-[#c6912c] hover:text-[#d4a245] transition-colors"
+              >
+                Get an instant estimate with our AI tool
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </button>
+            </div>
           </div>
         </div>
       </section>
