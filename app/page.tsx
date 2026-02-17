@@ -511,7 +511,7 @@ export default function AntovaBuilders() {
       </div>
 
       {/* ━━━ OFFERS (Tesla-style) ━━━ */}
-      <section className="py-6 lg:py-8 bg-white">
+      <section className="py-10 lg:py-14 bg-white">
         <div className="px-4 lg:px-8 xl:px-12 w-full max-w-[1800px] mx-auto">
           <div className="grid md:grid-cols-2 gap-4">
             {/* Card 1: Spring Scheduling — urgency + scarcity */}
