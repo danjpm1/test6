@@ -2,199 +2,461 @@
 
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
-import ArrowRight from "@/components/icons/arrow-right"
+import { useEffect, useRef, useState } from "react"
 
-export default function ServicesPage() {
-  const services = [
-    {
-      title: "Renovations",
-      description: "Transform your space with expert craftsmanship. Modern updates to complete makeovers.",
-      price: "$2k-5k credits",
-      exploreText: "Learn More",
-      exploreLink: "/services/renovation",
-      quoteLink: "/contact",
-      image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
-    },
-    {
-      title: "New Builds",
-      description: "Built to last. From concept to completion, we handle every detail.",
-      price: "New home from $250k",
-      exploreText: "Learn More",
-      exploreLink: "/services/new-builds",
-      quoteLink: "/contact",
-      image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
-    },
-    {
-      title: "Engineering & Consulting",
-      description: "Solving structural challenges with our team. Fast, reliable, quality-driven.",
-      price: "Custom pricing available",
-      exploreText: "Learn More",
-      exploreLink: "/services/engineering-consulting",
-      quoteLink: "/contact",
-      image: "/images/engineering-blueprints.png",
-    },
-    {
-      title: "Remote Work",
-      description:
-        "Flexible to relocate to your dream location. Wherever your vision takes you, we'll bring it to life.",
-      price: "Nationwide service",
-      exploreText: "Learn More",
-      exploreLink: "/services/remote-work",
-      quoteLink: "/contact",
-      image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
-    },
-    {
-      title: "Commercial Projects",
-      description: "Large-scale commercial construction. From retail to office buildings, we deliver excellence.",
-      price: "Project-based pricing",
-      exploreText: "Learn More",
-      exploreLink: "/services/commercial-projects",
-      quoteLink: "/contact",
-      image: "/modern-commercial-building-exterior-glass-facade.jpg",
-    },
-    {
-      title: "Signature Custom Design",
-      description: "Bespoke designs tailored to your vision. One-of-a-kind architectural masterpieces.",
-      price: "Premium custom pricing",
-      exploreText: "Learn More",
-      exploreLink: "/services/signature-custom-design",
-      quoteLink: "/contact",
-      image: "/luxury-custom-home-interior-design-modern-architec.jpg",
-    },
-  ]
+/* ─── Scroll-Reveal Hook ─────────────────────────────────────── */
+function useReveal(threshold = 0.15) {
+  const ref = useRef<HTMLDivElement>(null)
+  const [visible, setVisible] = useState(false)
+  useEffect(() => {
+    const el = ref.current
+    if (!el) return
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.unobserve(el) } },
+      { threshold, rootMargin: "0px 0px -40px 0px" }
+    )
+    obs.observe(el)
+    return () => obs.disconnect()
+  }, [threshold])
+  return { ref, visible }
+}
 
-  const phases = [
-    { step: "01", title: "Consultation", desc: "Discuss your vision and requirements" },
-    { step: "02", title: "Design & Planning", desc: "Create detailed plans and estimates" },
-    { step: "03", title: "Build & Deliver", desc: "Execute with precision and care" },
-  ]
+function Reveal({ children, delay = 0, className = "" }: { children: React.ReactNode; delay?: number; className?: string }) {
+  const { ref, visible } = useReveal()
+  return (
+    <div
+      ref={ref}
+      className={className}
+      style={{
+        opacity: visible ? 1 : 0,
+        transform: visible ? "translateY(0)" : "translateY(36px)",
+        transition: `opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${delay}s`,
+      }}
+    >
+      {children}
+    </div>
+  )
+}
+
+/* ─── Service Data ────────────────────────────────────────────── */
+const services = [
+  {
+    number: "01",
+    eyebrow: "FLAGSHIP SERVICE",
+    title: "Signature Custom Design",
+    titleBreak: <>Signature Custom<br className="hidden md:block" /> Design</>,
+    description: "Your vision, architecturally realized. Every element — from foundation engineering to interior finish — is custom-designed and precision-built for your site, your lifestyle, your legacy.",
+    price: "From $280 per square foot",
+    tags: ["Architectural Design", "Smart Home", "Premium Materials", "Energy Efficient"],
+    estimatorType: "custom-home",
+    learnMoreLink: "/services/signature-custom-design",
+    image: "/luxury-custom-home-interior-design-modern-architec.jpg",
+  },
+  {
+    number: "02",
+    eyebrow: "MOST POPULAR",
+    title: "Renovation",
+    titleBreak: <>Renovation</>,
+    description: "Kitchen, bathroom, whole-house, or gut renovation — we transform what you have into what you've always wanted. Minimal disruption, maximum impact.",
+    price: "Starting from $28,000 · $2K–$5K credits available",
+    tags: ["Kitchen & Bath", "Whole House", "Additions", "Structural"],
+    estimatorType: "renovation",
+    learnMoreLink: "/services/renovation",
+    image: "/renovation-human.png",
+  },
+  {
+    number: "03",
+    eyebrow: "NEW CONSTRUCTION",
+    title: "New Builds",
+    titleBreak: <>New Builds</>,
+    description: "New construction on your lot or ours. Site-ready plans, energy-efficient design, and code-compliant builds — from first foundation pour to final inspection.",
+    price: "New homes from $250,000",
+    tags: ["Site-Ready Plans", "Energy Efficient", "Code Compliant", "Your Lot or Ours"],
+    estimatorType: "new-build",
+    learnMoreLink: "/services/new-builds",
+    image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
+  },
+  {
+    number: "04",
+    eyebrow: "COMMERCIAL",
+    title: "Commercial Projects",
+    titleBreak: <>Commercial<br className="hidden md:block" /> Projects</>,
+    description: "Office build-outs, retail spaces, restaurants, and warehouse conversions. ADA-compliant, code-ready, and designed for your business operations from day one.",
+    price: "From $145 per square foot",
+    tags: ["Office", "Retail", "Restaurant", "Warehouse"],
+    estimatorType: "commercial",
+    learnMoreLink: "/services/commercial-projects",
+    image: "/modern-commercial-building-exterior-glass-facade.jpg",
+  },
+  {
+    number: "05",
+    eyebrow: "OFF-GRID SPECIALISTS",
+    title: "Remote & Off-Grid Builds",
+    titleBreak: <>Remote &<br className="hidden md:block" /> Off-Grid Builds</>,
+    description: "Cabins, ADUs, workshops, and fully self-sufficient homes in the most remote locations. We handle access logistics, off-grid systems, and everything between.",
+    price: "From $155 per square foot",
+    tags: ["Cabins", "ADU / Guest House", "Solar & Off-Grid", "Remote Access"],
+    estimatorType: "remote",
+    learnMoreLink: "/services/remote-work",
+    image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
+  },
+  {
+    number: "06",
+    eyebrow: "EXPERT ANALYSIS",
+    title: "Engineering & Consulting",
+    titleBreak: <>Engineering &<br className="hidden md:block" /> Consulting</>,
+    description: "Structural assessments, feasibility studies, permit support, and site analysis. The analytical foundation that makes every other service possible.",
+    price: "From $2,500 per engagement",
+    tags: ["Structural", "Feasibility", "Permits", "Site Analysis"],
+    estimatorType: "consulting",
+    learnMoreLink: "/services/engineering-consulting",
+    image: "/images/engineering-blueprints.png",
+  },
+]
+
+const phases = [
+  { step: "01", title: "AI Estimate", desc: "Get an instant, data-driven cost estimate tailored to your project type, location, and specs. No calls, no waiting." },
+  { step: "02", title: "Design & Plan", desc: "We refine your vision into architectural plans, material selections, and a detailed timeline with weekly milestones." },
+  { step: "03", title: "Precision Build", desc: "Execution with obsessive attention to detail. Real-time progress tracking, quality checkpoints, and on-time delivery." },
+]
+
+/* ─── Floating Estimate Pill ─────────────────────────────────── */
+function FloatingPill() {
+  const [show, setShow] = useState(false)
+  useEffect(() => {
+    const h = () => setShow(window.scrollY > window.innerHeight * 0.7)
+    window.addEventListener("scroll", h, { passive: true })
+    return () => window.removeEventListener("scroll", h)
+  }, [])
+  return (
+    <Link
+      href="/estimator"
+      className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-6 py-3.5 text-[13px] font-semibold tracking-wide text-white transition-all duration-300 hover:-translate-y-0.5"
+      style={{
+        background: "#c6912c",
+        opacity: show ? 1 : 0,
+        transform: show ? "translateY(0)" : "translateY(20px)",
+        pointerEvents: show ? "auto" : "none",
+        boxShadow: "0 8px 32px rgba(198,145,44,0.35)",
+      }}
+    >
+      <span className="relative flex h-2 w-2">
+        <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-white opacity-60" />
+        <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
+      </span>
+      Get AI Estimate
+    </Link>
+  )
+}
+
+/* ─── Scroll Progress ────────────────────────────────────────── */
+function ScrollProgress() {
+  const [pct, setPct] = useState(0)
+  useEffect(() => {
+    const h = () => {
+      const max = document.body.scrollHeight - window.innerHeight
+      setPct(max > 0 ? (window.scrollY / max) * 100 : 0)
+    }
+    window.addEventListener("scroll", h, { passive: true })
+    return () => window.removeEventListener("scroll", h)
+  }, [])
+  return (
+    <div className="fixed top-0 left-0 right-0 z-[101] h-[2px]">
+      <div className="h-full transition-[width] duration-150 ease-linear" style={{ width: `${pct}%`, background: "#c6912c" }} />
+    </div>
+  )
+}
+
+/* ─── Service Section ────────────────────────────────────────── */
+function ServiceSection({ service, index }: { service: typeof services[0]; index: number }) {
+  const isEven = index % 2 === 1
 
   return (
-    <div className="w-full overflow-x-hidden bg-black">
+    <section className="grid grid-cols-1 md:grid-cols-2 min-h-screen relative overflow-hidden">
+      {/* Image */}
+      <div className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group ${isEven ? "md:order-2" : ""}`}>
+        <img
+          src={service.image}
+          alt={service.title}
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-[8s] ease-out group-hover:scale-105"
+          loading="lazy"
+        />
+        {/* Desktop: gradient fades toward content side */}
+        <div
+          className="absolute inset-0 hidden md:block"
+          style={{
+            background: isEven
+              ? "linear-gradient(-90deg, transparent 40%, #0a0a0a 100%)"
+              : "linear-gradient(90deg, transparent 40%, #0a0a0a 100%)",
+          }}
+        />
+        {/* Mobile: bottom fade */}
+        <div className="absolute inset-0 md:hidden bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
+      </div>
+
+      {/* Content */}
+      <div className={`relative flex flex-col justify-center bg-[#0a0a0a] px-8 py-16 md:px-12 lg:px-20 xl:px-24 ${isEven ? "md:order-1" : ""}`}>
+        {/* Background number */}
+        <span
+          className="absolute top-[15%] right-[8%] text-[100px] md:text-[150px] font-bold leading-none pointer-events-none select-none"
+          style={{ fontFamily: "'Playfair Display', serif", color: "rgba(255,255,255,0.025)" }}
+        >
+          {service.number}
+        </span>
+
+        <Reveal>
+          <div className="flex items-center gap-3 mb-5">
+            <span className="w-6 h-[1px] bg-[#c6912c]" />
+            <span className="text-[11px] font-semibold tracking-[0.18em] text-[#c6912c]">{service.eyebrow}</span>
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.1}>
+          <h2
+            className="text-3xl md:text-4xl lg:text-[48px] font-bold text-white mb-4 leading-[1.08]"
+            style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
+          >
+            {service.titleBreak}
+          </h2>
+        </Reveal>
+
+        <Reveal delay={0.18}>
+          <p className="text-[15px] leading-[1.7] text-white/40 max-w-[440px] mb-3 font-light">
+            {service.description}
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.22}>
+          <div className="flex items-center gap-2 mb-7 text-[13px] font-medium text-[#c6912c] tracking-wide">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#c6912c] flex-shrink-0" />
+            {service.price}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.28}>
+          <div className="flex flex-wrap gap-2 mb-9">
+            {service.tags.map((tag) => (
+              <span key={tag} className="text-[11px] font-medium tracking-wide text-white/40 px-3.5 py-1.5 border border-white/[0.08]">
+                {tag}
+              </span>
+            ))}
+          </div>
+        </Reveal>
+
+        <Reveal delay={0.34}>
+          <div className="flex flex-wrap items-center gap-3">
+            <Link href={`/estimator?type=${service.estimatorType}`}>
+              <button
+                className="group/btn flex items-center gap-2 px-7 py-3.5 text-[13px] font-semibold text-white tracking-wide transition-all duration-300 hover:-translate-y-px"
+                style={{ background: "#c6912c" }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = "#d4a03a"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(198,145,44,0.35)"; }}
+                onMouseLeave={(e) => { e.currentTarget.style.background = "#c6912c"; e.currentTarget.style.boxShadow = "none"; }}
+              >
+                Get Estimate
+                <svg className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-0.5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+              </button>
+            </Link>
+            <Link
+              href={service.learnMoreLink}
+              className="px-7 py-3.5 text-[13px] font-semibold text-white tracking-wide border border-white/[0.15] transition-all duration-300 hover:border-[#c6912c] hover:text-[#c6912c]"
+            >
+              Learn More
+            </Link>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  )
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PAGE
+═══════════════════════════════════════════════════════════════ */
+export default function ServicesPage() {
+  return (
+    <div className="w-full overflow-x-hidden bg-[#0a0a0a]">
+      <ScrollProgress />
       <Navbar />
+      <FloatingPill />
 
-      <main className="pt-20 bg-black min-h-screen">
-        {/* Hero Section */}
-        <section className="py-20">
-          <div className="px-8 lg:px-12 xl:px-20">
-            <h1 className="text-4xl md:text-6xl font-bold text-white mb-4">Our Services</h1>
-            <p className="text-lg md:text-xl text-white/70">
-              Comprehensive solutions for modern living, powered by precision and innovation.
-            </p>
+      <main className="bg-[#0a0a0a] min-h-screen">
+
+        {/* ─── HERO ─── Full-viewport cinematic opener ─── */}
+        <section className="relative min-h-screen flex flex-col justify-end overflow-hidden">
+          <div className="absolute inset-0">
+            <img src="/luxury-custom-home-interior-design-modern-architec.jpg" alt="Luxury custom home" className="w-full h-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/60 to-[#0a0a0a]" />
           </div>
-        </section>
 
-        {/* Services Cards - Updated to Porsche-style immersive cards */}
-        <section className="pb-24">
-          <div className="px-4 md:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 gap-4 md:gap-6">
-              {services.map((service, index) => (
-                <div key={index} className="group relative overflow-hidden rounded-lg cursor-pointer">
-                  <div className="relative h-[60vh] md:h-[70vh] overflow-hidden">
-                    <img
-                      src={service.image || "/placeholder.svg"}
-                      alt={service.title}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    {/* Subtle gradient only at bottom */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
+          <div className="relative z-10 px-8 lg:px-12 xl:px-20 pb-16 md:pb-24 max-w-[900px]">
+            <Reveal>
+              <div className="flex items-center gap-3 mb-6">
+                <span className="w-10 h-[1px] bg-[#c6912c]" />
+                <span className="text-[11px] font-semibold tracking-[0.2em] text-[#c6912c]">PRECISION CONSTRUCTION</span>
+              </div>
+            </Reveal>
 
-                    {/* Title centered at top like Porsche */}
-                    <div className="absolute top-8 md:top-12 left-0 right-0 text-center">
-                      <Link href={service.exploreLink}>
-                        <h3 className="text-xl md:text-2xl lg:text-3xl font-extrabold text-white tracking-[0.15em] uppercase hover:text-[#c6912c] transition-colors cursor-pointer">
-                          {service.title}
-                        </h3>
-                      </Link>
-                    </div>
+            <Reveal delay={0.12}>
+              <h1
+                className="text-4xl md:text-6xl lg:text-7xl xl:text-[80px] font-bold text-white leading-[1.05] mb-5"
+                style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
+              >
+                We don&apos;t build houses.<br />We engineer <em className="italic text-[#c6912c]">legacies.</em>
+              </h1>
+            </Reveal>
 
-                    {/* Bottom bar with horizontal layout like Porsche */}
-                    <div className="absolute bottom-0 left-0 right-0 px-5 py-5 md:px-8 md:py-6">
-                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-4">
-                        {/* Left side: Badge only */}
-                        <div className="flex items-center gap-4">
-                          <span className="inline-block w-fit px-3 py-1 text-xs md:text-sm font-medium text-white border border-white/40 rounded">
-                            {service.price}
-                          </span>
-                        </div>
-
-                        {/* Right side: CTAs with arrow icon like Porsche */}
-                        <div className="flex items-center gap-4">
-                          <Link href={service.exploreLink} scroll={true}>
-                            <Button
-                              size="sm"
-                              className="bg-white text-black hover:bg-white/90 font-medium text-sm px-5 py-2.5 rounded-sm transition-all"
-                            >
-                              {service.exploreText}
-                            </Button>
-                          </Link>
-                          <Link
-                            href={service.quoteLink}
-                            className="flex items-center gap-2 text-white text-sm font-light hover:text-primary transition-colors"
-                          >
-                            Get Quote
-                            <ArrowRight className="w-5 h-5" />
-                          </Link>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Process Section - Updated colors for dark theme */}
-        <section className="py-10 md:py-20 bg-zinc-900">
-          <div className="container mx-auto px-4 md:px-6">
-            <div className="max-w-4xl mx-auto text-center mb-8 md:mb-16">
-              <h2 className="text-2xl md:text-5xl font-bold text-white mb-3 md:mb-6">Our Process</h2>
-              <p className="text-sm md:text-xl text-white/70">
-                From concept to completion, we ensure every step is executed with precision.
+            <Reveal delay={0.22}>
+              <p className="text-base md:text-lg text-white/40 max-w-[560px] leading-relaxed mb-10 font-light">
+                Six disciplines. One team. From architectural vision through final walkthrough — precision construction for the Inland Northwest&apos;s most discerning clients.
               </p>
-            </div>
+            </Reveal>
 
-            <div className="grid grid-cols-3 gap-3 md:gap-8 max-w-5xl mx-auto">
-              {phases.map((phase, index) => (
-                <div key={index} className="text-center flex flex-col">
-                  <div className="text-3xl md:text-6xl font-bold text-[#c6912c]/20 mb-1 md:mb-4">{phase.step}</div>
-                  <h3 className="text-sm md:text-2xl font-bold text-white mb-1 md:mb-3 min-h-[2.5rem] md:min-h-0 flex items-center justify-center">
+            <Reveal delay={0.3}>
+              <div className="flex flex-wrap items-center gap-4">
+                <Link href="/estimator">
+                  <button
+                    className="flex items-center gap-2.5 px-9 py-4 text-[14px] font-semibold text-white tracking-wide transition-all duration-300 hover:-translate-y-0.5"
+                    style={{ background: "#c6912c" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.background = "#d4a03a"; e.currentTarget.style.boxShadow = "0 6px 28px rgba(198,145,44,0.4)"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.background = "#c6912c"; e.currentTarget.style.boxShadow = "none"; }}
+                  >
+                    Get Your AI Estimate
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                  </button>
+                </Link>
+                <a
+                  href="#services"
+                  className="px-8 py-[15px] text-[14px] font-medium text-white tracking-wide border border-white/20 transition-all duration-300 hover:border-[#c6912c] hover:text-[#c6912c]"
+                >
+                  Explore Services
+                </a>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.4}>
+              <div className="flex flex-wrap gap-10 md:gap-16 mt-14 pt-8 border-t border-white/[0.08]">
+                {[
+                  { value: "150+", label: "PROJECTS COMPLETED" },
+                  { value: "$48M", label: "TOTAL PROJECT VALUE" },
+                  { value: "98%", label: "ON-TIME DELIVERY" },
+                ].map((s) => (
+                  <div key={s.label}>
+                    <div className="text-3xl md:text-[40px] font-bold text-[#c6912c]" style={{ fontFamily: "'Playfair Display', serif" }}>{s.value}</div>
+                    <div className="text-[11px] text-white/40 tracking-[0.06em] mt-1">{s.label}</div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+
+        {/* ─── SERVICES ─── Alternating cinematic sections ─── */}
+        <div id="services">
+          {services.map((service, i) => (
+            <ServiceSection key={service.number} service={service} index={i} />
+          ))}
+        </div>
+
+        {/* ─── PROCESS ─── Editorial treatment ─── */}
+        <section className="relative py-24 md:py-36 overflow-hidden" style={{ background: "#050505" }}>
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full pointer-events-none"
+            style={{ background: "radial-gradient(circle, rgba(198,145,44,0.05) 0%, transparent 70%)" }}
+          />
+
+          <div className="relative z-10 text-center px-6 mb-16">
+            <Reveal>
+              <div className="text-[11px] font-semibold tracking-[0.2em] text-[#c6912c] mb-5">HOW WE WORK</div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <h2
+                className="text-3xl md:text-5xl font-bold text-white mb-4"
+                style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
+              >
+                From Vision to Reality
+              </h2>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <p className="text-[15px] text-white/40 font-light">
+                AI-powered estimation. Human-powered craft. Every project follows our precision framework.
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="relative max-w-[960px] mx-auto px-6">
+            <div className="hidden md:block absolute top-9 left-[18%] right-[18%] h-[1px]" style={{ background: "linear-gradient(90deg, transparent, #c6912c, transparent)", opacity: 0.15 }} />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-10">
+              {phases.map((phase, i) => (
+                <Reveal key={phase.step} delay={i * 0.12} className="text-center relative z-10">
+                  <div
+                    className="w-[72px] h-[72px] mx-auto mb-5 flex items-center justify-center text-[28px] font-bold text-[#c6912c] rounded-full border border-[#c6912c]/20"
+                    style={{ fontFamily: "'Playfair Display', serif", background: "#050505" }}
+                  >
+                    {phase.step}
+                  </div>
+                  <h3
+                    className="text-xl font-semibold text-white mb-2"
+                    style={{ fontFamily: "'Playfair Display', serif" }}
+                  >
                     {phase.title}
                   </h3>
-                  <div className="w-8 md:w-12 h-0.5 md:h-1 bg-[#c6912c] mx-auto mb-1 md:mb-4" />
-                  <p className="text-[10px] md:text-base text-white/70 leading-tight">{phase.desc}</p>
-                </div>
+                  <p className="text-[13px] text-white/40 leading-relaxed font-light max-w-[280px] mx-auto">
+                    {phase.desc}
+                  </p>
+                </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        {/* CTA Section - Updated colors for dark theme */}
-        <section className="py-20 bg-black">
-          <div className="container mx-auto px-6 text-center">
-            {/* Two CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-12">
-              <Link href="/estimator">
-                <Button className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all">
-                  AI Estimator
-                </Button>
-              </Link>
-              <Link href="/contact">
-                <Button className="h-11 min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all">
-                  Contact Us
-                </Button>
-              </Link>
-            </div>
+        {/* ─── FINAL CTA ─── Cinematic closer ─── */}
+        <section className="relative min-h-[60vh] flex items-center justify-center overflow-hidden">
+          <div className="absolute inset-0">
+            <img
+              src="/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg"
+              alt="Modern architecture"
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute inset-0 bg-black/85" />
+          </div>
 
-            <h2 className="text-3xl md:text-5xl font-bold text-white mb-6">
-              Let's Build Something <span className="text-[#c6912c]">Amazing</span>
-            </h2>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Ready to start your project? Get in touch with our team today.
-            </p>
+          <div className="relative z-10 text-center px-6 py-20">
+            <Reveal>
+              <div className="text-[11px] font-semibold tracking-[0.2em] text-[#c6912c] mb-5">START YOUR PROJECT</div>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <h2
+                className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-4"
+                style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
+              >
+                Your Vision, <em className="italic text-[#c6912c]">Engineered</em>
+              </h2>
+            </Reveal>
+            <Reveal delay={0.18}>
+              <p className="text-[15px] text-white/40 font-light mb-10">
+                Get a free AI-powered estimate in 60 seconds. No commitment, no sales calls.
+              </p>
+            </Reveal>
+            <Reveal delay={0.26}>
+              <Link href="/estimator">
+                <button
+                  className="flex items-center gap-2.5 px-9 py-4 mx-auto text-[14px] font-semibold text-white tracking-wide transition-all duration-300 hover:-translate-y-0.5"
+                  style={{ background: "#c6912c" }}
+                  onMouseEnter={(e) => { e.currentTarget.style.background = "#d4a03a"; e.currentTarget.style.boxShadow = "0 6px 28px rgba(198,145,44,0.4)"; }}
+                  onMouseLeave={(e) => { e.currentTarget.style.background = "#c6912c"; e.currentTarget.style.boxShadow = "none"; }}
+                >
+                  Get Your Free Estimate
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7" /></svg>
+                </button>
+              </Link>
+            </Reveal>
+            <Reveal delay={0.34}>
+              <p className="text-[13px] text-white/20 mt-5 tracking-wide">
+                Or call us: <a href="tel:+15095551234" className="text-white/40 hover:text-[#c6912c] transition-colors">(509) 555-1234</a>
+              </p>
+            </Reveal>
           </div>
         </section>
 
