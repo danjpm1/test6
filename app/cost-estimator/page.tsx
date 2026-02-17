@@ -834,16 +834,7 @@ function CostEstimatorInner() {
         </div>
       )}
 
-      {showBanners && state.projectType && (
-        <div style={{ borderBottom: "1px solid #f0f0f0", padding: "8px 24px", textAlign: "center", background: "#fff", flexShrink: 0 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 20, fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#aaa", letterSpacing: "0.03em" }}>
-            {state.projectType === "custom-home" && <><span>◆ Premium Materials</span><span>◆ Expert Craftsmanship</span><span>◆ Smart Home Integration</span></>}
-            {state.projectType === "new-build" && <><span>◆ Site-Ready Plans</span><span>◆ Energy Efficient</span><span>◆ Code Compliant</span></>}
-            {state.projectType === "renovation" && <><span>◆ Minimal Disruption</span><span>◆ Structural Integrity</span><span>◆ Modern Finishes</span></>}
-            {state.projectType === "consulting" && <><span>◆ Licensed Engineers</span><span>◆ Permit Support</span><span>◆ Fast Turnaround</span></>}
-          </div>
-        </div>
-      )}
+
 
       <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingBottom: state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
         {isTypeSelect && (<><div style={{ position: "absolute", top: "15%", right: "20%", width: 500, height: 500, borderRadius: "50%", background: `${gold}0d`, filter: "blur(120px)", pointerEvents: "none" }} /><div style={{ position: "absolute", bottom: "20%", left: "15%", width: 400, height: 400, borderRadius: "50%", background: `${gold}08`, filter: "blur(100px)", pointerEvents: "none" }} /><div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} /></>)}
