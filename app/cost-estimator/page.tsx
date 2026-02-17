@@ -80,10 +80,10 @@ function getLocationName(zip: string) {
 /* ─── Step Orders — consulting now has 4 input steps + ZIP ───── */
 
 const STEP_ORDERS: Record<string, string[]> = {
-  "custom-home": ["type-select", "sqft", "home-style", "exterior", "interior", "home-features", "zip", "analyzing", "results"],
-  "new-build": ["type-select", "sqft", "build-details", "exterior", "interior", "zip", "analyzing", "results"],
-  "renovation": ["type-select", "reno-scope", "reno-details", "reno-features", "zip", "analyzing", "results"],
-  "consulting": ["type-select", "consult-type", "consult-details", "consult-project", "zip", "analyzing", "results"],
+  "custom-home": ["type-select", "sqft", "home-style", "exterior", "interior-finish", "interior-rooms", "home-features", "zip", "analyzing", "results"],
+  "new-build": ["type-select", "sqft", "build-details", "exterior", "interior-finish", "interior-rooms", "zip", "analyzing", "results"],
+  "renovation": ["type-select", "reno-scope", "reno-area", "reno-condition", "reno-finish", "reno-features", "zip", "analyzing", "results"],
+  "consulting": ["type-select", "consult-type", "consult-details", "consult-property", "consult-value", "zip", "analyzing", "results"],
 };
 
 /* ─── Calculations ─────────────────────────────────────────────── */
@@ -190,15 +190,15 @@ function DarkButton({ children, onClick, disabled, className = "" }: { children:
 }
 
 function NavButtons({ onBack, onNext, nextDisabled, nextLabel = "Continue" }: { onBack: () => void; onNext: () => void; nextDisabled?: boolean; nextLabel?: string }) {
-  return (<div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 48 }}>
+  return (<div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 32 }}>
     <OutlineButton onClick={onBack}>Back</OutlineButton>
     <DarkButton onClick={onNext} disabled={nextDisabled}>{nextLabel}</DarkButton>
   </div>);
 }
 
 function StepHeadline({ children, subtitle }: { children: React.ReactNode; subtitle?: string }) {
-  return (<div style={{ marginBottom: 48 }}><h1 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(28px, 5.5vw, 64px)", color: dark, lineHeight: 1.1, margin: 0, letterSpacing: "-0.02em" }}>{children}</h1>
-    {subtitle && <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, color: "#999", marginTop: 12, fontWeight: 400 }}>{subtitle}</p>}</div>);
+  return (<div style={{ marginBottom: 32 }}><h1 style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(24px, 4vw, 44px)", color: dark, lineHeight: 1.1, margin: 0, letterSpacing: "-0.02em" }}>{children}</h1>
+    {subtitle && <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 15, color: "#999", marginTop: 10, fontWeight: 400 }}>{subtitle}</p>}</div>);
 }
 
 function TypeBadge({ projectType }: { projectType: string }) {
@@ -268,7 +268,6 @@ function ZipCodeStep({ zipCode, onZipChange, onBack, onSubmit, projectType }: { 
   const subtitles: Record<string, string> = { "custom-home": "Last step — your location determines final pricing for your custom home.", "new-build": "Last step — your build location determines the final pricing tier.", "renovation": "Last step — we'll tailor renovation costs to your local market.", "consulting": "Last step — location affects site visit and travel costs for your engagement." };
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType={projectType} />
       <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Where is your project?"}</StepHeadline>
       <input type="text" value={zipCode} onChange={(e) => onZipChange(e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder="Enter ZIP code" autoFocus
         onKeyDown={(e) => { if (e.key === "Enter" && zipCode.length === 5) onSubmit(); }}
@@ -305,7 +304,6 @@ function SqftStep({ sqft, onSqftChange, onBack, onNext, projectType }: { sqft: n
   const pct = ((sqft - min) / (max - min)) * 100;
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType={projectType} />
       <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Total square footage?"}</StepHeadline>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(16px, 4vw, 40px)" }}>
         <button onClick={() => onSqftChange(Math.max(min, sqft - step))} style={{ width: 64, height: 64, background: dark, color: "#fff", border: "none", fontSize: 28, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center" }} onMouseEnter={(e) => { e.currentTarget.style.background = gold; }} onMouseLeave={(e) => { e.currentTarget.style.background = dark; }}>−</button>
@@ -334,7 +332,7 @@ function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext, projec
   ];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType={projectType} /><StepHeadline subtitle={isCustom ? "Exterior materials define your home's character and curb appeal." : undefined}>{headlines[projectType] ?? "Exterior finish quality"}</StepHeadline>
+      <StepHeadline subtitle={isCustom ? "Exterior materials define your home's character and curb appeal." : undefined}>{headlines[projectType] ?? "Exterior finish quality"}</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "clamp(8px, 2vw, 20px)" }}>
         {opts.map((o) => { const a = exteriorQuality === o.id; return (
           <button key={o.id} onClick={() => onQualityChange(o.id)} style={{ padding: "32px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", position: "relative", overflow: "hidden", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
@@ -350,8 +348,7 @@ function ExteriorStep({ exteriorQuality, onQualityChange, onBack, onNext, projec
   );
 }
 
-function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, onBathroomsChange, onFinishChange, onBack, onNext, projectType }: { bedrooms: number; bathrooms: number; interiorFinish: string; onBedroomsChange: (b: number) => void; onBathroomsChange: (b: number) => void; onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void; projectType: string }) {
-  const headlines: Record<string, string> = { "custom-home": "Design the interior", "new-build": "Interior specs for your new build" };
+function InteriorFinishStep({ interiorFinish, onFinishChange, onBack, onNext, projectType }: { interiorFinish: string; onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void; projectType: string }) {
   const isCustom = projectType === "custom-home";
   const finishOpts = [
     { id: "basic", label: "Essential", desc: isCustom ? "Builder-grade" : "Standard", mult: "1.0×" },
@@ -359,25 +356,27 @@ function InteriorStep({ bedrooms, bathrooms, interiorFinish, onBedroomsChange, o
     { id: "premium", label: "Premium", desc: isCustom ? "Designer selections" : "High-end", mult: "1.35×" },
     { id: "luxury", label: "Luxury", desc: isCustom ? "Bespoke finishes" : "Top tier", mult: "1.65×" },
   ];
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
+      <StepHeadline subtitle="Material quality and fixture grade that define the feel of every room.">Choose your finish level</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+        {finishOpts.map((o) => { const a = interiorFinish === o.id; return (
+          <SelectCard key={o.id} active={a} onClick={() => onFinishChange(o.id)}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 16 }}>{o.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
+          </SelectCard>); })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
+
+function InteriorRoomsStep({ bedrooms, bathrooms, onBedroomsChange, onBathroomsChange, onBack, onNext, projectType }: { bedrooms: number; bathrooms: number; onBedroomsChange: (b: number) => void; onBathroomsChange: (b: number) => void; onBack: () => void; onNext: () => void; projectType: string }) {
   const counterStyle: React.CSSProperties = { width: 44, height: 44, background: "#fff", border: `2px solid #e5e5e5`, color: dark, fontSize: 22, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center" };
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
-      <TypeBadge projectType={projectType} /><StepHeadline subtitle={isCustom ? "Select your finish level and room layout." : undefined}>{headlines[projectType] ?? "Interior details"}</StepHeadline>
-
-      {/* Finish level cards */}
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Finish level</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 36 }}>
-        {finishOpts.map((o) => { const a = interiorFinish === o.id; return (
-          <button key={o.id} onClick={() => onFinishChange(o.id)} style={{ padding: "20px 8px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
-            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
-            {a && <div style={{ position: "absolute", top: 6, right: 6, width: 16, height: 16, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15 }}>{o.label}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div>
-          </button>); })}
-      </div>
-
-      {/* +/- counters for beds and baths */}
+      <StepHeadline subtitle="Room count affects plumbing, electrical, and overall square footage allocation.">How many rooms?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 24 }}>
         {[{ label: "Bedrooms", value: bedrooms, onChange: onBedroomsChange, min: 1, max: 8 }, { label: "Bathrooms", value: bathrooms, onChange: onBathroomsChange, min: 1, max: 8 }].map((c) => (
           <div key={c.label} style={{ textAlign: "left" }}>
@@ -400,7 +399,7 @@ function BuildDetailsStep({ stories, garageSpaces, onStoriesChange, onGarageChan
   const storyOpts = [{ id: 1, label: "Single Story", desc: "Ranch style" }, { id: 2, label: "Two Story", desc: "Most common" }, { id: 3, label: "Three Story", desc: "Maximum space" }];
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
-      <TypeBadge projectType="new-build" /><StepHeadline subtitle="These options affect structural costs and overall footprint.">Configure your new build</StepHeadline>
+      <StepHeadline subtitle="These options affect structural costs and overall footprint.">Configure your new build</StepHeadline>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Number of stories</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 36 }}>{storyOpts.map((o) => { const a = stories === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onStoriesChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 20 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div></SelectCard>); })}</div>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Garage spaces</p>
@@ -416,7 +415,7 @@ function RenoScopeStep({ renoScope, onScopeChange, onBack, onNext }: { renoScope
   const scopes = [{ id: "kitchen", label: "Kitchen", desc: "Full kitchen remodel" }, { id: "bathroom", label: "Bathroom", desc: "Complete bath renovation" }, { id: "addition", label: "Addition", desc: "Expand your home" }, { id: "full-gut", label: "Full Gut Reno", desc: "Strip to studs and rebuild" }, { id: "whole-house", label: "Whole House", desc: "Comprehensive renovation" }];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType="renovation" /><StepHeadline subtitle="Different renovation types have different cost structures.">What are you renovating?</StepHeadline>
+      <StepHeadline subtitle="Different renovation types have different cost structures.">What are you renovating?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))", gap: 12, maxWidth: 640, margin: "0 auto" }}>
         {scopes.map((s) => { const a = renoScope === s.id; return (<SelectCard key={s.id} active={a} onClick={() => onScopeChange(s.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{s.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999", marginTop: 6 }}>{s.desc}</div></SelectCard>); })}
       </div>
@@ -425,23 +424,44 @@ function RenoScopeStep({ renoScope, onScopeChange, onBack, onNext }: { renoScope
   );
 }
 
-function RenoDetailsStep({ renoScope, renoArea, renoCondition, renoFinish, onAreaChange, onConditionChange, onFinishChange, onBack, onNext }: { renoScope: string; renoArea: number; renoCondition: string; renoFinish: string; onAreaChange: (a: number) => void; onConditionChange: (c: string) => void; onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void }) {
-  const needsArea = renoScope !== "kitchen" && renoScope !== "bathroom";
-  const is: React.CSSProperties = { width: "100%", border: "2px solid #e5e5e5", padding: "16px 20px", fontSize: 20, fontFamily: "'DM Sans', sans-serif", fontWeight: 500, color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s" };
-  const ls: React.CSSProperties = { display: "block", fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 10 };
-  const hf = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; };
-  const hb = (e: React.FocusEvent<HTMLInputElement | HTMLSelectElement>) => { e.target.style.borderColor = "#e5e5e5"; e.target.style.boxShadow = "none"; };
+function RenoAreaStep({ renoArea, onAreaChange, onBack, onNext, renoScope }: { renoArea: number; onAreaChange: (a: number) => void; onBack: () => void; onNext: () => void; renoScope: string }) {
+  const is: React.CSSProperties = { width: "100%", maxWidth: 420, display: "block", margin: "0 auto", border: "2px solid #e0e0e0", padding: "20px 28px", fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.04em" };
+  const scopeLabels: Record<string, string> = { addition: "addition", "full-gut": "gut renovation", "whole-house": "whole-house renovation" };
+  return (
+    <div className="fade-up" style={{ textAlign: "center" }}>
+      <StepHeadline subtitle={`Enter the total square footage for your ${scopeLabels[renoScope] ?? "renovation"}.`}>How large is the area?</StepHeadline>
+      <input type="number" value={renoArea} onChange={(e) => onAreaChange(Math.max(50, Math.min(5000, +e.target.value || 50)))} autoFocus style={is}
+        onFocus={(e) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; }}
+        onBlur={(e) => { e.target.style.borderColor = "#e0e0e0"; e.target.style.boxShadow = "none"; }} />
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Square feet of renovation area</p>
+      <NavButtons onBack={onBack} onNext={onNext} />
+    </div>
+  );
+}
+
+function RenoConditionStep({ renoCondition, onConditionChange, onBack, onNext, renoScope }: { renoCondition: string; onConditionChange: (c: string) => void; onBack: () => void; onNext: () => void; renoScope: string }) {
   const condOpts = [{ id: "good", label: "Good", desc: "Mostly cosmetic" }, { id: "fair", label: "Fair", desc: "Some structural" }, { id: "poor", label: "Poor", desc: "Significant work" }, { id: "gutted", label: "Gutted", desc: "Down to studs" }];
-  const scopeLabels: Record<string, string> = { kitchen: "kitchen renovation", bathroom: "bathroom renovation", addition: "home addition", "full-gut": "full gut renovation", "whole-house": "whole house renovation" };
+  const scopeLabels: Record<string, string> = { kitchen: "kitchen", bathroom: "bathroom", addition: "addition area", "full-gut": "space", "whole-house": "home" };
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
-      <TypeBadge projectType="renovation" /><StepHeadline subtitle={`Fine-tune the details for your ${scopeLabels[renoScope] ?? "renovation"}.`}>Renovation details</StepHeadline>
-      <div style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 28 }}>
-        {needsArea && <div><label style={ls}>Renovation area (SF)</label><input type="number" value={renoArea} onChange={(e) => onAreaChange(Math.max(50, Math.min(5000, +e.target.value || 50)))} style={is} onFocus={hf} onBlur={hb} /></div>}
-        <div><label style={ls}>Current condition</label><div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>{condOpts.map((c) => { const a = renoCondition === c.id; return (<SelectCard key={c.id} active={a} onClick={() => onConditionChange(c.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{c.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{c.desc}</div></SelectCard>); })}</div></div>
-        <div><label style={ls}>Finish level</label><div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 10 }}>{[{ id: "basic", label: "Basic", desc: "Builder-grade materials" }, { id: "standard", label: "Standard", desc: "Quality mid-range" }, { id: "premium", label: "Premium", desc: "High-end finishes" }, { id: "luxury", label: "Luxury", desc: "Designer-grade" }].map((f) => { const a = renoFinish === f.id; return (<SelectCard key={f.id} active={a} onClick={() => onFinishChange(f.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{f.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{f.desc}</div></SelectCard>); })}</div></div>
+      <StepHeadline subtitle={`This affects the scope of demolition and structural work needed.`}>What condition is your {scopeLabels[renoScope] ?? "space"} in?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+        {condOpts.map((c) => { const a = renoCondition === c.id; return (<SelectCard key={c.id} active={a} onClick={() => onConditionChange(c.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{c.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{c.desc}</div></SelectCard>); })}
       </div>
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!renoCondition} />
+    </div>
+  );
+}
+
+function RenoFinishStep({ renoFinish, onFinishChange, onBack, onNext }: { renoFinish: string; onFinishChange: (f: string) => void; onBack: () => void; onNext: () => void }) {
+  const finishOpts = [{ id: "basic", label: "Basic", desc: "Builder-grade materials" }, { id: "standard", label: "Standard", desc: "Quality mid-range" }, { id: "premium", label: "Premium", desc: "High-end finishes" }, { id: "luxury", label: "Luxury", desc: "Designer-grade" }];
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
+      <StepHeadline subtitle="Finish level determines material quality, fixtures, and final look.">What finish level do you want?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
+        {finishOpts.map((f) => { const a = renoFinish === f.id; return (<SelectCard key={f.id} active={a} onClick={() => onFinishChange(f.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{f.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{f.desc}</div></SelectCard>); })}
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} />
     </div>
   );
 }
@@ -463,7 +483,7 @@ function RenoFeaturesStep({ features, renoScope, onToggle, onBack, onNext }: { f
   const scopeLabel: Record<string, string> = { kitchen: "kitchen reno", bathroom: "bath remodel", addition: "addition", "full-gut": "gut renovation", "whole-house": "whole-house reno" };
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType="renovation" /><StepHeadline subtitle={`Common upgrades to consider while walls are open for your ${scopeLabel[renoScope] ?? "renovation"}.`}>While we&apos;re at it&hellip;</StepHeadline>
+      <StepHeadline subtitle={`Common upgrades to consider while walls are open for your ${scopeLabel[renoScope] ?? "renovation"}.`}>While we&apos;re at it&hellip;</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, maxWidth: 760, margin: "0 auto" }}>
         {opts.map((o) => { const a = features.includes(o.id); return (
           <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
@@ -499,7 +519,7 @@ function HomeStyleStep({ homeStyle, onStyleChange, onBack, onNext }: { homeStyle
   ];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType="custom-home" /><StepHeadline subtitle="Architectural style shapes structure, materials, and pricing.">What&apos;s your vision?</StepHeadline>
+      <StepHeadline subtitle="Architectural style shapes structure, materials, and pricing.">What&apos;s your vision?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 14, maxWidth: 760, margin: "0 auto" }}>
         {styles.map((s) => { const a = homeStyle === s.id; return (
           <button key={s.id} onClick={() => onStyleChange(s.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
@@ -529,7 +549,7 @@ function HomeFeaturesStep({ features, onToggle, onBack, onNext }: { features: st
   ];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType="custom-home" /><StepHeadline subtitle="Select any features you'd like — or skip this step.">Premium features</StepHeadline>
+      <StepHeadline subtitle="Select any features you'd like — or skip this step.">Premium features</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 12, maxWidth: 760, margin: "0 auto" }}>
         {opts.map((o) => { const a = features.includes(o.id); return (
           <button key={o.id} onClick={() => onToggle(o.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", display: "flex", gap: 14, alignItems: "flex-start", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
@@ -564,7 +584,7 @@ function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: { consul
   ];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
-      <TypeBadge projectType="consulting" /><StepHeadline subtitle="Select the engineering service that matches your project needs.">What do you need?</StepHeadline>
+      <StepHeadline subtitle="Select the engineering service that matches your project needs.">What do you need?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, maxWidth: 700, margin: "0 auto" }}>
         {types.map((t) => { const a = consultType === t.id; return (
           <button key={t.id} onClick={() => onTypeChange(t.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
@@ -594,7 +614,7 @@ function ConsultDetailsStep({ consultComplexity, consultTimeline, onComplexityCh
   const tOpts = [{ id: "flexible", label: "Flexible", desc: "No rush", mult: "0.9×" }, { id: "standard", label: "Standard", desc: "Normal timeline", mult: "1.0×" }, { id: "rush", label: "Rush", desc: "Expedited delivery", mult: "1.25×" }];
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
-      <TypeBadge projectType="consulting" /><StepHeadline subtitle="Complexity and timeline affect the scope of engineering work.">Project scope</StepHeadline>
+      <StepHeadline subtitle="Complexity and timeline affect the scope of engineering work.">Project scope</StepHeadline>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Complexity</p>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 36 }}>
         {cOpts.map((o) => { const a = consultComplexity === o.id; return (<SelectCard key={o.id} active={a} onClick={() => onComplexityChange(o.id)}><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18 }}>{o.label}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", marginTop: 4 }}>{o.desc}</div><div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb", marginTop: 8 }}>{o.mult}</div></SelectCard>); })}
@@ -608,19 +628,17 @@ function ConsultDetailsStep({ consultComplexity, consultTimeline, onComplexityCh
   );
 }
 
-function ConsultProjectStep({ propertyType, projectValue, onPropertyChange, onValueChange, onBack, onNext }: { propertyType: string; projectValue: string; onPropertyChange: (p: string) => void; onValueChange: (v: string) => void; onBack: () => void; onNext: () => void }) {
+function ConsultPropertyStep({ propertyType, onPropertyChange, onBack, onNext }: { propertyType: string; onPropertyChange: (p: string) => void; onBack: () => void; onNext: () => void }) {
   const propOpts = [
     { id: "residential", label: "Residential", desc: "Single-family home", icon: "M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" },
     { id: "commercial", label: "Commercial", desc: "Office, retail, industrial", icon: "M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" },
     { id: "multi-unit", label: "Multi-Unit", desc: "Apartments, condos, townhomes", icon: "M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" },
     { id: "mixed-use", label: "Mixed-Use", desc: "Residential & commercial", icon: "M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" },
   ];
-  const valOpts = [{ id: "under-500k", label: "Under $500K" }, { id: "500k-1m", label: "$500K – $1M" }, { id: "1m-5m", label: "$1M – $5M" }, { id: "5m-plus", label: "$5M+" }];
   return (
     <div className="fade-up" style={{ textAlign: "center", maxWidth: 560, margin: "0 auto" }}>
-      <TypeBadge projectType="consulting" /><StepHeadline subtitle="This helps us tailor the scope and deliverables to your project.">Tell us about the project</StepHeadline>
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Property type</p>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12, marginBottom: 36 }}>
+      <StepHeadline subtitle="Property type affects the scope and complexity of engineering work.">What type of property?</StepHeadline>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
         {propOpts.map((o) => { const a = propertyType === o.id; return (
           <button key={o.id} onClick={() => onPropertyChange(o.id)} style={{ padding: "24px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 8, position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
             onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
@@ -630,16 +648,23 @@ function ConsultProjectStep({ propertyType, projectValue, onPropertyChange, onVa
             <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: a ? gold : "#999" }}>{o.desc}</div>
           </button>); })}
       </div>
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 16, fontWeight: 600, color: dark, marginBottom: 16, textAlign: "left" }}>Estimated project value</p>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!propertyType} />
+    </div>
+  );
+}
+
+function ConsultValueStep({ projectValue, onValueChange, onBack, onNext }: { projectValue: string; onValueChange: (v: string) => void; onBack: () => void; onNext: () => void }) {
+  const valOpts = [{ id: "under-500k", label: "Under $500K" }, { id: "500k-1m", label: "$500K – $1M" }, { id: "1m-5m", label: "$1M – $5M" }, { id: "5m-plus", label: "$5M+" }];
+  return (
+    <div className="fade-up" style={{ textAlign: "center", maxWidth: 520, margin: "0 auto" }}>
+      <StepHeadline subtitle="Project value helps us calibrate the depth of analysis and deliverables.">Estimated project value?</StepHeadline>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(2, 1fr)", gap: 12 }}>
         {valOpts.map((o) => { const a = projectValue === o.id; return (
-          <button key={o.id} onClick={() => onValueChange(o.id)} style={{ padding: "18px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16, position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
-            onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
-            {a && <div style={{ position: "absolute", top: 6, right: 6, width: 18, height: 18, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
-            {o.label}
-          </button>); })}
+          <SelectCard key={o.id} active={a} onClick={() => onValueChange(o.id)}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16 }}>{o.label}</div>
+          </SelectCard>); })}
       </div>
-      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!propertyType || !projectValue} />
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!projectValue} />
     </div>
   );
 }
@@ -826,17 +851,9 @@ function CostEstimatorInner() {
         </div>
       </header>
 
-      {showBanners && (
-        <div style={{ background: `linear-gradient(135deg, ${gold}18, ${gold}10)`, borderBottom: `1px solid ${gold}30`, padding: "10px 24px", textAlign: "center", flexShrink: 0 }}>
-          <a href="/offers" style={{ textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 10, fontFamily: "'DM Sans', sans-serif" }}>
-            <span style={{ fontSize: 14, color: gold }}>✦</span><span style={{ fontSize: 13, color: "#333", fontWeight: 500 }}>Spring 2026 Now Booking</span><span style={{ fontSize: 13, color: "#999" }}>—</span><span style={{ fontSize: 13, color: gold, fontWeight: 600 }}>Free Design Consultation Included</span><span style={{ fontSize: 12, color: gold }}>›</span>
-          </a>
-        </div>
-      )}
 
 
-
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingBottom: state.projectType && !["type-select", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
         {isTypeSelect && (<><div style={{ position: "absolute", top: "15%", right: "20%", width: 500, height: 500, borderRadius: "50%", background: `${gold}0d`, filter: "blur(120px)", pointerEvents: "none" }} /><div style={{ position: "absolute", bottom: "20%", left: "15%", width: 400, height: 400, borderRadius: "50%", background: `${gold}08`, filter: "blur(100px)", pointerEvents: "none" }} /><div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} /></>)}
 
         <div style={{ width: "100%", maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 10 }}>
@@ -847,33 +864,23 @@ function CostEstimatorInner() {
           {state.step === "home-style" && <HomeStyleStep homeStyle={state.homeStyle} onStyleChange={(s) => update({ homeStyle: s })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "build-details" && <BuildDetailsStep stories={state.stories} garageSpaces={state.garageSpaces} onStoriesChange={(s) => update({ stories: s })} onGarageChange={(g) => update({ garageSpaces: g })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "exterior" && <ExteriorStep exteriorQuality={state.exteriorQuality} onQualityChange={(q) => update({ exteriorQuality: q })} onBack={prevStep} onNext={nextStep} projectType={state.projectType} />}
-          {state.step === "interior" && <InteriorStep bedrooms={state.bedrooms} bathrooms={state.bathrooms} interiorFinish={state.interiorFinish} onBedroomsChange={(b) => update({ bedrooms: b })} onBathroomsChange={(b) => update({ bathrooms: b })} onFinishChange={(f) => update({ interiorFinish: f })} onBack={prevStep} onNext={nextStep} projectType={state.projectType} />}
+          {state.step === "interior-finish" && <InteriorFinishStep interiorFinish={state.interiorFinish} onFinishChange={(f) => update({ interiorFinish: f })} onBack={prevStep} onNext={nextStep} projectType={state.projectType} />}
+          {state.step === "interior-rooms" && <InteriorRoomsStep bedrooms={state.bedrooms} bathrooms={state.bathrooms} onBedroomsChange={(b) => update({ bedrooms: b })} onBathroomsChange={(b) => update({ bathrooms: b })} onBack={prevStep} onNext={nextStep} projectType={state.projectType} />}
           {state.step === "home-features" && <HomeFeaturesStep features={state.homeFeatures} onToggle={(f) => { const curr = state.homeFeatures; update({ homeFeatures: curr.includes(f) ? curr.filter(x => x !== f) : [...curr, f] }); }} onBack={prevStep} onNext={nextStep} />}
-          {state.step === "reno-scope" && <RenoScopeStep renoScope={state.renoScope} onScopeChange={(s) => update({ renoScope: s })} onBack={prevStep} onNext={nextStep} />}
-          {state.step === "reno-details" && <RenoDetailsStep renoScope={state.renoScope} renoArea={state.renoArea} renoCondition={state.renoCondition} renoFinish={state.renoFinish} onAreaChange={(a) => update({ renoArea: a })} onConditionChange={(c) => update({ renoCondition: c })} onFinishChange={(f) => update({ renoFinish: f })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "reno-scope" && <RenoScopeStep renoScope={state.renoScope} onScopeChange={(s) => update({ renoScope: s })} onBack={prevStep} onNext={() => { const needsArea = state.renoScope !== "kitchen" && state.renoScope !== "bathroom"; if (needsArea) nextStep(); else update({ step: "reno-condition" }); }} />}
+          {state.step === "reno-area" && <RenoAreaStep renoArea={state.renoArea} onAreaChange={(a) => update({ renoArea: a })} onBack={prevStep} onNext={nextStep} renoScope={state.renoScope} />}
+          {state.step === "reno-condition" && <RenoConditionStep renoCondition={state.renoCondition} onConditionChange={(c) => update({ renoCondition: c })} onBack={() => { const needsArea = state.renoScope !== "kitchen" && state.renoScope !== "bathroom"; if (needsArea) prevStep(); else update({ step: "reno-scope" }); }} onNext={nextStep} renoScope={state.renoScope} />}
+          {state.step === "reno-finish" && <RenoFinishStep renoFinish={state.renoFinish} onFinishChange={(f) => update({ renoFinish: f })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "reno-features" && <RenoFeaturesStep features={state.renoFeatures} renoScope={state.renoScope} onToggle={(f) => { const curr = state.renoFeatures; update({ renoFeatures: curr.includes(f) ? curr.filter(x => x !== f) : [...curr, f] }); }} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-type" && <ConsultTypeStep consultType={state.consultType} onTypeChange={(t) => update({ consultType: t })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "consult-details" && <ConsultDetailsStep consultComplexity={state.consultComplexity} consultTimeline={state.consultTimeline} onComplexityChange={(c) => update({ consultComplexity: c })} onTimelineChange={(t) => update({ consultTimeline: t })} onBack={prevStep} onNext={nextStep} />}
-          {state.step === "consult-project" && <ConsultProjectStep propertyType={state.consultPropertyType} projectValue={state.consultProjectValue} onPropertyChange={(p) => update({ consultPropertyType: p })} onValueChange={(v) => update({ consultProjectValue: v })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "consult-property" && <ConsultPropertyStep propertyType={state.consultPropertyType} onPropertyChange={(p) => update({ consultPropertyType: p })} onBack={prevStep} onNext={nextStep} />}
+          {state.step === "consult-value" && <ConsultValueStep projectValue={state.consultProjectValue} onValueChange={(v) => update({ consultProjectValue: v })} onBack={prevStep} onNext={nextStep} />}
           {state.step === "analyzing" && <AnalyzingStep projectType={state.projectType} zipCode={state.zipCode} />}
           {state.step === "results" && estimate && <ResultsStep estimate={estimate} displayedTotal={displayedTotal} onReset={reset} isConsulting={state.projectType === "consulting"} isCustomHome={state.projectType === "custom-home"} />}
         </div>
 
-        {/* Contextual section bar */}
-        {state.projectType && !["type-select", "zip", "analyzing", "results", "outside-area"].includes(state.step) && (() => {
-          const taglines: Record<string, string> = {
-            "custom-home": "Signature Custom Design",
-            "new-build": "New Build · Your Lot, Your Vision",
-            "renovation": "Renovation · Transform What You Have",
-            "consulting": "Consulting & Engineering",
-          };
-          return (
-            <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: dark, borderTop: `1px solid ${gold}33`, padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: 12, zIndex: 90 }}>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 500 }}>✦</span>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: 16, color: gold, letterSpacing: "0.02em" }}>{taglines[state.projectType] ?? "Antova Builders"}</span>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 500 }}>✦</span>
-            </div>);
-        })()}
+
       </main>
 
       {(isTypeSelect || state.step === "results") && <TrustBar />}
