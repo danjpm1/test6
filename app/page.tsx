@@ -552,8 +552,8 @@ export default function AntovaBuilders() {
             {/* Left: Image */}
             <div className="relative min-h-[400px] lg:min-h-0 order-2 lg:order-1">
               <Image
-                src="/luxury-modern-cabin-interior-with-large-windows-wo.jpg"
-                alt="Luxury modern cabin interior showcasing Antova craftsmanship"
+                src="/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg"
+                alt="Modern glass house reflecting in lake at sunset — Antova custom build"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover object-center"
