@@ -810,7 +810,7 @@ function CostEstimatorInner() {
 
   const isTypeSelect = state.step === "type-select";
   const isOutside = state.step === "outside-area";
-  const showProgress = !isTypeSelect && !isOutside;
+  const showProgress = true;
   const showBanners = !isTypeSelect && state.step !== "results" && state.step !== "analyzing" && state.step !== "outside-area";
 
   return (
@@ -836,7 +836,7 @@ function CostEstimatorInner() {
 
 
 
-      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingBottom: state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
+      <main style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "clamp(24px, 4vw, 64px) 24px", paddingBottom: state.projectType && !["type-select", "zip", "analyzing", "results", "outside-area"].includes(state.step) ? 80 : undefined, background: isTypeSelect ? dark : "#fff", transition: "background 0.5s", position: "relative", overflow: "hidden" }}>
         {isTypeSelect && (<><div style={{ position: "absolute", top: "15%", right: "20%", width: 500, height: 500, borderRadius: "50%", background: `${gold}0d`, filter: "blur(120px)", pointerEvents: "none" }} /><div style={{ position: "absolute", bottom: "20%", left: "15%", width: 400, height: 400, borderRadius: "50%", background: `${gold}08`, filter: "blur(100px)", pointerEvents: "none" }} /><div style={{ position: "absolute", inset: 0, pointerEvents: "none", backgroundImage: `linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px)`, backgroundSize: "60px 60px" }} /></>)}
 
         <div style={{ width: "100%", maxWidth: 860, margin: "0 auto", position: "relative", zIndex: 10 }}>
@@ -859,17 +859,19 @@ function CostEstimatorInner() {
           {state.step === "results" && estimate && <ResultsStep estimate={estimate} displayedTotal={displayedTotal} onReset={reset} isConsulting={state.projectType === "consulting"} isCustomHome={state.projectType === "custom-home"} />}
         </div>
 
-        {/* Live running estimate ticker for custom-home */}
-        {state.projectType === "custom-home" && !["type-select", "sqft", "zip", "analyzing", "results", "outside-area"].includes(state.step) && (() => {
-          const avg = (EXTERIOR_MULT[state.exteriorQuality] ?? 1.1) + (INTERIOR_MULT[state.interiorFinish] ?? 1.075);
-          const sm = HOME_STYLE_MULT[state.homeStyle] ?? 1.0;
-          const fc = state.homeFeatures.reduce((s, f) => s + (HOME_FEATURE_COST[f] ?? 0), 0);
-          const running = Math.round(state.sqft * CUSTOM_HOME_BASE * (avg / 2) * sm) + fc;
+        {/* Contextual section bar */}
+        {state.projectType && !["type-select", "zip", "analyzing", "results", "outside-area"].includes(state.step) && (() => {
+          const taglines: Record<string, string> = {
+            "custom-home": "Signature Custom Design",
+            "new-build": "New Build · Your Lot, Your Vision",
+            "renovation": "Renovation · Transform What You Have",
+            "consulting": "Consulting & Engineering",
+          };
           return (
             <div style={{ position: "fixed", bottom: 0, left: 0, right: 0, background: dark, borderTop: `1px solid ${gold}33`, padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "center", gap: 12, zIndex: 90 }}>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 500 }}>RUNNING ESTIMATE</span>
-              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: 22, color: gold, letterSpacing: "-0.02em" }}>${running.toLocaleString()}</span>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "rgba(255,255,255,0.3)" }}>before location</span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 500 }}>✦</span>
+              <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 600, fontSize: 16, color: gold, letterSpacing: "0.02em" }}>{taglines[state.projectType] ?? "Antova Builders"}</span>
+              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "rgba(255,255,255,0.45)", letterSpacing: "0.06em", fontWeight: 500 }}>✦</span>
             </div>);
         })()}
       </main>
