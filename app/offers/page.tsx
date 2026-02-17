@@ -1,15 +1,36 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
 
+/* ─── Scroll to hash on load (Next.js fix) ─── */
+function useScrollToHash() {
+  useEffect(() => {
+    const hash = window.location.hash
+    if (hash) {
+      // Small delay to let page render
+      setTimeout(() => {
+        const el = document.querySelector(hash)
+        if (el) {
+          const offset = 100 // account for sticky header + filter bar
+          const top = el.getBoundingClientRect().top + window.scrollY - offset
+          window.scrollTo({ top, behavior: "smooth" })
+        }
+      }, 150)
+    }
+  }, [])
+}
+
 const CATEGORIES = [
   { id: "all", label: "All Offers" },
+  { id: "signature-custom-design", label: "Custom Design" },
   { id: "renovation", label: "Renovation" },
-  { id: "new-build", label: "New Builds" },
-  { id: "engineering", label: "Engineering" },
+  { id: "new-builds", label: "New Builds" },
+  { id: "commercial", label: "Commercial" },
+  { id: "remote", label: "Remote" },
+  { id: "consulting-engineering", label: "Engineering" },
   { id: "financing", label: "Financing" },
 ]
 
@@ -23,6 +44,35 @@ const FEATURED_OFFER = {
 }
 
 const OFFER_SECTIONS = [
+  {
+    id: "signature-custom-design",
+    category: "Flagship Service",
+    title: "Custom Design",
+    image: "/luxury-custom-home-interior-design-modern-architec.jpg",
+    offers: [
+      {
+        icon: "star",
+        title: "Complimentary Architectural Concept Package",
+        link: "/contact",
+        linkText: "Book Consultation",
+        details: "Commission a custom home over $500,000 and receive a complimentary 3D architectural concept package valued at $8,000. Includes site analysis, floor plan concepts, and exterior renderings.",
+      },
+      {
+        icon: "gift",
+        title: "Free $15,000 Smart Home Automation Package",
+        link: "/contact",
+        linkText: "Schedule Consultation",
+        details: "Signature homes over $750,000 include a full smart home package: automated lighting, climate control, security cameras, and whole-home audio at no additional cost.",
+      },
+      {
+        icon: "percent",
+        title: "Lock In 2025 Material Pricing Through 2026",
+        link: "/contact",
+        linkText: "Reserve Now",
+        details: "Sign before June 2026 and lock in current material costs for your entire build — protecting you from price increases on lumber, steel, and premium finishes.",
+      },
+    ],
+  },
   {
     id: "renovation",
     category: "Renovation",
@@ -53,7 +103,7 @@ const OFFER_SECTIONS = [
     ],
   },
   {
-    id: "new-build",
+    id: "new-builds",
     category: "New Construction",
     title: "New Builds",
     image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
@@ -82,22 +132,80 @@ const OFFER_SECTIONS = [
     ],
   },
   {
-    id: "engineering",
-    category: "Engineering & Consulting",
+    id: "commercial",
+    category: "Commercial Projects",
+    title: "Commercial",
+    image: "/modern-commercial-building-exterior-glass-facade.jpg",
+    offers: [
+      {
+        icon: "percent",
+        title: "10% Off Tenant Improvement Build-Outs",
+        link: "/contact",
+        linkText: "Get Quote",
+        details: "Save 10% on commercial tenant improvement projects over 2,000 SF. Applies to office, retail, and restaurant build-outs contracted before Q3 2026.",
+      },
+      {
+        icon: "clock",
+        title: "Guaranteed 90-Day Completion on Projects Under 5,000 SF",
+        link: "/contact",
+        linkText: "Schedule Consultation",
+        details: "We guarantee completion within 90 days for standard commercial build-outs under 5,000 SF. If we miss the deadline, you receive a $5,000 credit.",
+      },
+      {
+        icon: "star",
+        title: "Free ADA Compliance Audit",
+        link: "/contact",
+        linkText: "Book Audit",
+        details: "Complimentary ADA compliance review for any commercial project. Our team identifies requirements and integrates them into your build plan at no extra cost. Valued at $2,500.",
+      },
+    ],
+  },
+  {
+    id: "remote",
+    category: "Remote & Off-Grid",
+    title: "Remote",
+    image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
+    offers: [
+      {
+        icon: "star",
+        title: "Free Site Logistics Assessment",
+        link: "/contact",
+        linkText: "Book Assessment",
+        details: "Complimentary on-site assessment covering access routes, material staging, utility connections, and terrain analysis. Valued at $3,500, free for projects over $150,000.",
+      },
+      {
+        icon: "gift",
+        title: "Solar Power Package Included on Off-Grid Homes",
+        link: "/contact",
+        linkText: "Get Details",
+        details: "Off-grid homes over $250,000 include a complete solar power system: panels, inverter, and battery bank valued at $32,000. Enough to power your entire home year-round.",
+      },
+      {
+        icon: "percent",
+        title: "Bundle Off-Grid Systems & Save 20%",
+        link: "/contact",
+        linkText: "Build Your Package",
+        details: "Combine any 3+ off-grid systems (solar, well & septic, generator, satellite internet, propane, rainwater) and save 20% on the package total.",
+      },
+    ],
+  },
+  {
+    id: "consulting-engineering",
+    category: "Consulting & Engineering",
     title: "Engineering",
     image: "/images/engineering-blueprints.png",
     offers: [
       {
         icon: "star",
         title: "Free Structural Assessment",
-        link: "/services/engineering-consulting",
+        link: "/contact",
         linkText: "Book Now",
         details: "Get a complimentary on-site structural assessment and preliminary engineering report. Valued at $500, now free for new clients.",
       },
       {
         icon: "clock",
         title: "50% Faster Permit Expediting — Guaranteed",
-        link: "/services/engineering-consulting",
+        link: "/contact",
         linkText: "Get Details",
         details: "Our permit expediting service gets your project approved in half the typical time. If we don't meet the timeline, your expediting fee is refunded.",
       },
@@ -179,10 +287,37 @@ function OfferIcon({ type }: { type: string }) {
 }
 
 export default function OffersPage() {
+  useScrollToHash()
   const [activeCategory, setActiveCategory] = useState("all")
 
-  const filteredSections = activeCategory === "all" 
-    ? OFFER_SECTIONS 
+  // When user clicks a filter, also update URL hash
+  const handleCategoryClick = (id: string) => {
+    setActiveCategory(id)
+    if (id !== "all") {
+      // Scroll to the section
+      setTimeout(() => {
+        const el = document.getElementById(id)
+        if (el) {
+          const offset = 100
+          const top = el.getBoundingClientRect().top + window.scrollY - offset
+          window.scrollTo({ top, behavior: "smooth" })
+        }
+      }, 50)
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" })
+    }
+  }
+
+  // Also set active category based on hash on load
+  useEffect(() => {
+    const hash = window.location.hash.replace("#", "")
+    if (hash && CATEGORIES.some(c => c.id === hash)) {
+      setActiveCategory(hash)
+    }
+  }, [])
+
+  const filteredSections = activeCategory === "all"
+    ? OFFER_SECTIONS
     : OFFER_SECTIONS.filter(section => section.id === activeCategory)
 
   return (
@@ -208,7 +343,6 @@ export default function OffersPage() {
         {/* Featured Offer - Large Image */}
         <section className="px-4 md:px-8 lg:px-12 pb-8 md:pb-12">
           <div className="max-w-[1200px] mx-auto">
-            {/* Smaller Image like Tesla */}
             <div className="relative w-full aspect-[16/6] md:aspect-[21/8] rounded-lg overflow-hidden mb-8">
               <img
                 src={FEATURED_OFFER.image}
@@ -217,12 +351,11 @@ export default function OffersPage() {
               />
             </div>
 
-            {/* Offer Details Below Image */}
             <div className="max-w-3xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">
                 {FEATURED_OFFER.title}
               </h2>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-[#5c5c5c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -249,7 +382,7 @@ export default function OffersPage() {
                 {CATEGORIES.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => setActiveCategory(category.id)}
+                    onClick={() => handleCategoryClick(category.id)}
                     className={`px-5 sm:px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 border ${
                       activeCategory === category.id
                         ? "bg-black text-white border-black"
@@ -264,9 +397,9 @@ export default function OffersPage() {
           </div>
         </section>
 
-        {/* Offer Sections - Tesla Model Style */}
+        {/* Offer Sections */}
         {filteredSections.map((section, index) => (
-          <section key={section.id} className={`py-12 md:py-20 ${index % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}`}>
+          <section key={section.id} id={section.id} className={`py-12 md:py-20 ${index % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}`}>
             <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12">
               <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
                 {/* Left: Content */}
@@ -275,7 +408,7 @@ export default function OffersPage() {
                   <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-5">
                     {section.title}
                   </h2>
-                  
+
                   {/* CTA Buttons */}
                   <div className="flex gap-3 mb-8">
                     <Link href="/contact">
@@ -283,14 +416,14 @@ export default function OffersPage() {
                         Get Quote
                       </button>
                     </Link>
-                    <Link href={`/services/${section.id === 'engineering' ? 'engineering-consulting' : section.id}`}>
+                    <Link href={`/cost-estimator?type=${section.id === 'consulting-engineering' ? 'consulting' : section.id === 'new-builds' ? 'new-build' : section.id === 'signature-custom-design' ? 'custom-home' : section.id}`}>
                       <button className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-gray-400 transition-colors">
-                        Learn More
+                        AI Estimate
                       </button>
                     </Link>
                   </div>
 
-                  {/* Offers List - More compact */}
+                  {/* Offers List */}
                   <div className="space-y-5">
                     {section.offers.map((offer, offerIndex) => (
                       <div key={offerIndex}>
@@ -309,7 +442,7 @@ export default function OffersPage() {
                   </div>
                 </div>
 
-                {/* Right: Image (taller to match content) */}
+                {/* Right: Image */}
                 <div className="rounded-lg overflow-hidden">
                   <img
                     src={section.image}
@@ -326,7 +459,7 @@ export default function OffersPage() {
         <section className="py-16 md:py-24 bg-black text-center">
           <div className="max-w-3xl mx-auto px-6">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Don't See What You Need?
+              Don&apos;t See What You Need?
             </h2>
             <p className="text-lg text-white/70 mb-8">
               Contact us for custom pricing and financing options tailored to your project.
@@ -337,7 +470,7 @@ export default function OffersPage() {
                   Contact Us
                 </button>
               </Link>
-              <Link href="/estimator">
+              <Link href="/cost-estimator">
                 <button className="px-8 py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-medium rounded transition-colors">
                   AI Estimator
                 </button>
