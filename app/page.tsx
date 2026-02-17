@@ -46,11 +46,15 @@ const SECONDARY_SERVICES = [
     title: "Commercial Projects",
     description: "Office, retail, and mixed-use builds designed around your business needs.",
     href: "/services/commercial",
+    image: "/project-1.jpg",
+    alt: "Commercial construction project",
   },
   {
     title: "Remote Builds",
     description: "Full-service project management for builds outside the Inland Northwest.",
     href: "/services/remote",
+    image: "/project-2.jpg",
+    alt: "Remote build project management",
   },
 ]
 
@@ -756,18 +760,32 @@ export default function AntovaBuilders() {
               </Link>
             ))}
           </div>
-          {/* Secondary services — compact row */}
+          {/* Secondary services — compact cards with images */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-5 mt-4 md:mt-5">
             {SECONDARY_SERVICES.map((service) => (
               <Link key={service.title} href={service.href}>
-                <div className="group flex items-center justify-between gap-4 p-5 md:p-6 bg-[#f4f4f0] rounded-xl hover:bg-[#eeeee8] transition-all duration-300 cursor-pointer">
-                  <div>
-                    <h3 className="text-base md:text-lg font-bold text-black mb-1 group-hover:text-[#c6912c] transition-colors">{service.title}</h3>
-                    <p className="text-black/45 text-sm leading-relaxed">{service.description}</p>
+                <div className="group bg-[#f4f4f0] rounded-xl overflow-hidden hover:bg-[#eeeee8] transition-all duration-300 cursor-pointer hover:shadow-lg hover:shadow-black/[0.04]">
+                  <div className="flex flex-row items-stretch">
+                    <div className="flex-1 flex flex-col justify-center p-6 md:p-8">
+                      <h3 className="text-lg md:text-xl font-bold text-black mb-1.5 group-hover:text-[#c6912c] transition-colors">{service.title}</h3>
+                      <p className="text-black/45 text-sm leading-relaxed mb-4">{service.description}</p>
+                      <span className="inline-flex items-center gap-2 text-sm font-semibold text-black/50 group-hover:text-[#c6912c] transition-colors">
+                        Learn more
+                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                        </svg>
+                      </span>
+                    </div>
+                    <div className="relative w-[160px] md:w-[200px] flex-shrink-0 hidden sm:block">
+                      <Image
+                        src={service.image}
+                        alt={service.alt}
+                        fill
+                        sizes="200px"
+                        className="object-cover object-center transition-transform duration-500 group-hover:scale-105"
+                      />
+                    </div>
                   </div>
-                  <svg className="w-5 h-5 text-black/30 flex-shrink-0 group-hover:text-[#c6912c] group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
                 </div>
               </Link>
             ))}
