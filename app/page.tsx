@@ -482,26 +482,26 @@ export default function AntovaBuilders() {
           <h1 className={`text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight text-balance text-white transition-all duration-700 ease-out ${showTitle ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             Your vision, built without compromise.
           </h1>
-          <p className={`text-lg md:text-xl lg:text-2xl mb-14 text-white/80 tracking-wide transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+          <p className={`text-sm md:text-lg lg:text-xl mb-14 text-white/80 tracking-wide transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
             See your realistic investment range in 60 seconds — no email or phone required.
           </p>
 
           <div className={`flex flex-col items-center gap-8 transition-all duration-700 ease-out ${showSubtitleAndButtons ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
-            <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-3 sm:p-4 space-y-3">
+            <div className="w-full max-w-[780px] bg-white/[0.08] backdrop-blur-md border border-white/[0.12] rounded-xl p-2.5 sm:p-4 space-y-3">
               <div className="flex items-center justify-center gap-2 pb-1">
                 <svg className="w-4 h-4 text-[#c6912c]" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
                 </svg>
-                <span className="text-[#c6912c] text-xs font-semibold tracking-[0.15em] uppercase">AI-Powered Estimator</span>
+                <span className="text-[#c6912c] text-[10px] sm:text-xs font-semibold tracking-[0.15em] uppercase">AI-Powered Estimator</span>
               </div>
               <div className="flex flex-col sm:flex-row items-stretch gap-3">
                 <div className="relative flex-1">
                   <select
                     value={selectedProjectType}
                     onChange={(e) => setSelectedProjectType(e.target.value)}
-                    className={`w-full h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-2 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm ${selectedProjectType ? "border-[#c6912c]/30" : "animate-border-pulse"}`}
+                    className={`w-full h-[44px] sm:h-[48px] md:h-[54px] px-5 pr-12 bg-white text-black/80 text-base font-medium rounded-lg border-2 appearance-none cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#c6912c]/50 transition-all shadow-sm ${selectedProjectType ? "border-[#c6912c]/30" : "animate-border-pulse"}`}
                   >
-                    <option value="" disabled>① Select your project type</option>
+                    <option value="" disabled>Select your project type</option>
                     <option value="custom-home">Signature Custom Design</option>
                     <option value="renovation">Renovation</option>
                     <option value="new-build">New Build</option>
@@ -509,7 +509,7 @@ export default function AntovaBuilders() {
                   </select>
                   <svg className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-black/30 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                 </div>
-                <Button size="lg" className="h-[54px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold px-10 text-base tracking-wide rounded-lg shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-[1.02] hover:shadow-[#c6912c]/40 whitespace-nowrap"
+                <Button size="lg" className="h-[44px] sm:h-[48px] md:h-[54px] bg-[#c6912c] hover:bg-[#a67923] text-white font-semibold px-10 text-base tracking-wide rounded-lg shadow-lg shadow-[#c6912c]/20 transition-all hover:scale-[1.02] hover:shadow-[#c6912c]/40 whitespace-nowrap"
                   onClick={() => { const param = selectedProjectType ? `?type=${selectedProjectType}` : ""; router.push(`/cost-estimator${param}`) }}>
                   Reveal My Investment Range →
                 </Button>
