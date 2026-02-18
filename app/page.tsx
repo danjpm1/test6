@@ -514,7 +514,7 @@ export default function AntovaBuilders() {
                   Reveal My Investment Range →
                 </Button>
               </div>
-              <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-white/60 text-xs tracking-wide pt-1">
+              <div className="hidden md:flex flex-wrap items-center justify-center gap-4 md:gap-6 text-white/60 text-xs tracking-wide pt-1">
                 <span className="flex items-center gap-1.5">
                   <svg className="w-3.5 h-3.5 text-[#c6912c]/70" fill="none" stroke="currentColor" strokeWidth={2.5} viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
                   60-second results
