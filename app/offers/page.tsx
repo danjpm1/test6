@@ -4,33 +4,13 @@ import { useState, useEffect } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
-
-/* ─── Scroll to hash on load (Next.js fix) ─── */
-function useScrollToHash() {
-  useEffect(() => {
-    const hash = window.location.hash
-    if (hash) {
-      // Small delay to let page render
-      setTimeout(() => {
-        const el = document.querySelector(hash)
-        if (el) {
-          const offset = 100 // account for sticky header + filter bar
-          const top = el.getBoundingClientRect().top + window.scrollY - offset
-          window.scrollTo({ top, behavior: "smooth" })
-        }
-      }, 150)
-    }
-  }, [])
-}
+import { X } from "lucide-react"
 
 const CATEGORIES = [
   { id: "all", label: "All Offers" },
-  { id: "signature-custom-design", label: "Custom Design" },
   { id: "renovation", label: "Renovation" },
-  { id: "new-builds", label: "New Builds" },
-  { id: "commercial", label: "Commercial" },
-  { id: "remote", label: "Remote" },
-  { id: "consulting-engineering", label: "Engineering" },
+  { id: "new-build", label: "New Builds" },
+  { id: "engineering", label: "Engineering" },
   { id: "financing", label: "Financing" },
 ]
 
@@ -44,35 +24,6 @@ const FEATURED_OFFER = {
 }
 
 const OFFER_SECTIONS = [
-  {
-    id: "signature-custom-design",
-    category: "Flagship Service",
-    title: "Custom Design",
-    image: "/luxury-custom-home-interior-design-modern-architec.jpg",
-    offers: [
-      {
-        icon: "star",
-        title: "Complimentary Architectural Concept Package",
-        link: "/contact",
-        linkText: "Book Consultation",
-        details: "Commission a custom home over $500,000 and receive a complimentary 3D architectural concept package valued at $8,000. Includes site analysis, floor plan concepts, and exterior renderings.",
-      },
-      {
-        icon: "gift",
-        title: "Free $15,000 Smart Home Automation Package",
-        link: "/contact",
-        linkText: "Schedule Consultation",
-        details: "Signature homes over $750,000 include a full smart home package: automated lighting, climate control, security cameras, and whole-home audio at no additional cost.",
-      },
-      {
-        icon: "percent",
-        title: "Lock In 2025 Material Pricing Through 2026",
-        link: "/contact",
-        linkText: "Reserve Now",
-        details: "Sign before June 2026 and lock in current material costs for your entire build — protecting you from price increases on lumber, steel, and premium finishes.",
-      },
-    ],
-  },
   {
     id: "renovation",
     category: "Renovation",
@@ -103,7 +54,7 @@ const OFFER_SECTIONS = [
     ],
   },
   {
-    id: "new-builds",
+    id: "new-build",
     category: "New Construction",
     title: "New Builds",
     image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
@@ -132,80 +83,22 @@ const OFFER_SECTIONS = [
     ],
   },
   {
-    id: "commercial",
-    category: "Commercial Projects",
-    title: "Commercial",
-    image: "/modern-commercial-building-exterior-glass-facade.jpg",
-    offers: [
-      {
-        icon: "percent",
-        title: "10% Off Tenant Improvement Build-Outs",
-        link: "/contact",
-        linkText: "Get Quote",
-        details: "Save 10% on commercial tenant improvement projects over 2,000 SF. Applies to office, retail, and restaurant build-outs contracted before Q3 2026.",
-      },
-      {
-        icon: "clock",
-        title: "Guaranteed 90-Day Completion on Projects Under 5,000 SF",
-        link: "/contact",
-        linkText: "Schedule Consultation",
-        details: "We guarantee completion within 90 days for standard commercial build-outs under 5,000 SF. If we miss the deadline, you receive a $5,000 credit.",
-      },
-      {
-        icon: "star",
-        title: "Free ADA Compliance Audit",
-        link: "/contact",
-        linkText: "Book Audit",
-        details: "Complimentary ADA compliance review for any commercial project. Our team identifies requirements and integrates them into your build plan at no extra cost. Valued at $2,500.",
-      },
-    ],
-  },
-  {
-    id: "remote",
-    category: "Remote & Off-Grid",
-    title: "Remote",
-    image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
-    offers: [
-      {
-        icon: "star",
-        title: "Free Site Logistics Assessment",
-        link: "/contact",
-        linkText: "Book Assessment",
-        details: "Complimentary on-site assessment covering access routes, material staging, utility connections, and terrain analysis. Valued at $3,500, free for projects over $150,000.",
-      },
-      {
-        icon: "gift",
-        title: "Solar Power Package Included on Off-Grid Homes",
-        link: "/contact",
-        linkText: "Get Details",
-        details: "Off-grid homes over $250,000 include a complete solar power system: panels, inverter, and battery bank valued at $32,000. Enough to power your entire home year-round.",
-      },
-      {
-        icon: "percent",
-        title: "Bundle Off-Grid Systems & Save 20%",
-        link: "/contact",
-        linkText: "Build Your Package",
-        details: "Combine any 3+ off-grid systems (solar, well & septic, generator, satellite internet, propane, rainwater) and save 20% on the package total.",
-      },
-    ],
-  },
-  {
-    id: "consulting-engineering",
-    category: "Consulting & Engineering",
+    id: "engineering",
+    category: "Engineering & Consulting",
     title: "Engineering",
     image: "/images/engineering-blueprints.png",
     offers: [
       {
         icon: "star",
         title: "Free Structural Assessment",
-        link: "/contact",
+        link: "/services/engineering-consulting",
         linkText: "Book Now",
         details: "Get a complimentary on-site structural assessment and preliminary engineering report. Valued at $500, now free for new clients.",
       },
       {
         icon: "clock",
         title: "50% Faster Permit Expediting — Guaranteed",
-        link: "/contact",
+        link: "/services/engineering-consulting",
         linkText: "Get Details",
         details: "Our permit expediting service gets your project approved in half the typical time. If we don't meet the timeline, your expediting fee is refunded.",
       },
@@ -249,6 +142,362 @@ const OFFER_SECTIONS = [
   },
 ]
 
+// Modal content for each section
+const MODAL_CONTENT: Record<string, {
+  subtitle: string
+  headline: string
+  description: string
+  benefits: { icon: string; title: string; description: string }[]
+  testimonial: { quote: string; author: string; title: string }
+  stats: { value: string; label: string }[]
+}> = {
+  renovation: {
+    subtitle: "RENOVATION SERVICES",
+    headline: "Transform Your Space with Precision",
+    description: "From kitchen remodels to whole-home transformations, we deliver exceptional craftsmanship that elevates your living experience.",
+    benefits: [
+      { icon: "design", title: "Expert Design Consultation", description: "Complimentary 2-hour session with our interior specialists" },
+      { icon: "quality", title: "Premium Materials Only", description: "Hand-selected fixtures and finishes from top brands" },
+      { icon: "timeline", title: "On-Time Guarantee", description: "We meet deadlines or your project management fee is waived" },
+      { icon: "warranty", title: "5-Year Craftsmanship Warranty", description: "Complete peace of mind on all renovation work" },
+    ],
+    testimonial: {
+      quote: "Antova transformed our 1990s kitchen into a stunning modern space. The attention to detail was remarkable.",
+      author: "Jennifer & Mark Thompson",
+      title: "Kitchen Renovation, Coeur d'Alene"
+    },
+    stats: [
+      { value: "150+", label: "Renovations Completed" },
+      { value: "98%", label: "Client Satisfaction" },
+      { value: "$2,500", label: "Fixture Credit Available" },
+    ]
+  },
+  "new-build": {
+    subtitle: "NEW CONSTRUCTION",
+    headline: "Build Your Dream From the Ground Up",
+    description: "Custom homes designed around your lifestyle, built with uncompromising quality and cutting-edge technology.",
+    benefits: [
+      { icon: "design", title: "Fully Custom Design", description: "Your vision, our expertise — every detail tailored to you" },
+      { icon: "smart", title: "Smart Home Integration", description: "Complimentary $15K automation package on luxury estates" },
+      { icon: "energy", title: "Energy Efficient Build", description: "Modern insulation, windows, and HVAC systems standard" },
+      { icon: "warranty", title: "10-Year Structural Warranty", description: "Industry-leading protection for your investment" },
+    ],
+    testimonial: {
+      quote: "From the first meeting to move-in day, Antova exceeded every expectation. Our home is exactly what we envisioned.",
+      author: "Sarah & David Mitchell",
+      title: "Custom Home, Sandpoint"
+    },
+    stats: [
+      { value: "75+", label: "Homes Built" },
+      { value: "3.99%", label: "APR Available" },
+      { value: "$10K", label: "Appliance Package" },
+    ]
+  },
+  engineering: {
+    subtitle: "ENGINEERING & CONSULTING",
+    headline: "Expert Guidance for Complex Projects",
+    description: "Structural assessments, permit expediting, and professional consulting to ensure your project succeeds.",
+    benefits: [
+      { icon: "assessment", title: "Free Structural Assessment", description: "Complimentary on-site evaluation worth $500" },
+      { icon: "permit", title: "50% Faster Permits", description: "Guaranteed expedited approval or your fee refunded" },
+      { icon: "expert", title: "Licensed Engineers", description: "PE-stamped drawings and professional certifications" },
+      { icon: "savings", title: "Bundle & Save 15%", description: "Combine services for significant cost savings" },
+    ],
+    testimonial: {
+      quote: "Their engineering team got our permits approved in half the time. The expertise saved us months of delays.",
+      author: "Michael Chen",
+      title: "Commercial Project, Spokane"
+    },
+    stats: [
+      { value: "100%", label: "Permit Success Rate" },
+      { value: "50%", label: "Faster Approval" },
+      { value: "$620K+", label: "Client Savings" },
+    ]
+  },
+  financing: {
+    subtitle: "FINANCING OPTIONS",
+    headline: "Flexible Financing for Every Budget",
+    description: "Multiple financing solutions to make your dream project a reality, with competitive rates and fast approvals.",
+    benefits: [
+      { icon: "rate", title: "Rates from 5.99% APR", description: "Competitive home equity lines through trusted partners" },
+      { icon: "nosecurity", title: "No Equity Required Option", description: "Unsecured loans up to $100K without collateral" },
+      { icon: "fast", title: "24-Hour Decisions", description: "Streamlined application with rapid approval" },
+      { icon: "flexible", title: "Flexible Terms", description: "Customize payments to fit your budget" },
+    ],
+    testimonial: {
+      quote: "The financing process was seamless. We got approved in a day and started our renovation the following week.",
+      author: "Robert & Lisa Anderson",
+      title: "Whole-Home Renovation, Liberty Lake"
+    },
+    stats: [
+      { value: "0%", label: "APR for 12 Months" },
+      { value: "24hr", label: "Approval Time" },
+      { value: "$500K", label: "Max Credit Line" },
+    ]
+  },
+}
+
+function BenefitIcon({ type }: { type: string }) {
+  const iconClass = "w-6 h-6 text-[#c6912c]"
+  
+  switch (type) {
+    case "design":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
+        </svg>
+      )
+    case "quality":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
+        </svg>
+      )
+    case "timeline":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    case "warranty":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+      )
+    case "smart":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg>
+      )
+    case "energy":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      )
+    case "assessment":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+        </svg>
+      )
+    case "permit":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    case "expert":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
+        </svg>
+      )
+    case "savings":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+      )
+    case "rate":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+        </svg>
+      )
+    case "nosecurity":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z" />
+        </svg>
+      )
+    case "fast":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
+        </svg>
+      )
+    case "flexible":
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+        </svg>
+      )
+    default:
+      return (
+        <svg className={iconClass} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M5 13l4 4L19 7" />
+        </svg>
+      )
+  }
+}
+
+// Full-screen immersive modal component
+function OfferModal({ 
+  section, 
+  isOpen, 
+  onClose 
+}: { 
+  section: typeof OFFER_SECTIONS[0] | null
+  isOpen: boolean
+  onClose: () => void 
+}) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    window.addEventListener("keydown", handleEscape)
+    return () => window.removeEventListener("keydown", handleEscape)
+  }, [onClose])
+
+  if (!section) return null
+
+  const content = MODAL_CONTENT[section.id]
+  if (!content) return null
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] transition-all duration-500 ${
+        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      }`}
+    >
+      {/* Dark overlay */}
+      <div 
+        className="absolute inset-0 bg-black/90 backdrop-blur-md"
+        onClick={onClose}
+      />
+      
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="fixed top-6 right-6 md:top-8 md:right-8 z-20 w-12 h-12 flex items-center justify-center bg-white/10 hover:bg-white/20 rounded-full transition-all duration-300 hover:scale-110 border border-white/20"
+        aria-label="Close modal"
+      >
+        <X size={24} className="text-white" />
+      </button>
+
+      {/* Modal Content - Scrollable */}
+      <div 
+        className={`relative z-10 w-full h-full overflow-y-auto transition-all duration-500 ${
+          isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
+      >
+        <div className="min-h-full flex flex-col">
+          {/* Hero Image Section */}
+          <div className="relative w-full h-[40vh] md:h-[50vh] flex-shrink-0">
+            <img
+              src={section.image}
+              alt={section.title}
+              className="w-full h-full object-cover"
+            />
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent" />
+            
+            {/* Title overlay on image */}
+            <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 lg:p-16">
+              <p className="text-[#c6912c] text-sm md:text-base tracking-[0.3em] uppercase mb-3 font-medium">
+                {content.subtitle}
+              </p>
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-tight max-w-4xl">
+                {content.headline}
+              </h2>
+            </div>
+          </div>
+
+          {/* Content Section */}
+          <div className="flex-1 bg-black px-6 md:px-12 lg:px-16 py-12 md:py-16">
+            <div className="max-w-6xl mx-auto">
+              {/* Description */}
+              <p className="text-lg md:text-xl text-white/70 max-w-3xl mb-12 leading-relaxed">
+                {content.description}
+              </p>
+
+              {/* Stats Row */}
+              <div className="grid grid-cols-3 gap-4 md:gap-8 mb-12 pb-12 border-b border-white/10">
+                {content.stats.map((stat, index) => (
+                  <div key={index} className="text-center">
+                    <div className="text-2xl md:text-4xl lg:text-5xl font-bold text-[#c6912c] mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-xs md:text-sm text-white/50 uppercase tracking-wider">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Benefits Grid */}
+              <div className="grid md:grid-cols-2 gap-6 md:gap-8 mb-12">
+                {content.benefits.map((benefit, index) => (
+                  <div 
+                    key={index}
+                    className="flex gap-4 p-5 md:p-6 bg-white/5 rounded-lg border border-white/10 hover:border-[#c6912c]/50 transition-colors duration-300"
+                  >
+                    <div className="flex-shrink-0 w-12 h-12 bg-[#c6912c]/10 rounded-lg flex items-center justify-center">
+                      <BenefitIcon type={benefit.icon} />
+                    </div>
+                    <div>
+                      <h3 className="text-white font-semibold text-lg mb-1">
+                        {benefit.title}
+                      </h3>
+                      <p className="text-white/60 text-sm leading-relaxed">
+                        {benefit.description}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Testimonial */}
+              <div className="bg-gradient-to-r from-[#c6912c]/10 to-transparent p-6 md:p-8 rounded-lg border-l-4 border-[#c6912c] mb-12">
+                <p className="text-white/90 text-lg md:text-xl italic leading-relaxed mb-4">
+                  "{content.testimonial.quote}"
+                </p>
+                <div>
+                  <p className="text-white font-semibold">{content.testimonial.author}</p>
+                  <p className="text-white/50 text-sm">{content.testimonial.title}</p>
+                </div>
+              </div>
+
+              {/* CTA Buttons */}
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
+                <Link href="/contact" onClick={onClose}>
+                  <button className="w-full sm:w-auto px-10 py-4 bg-[#c6912c] hover:bg-[#d4a03a] text-black font-semibold text-lg rounded transition-all duration-300 hover:shadow-lg hover:shadow-[#c6912c]/30">
+                    Get Quote
+                  </button>
+                </Link>
+                <Link href="/contact" onClick={onClose}>
+                  <button className="w-full sm:w-auto px-10 py-4 bg-transparent border-2 border-white/30 hover:border-white text-white font-semibold text-lg rounded transition-all duration-300 hover:bg-white/10">
+                    Schedule Consultation
+                  </button>
+                </Link>
+              </div>
+
+              {/* Fine print */}
+              <p className="text-center text-white/30 text-xs mt-8">
+                All offers subject to terms and conditions. Contact us for full details.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function OfferIcon({ type }: { type: string }) {
   switch (type) {
     case "calendar":
@@ -287,38 +536,23 @@ function OfferIcon({ type }: { type: string }) {
 }
 
 export default function OffersPage() {
-  useScrollToHash()
   const [activeCategory, setActiveCategory] = useState("all")
+  const [selectedSection, setSelectedSection] = useState<typeof OFFER_SECTIONS[0] | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  // When user clicks a filter, also update URL hash
-  const handleCategoryClick = (id: string) => {
-    setActiveCategory(id)
-    if (id !== "all") {
-      // Scroll to the section
-      setTimeout(() => {
-        const el = document.getElementById(id)
-        if (el) {
-          const offset = 100
-          const top = el.getBoundingClientRect().top + window.scrollY - offset
-          window.scrollTo({ top, behavior: "smooth" })
-        }
-      }, 50)
-    } else {
-      window.scrollTo({ top: 0, behavior: "smooth" })
-    }
+  const filteredSections = activeCategory === "all" 
+    ? OFFER_SECTIONS 
+    : OFFER_SECTIONS.filter(section => section.id === activeCategory)
+
+  const handleLearnMore = (section: typeof OFFER_SECTIONS[0]) => {
+    setSelectedSection(section)
+    setIsModalOpen(true)
   }
 
-  // Also set active category based on hash on load
-  useEffect(() => {
-    const hash = window.location.hash.replace("#", "")
-    if (hash && CATEGORIES.some(c => c.id === hash)) {
-      setActiveCategory(hash)
-    }
-  }, [])
-
-  const filteredSections = activeCategory === "all"
-    ? OFFER_SECTIONS
-    : OFFER_SECTIONS.filter(section => section.id === activeCategory)
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setTimeout(() => setSelectedSection(null), 300)
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -343,6 +577,7 @@ export default function OffersPage() {
         {/* Featured Offer - Large Image */}
         <section className="px-4 md:px-8 lg:px-12 pb-8 md:pb-12">
           <div className="max-w-[1200px] mx-auto">
+            {/* Smaller Image like Tesla */}
             <div className="relative w-full aspect-[16/6] md:aspect-[21/8] rounded-lg overflow-hidden mb-8">
               <img
                 src={FEATURED_OFFER.image}
@@ -351,11 +586,12 @@ export default function OffersPage() {
               />
             </div>
 
+            {/* Offer Details Below Image */}
             <div className="max-w-3xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">
                 {FEATURED_OFFER.title}
               </h2>
-
+              
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
                   <svg className="w-5 h-5 text-[#5c5c5c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -382,7 +618,7 @@ export default function OffersPage() {
                 {CATEGORIES.map((category) => (
                   <button
                     key={category.id}
-                    onClick={() => handleCategoryClick(category.id)}
+                    onClick={() => setActiveCategory(category.id)}
                     className={`px-5 sm:px-6 py-2.5 rounded-full text-sm font-medium whitespace-nowrap transition-all duration-200 border ${
                       activeCategory === category.id
                         ? "bg-black text-white border-black"
@@ -397,9 +633,9 @@ export default function OffersPage() {
           </div>
         </section>
 
-        {/* Offer Sections */}
+        {/* Offer Sections - Tesla Model Style */}
         {filteredSections.map((section, index) => (
-          <section key={section.id} id={section.id} className={`py-12 md:py-20 ${index % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}`}>
+          <section key={section.id} className={`py-12 md:py-20 ${index % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}`}>
             <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12">
               <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
                 {/* Left: Content */}
@@ -408,7 +644,7 @@ export default function OffersPage() {
                   <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-5">
                     {section.title}
                   </h2>
-
+                  
                   {/* CTA Buttons */}
                   <div className="flex gap-3 mb-8">
                     <Link href="/contact">
@@ -416,14 +652,15 @@ export default function OffersPage() {
                         Get Quote
                       </button>
                     </Link>
-                    <Link href={`/cost-estimator?type=${section.id === 'consulting-engineering' ? 'consulting' : section.id === 'new-builds' ? 'new-build' : section.id === 'signature-custom-design' ? 'custom-home' : section.id}`}>
-                      <button className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-gray-400 transition-colors">
-                        AI Estimate
-                      </button>
-                    </Link>
+                    <button 
+                      onClick={() => handleLearnMore(section)}
+                      className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-gray-400 transition-colors"
+                    >
+                      Learn More
+                    </button>
                   </div>
 
-                  {/* Offers List */}
+                  {/* Offers List - More compact */}
                   <div className="space-y-5">
                     {section.offers.map((offer, offerIndex) => (
                       <div key={offerIndex}>
@@ -442,7 +679,7 @@ export default function OffersPage() {
                   </div>
                 </div>
 
-                {/* Right: Image */}
+                {/* Right: Image (taller to match content) */}
                 <div className="rounded-lg overflow-hidden">
                   <img
                     src={section.image}
@@ -459,7 +696,7 @@ export default function OffersPage() {
         <section className="py-16 md:py-24 bg-black text-center">
           <div className="max-w-3xl mx-auto px-6">
             <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4">
-              Don&apos;t See What You Need?
+              Don't See What You Need?
             </h2>
             <p className="text-lg text-white/70 mb-8">
               Contact us for custom pricing and financing options tailored to your project.
@@ -470,7 +707,7 @@ export default function OffersPage() {
                   Contact Us
                 </button>
               </Link>
-              <Link href="/cost-estimator">
+              <Link href="/estimator">
                 <button className="px-8 py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-medium rounded transition-colors">
                   AI Estimator
                 </button>
@@ -490,6 +727,13 @@ export default function OffersPage() {
       </main>
 
       <Footer />
+
+      {/* Full-screen Offer Modal */}
+      <OfferModal 
+        section={selectedSection}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   )
 }
