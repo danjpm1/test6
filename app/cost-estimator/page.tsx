@@ -38,6 +38,7 @@ const CUSTOM_HOME_BASE = 280;
 const NEW_BUILD_BASE = 240;
 const RENO_BASE: Record<string, number> = { kitchen: 45000, bathroom: 28000, addition: 220, "full-gut": 180, "whole-house": 160 };
 const CONSULT_BASE: Record<string, { low: number; high: number }> = {
+  estimation: { low: 2000, high: 6000 }, arbitration: { low: 5000, high: 20000 },
   structural: { low: 3500, high: 8000 }, feasibility: { low: 5000, high: 15000 },
   permits: { low: 2500, high: 6000 }, "site-analysis": { low: 4000, high: 12000 },
 };
@@ -606,6 +607,8 @@ function HomeFeaturesStep({ features, onToggle, onBack, onNext }: { features: st
 
 function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: { consultType: string; onTypeChange: (t: string) => void; onBack: () => void; onNext: () => void }) {
   const types = [
+    { id: "estimation", label: "Estimation", desc: "Detailed cost estimates, budget planning, value engineering", range: "$2K – $6K", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
+    { id: "arbitration", label: "Arbitration", desc: "Dispute resolution, expert testimony, construction claims", range: "$5K – $20K", icon: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" },
     { id: "structural", label: "Structural Assessment", desc: "Load analysis, foundation review, structural integrity", range: "$3.5K – $8K", icon: "M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" },
     { id: "feasibility", label: "Feasibility Study", desc: "Project viability, cost projections, risk analysis", range: "$5K – $15K", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
     { id: "permits", label: "Permit Support", desc: "Permit applications, code compliance, regulatory guidance", range: "$2.5K – $6K", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" },
