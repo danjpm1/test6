@@ -607,32 +607,32 @@ function HomeFeaturesStep({ features, onToggle, onBack, onNext }: { features: st
 
 function ConsultTypeStep({ consultType, onTypeChange, onBack, onNext }: { consultType: string; onTypeChange: (t: string) => void; onBack: () => void; onNext: () => void }) {
   const types = [
-    { id: "estimation", label: "Estimation", desc: "Detailed cost estimates, budget planning, value engineering", range: "$2K – $6K", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
-    { id: "arbitration", label: "Arbitration", desc: "Dispute resolution, expert testimony, construction claims", range: "$5K – $20K", icon: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" },
-    { id: "structural", label: "Structural Assessment", desc: "Load analysis, foundation review, structural integrity", range: "$3.5K – $8K", icon: "M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" },
-    { id: "feasibility", label: "Feasibility Study", desc: "Project viability, cost projections, risk analysis", range: "$5K – $15K", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
-    { id: "permits", label: "Permit Support", desc: "Permit applications, code compliance, regulatory guidance", range: "$2.5K – $6K", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" },
-    { id: "site-analysis", label: "Site Analysis", desc: "Soil testing, grading plans, environmental review", range: "$4K – $12K", icon: "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" },
+    { id: "estimation", label: "Estimation", desc: "Cost estimates, budget planning, value engineering", range: "$2K – $6K", icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" },
+    { id: "arbitration", label: "Arbitration", desc: "Dispute resolution, expert testimony, claims", range: "$5K – $20K", icon: "M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" },
+    { id: "structural", label: "Structural", desc: "Load analysis, foundation review, integrity", range: "$3.5K – $8K", icon: "M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3" },
+    { id: "feasibility", label: "Feasibility", desc: "Project viability, cost projections, risk", range: "$5K – $15K", icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" },
+    { id: "permits", label: "Permits", desc: "Applications, code compliance, guidance", range: "$2.5K – $6K", icon: "M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" },
+    { id: "site-analysis", label: "Site Analysis", desc: "Soil testing, grading, environmental", range: "$4K – $12K", icon: "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" },
   ];
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
       <StepHeadline subtitle="Select the engineering service that matches your project needs.">What do you need?</StepHeadline>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: 16, maxWidth: 700, margin: "0 auto" }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, maxWidth: 820, margin: "0 auto" }}>
         {types.map((t) => { const a = consultType === t.id; return (
-          <button key={t.id} onClick={() => onTypeChange(t.id)} style={{ padding: "28px 20px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
+          <button key={t.id} onClick={() => onTypeChange(t.id)} style={{ padding: "20px 16px", border: a ? `2px solid ${gold}` : "2px solid #e5e5e5", background: a ? `${gold}0a` : "#fff", color: dark, cursor: "pointer", transition: "all 0.25s", textAlign: "left", position: "relative", boxShadow: a ? `0 0 0 3px ${gold}15` : "none" }}
             onMouseEnter={(e) => { if (!a) { e.currentTarget.style.borderColor = gold; e.currentTarget.style.background = `${gold}06`; } }} onMouseLeave={(e) => { if (!a) { e.currentTarget.style.borderColor = "#e5e5e5"; e.currentTarget.style.background = "#fff"; } }}>
-            {a && <div style={{ position: "absolute", top: 10, right: 10, width: 20, height: 20, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#ccc"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 12, transition: "stroke 0.25s" }}><path d={t.icon} /></svg>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 18, marginBottom: 6 }}>{t.label}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: a ? gold : "#999", lineHeight: 1.5, marginBottom: 10 }}>{t.desc}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 15, color: a ? gold : "#bbb" }}>{t.range}</div>
+            {a && <div style={{ position: "absolute", top: 8, right: 8, width: 18, height: 18, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center" }}><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg></div>}
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={a ? gold : "#ccc"} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" style={{ marginBottom: 8, transition: "stroke 0.25s" }}><path d={t.icon} /></svg>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 15, marginBottom: 4 }}>{t.label}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: a ? gold : "#999", lineHeight: 1.4, marginBottom: 8 }}>{t.desc}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 14, color: a ? gold : "#bbb" }}>{t.range}</div>
           </button>); })}
       </div>
-      <div style={{ marginTop: 48, paddingTop: 28, borderTop: "1px solid #eee", display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(24px, 4vw, 56px)", flexWrap: "wrap" }}>
+      <div style={{ marginTop: 24, paddingTop: 20, borderTop: "1px solid #eee", display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(20px, 3vw, 40px)", flexWrap: "wrap" }}>
         {[{ value: "$620K+", label: "Client Savings" }, { value: "100%", label: "Permitting Success" }, { value: "9", label: "Disputes Resolved" }].map((s, i) => (
-          <div key={s.label} style={{ textAlign: "center", paddingLeft: i > 0 ? "clamp(24px, 4vw, 56px)" : 0, borderLeft: i > 0 ? "1px solid #e0e0e0" : "none" }}>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(24px, 3vw, 36px)", color: gold, letterSpacing: "-0.02em", lineHeight: 1 }}>{s.value}</div>
-            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#999", fontWeight: 500, marginTop: 6, letterSpacing: "0.04em" }}>{s.label}</div>
+          <div key={s.label} style={{ textAlign: "center", paddingLeft: i > 0 ? "clamp(20px, 3vw, 40px)" : 0, borderLeft: i > 0 ? "1px solid #e0e0e0" : "none" }}>
+            <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(20px, 2.5vw, 28px)", color: gold, letterSpacing: "-0.02em", lineHeight: 1 }}>{s.value}</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 10, color: "#999", fontWeight: 500, marginTop: 4, letterSpacing: "0.04em" }}>{s.label}</div>
           </div>))}
       </div>
       <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!consultType} />
