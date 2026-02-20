@@ -1054,8 +1054,153 @@ function AnalyzingStep({ projectType, zipCode }: { projectType: string; zipCode:
 /* ─── Results ──────────────────────────────────────────────────── */
 
 function ResultsStep({ estimate, displayedTotal, onReset, isConsulting, isCustomHome }: { estimate: EstimateResult; displayedTotal: number; onReset: () => void; isConsulting?: boolean; isCustomHome?: boolean }) {
-  const handleDownload = () => {
-    const html = `<!DOCTYPE html>
+  const [isGenerating, setIsGenerating] = useState(false);
+  
+  const handleDownload = async () => {
+    setIsGenerating(true);
+    
+    try {
+      // Dynamically import jsPDF
+      const { jsPDF } = await import('jspdf');
+      const doc = new jsPDF();
+      
+      const pageWidth = doc.internal.pageSize.getWidth();
+      const margin = 20;
+      let y = 20;
+      
+      // Colors
+      const goldColor: [number, number, number] = [198, 145, 44];
+      const darkColor: [number, number, number] = [10, 10, 10];
+      const grayColor: [number, number, number] = [120, 120, 120];
+      
+      // Header - Brand
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(14);
+      doc.setFont('helvetica', 'bold');
+      doc.text('ANTOVA BUILDERS', margin, y);
+      
+      y += 20;
+      
+      // Title
+      doc.setTextColor(...darkColor);
+      doc.setFontSize(24);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`${estimate.projectLabel} Estimate`, margin, y);
+      
+      y += 10;
+      
+      // Location & Tier
+      doc.setTextColor(...grayColor);
+      doc.setFontSize(11);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`${estimate.locationName} · ${estimate.tierName}`, margin, y);
+      
+      y += 20;
+      
+      // Total Amount
+      doc.setTextColor(...darkColor);
+      doc.setFontSize(36);
+      doc.setFont('helvetica', 'bold');
+      doc.text(`$${estimate.total.toLocaleString()}`, margin, y);
+      
+      y += 12;
+      
+      // Per unit (if applicable)
+      if (estimate.unitLabel !== "flat fee" && estimate.unitLabel !== "flat") {
+        doc.setTextColor(...grayColor);
+        doc.setFontSize(14);
+        doc.setFont('helvetica', 'normal');
+        doc.text(`$${estimate.perUnit.toLocaleString()} ${estimate.unitLabel}`, margin, y);
+        y += 10;
+      }
+      
+      y += 15;
+      
+      // Divider line
+      doc.setDrawColor(...goldColor);
+      doc.setLineWidth(0.5);
+      doc.line(margin, y, pageWidth - margin, y);
+      
+      y += 15;
+      
+      // Cost Breakdown header
+      doc.setTextColor(...darkColor);
+      doc.setFontSize(16);
+      doc.setFont('helvetica', 'bold');
+      doc.text('Cost Breakdown', margin, y);
+      
+      y += 15;
+      
+      // Breakdown items
+      doc.setFontSize(11);
+      estimate.breakdown.forEach((item) => {
+        doc.setTextColor(...darkColor);
+        doc.setFont('helvetica', 'normal');
+        doc.text(item.name, margin, y);
+        
+        doc.setFont('helvetica', 'bold');
+        const valueText = `$${item.value.toLocaleString()}`;
+        const valueWidth = doc.getTextWidth(valueText);
+        doc.text(valueText, pageWidth - margin - valueWidth, y);
+        
+        y += 10;
+      });
+      
+      y += 10;
+      
+      // Divider line
+      doc.setDrawColor(220, 220, 220);
+      doc.setLineWidth(0.3);
+      doc.line(margin, y, pageWidth - margin, y);
+      
+      y += 20;
+      
+      // Footer
+      doc.setTextColor(...grayColor);
+      doc.setFontSize(9);
+      doc.setFont('helvetica', 'normal');
+      doc.text(`Generated ${new Date().toLocaleDateString()}`, margin, y);
+      y += 5;
+      doc.text('AI-powered estimate based on 50,000+ regional data points', margin, y);
+      y += 10;
+      doc.text('This is a preliminary estimate. Contact us for a detailed, locked-in quote.', margin, y);
+      
+      y += 15;
+      
+      // Contact info with gold color
+      doc.setTextColor(...goldColor);
+      doc.setFontSize(10);
+      doc.setFont('helvetica', 'bold');
+      doc.text('antovabuilders.com · (208) 625-8342', margin, y);
+      
+      // Generate filename
+      const filename = `antova-estimate-${estimate.projectLabel.toLowerCase().replace(/\s+/g, "-")}.pdf`;
+      
+      // Check if iOS
+      const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+      
+      if (isIOS && navigator.share) {
+        // iOS: Use share sheet
+        const pdfBlob = doc.output('blob');
+        const file = new File([pdfBlob], filename, { type: 'application/pdf' });
+        
+        try {
+          await navigator.share({
+            title: `${estimate.projectLabel} Estimate – $${estimate.total.toLocaleString()}`,
+            files: [file]
+          });
+        } catch (shareError) {
+          // If share fails, fallback to direct download
+          doc.save(filename);
+        }
+      } else {
+        // Desktop & Android: Direct download
+        doc.save(filename);
+      }
+    } catch (error) {
+      console.error('PDF generation failed:', error);
+      // Fallback to HTML download
+      const html = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Antova Builders – ${estimate.projectLabel} Estimate</title>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:system-ui,-apple-system,sans-serif;max-width:600px;margin:0 auto;padding:32px 24px;color:#1a1a1a}
@@ -1073,26 +1218,19 @@ ${estimate.unitLabel !== "flat fee" && estimate.unitLabel !== "flat" ? `<p class
 <div class="footer"><p>Generated ${new Date().toLocaleDateString()} · AI-powered estimate based on 50,000+ regional data points</p>
 <p style="margin-top:8px">This is a preliminary estimate. Contact us for a detailed, locked-in quote.</p>
 <p style="margin-top:8px">antovabuilders.com · (208) 625-8342</p></div></body></html>`;
-
-    if (navigator.share && /Mobi|Android/i.test(navigator.userAgent)) {
+      
       const blob = new Blob([html], { type: "text/html" });
-      const file = new File([blob], `antova-estimate-${Date.now()}.html`, { type: "text/html" });
-      navigator.share({ title: `${estimate.projectLabel} Estimate – \$${estimate.total.toLocaleString()}`, files: [file] }).catch(() => downloadFile(html));
-    } else {
-      downloadFile(html);
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `antova-estimate-${estimate.projectLabel.toLowerCase().replace(/\s+/g, "-")}.html`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    } finally {
+      setIsGenerating(false);
     }
-  };
-
-  const downloadFile = (html: string) => {
-    const blob = new Blob([html], { type: "text/html" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `antova-estimate-${estimate.projectLabel.toLowerCase().replace(/\s+/g, "-")}.html`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
   };
 
   return (
@@ -1153,7 +1291,7 @@ ${estimate.unitLabel !== "flat fee" && estimate.unitLabel !== "flat" ? `<p class
       )}
 
       <div style={{ display: "flex", gap: 16, justifyContent: "center", marginTop: 32, flexWrap: "wrap" }}>
-        <OutlineButton onClick={handleDownload}>Save Estimate</OutlineButton>
+        <OutlineButton onClick={handleDownload}>{isGenerating ? "Generating..." : "Save Estimate"}</OutlineButton>
         <DarkButton onClick={onReset}>New Estimate</DarkButton>
       </div>
 
