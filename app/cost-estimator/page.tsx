@@ -302,16 +302,150 @@ function TypeSelectStep({ onSelect }: { onSelect: (type: ProjectType) => void })
 /* ─── Shared Steps ─────────────────────────────────────────────── */
 
 function ZipCodeStep({ zipCode, onZipChange, onBack, onSubmit, projectType }: { zipCode: string; onZipChange: (z: string) => void; onBack: () => void; onSubmit: () => void; projectType: string }) {
+  const [inputValue, setInputValue] = useState(zipCode);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [focusedIndex, setFocusedIndex] = useState(-1);
+  
   const headlines: Record<string, string> = { "custom-home": "Where will we build your custom home?", "new-build": "Where is your new build site?", "renovation": "Where is the property you're renovating?", "consulting": "Where is your project located?", "commercial": "Where is the commercial property?", "remote": "Where is the build site?" };
   const subtitles: Record<string, string> = { "custom-home": "Last step — your location determines final pricing for your custom home.", "new-build": "Last step — your build location determines the final pricing tier.", "renovation": "Last step — we'll tailor renovation costs to your local market.", "consulting": "Last step — location affects site visit and travel costs for your engagement.", "commercial": "Last step — local labor and material costs vary by market.", "remote": "Last step — remoteness and local conditions affect final pricing." };
+  
+  // All searchable locations
+  const locations = [
+    { city: "Coeur d'Alene", state: "ID", zip: "83814" },
+    { city: "Coeur d'Alene", state: "ID", zip: "83815" },
+    { city: "Coeur d'Alene", state: "ID", zip: "83816" },
+    { city: "Hayden", state: "ID", zip: "83835" },
+    { city: "Sandpoint", state: "ID", zip: "83864" },
+    { city: "Post Falls", state: "ID", zip: "83854" },
+    { city: "Rathdrum", state: "ID", zip: "83858" },
+    { city: "Spirit Lake", state: "ID", zip: "83869" },
+    { city: "Athol", state: "ID", zip: "83801" },
+    { city: "Cocolalla", state: "ID", zip: "83813" },
+    { city: "Sagle", state: "ID", zip: "83860" },
+    { city: "Careywood", state: "ID", zip: "83809" },
+    { city: "Bonners Ferry", state: "ID", zip: "83805" },
+    { city: "Priest River", state: "ID", zip: "83856" },
+    { city: "Priest Lake", state: "ID", zip: "83821" },
+    { city: "Moscow", state: "ID", zip: "83843" },
+    { city: "Kellogg", state: "ID", zip: "83837" },
+    { city: "Wallace", state: "ID", zip: "83873" },
+    { city: "Liberty Lake", state: "WA", zip: "99019" },
+    { city: "Spokane", state: "WA", zip: "99201" },
+    { city: "Spokane", state: "WA", zip: "99203" },
+    { city: "Spokane", state: "WA", zip: "99205" },
+    { city: "Spokane", state: "WA", zip: "99207" },
+    { city: "Spokane", state: "WA", zip: "99208" },
+    { city: "Spokane", state: "WA", zip: "99223" },
+    { city: "Spokane Valley", state: "WA", zip: "99206" },
+    { city: "Spokane Valley", state: "WA", zip: "99212" },
+    { city: "Spokane Valley", state: "WA", zip: "99216" },
+    { city: "Cheney", state: "WA", zip: "99004" },
+    { city: "Medical Lake", state: "WA", zip: "99022" },
+    { city: "Airway Heights", state: "WA", zip: "99001" },
+    { city: "Deer Park", state: "WA", zip: "99006" },
+    { city: "Mead", state: "WA", zip: "99021" },
+    { city: "Newman Lake", state: "WA", zip: "99025" },
+    { city: "Pullman", state: "WA", zip: "99163" },
+  ];
+  
+  // Filter suggestions based on input
+  const suggestions = inputValue.length >= 2 ? locations.filter(loc => {
+    const search = inputValue.toLowerCase();
+    return loc.city.toLowerCase().includes(search) || 
+           loc.zip.startsWith(inputValue) ||
+           `${loc.city}, ${loc.state}`.toLowerCase().includes(search);
+  }).slice(0, 6) : [];
+  
+  const handleInputChange = (value: string) => {
+    setInputValue(value);
+    setShowSuggestions(true);
+    setFocusedIndex(-1);
+    // If it's a 5-digit ZIP, set it directly
+    if (/^\d{5}$/.test(value)) {
+      onZipChange(value);
+    }
+  };
+  
+  const handleSelect = (loc: { city: string; state: string; zip: string }) => {
+    setInputValue(`${loc.city}, ${loc.state} ${loc.zip}`);
+    onZipChange(loc.zip);
+    setShowSuggestions(false);
+  };
+  
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "ArrowDown") {
+      e.preventDefault();
+      setFocusedIndex(prev => Math.min(prev + 1, suggestions.length - 1));
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
+      setFocusedIndex(prev => Math.max(prev - 1, -1));
+    } else if (e.key === "Enter") {
+      e.preventDefault();
+      if (focusedIndex >= 0 && suggestions[focusedIndex]) {
+        handleSelect(suggestions[focusedIndex]);
+      } else if (zipCode.length === 5) {
+        onSubmit();
+      }
+    } else if (e.key === "Escape") {
+      setShowSuggestions(false);
+    }
+  };
+  
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
       <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Where is your project?"}</StepHeadline>
-      <input type="text" value={zipCode} onChange={(e) => onZipChange(e.target.value.replace(/\D/g, "").slice(0, 5))} placeholder="Enter ZIP code" autoFocus
-        onKeyDown={(e) => { if (e.key === "Enter" && zipCode.length === 5) onSubmit(); }}
-        style={{ width: "100%", maxWidth: 420, display: "block", margin: "0 auto", border: "2px solid #e0e0e0", padding: "20px 28px", fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.08em" }}
-        onFocus={(e) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; }}
-        onBlur={(e) => { e.target.style.borderColor = "#e0e0e0"; e.target.style.boxShadow = "none"; }} />
+      <div style={{ position: "relative", maxWidth: 480, margin: "0 auto" }}>
+        <div style={{ position: "relative" }}>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#999" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ position: "absolute", left: 20, top: "50%", transform: "translateY(-50%)", pointerEvents: "none" }}>
+            <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input 
+            type="text" 
+            value={inputValue} 
+            onChange={(e) => handleInputChange(e.target.value)} 
+            onFocus={() => setShowSuggestions(true)}
+            onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+            onKeyDown={handleKeyDown}
+            placeholder="Search city or ZIP code" 
+            autoFocus
+            style={{ width: "100%", border: "2px solid #e0e0e0", padding: "20px 28px 20px 52px", fontSize: "clamp(18px, 3vw, 24px)", fontFamily: "'DM Sans', sans-serif", fontWeight: 500, color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s" }}
+            onFocusCapture={(e) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; }}
+            onBlurCapture={(e) => { e.target.style.borderColor = "#e0e0e0"; e.target.style.boxShadow = "none"; }} 
+          />
+        </div>
+        
+        {showSuggestions && suggestions.length > 0 && (
+          <div style={{ position: "absolute", top: "100%", left: 0, right: 0, background: "#fff", border: "2px solid #e0e0e0", borderTop: "none", boxShadow: "0 8px 32px rgba(0,0,0,0.12)", zIndex: 100, maxHeight: 300, overflowY: "auto" }}>
+            {suggestions.map((loc, idx) => (
+              <div 
+                key={`${loc.zip}-${idx}`}
+                onClick={() => handleSelect(loc)}
+                style={{ 
+                  padding: "16px 20px", 
+                  cursor: "pointer", 
+                  display: "flex", 
+                  alignItems: "center", 
+                  gap: 12,
+                  background: focusedIndex === idx ? `${gold}10` : "#fff",
+                  borderBottom: idx < suggestions.length - 1 ? "1px solid #f0f0f0" : "none",
+                  transition: "background 0.15s"
+                }}
+                onMouseEnter={(e) => { e.currentTarget.style.background = `${gold}10`; setFocusedIndex(idx); }}
+                onMouseLeave={(e) => { if (focusedIndex !== idx) e.currentTarget.style.background = "#fff"; }}
+              >
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                  <path d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <div style={{ textAlign: "left" }}>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 600, fontSize: 16, color: dark }}>{loc.city}, {loc.state}</div>
+                  <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#999" }}>{loc.zip}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
       <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Serving the Inland Northwest — Idaho, Eastern Washington & beyond</p>
       <NavButtons onBack={onBack} onNext={onSubmit} nextDisabled={zipCode.length !== 5} nextLabel="See My Estimate" />
     </div>
