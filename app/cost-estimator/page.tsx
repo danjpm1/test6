@@ -466,23 +466,37 @@ function RenoScopeStep({ renoScope, onScopeChange, onBack, onNext }: { renoScope
 
 function RenoAreaStep({ renoArea, onAreaChange, onBack, onNext, renoScope }: { renoArea: number; onAreaChange: (a: number) => void; onBack: () => void; onNext: () => void; renoScope: string }) {
   const [inputValue, setInputValue] = useState(renoArea.toString());
-  const is: React.CSSProperties = { width: "100%", maxWidth: 420, display: "block", margin: "0 auto", border: "2px solid #e0e0e0", padding: "20px 28px", fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.04em" };
+  const MIN_AREA = 50;
+  const MAX_AREA = 10000;
+  
+  const num = parseInt(inputValue) || 0;
+  const isValid = num >= MIN_AREA && num <= MAX_AREA;
+  const errorMsg = num < MIN_AREA ? `Minimum is ${MIN_AREA} sq ft` : num > MAX_AREA ? `Maximum is ${MAX_AREA.toLocaleString()} sq ft` : "";
+  
+  const is: React.CSSProperties = { 
+    width: "100%", maxWidth: 420, display: "block", margin: "0 auto", 
+    border: `2px solid ${!isValid && inputValue ? "#e53e3e" : "#e0e0e0"}`, 
+    padding: "20px 28px", fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center", 
+    fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, outline: "none", 
+    background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.04em" 
+  };
   const scopeLabels: Record<string, string> = { addition: "addition", "full-gut": "gut renovation", "whole-house": "whole-house renovation" };
   
   const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    e.target.style.borderColor = "#e0e0e0"; 
+    if (isValid) {
+      e.target.style.borderColor = "#e0e0e0"; 
+    }
     e.target.style.boxShadow = "none";
-    const num = parseInt(inputValue) || 50;
-    const clamped = Math.max(50, Math.min(5000, num));
-    setInputValue(clamped.toString());
-    onAreaChange(clamped);
+    if (isValid) {
+      onAreaChange(num);
+    }
   };
   
   const handleContinue = () => {
-    const num = parseInt(inputValue) || 50;
-    const clamped = Math.max(50, Math.min(5000, num));
-    onAreaChange(clamped);
-    onNext();
+    if (isValid) {
+      onAreaChange(num);
+      onNext();
+    }
   };
   
   return (
@@ -494,11 +508,15 @@ function RenoAreaStep({ renoArea, onAreaChange, onBack, onNext, renoScope }: { r
         onChange={(e) => setInputValue(e.target.value)} 
         autoFocus 
         style={is}
-        onFocus={(e) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; }}
+        onFocus={(e) => { e.target.style.borderColor = isValid ? gold : "#e53e3e"; e.target.style.boxShadow = `0 0 0 4px ${isValid ? gold : "#e53e3e"}18`; }}
         onBlur={handleBlur} 
       />
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Square feet of renovation area (50 – 5,000)</p>
-      <NavButtons onBack={onBack} onNext={handleContinue} />
+      {errorMsg ? (
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#e53e3e", marginTop: 16, fontWeight: 500 }}>{errorMsg}</p>
+      ) : (
+        <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Square feet of renovation area ({MIN_AREA} – {MAX_AREA.toLocaleString()})</p>
+      )}
+      <NavButtons onBack={onBack} onNext={handleContinue} nextDisabled={!isValid} />
     </div>
   );
 }
