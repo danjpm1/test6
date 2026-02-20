@@ -462,17 +462,43 @@ function RenoScopeStep({ renoScope, onScopeChange, onBack, onNext }: { renoScope
   );
 }
 
+/* ─── FIXED RenoAreaStep ─────────────────────────────────────────── */
+
 function RenoAreaStep({ renoArea, onAreaChange, onBack, onNext, renoScope }: { renoArea: number; onAreaChange: (a: number) => void; onBack: () => void; onNext: () => void; renoScope: string }) {
+  const [inputValue, setInputValue] = useState(renoArea.toString());
   const is: React.CSSProperties = { width: "100%", maxWidth: 420, display: "block", margin: "0 auto", border: "2px solid #e0e0e0", padding: "20px 28px", fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center", fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, outline: "none", background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.04em" };
   const scopeLabels: Record<string, string> = { addition: "addition", "full-gut": "gut renovation", "whole-house": "whole-house renovation" };
+  
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    e.target.style.borderColor = "#e0e0e0"; 
+    e.target.style.boxShadow = "none";
+    const num = parseInt(inputValue) || 50;
+    const clamped = Math.max(50, Math.min(5000, num));
+    setInputValue(clamped.toString());
+    onAreaChange(clamped);
+  };
+  
+  const handleContinue = () => {
+    const num = parseInt(inputValue) || 50;
+    const clamped = Math.max(50, Math.min(5000, num));
+    onAreaChange(clamped);
+    onNext();
+  };
+  
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
       <StepHeadline subtitle={`Enter the total square footage for your ${scopeLabels[renoScope] ?? "renovation"}.`}>How large is the area?</StepHeadline>
-      <input type="number" value={renoArea} onChange={(e) => onAreaChange(Math.max(50, Math.min(5000, +e.target.value || 50)))} autoFocus style={is}
+      <input 
+        type="number" 
+        value={inputValue} 
+        onChange={(e) => setInputValue(e.target.value)} 
+        autoFocus 
+        style={is}
         onFocus={(e) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; }}
-        onBlur={(e) => { e.target.style.borderColor = "#e0e0e0"; e.target.style.boxShadow = "none"; }} />
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Square feet of renovation area</p>
-      <NavButtons onBack={onBack} onNext={onNext} />
+        onBlur={handleBlur} 
+      />
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Square feet of renovation area (50 – 5,000)</p>
+      <NavButtons onBack={onBack} onNext={handleContinue} />
     </div>
   );
 }
