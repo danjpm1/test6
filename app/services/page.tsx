@@ -50,7 +50,8 @@ const services = [
     price: "From $280 per square foot",
     tags: ["Architectural Design", "Smart Home", "Premium Materials", "Energy Efficient"],
     estimatorType: "custom-home",
-    learnMoreLink: "/services/signature-custom-design",
+    servicePageLink: "/services/signature-custom-design",
+    offersLink: "/offers#signature-custom-design",
     image: "/luxury-custom-home-interior-design-modern-architec.jpg",
   },
   {
@@ -62,7 +63,8 @@ const services = [
     price: "Starting from $28,000 · $2K–$5K credits available",
     tags: ["Kitchen & Bath", "Whole House", "Additions", "Structural"],
     estimatorType: "renovation",
-    learnMoreLink: "/services/renovation",
+    servicePageLink: "/services/renovation",
+    offersLink: "/offers#renovation",
     image: "/renovation-human.png",
   },
   {
@@ -74,7 +76,8 @@ const services = [
     price: "New homes from $250,000",
     tags: ["Site-Ready Plans", "Energy Efficient", "Code Compliant", "Your Lot or Ours"],
     estimatorType: "new-build",
-    learnMoreLink: "/services/new-builds",
+    servicePageLink: "/services/new-builds",
+    offersLink: "/offers#new-builds",
     image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
   },
   {
@@ -86,7 +89,8 @@ const services = [
     price: "From $145 per square foot",
     tags: ["Office", "Retail", "Restaurant", "Warehouse"],
     estimatorType: "commercial",
-    learnMoreLink: "/services/commercial-projects",
+    servicePageLink: "/services/commercial-projects",
+    offersLink: "/offers#commercial",
     image: "/modern-commercial-building-exterior-glass-facade.jpg",
   },
   {
@@ -98,7 +102,8 @@ const services = [
     price: "From $155 per square foot",
     tags: ["Cabins", "ADU / Guest House", "Solar & Off-Grid", "Remote Access"],
     estimatorType: "remote",
-    learnMoreLink: "/services/remote-work",
+    servicePageLink: "/services/remote-work",
+    offersLink: "/offers#remote",
     image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
   },
   {
@@ -110,7 +115,8 @@ const services = [
     price: "From $2,500 per engagement",
     tags: ["Structural", "Feasibility", "Permits", "Site Analysis"],
     estimatorType: "consulting",
-    learnMoreLink: "/services/engineering-consulting",
+    servicePageLink: "/services/engineering-consulting",
+    offersLink: "/offers#consulting-engineering",
     image: "/images/engineering-blueprints.png",
   },
 ]
@@ -175,7 +181,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 min-h-screen relative overflow-hidden">
       {/* Image - Now clickable */}
-      <Link href={service.learnMoreLink} className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group block ${isEven ? "md:order-2" : ""}`}>
+      <Link href={service.servicePageLink} className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group block ${isEven ? "md:order-2" : ""}`}>
         <img
           src={service.image}
           alt={service.title}
@@ -213,7 +219,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
         </Reveal>
 
         <Reveal delay={0.1}>
-          <Link href={service.learnMoreLink}>
+          <Link href={service.servicePageLink}>
             <h2
               className="text-3xl md:text-4xl lg:text-[48px] font-bold text-white mb-4 leading-[1.08] cursor-pointer transition-colors duration-300 hover:text-[#c6912c]"
               style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
@@ -260,7 +266,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
               </button>
             </Link>
             <Link
-              href={service.learnMoreLink}
+              href={service.offersLink}
               className="px-7 py-3.5 text-[13px] font-semibold text-white tracking-wide border border-white/[0.15] transition-all duration-300 hover:border-[#c6912c] hover:text-[#c6912c]"
             >
               See Your Offer
