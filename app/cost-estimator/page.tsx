@@ -336,26 +336,43 @@ function OutsideAreaStep({ zipCode, onRetry, onReset }: { zipCode: string; onRet
 }
 
 function SqftStep({ sqft, onSqftChange, onBack, onNext, projectType }: { sqft: number; onSqftChange: (s: number) => void; onBack: () => void; onNext: () => void; projectType: string }) {
+  const [inputValue, setInputValue] = useState(sqft.toString());
+  
+  const num = parseInt(inputValue) || 0;
+  const isValid = num >= 1;
+  
   const headlines: Record<string, string> = { "custom-home": "How large is your dream home?", "new-build": "What size new build are you planning?", "commercial": "How large is the commercial space?", "remote": "How large is the structure?" };
   const subtitles: Record<string, string> = { "custom-home": "Total living area for your custom home — we'll refine finishes next.", "new-build": "Total square footage including all floors.", "commercial": "Total leasable or usable square footage.", "remote": "Total square footage including all living and utility areas." };
-  const { minSqft: min, maxSqft: max, sqftStep: step } = CONSTRAINTS;
-  const pct = ((sqft - min) / (max - min)) * 100;
+  
+  const is: React.CSSProperties = { 
+    width: "100%", maxWidth: 420, display: "block", margin: "0 auto", 
+    border: "2px solid #e0e0e0", 
+    padding: "20px 28px", fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center", 
+    fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, outline: "none", 
+    background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.04em" 
+  };
+  
+  const handleContinue = () => {
+    if (isValid) {
+      onSqftChange(num);
+      onNext();
+    }
+  };
+  
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
       <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Total square footage?"}</StepHeadline>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(16px, 4vw, 40px)" }}>
-        <button onClick={() => onSqftChange(Math.max(min, sqft - step))} style={{ width: 64, height: 64, background: dark, color: "#fff", border: "none", fontSize: 28, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center" }} onMouseEnter={(e) => { e.currentTarget.style.background = gold; }} onMouseLeave={(e) => { e.currentTarget.style.background = dark; }}>−</button>
-        <div style={{ minWidth: "clamp(140px, 30vw, 300px)", textAlign: "center" }}>
-          <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(48px, 9vw, 96px)", color: dark, letterSpacing: "-0.02em", lineHeight: 1 }}>{sqft.toLocaleString()}</div>
-          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 18, color: "#999", marginTop: 8, letterSpacing: "0.05em" }}>square feet</div>
-        </div>
-        <button onClick={() => onSqftChange(Math.min(max, sqft + step))} style={{ width: 64, height: 64, background: dark, color: "#fff", border: "none", fontSize: 28, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center" }} onMouseEnter={(e) => { e.currentTarget.style.background = gold; }} onMouseLeave={(e) => { e.currentTarget.style.background = dark; }}>+</button>
-      </div>
-      <div style={{ maxWidth: 560, margin: "40px auto 0", padding: "0 8px" }}>
-        <input type="range" min={min} max={max} step={step} value={sqft} onChange={(e) => onSqftChange(+e.target.value)} style={{ width: "100%", height: 6, appearance: "none", borderRadius: 3, background: `linear-gradient(to right, ${dark} 0%, ${dark} ${pct}%, #e5e7eb ${pct}%, #e5e7eb 100%)`, cursor: "pointer", outline: "none" }} />
-        <div style={{ display: "flex", justifyContent: "space-between", fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#bbb", marginTop: 8 }}><span>{min} SF</span><span>{max.toLocaleString()} SF</span></div>
-      </div>
-      <NavButtons onBack={onBack} onNext={onNext} />
+      <input 
+        type="number" 
+        value={inputValue} 
+        onChange={(e) => setInputValue(e.target.value)} 
+        autoFocus 
+        style={is}
+        onFocus={(e) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; }}
+        onBlur={(e) => { e.target.style.borderColor = "#e0e0e0"; e.target.style.boxShadow = "none"; }} 
+      />
+      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Total square feet</p>
+      <NavButtons onBack={onBack} onNext={handleContinue} nextDisabled={!isValid} />
     </div>
   );
 }
