@@ -174,8 +174,8 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 min-h-screen relative overflow-hidden">
-      {/* Image */}
-      <div className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group ${isEven ? "md:order-2" : ""}`}>
+      {/* Image - Now clickable */}
+      <Link href={service.learnMoreLink} className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group block ${isEven ? "md:order-2" : ""}`}>
         <img
           src={service.image}
           alt={service.title}
@@ -193,7 +193,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
         />
         {/* Mobile: bottom fade */}
         <div className="absolute inset-0 md:hidden bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
-      </div>
+      </Link>
 
       {/* Content */}
       <div className={`relative flex flex-col justify-center bg-[#0a0a0a] px-8 py-16 md:px-12 lg:px-20 xl:px-24 ${isEven ? "md:order-1" : ""}`}>
@@ -213,12 +213,14 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
         </Reveal>
 
         <Reveal delay={0.1}>
-          <h2
-            className="text-3xl md:text-4xl lg:text-[48px] font-bold text-white mb-4 leading-[1.08]"
-            style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
-          >
-            {service.titleBreak}
-          </h2>
+          <Link href={service.learnMoreLink}>
+            <h2
+              className="text-3xl md:text-4xl lg:text-[48px] font-bold text-white mb-4 leading-[1.08] cursor-pointer transition-colors duration-300 hover:text-[#c6912c]"
+              style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
+            >
+              {service.titleBreak}
+            </h2>
+          </Link>
         </Reveal>
 
         <Reveal delay={0.18}>
