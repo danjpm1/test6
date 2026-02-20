@@ -337,42 +337,64 @@ function OutsideAreaStep({ zipCode, onRetry, onReset }: { zipCode: string; onRet
 
 function SqftStep({ sqft, onSqftChange, onBack, onNext, projectType }: { sqft: number; onSqftChange: (s: number) => void; onBack: () => void; onNext: () => void; projectType: string }) {
   const [inputValue, setInputValue] = useState(sqft.toString());
-  
-  const num = parseInt(inputValue) || 0;
-  const isValid = num >= 1;
+  const [isEditing, setIsEditing] = useState(false);
   
   const headlines: Record<string, string> = { "custom-home": "How large is your dream home?", "new-build": "What size new build are you planning?", "commercial": "How large is the commercial space?", "remote": "How large is the structure?" };
   const subtitles: Record<string, string> = { "custom-home": "Total living area for your custom home — we'll refine finishes next.", "new-build": "Total square footage including all floors.", "commercial": "Total leasable or usable square footage.", "remote": "Total square footage including all living and utility areas." };
   
-  const is: React.CSSProperties = { 
-    width: "100%", maxWidth: 420, display: "block", margin: "0 auto", 
-    border: "2px solid #e0e0e0", 
-    padding: "20px 28px", fontSize: "clamp(24px, 4vw, 40px)", textAlign: "center", 
-    fontFamily: "'DM Sans', sans-serif", fontWeight: 600, color: dark, outline: "none", 
-    background: "#fff", transition: "border-color 0.3s, box-shadow 0.3s", letterSpacing: "0.04em" 
+  const step = 100;
+  const displayValue = parseInt(inputValue) || 0;
+  const isValid = displayValue >= 1;
+  
+  const handleBlur = () => {
+    setIsEditing(false);
+    const num = parseInt(inputValue) || 1;
+    const clamped = Math.max(1, num);
+    setInputValue(clamped.toString());
+    onSqftChange(clamped);
   };
   
-  const handleContinue = () => {
-    if (isValid) {
-      onSqftChange(num);
-      onNext();
-    }
+  const handleIncrement = () => {
+    const newVal = displayValue + step;
+    setInputValue(newVal.toString());
+    onSqftChange(newVal);
+  };
+  
+  const handleDecrement = () => {
+    const newVal = Math.max(1, displayValue - step);
+    setInputValue(newVal.toString());
+    onSqftChange(newVal);
   };
   
   return (
     <div className="fade-up" style={{ textAlign: "center" }}>
       <StepHeadline subtitle={subtitles[projectType]}>{headlines[projectType] ?? "Total square footage?"}</StepHeadline>
-      <input 
-        type="number" 
-        value={inputValue} 
-        onChange={(e) => setInputValue(e.target.value)} 
-        autoFocus 
-        style={is}
-        onFocus={(e) => { e.target.style.borderColor = gold; e.target.style.boxShadow = `0 0 0 4px ${gold}18`; }}
-        onBlur={(e) => { e.target.style.borderColor = "#e0e0e0"; e.target.style.boxShadow = "none"; }} 
-      />
-      <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, color: "#999", marginTop: 16 }}>Total square feet</p>
-      <NavButtons onBack={onBack} onNext={handleContinue} nextDisabled={!isValid} />
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "clamp(16px, 4vw, 40px)" }}>
+        <button onClick={handleDecrement} style={{ width: 64, height: 64, background: dark, color: "#fff", border: "none", fontSize: 28, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center" }} onMouseEnter={(e) => { e.currentTarget.style.background = gold; }} onMouseLeave={(e) => { e.currentTarget.style.background = dark; }}>−</button>
+        <div style={{ minWidth: "clamp(140px, 30vw, 300px)", textAlign: "center" }}>
+          {isEditing ? (
+            <input
+              type="number"
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+              onBlur={handleBlur}
+              onKeyDown={(e) => { if (e.key === "Enter") handleBlur(); }}
+              autoFocus
+              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(48px, 9vw, 96px)", color: dark, letterSpacing: "-0.02em", lineHeight: 1, border: "none", outline: "none", background: "transparent", textAlign: "center", width: "100%", borderBottom: `3px solid ${gold}` }}
+            />
+          ) : (
+            <div 
+              onClick={() => { setIsEditing(true); setInputValue(displayValue.toString()); }}
+              style={{ fontFamily: "'Playfair Display', serif", fontWeight: 700, fontSize: "clamp(48px, 9vw, 96px)", color: dark, letterSpacing: "-0.02em", lineHeight: 1, cursor: "pointer", transition: "color 0.2s" }}
+              onMouseEnter={(e) => { e.currentTarget.style.color = gold; }}
+              onMouseLeave={(e) => { e.currentTarget.style.color = dark; }}
+            >{displayValue.toLocaleString()}</div>
+          )}
+          <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 18, color: "#999", marginTop: 8, letterSpacing: "0.05em" }}>square feet</div>
+        </div>
+        <button onClick={handleIncrement} style={{ width: 64, height: 64, background: dark, color: "#fff", border: "none", fontSize: 28, fontWeight: 700, cursor: "pointer", transition: "all 0.2s", display: "flex", alignItems: "center", justifyContent: "center" }} onMouseEnter={(e) => { e.currentTarget.style.background = gold; }} onMouseLeave={(e) => { e.currentTarget.style.background = dark; }}>+</button>
+      </div>
+      <NavButtons onBack={onBack} onNext={onNext} nextDisabled={!isValid} />
     </div>
   );
 }
