@@ -12,7 +12,7 @@ const CATEGORIES = [
   { id: "new-build", label: "New Builds" },
   { id: "commercial", label: "Commercial" },
   { id: "remote", label: "Remote" },
-  { id: "engineering", label: "Engineering" },
+  { id: "consulting-engineering", label: "Consulting & Engineering" },
   { id: "financing", label: "Financing" },
 ]
 
@@ -172,9 +172,9 @@ const OFFER_SECTIONS = [
     ],
   },
   {
-    id: "engineering",
-    category: "Engineering & Consulting",
-    title: "Engineering",
+    id: "consulting-engineering",
+    category: "Consulting & Engineering",
+    title: "Consulting",
     image: "/images/engineering-blueprints.png",
     offers: [
       {
@@ -373,7 +373,7 @@ export default function OffersPage() {
                         Get Quote
                       </button>
                     </Link>
-                    <Link href={`/services/${section.id === 'engineering' ? 'engineering-consulting' : section.id === 'financing' ? 'engineering-consulting' : section.id === 'new-build' ? 'new-builds' : section.id === 'remote' ? 'remote-work' : section.id === 'commercial' ? 'commercial-projects' : section.id}`}>
+                    <Link href={`/services/${section.id === 'consulting-engineering' ? 'engineering-consulting' : section.id === 'financing' ? 'engineering-consulting' : section.id === 'new-build' ? 'new-builds' : section.id === 'remote' ? 'remote-work' : section.id === 'commercial' ? 'commercial-projects' : section.id}`}>
                       <button className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-gray-400 transition-colors">
                         Learn More
                       </button>
