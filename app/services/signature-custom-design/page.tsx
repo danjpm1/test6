@@ -10,6 +10,7 @@ export default function SignatureCustomDesignPage() {
   const [parallaxOffset, setParallaxOffset] = useState(0)
   const [videoMargin, setVideoMargin] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
   const splitSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -153,6 +154,22 @@ export default function SignatureCustomDesignPage() {
     }
   }, [])
 
+  // FAQ data for custom design
+  const faqs = [
+    {
+      question: "How long does a custom home project take?",
+      answer: "A typical Signature Custom Design project takes 10–16 months from initial consultation to final walkthrough. This includes 2–3 months of design development, permitting, and 8–12 months of construction. We provide a detailed timeline during your free consultation and maintain a 98% on-time delivery rate."
+    },
+    {
+      question: "Can I make changes during the design or construction phase?",
+      answer: "Absolutely. During the design phase, revisions are expected and welcomed — it's how we refine your vision. Once construction begins, changes are still possible but may affect timeline and budget. We'll walk you through the implications of any mid-build adjustments so you can decide with full clarity."
+    },
+    {
+      question: "What's included in the design consultation?",
+      answer: "Your free consultation includes a 45-minute session with our design team where we explore your vision, review your AI estimate in detail, discuss site considerations, and outline material and style options. You'll leave with a clear understanding of scope, investment range, and next steps — with zero obligation to proceed."
+    }
+  ]
+
   return (
     <div className="w-full bg-white font-sans">
       <style jsx global>{`
@@ -187,7 +204,7 @@ export default function SignatureCustomDesignPage() {
             {/* Gold accent line */}
             <div className="mt-5 md:mt-6 lg:mt-7 w-[60px] md:w-[80px] h-[2px] bg-[#c6912c]" />
 
-            {/* ===== ADDED: Trust signals strip ===== */}
+            {/* Trust signals strip */}
             <div className="mt-6 md:mt-8 flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-[11px] sm:text-[12px] md:text-[13px] text-gray-500">
               <div className="flex items-center gap-1.5">
                 <span className="text-[#c6912c] font-medium">150+</span>
@@ -252,7 +269,7 @@ export default function SignatureCustomDesignPage() {
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
                 </p>
 
-                {/* ===== ADDED: CTA in black section with FUD-reducing microcopy ===== */}
+                {/* CTA in black section with FUD-reducing microcopy */}
                 <div className="mt-8 sm:mt-10 md:mt-12">
                   <Link 
                     href="/ai-estimator"
@@ -368,8 +385,78 @@ export default function SignatureCustomDesignPage() {
         <div className="relative z-10 h-[60px]" />
       </section>
 
+      {/* ============ ADDED: Process Section ============ */}
+      <section className="bg-[#f9f8f6] pt-16 md:pt-20 lg:pt-24 pb-8 md:pb-12">
+        <div className="max-w-5xl mx-auto px-6 md:px-12">
+          {/* Section header */}
+          <div className="text-center mb-12 md:mb-16">
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.3em] mb-3">
+              How It Works
+            </p>
+            <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] text-black uppercase tracking-wide">
+              From Vision to Reality
+            </h2>
+          </div>
+
+          {/* Process steps */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 md:gap-6 lg:gap-8">
+            {/* Step 1 */}
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#c6912c] text-[#c6912c] font-bebas text-lg mb-4">
+                01
+              </div>
+              <h3 className="font-bebas text-[1.25rem] md:text-[1.35rem] text-black uppercase tracking-wide mb-2">
+                Vision Session
+              </h3>
+              <p className="text-[13px] md:text-[14px] text-gray-500 leading-relaxed">
+                We explore your ideas, lifestyle needs, and site possibilities in a free consultation.
+              </p>
+            </div>
+
+            {/* Step 2 */}
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#c6912c] text-[#c6912c] font-bebas text-lg mb-4">
+                02
+              </div>
+              <h3 className="font-bebas text-[1.25rem] md:text-[1.35rem] text-black uppercase tracking-wide mb-2">
+                Design Development
+              </h3>
+              <p className="text-[13px] md:text-[14px] text-gray-500 leading-relaxed">
+                Architectural plans tailored to your vision, refined through collaborative revisions.
+              </p>
+            </div>
+
+            {/* Step 3 */}
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#c6912c] text-[#c6912c] font-bebas text-lg mb-4">
+                03
+              </div>
+              <h3 className="font-bebas text-[1.25rem] md:text-[1.35rem] text-black uppercase tracking-wide mb-2">
+                Precision Build
+              </h3>
+              <p className="text-[13px] md:text-[14px] text-gray-500 leading-relaxed">
+                Construction begins with locked-in pricing, fixed timeline, and full transparency at every stage.
+              </p>
+            </div>
+
+            {/* Step 4 */}
+            <div className="text-center md:text-left">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[#c6912c] text-[#c6912c] font-bebas text-lg mb-4">
+                04
+              </div>
+              <h3 className="font-bebas text-[1.25rem] md:text-[1.35rem] text-black uppercase tracking-wide mb-2">
+                Final Walkthrough
+              </h3>
+              <p className="text-[13px] md:text-[14px] text-gray-500 leading-relaxed">
+                Your dream delivered — with warranty coverage and dedicated post-build support.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ============ Highlights Section ============ */}
-      <section className="bg-[#f9f8f6] pt-20 md:pt-28 lg:pt-36 pb-12 md:pb-16 lg:pb-20">
+      <section className="bg-[#f9f8f6] pt-12 md:pt-16 lg:pt-20 pb-12 md:pb-16 lg:pb-20">
         <div className="max-w-7xl mx-auto px-6 md:px-12">
           {/* Title centered - Bebas Neue */}
           <h2 className="font-bebas text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-black text-center tracking-wide uppercase">
@@ -483,8 +570,38 @@ export default function SignatureCustomDesignPage() {
         </div>
       </section>
 
-      {/* ===== ADDED: Mid-page CTA section (second conversion opportunity) ===== */}
-      <section className="bg-[#f9f8f6] py-12 md:py-16">
+      {/* ============ ADDED: Testimonial Section ============ */}
+      <section className="bg-[#f9f8f6] py-12 md:py-16 lg:py-20">
+        <div className="max-w-4xl mx-auto px-6 md:px-12">
+          <div className="bg-white border border-gray-100 rounded-lg p-8 md:p-10 lg:p-12">
+            {/* Quote icon */}
+            <div className="text-[#c6912c] mb-6">
+              <svg className="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+            </div>
+            
+            {/* Quote */}
+            <blockquote className="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-gray-800 leading-relaxed mb-8">
+              "Antova's team transformed our vision into reality. Their AI-powered estimates were spot-on, and the structural insights saved us months of planning time. The attention to detail on our custom home was extraordinary — every corner reflects exactly what we imagined."
+            </blockquote>
+            
+            {/* Author */}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center text-[#c6912c] font-medium text-sm">
+                MC
+              </div>
+              <div>
+                <p className="font-medium text-black text-[15px] md:text-[16px]">Michael Chen</p>
+                <p className="text-gray-500 text-[13px] md:text-[14px]">Owner, Aspen Horse Ranch · Custom Home</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Mid-page CTA section (second conversion opportunity) */}
+      <section className="bg-[#f9f8f6] py-8 md:py-12">
         <div className="max-w-3xl mx-auto px-6 md:px-12">
           <div className="bg-white border border-gray-100 rounded-lg p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div>
@@ -508,6 +625,56 @@ export default function SignatureCustomDesignPage() {
         </div>
       </section>
 
+      {/* ============ ADDED: FAQ Section ============ */}
+      <section className="bg-[#f9f8f6] py-12 md:py-16 lg:py-20">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          {/* Section header */}
+          <div className="text-center mb-10 md:mb-12">
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.3em] mb-3">
+              Common Questions
+            </p>
+            <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] text-black uppercase tracking-wide">
+              Before You Decide
+            </h2>
+          </div>
+
+          {/* FAQ accordion */}
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index}
+                className="bg-white border border-gray-100 rounded-lg overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-medium text-[15px] md:text-[16px] text-black pr-4">
+                    {faq.question}
+                  </span>
+                  <svg 
+                    className={`w-5 h-5 text-[#c6912c] flex-shrink-0 transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth={2} 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-5">
+                    <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Begin Your Vision CTA Section - ENHANCED with urgency + dual CTA */}
       <section className="bg-[#f9f8f6] py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36">
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
@@ -518,12 +685,12 @@ export default function SignatureCustomDesignPage() {
             Imagination Isn't Limited. Neither Are We.
           </h2>
           
-          {/* ===== ADDED: Capacity-based urgency (luxury-appropriate) ===== */}
+          {/* Capacity-based urgency (luxury-appropriate) */}
           <p className="text-[13px] sm:text-[14px] md:text-[15px] text-gray-500 mb-8 sm:mb-10 md:mb-12">
             Spring 2026 — 3 custom design slots remaining
           </p>
 
-          {/* ===== ADDED: Dual CTA for different intents ===== */}
+          {/* Dual CTA for different intents */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
             <Link 
               href="/ai-estimator"
@@ -545,7 +712,7 @@ export default function SignatureCustomDesignPage() {
             </Link>
           </div>
 
-          {/* ===== ADDED: FUD-reducing microcopy ===== */}
+          {/* FUD-reducing microcopy */}
           <p className="mt-5 sm:mt-6 text-[11px] sm:text-[12px] text-gray-400">
             Free consultation · No commitment · Complimentary design scope included
           </p>
