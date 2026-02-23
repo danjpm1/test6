@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
@@ -66,8 +67,25 @@ const remoteBuildsCards = [
   }
 ]
 
+// FAQ data for remote builds
+const faqs = [
+  {
+    question: "How do you build in locations with no road access?",
+    answer: "We mobilize helicopters, specialized off-road vehicles, and seasoned crews who excel in extreme conditions. All materials, equipment, and personnel are transported using methods suited to your specific site — whether that's helicopter airlifts, boat access, or pioneering temporary roads."
+  },
+  {
+    question: "Does building remotely cost significantly more?",
+    answer: "Remote builds do involve additional logistics costs, but we optimize every aspect of the process to minimize premiums. Our AI estimator provides transparent pricing that accounts for your specific location. Many clients find that the value of their dream location far outweighs the incremental investment."
+  },
+  {
+    question: "How long does a remote build typically take?",
+    answer: "Timelines depend on location accessibility and project scope — most remote builds take 12–18 months from groundbreaking to completion. Weather windows, material staging, and logistical planning are factored into your detailed timeline during consultation."
+  }
+]
+
 export default function RemoteBuildsPage() {
   const [showScrollIndicator, setShowScrollIndicator] = useState(false)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
@@ -172,8 +190,28 @@ export default function RemoteBuildsPage() {
       <div className="bg-[#080a0f] h-6 md:h-12" />
       <div className="w-full h-[2px] bg-[#D4A574]/40" />
 
+      {/* ===== Trust Signals Strip ===== */}
+      <section className="bg-[#080a0f] py-8 md:py-12">
+        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-[11px] sm:text-[12px] md:text-[13px] text-white/50 px-6">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">150+</span>
+            <span>Projects Delivered</span>
+          </div>
+          <div className="hidden sm:block w-px h-3 bg-white/20" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">5.0</span>
+            <span>Google Rating</span>
+          </div>
+          <div className="hidden sm:block w-px h-3 bg-white/20" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">Any</span>
+            <span>Location Possible</span>
+          </div>
+        </div>
+      </section>
+
       {/* Three Cards Section */}
-      <section className="relative py-16 sm:py-24 bg-[#080a0f]">
+      <section className="relative py-12 sm:py-20 bg-[#080a0f]">
         <div className="mx-auto max-w-7xl px-5 sm:px-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
             {remoteBuildsCards.map((card, index) => (
@@ -205,10 +243,26 @@ export default function RemoteBuildsPage() {
               </div>
             ))}
           </div>
+
+          {/* ===== CTA after cards with FUD microcopy ===== */}
+          <div className="mt-12 md:mt-16 text-center">
+            <Link 
+              href="/ai-estimator"
+              className="inline-flex items-center gap-3 px-6 sm:px-8 py-3 bg-[#c6912c] text-black text-[11px] sm:text-[12px] tracking-[0.15em] uppercase font-semibold hover:bg-[#b8830f] transition-colors duration-300"
+            >
+              See Your Investment Range
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <p className="mt-3 text-[11px] sm:text-[12px] text-white/40">
+              60-second results · No email required · No obligation
+            </p>
+          </div>
         </div>
       </section>
 
-      {/* Full Width Forest Section - ONLY CHANGED: image grid → logo */}
+      {/* Full Width Forest Section */}
       <section className="relative w-full min-h-[70vh] md:min-h-[90vh] flex items-center overflow-hidden">
         <Image
           src="/forest.png"
@@ -260,10 +314,9 @@ export default function RemoteBuildsPage() {
               </div>
             </div>
             
-            {/* CHANGED: Image grid replaced with big logo */}
+            {/* Logo */}
             <div className="hidden lg:flex items-center justify-center">
               <div className="relative">
-                {/* Ambient glow behind logo */}
                 <div
                   className="absolute inset-0 blur-3xl opacity-60"
                   style={{
@@ -272,7 +325,6 @@ export default function RemoteBuildsPage() {
                   }}
                 />
                 
-                {/* The geometric Antova logo */}
                 <Image
                   src="/antova-logo-gold.svg"
                   alt="Antova Builders"
@@ -290,29 +342,152 @@ export default function RemoteBuildsPage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="relative py-16 sm:py-20 bg-[#080a0f]">
-        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
-            <a
-              href="/contact"
-              className="h-11 w-full sm:w-auto sm:min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
+      {/* ===== Testimonial Section ===== */}
+      <section className="bg-[#080a0f] py-16 md:py-20 lg:py-24">
+        <div className="max-w-4xl mx-auto px-6 md:px-12">
+          <div className="bg-[#0f1218] border border-white/10 rounded-lg p-8 md:p-10 lg:p-12">
+            {/* Quote icon */}
+            <div className="text-[#c6912c] mb-6">
+              <svg className="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
+            </div>
+            
+            {/* Quote */}
+            <blockquote className="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-white/90 leading-relaxed mb-8">
+              "Antova's consulting team transformed our vision into reality. Their AI-powered estimates were spot-on, and the structural insights saved us months of planning time. Building on our remote mountain property seemed impossible until we found them."
+            </blockquote>
+            
+            {/* Author */}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[#c6912c]/20 flex items-center justify-center text-[#c6912c] font-medium text-sm">
+                MC
+              </div>
+              <div>
+                <p className="font-medium text-white text-[15px] md:text-[16px]">Michael Chen</p>
+                <p className="text-white/50 text-[13px] md:text-[14px]">Owner, Aspen Horse Ranch · Remote Custom Build</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== Mid-page CTA section ===== */}
+      <section className="bg-[#080a0f] py-8 md:py-12">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <div className="bg-[#0f1218] border border-white/10 rounded-lg p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h3 className="text-xl md:text-2xl font-semibold text-white">
+                Have a remote location in mind?
+              </h3>
+              <p className="text-[14px] md:text-[15px] text-white/50 mt-2">
+                Get a realistic investment range in 60 seconds — no commitment required.
+              </p>
+            </div>
+            <Link 
+              href="/ai-estimator"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-black text-[11px] sm:text-[12px] tracking-[0.12em] uppercase font-semibold hover:bg-[#c6912c] transition-colors duration-300 whitespace-nowrap flex-shrink-0"
             >
-              Start Your Remote Build
-            </a>
-            <a
-              href="/cost-estimator"
-              className="h-11 w-full sm:w-auto sm:min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
-            >
-              AI Estimator
-            </a>
+              Try the Estimator
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FAQ Section ===== */}
+      <section className="bg-[#080a0f] py-12 md:py-16 lg:py-20">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          {/* Section header */}
+          <div className="text-center mb-10 md:mb-12">
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.3em] mb-3">
+              Common Questions
+            </p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white">
+              Before You Decide
+            </h2>
           </div>
 
-          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-6">
-            Let's Start Making Your <span className="text-[#c6912c]">Dream Home</span> a Reality
+          {/* FAQ accordion */}
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index}
+                className="bg-[#0f1218] border border-white/10 rounded-lg overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-white/5 transition-colors"
+                >
+                  <span className="font-medium text-[15px] md:text-[16px] text-white pr-4">
+                    {faq.question}
+                  </span>
+                  <svg 
+                    className={`w-5 h-5 text-[#c6912c] flex-shrink-0 transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth={2} 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-5">
+                    <p className="text-[14px] md:text-[15px] text-white/60 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - ENHANCED */}
+      <section className="relative py-16 sm:py-20 md:py-24 lg:py-32 bg-[#080a0f]">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+          <p className="text-[12px] sm:text-[13px] md:text-sm text-white/40 uppercase tracking-[0.2em] mb-4 sm:mb-6">
+            Remote Builds
+          </p>
+          
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-5">
+            Let's Build Your <span className="text-[#c6912c]">Dream</span> Anywhere
           </h2>
-          <p className="font-sans text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
-            From initial design to final walkthrough, our team delivers exceptional custom homes. Get in touch today.
+          
+          {/* Capacity-based urgency */}
+          <p className="text-[13px] sm:text-[14px] md:text-[15px] text-white/50 mb-8 sm:mb-10 md:mb-12">
+            2026 Season — Limited remote project slots available
+          </p>
+
+          {/* Dual CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+            <Link
+              href="/ai-estimator"
+              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-8 bg-[#c6912c] hover:bg-[#b8830f] text-black font-semibold rounded-md transition-all flex items-center justify-center gap-2 text-[12px] sm:text-[13px] tracking-[0.1em] uppercase"
+            >
+              See Your Investment Range
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <Link
+              href="/contact"
+              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-8 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center gap-2 text-[12px] sm:text-[13px] tracking-[0.1em] uppercase"
+            >
+              Schedule Consultation
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* FUD-reducing microcopy */}
+          <p className="text-[11px] sm:text-[12px] text-white/40">
+            Free consultation · No commitment · Complimentary site feasibility analysis
           </p>
         </div>
       </section>
