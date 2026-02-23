@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
@@ -185,6 +186,24 @@ export default function SignatureCustomDesignPage() {
             
             {/* Gold accent line */}
             <div className="mt-5 md:mt-6 lg:mt-7 w-[60px] md:w-[80px] h-[2px] bg-[#c6912c]" />
+
+            {/* ===== ADDED: Trust signals strip ===== */}
+            <div className="mt-6 md:mt-8 flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-[11px] sm:text-[12px] md:text-[13px] text-gray-500">
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#c6912c] font-medium">150+</span>
+                <span>Custom Homes</span>
+              </div>
+              <div className="hidden sm:block w-px h-3 bg-gray-300" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#c6912c] font-medium">5.0</span>
+                <span>Google Rating</span>
+              </div>
+              <div className="hidden sm:block w-px h-3 bg-gray-300" />
+              <div className="flex items-center gap-1.5">
+                <span className="text-[#c6912c] font-medium">12</span>
+                <span>Years Experience</span>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -232,6 +251,22 @@ export default function SignatureCustomDesignPage() {
                   <br /><br />
                   We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
                 </p>
+
+                {/* ===== ADDED: CTA in black section with FUD-reducing microcopy ===== */}
+                <div className="mt-8 sm:mt-10 md:mt-12">
+                  <Link 
+                    href="/ai-estimator"
+                    className="inline-flex items-center gap-3 px-6 sm:px-8 py-3 bg-[#c6912c] text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-[#b8830f] transition-colors duration-300 font-sans"
+                  >
+                    See Your Investment Range
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                  <p className="mt-3 text-[11px] sm:text-[12px] text-gray-400">
+                    60-second results · No email required · No obligation
+                  </p>
+                </div>
               </div>
 
               {/* ============ MOBILE ONLY: Video then Image ============ */}
@@ -448,24 +483,72 @@ export default function SignatureCustomDesignPage() {
         </div>
       </section>
 
-      {/* Begin Your Vision CTA Section */}
+      {/* ===== ADDED: Mid-page CTA section (second conversion opportunity) ===== */}
+      <section className="bg-[#f9f8f6] py-12 md:py-16">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <div className="bg-white border border-gray-100 rounded-lg p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h3 className="font-bebas text-[1.5rem] md:text-[1.75rem] text-black uppercase tracking-wide">
+                Ready to explore your vision?
+              </h3>
+              <p className="text-[14px] md:text-[15px] text-gray-500 mt-2">
+                Get a realistic investment range in 60 seconds — no commitment required.
+              </p>
+            </div>
+            <Link 
+              href="/ai-estimator"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-[11px] sm:text-[12px] tracking-[0.12em] uppercase hover:bg-[#c6912c] transition-colors duration-300 font-sans whitespace-nowrap flex-shrink-0"
+            >
+              Try the Estimator
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Begin Your Vision CTA Section - ENHANCED with urgency + dual CTA */}
       <section className="bg-[#f9f8f6] py-16 sm:py-20 md:py-24 lg:py-28 xl:py-36">
         <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
           <p className="font-sans text-[12px] sm:text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">
             Signature Custom Design
           </p>
-          <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] text-black leading-tight mb-8 sm:mb-10 md:mb-12 uppercase tracking-wide">
+          <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] text-black leading-tight mb-4 sm:mb-5 uppercase tracking-wide">
             Imagination Isn't Limited. Neither Are We.
           </h2>
-          <a 
-            href="/contact"
-            className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-[#c6912c] transition-colors duration-300 font-sans"
-          >
-            Begin Your Vision
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-            </svg>
-          </a>
+          
+          {/* ===== ADDED: Capacity-based urgency (luxury-appropriate) ===== */}
+          <p className="text-[13px] sm:text-[14px] md:text-[15px] text-gray-500 mb-8 sm:mb-10 md:mb-12">
+            Spring 2026 — 3 custom design slots remaining
+          </p>
+
+          {/* ===== ADDED: Dual CTA for different intents ===== */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+            <Link 
+              href="/ai-estimator"
+              className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-[#c6912c] text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-[#b8830f] transition-colors duration-300 font-sans"
+            >
+              See Your Investment Range
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <Link 
+              href="/contact"
+              className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-gray-800 transition-colors duration-300 font-sans"
+            >
+              Book a Consultation
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* ===== ADDED: FUD-reducing microcopy ===== */}
+          <p className="mt-5 sm:mt-6 text-[11px] sm:text-[12px] text-gray-400">
+            Free consultation · No commitment · Complimentary design scope included
+          </p>
         </div>
       </section>
 
