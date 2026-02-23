@@ -298,7 +298,7 @@ function OfferIcon({ type, className = "w-5 h-5" }: { type: string; className?: 
   }
 }
 
-// Premium Offer Modal Component
+// Premium Offer Modal Component - Compact & Mobile Optimized
 const ServiceOfferModal = ({
   section,
   isOpen,
@@ -336,135 +336,128 @@ const ServiceOfferModal = ({
 
   return (
     <div
-      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto transition-all duration-500 ${
+      className={`fixed inset-0 z-[100] flex items-start md:items-center justify-center overflow-y-auto py-4 px-3 md:p-4 transition-all duration-500 ${
         isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       }`}
       onClick={onClose}
     >
       {/* Backdrop */}
-      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" />
+      <div className="fixed inset-0 bg-black/80 backdrop-blur-sm" />
 
       {/* Close Button */}
       <button
         onClick={onClose}
-        className="fixed top-4 right-4 md:top-6 md:right-6 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:bg-[#c6912c] group"
+        className="fixed top-3 right-3 md:top-5 md:right-5 z-20 w-10 h-10 flex items-center justify-center bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:bg-[#c6912c] group"
         aria-label="Close modal"
       >
         <svg
-          className="w-5 h-5 text-black group-hover:text-white transition-colors"
+          className="w-4 h-4 text-black group-hover:text-white transition-colors"
           fill="none"
           stroke="currentColor"
+          strokeWidth={2.5}
           viewBox="0 0 24 24"
         >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
         </svg>
       </button>
 
       {/* Modal Content */}
       <div
         ref={modalRef}
-        className={`relative z-10 w-full max-w-2xl mx-4 my-8 bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${
+        className={`relative z-10 w-full max-w-xl bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${
           isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Premium Header - No Image, Just Design */}
-        <div className="relative bg-[#0a0a0a] px-8 md:px-12 pt-12 pb-10 md:pt-16 md:pb-12">
-          {/* Decorative gold line at top */}
-          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#c6912c] to-transparent" />
+        {/* Premium Header - Compact & Elegant */}
+        <div className="relative bg-[#0a0a0a] px-5 md:px-8 py-6 md:py-8">
+          {/* Gold accent line at top */}
+          <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#c6912c]" />
           
-          {/* Decorative corner accents */}
-          <div className="absolute top-6 left-6 w-8 h-8 border-l-2 border-t-2 border-[#c6912c]/40" />
-          <div className="absolute top-6 right-6 w-8 h-8 border-r-2 border-t-2 border-[#c6912c]/40" />
-          
-          {/* Category label */}
-          <p className="text-[#c6912c] text-xs md:text-sm tracking-[0.3em] uppercase mb-3 font-medium">
-            {section.category}
-          </p>
-          
-          {/* Title */}
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4">
-            {section.title}
-          </h2>
+          {/* Category + Title Row */}
+          <div className="flex items-start justify-between gap-4">
+            <div className="flex-1">
+              <p className="text-[#c6912c] text-[10px] md:text-xs tracking-[0.25em] uppercase mb-1.5 font-medium">
+                {section.category}
+              </p>
+              <h2 className="text-2xl md:text-3xl font-bold text-white tracking-tight leading-tight">
+                {section.title}
+              </h2>
+            </div>
+            {/* Decorative element */}
+            <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full border border-[#c6912c]/30 flex items-center justify-center">
+              <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
+                <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[#c6912c]" />
+              </div>
+            </div>
+          </div>
           
           {/* Tagline */}
-          <p className="text-lg md:text-xl text-white/60 font-light italic">
+          <p className="mt-3 text-sm md:text-base text-white/50 font-light">
             {section.tagline}
           </p>
-          
-          {/* Gold accent line */}
-          <div className="mt-8 w-16 h-[2px] bg-[#c6912c]" />
         </div>
 
-        {/* Description */}
-        <div className="px-8 md:px-12 py-6 md:py-8 bg-[#f8f8f8] border-b border-gray-200">
-          <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+        {/* Description - Compact */}
+        <div className="px-5 md:px-8 py-4 bg-[#fafafa] border-b border-gray-100">
+          <p className="text-gray-600 text-sm leading-relaxed">
             {section.description}
           </p>
         </div>
 
-        {/* Offers List */}
-        <div className="px-8 md:px-12 py-8 md:py-10">
-          <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-6 font-medium">
+        {/* Offers List - Compact */}
+        <div className="px-5 md:px-8 py-5 md:py-6">
+          <p className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-gray-400 mb-4 font-medium">
             Current Offers
-          </h3>
+          </p>
           
-          <div className="space-y-6">
+          <div className="space-y-3">
             {section.offers.map((offer, index) => (
               <div
                 key={index}
-                className="group relative bg-white border border-gray-100 rounded-xl p-5 md:p-6 transition-all duration-300 hover:border-[#c6912c]/30 hover:shadow-lg"
+                className="group flex items-start gap-3 p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-100 transition-all duration-200 hover:border-[#c6912c]/40 hover:bg-white"
               >
-                {/* Offer number badge */}
-                <div className="absolute -top-3 -left-3 w-7 h-7 bg-[#c6912c] rounded-full flex items-center justify-center">
-                  <span className="text-white text-xs font-bold">{index + 1}</span>
+                {/* Number + Icon */}
+                <div className="flex-shrink-0 relative">
+                  <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
+                    <OfferIcon type={offer.icon} className="w-4 h-4 md:w-5 md:h-5 text-[#c6912c]" />
+                  </div>
+                  <div className="absolute -top-1 -left-1 w-4 h-4 md:w-5 md:h-5 bg-[#c6912c] rounded-full flex items-center justify-center">
+                    <span className="text-white text-[9px] md:text-[10px] font-bold">{index + 1}</span>
+                  </div>
                 </div>
                 
-                <div className="flex items-start gap-4">
-                  {/* Icon */}
-                  <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
-                    <OfferIcon type={offer.icon} className="w-5 h-5 md:w-6 md:h-6 text-[#c6912c]" />
-                  </div>
-                  
-                  {/* Content */}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="font-semibold text-gray-900 text-base md:text-lg leading-snug mb-2 group-hover:text-[#c6912c] transition-colors">
-                      {offer.title}
-                    </h4>
-                    <p className="text-gray-500 text-sm md:text-base leading-relaxed">
-                      {offer.details}
-                    </p>
-                  </div>
+                {/* Content */}
+                <div className="flex-1 min-w-0">
+                  <h4 className="font-semibold text-gray-900 text-sm leading-snug group-hover:text-[#c6912c] transition-colors">
+                    {offer.title}
+                  </h4>
+                  <p className="text-gray-500 text-xs leading-relaxed mt-1 line-clamp-2">
+                    {offer.details}
+                  </p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        {/* CTA Footer */}
-        <div className="px-8 md:px-12 py-8 md:py-10 bg-[#0a0a0a]">
-          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
-            <p className="text-white/60 text-sm md:text-base">
-              Ready to take advantage of these offers?
-            </p>
-            <div className="flex gap-3">
-              <Link href="/contact">
-                <button className="px-6 py-3 bg-[#c6912c] hover:bg-[#b8830f] text-white text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#c6912c]/20">
-                  Get Quote
-                </button>
-              </Link>
-              <Link href="/ai-estimator">
-                <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg border border-white/20 transition-all duration-300">
-                  AI Estimator
-                </button>
-              </Link>
-            </div>
-          </div>
-          
-          {/* Trust signal */}
-          <p className="mt-4 text-center text-white/40 text-xs">
-            Free consultation · No obligation · Offers subject to availability
+        {/* CTA Footer - Compact */}
+        <div className="px-5 md:px-8 py-4 md:py-5 bg-[#0a0a0a] flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-white/50 text-xs md:text-sm hidden sm:block">
+            Ready to claim these offers?
           </p>
+          <div className="flex gap-2 w-full sm:w-auto">
+            <Link href="/contact" className="flex-1 sm:flex-none">
+              <button className="w-full px-5 md:px-6 py-2.5 bg-[#c6912c] hover:bg-[#b8830f] text-white text-xs md:text-sm font-medium rounded-lg transition-all duration-300">
+                Get Quote
+              </button>
+            </Link>
+            <Link href="/cost-estimator" className="flex-1 sm:flex-none">
+              <button className="w-full px-5 md:px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs md:text-sm font-medium rounded-lg border border-white/20 transition-all duration-300">
+                AI Estimator
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
@@ -667,7 +660,7 @@ export default function OffersPage() {
                   Contact Us
                 </button>
               </Link>
-              <Link href="/ai-estimator">
+              <Link href="/cost-estimator">
                 <button className="px-8 py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-medium rounded transition-colors">
                   AI Estimator
                 </button>
