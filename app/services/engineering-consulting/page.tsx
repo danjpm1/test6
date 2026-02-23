@@ -274,11 +274,11 @@ export default function EngineeringConsultingPage() {
       <Navbar />
 
       {/* SERVICE HEADER */}
-      <section className="bg-black pt-20 sm:pt-24 pb-4 sm:pb-6">
-        <div className="px-5 sm:px-8 md:px-16 lg:px-24">
-          <div className="flex items-center justify-end gap-4">
+      <section className="bg-black pt-18 sm:pt-24 pb-3 sm:pb-6">
+        <div className="px-4 sm:px-8 md:px-16 lg:px-24">
+          <div className="flex items-center justify-end gap-3 sm:gap-4">
             <div className="hidden sm:block w-12 md:w-20 h-[1px] bg-[#c6912c]" />
-            <h1 className="font-display text-white text-lg sm:text-2xl md:text-3xl lg:text-4xl tracking-wider text-right">
+            <h1 className="font-display text-white text-base sm:text-2xl md:text-3xl lg:text-4xl tracking-wider text-right">
               ENGINEERING & CONSULTING
             </h1>
           </div>
@@ -286,7 +286,7 @@ export default function EngineeringConsultingPage() {
       </section>
 
       {/* HERO */}
-      <section className="relative w-full min-h-[70svh] sm:min-h-[80svh] bg-black">
+      <section className="relative w-full min-h-[65svh] sm:min-h-[80svh] bg-black">
         {/* Background Image - Less dark */}
         <div className="absolute inset-0">
           <Image
@@ -300,14 +300,14 @@ export default function EngineeringConsultingPage() {
         </div>
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col justify-center min-h-[70svh] sm:min-h-[80svh] px-5 sm:px-8 md:px-16 lg:px-24 py-12">
+        <div className="relative z-10 flex flex-col justify-center min-h-[65svh] sm:min-h-[80svh] px-4 sm:px-8 md:px-16 lg:px-24 py-10 sm:py-12">
           {/* Tagline */}
-          <p className="font-sans text-[#c6912c] text-[11px] sm:text-sm tracking-[0.15em] sm:tracking-[0.3em] uppercase mb-3 sm:mb-6">
+          <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.12em] sm:tracking-[0.3em] uppercase mb-2 sm:mb-6">
             Protect Your Investment. Solve Complex Challenges.
           </p>
 
           {/* Main Headline */}
-          <h2 className="font-display text-white text-[2.75rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[0.95] tracking-tight mb-6 sm:mb-8">
+          <h2 className="font-display text-white text-[2.25rem] sm:text-[4rem] md:text-[5.5rem] lg:text-[7rem] leading-[0.95] tracking-tight mb-5 sm:mb-8">
             CONSTRUCTION
             <br />
             <span className="text-[#c6912c]">CONSULTING</span>
@@ -320,39 +320,48 @@ export default function EngineeringConsultingPage() {
             Expert engineering solutions, dispute resolution, and permitting services that save you time and money.
           </p>
 
-          {/* CTA Button + FUD microcopy */}
-          <div>
+          {/* ===== UPDATED: Dual CTA Buttons ===== */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4">
             <a
               href="/contact"
-              className="inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-sm sm:text-base tracking-wide px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all duration-300 group"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#c6912c] hover:bg-[#d4a04c] text-white font-sans font-semibold text-[13px] sm:text-base tracking-wide px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg transition-all duration-300 group"
             >
               GET EXPERT CONSULTATION
               <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
-            {/* ===== ADDED: FUD microcopy ===== */}
-            <p className="mt-3 text-[11px] sm:text-[12px] text-white/40">
-              Free initial consultation · No obligation · Fast response
-            </p>
+            <Link
+              href="/cost-estimator?type=consulting"
+              className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-transparent hover:bg-[#c6912c] text-white font-sans font-semibold text-[13px] sm:text-base tracking-wide px-6 sm:px-8 py-3.5 sm:py-4 rounded-lg border-2 border-[#c6912c] transition-all duration-300 group"
+            >
+              SEE INVESTMENT RANGE
+              <svg className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
           </div>
+          {/* FUD microcopy */}
+          <p className="mt-2.5 sm:mt-3 text-[10px] sm:text-[12px] text-white/40 text-center sm:text-left">
+            Free initial consultation · No obligation · Fast response
+          </p>
         </div>
       </section>
 
-      {/* ===== ADDED: Trust Signals Strip ===== */}
-      <section className="bg-black py-8 md:py-10 border-t border-white/10">
-        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-[11px] sm:text-[12px] md:text-[13px] text-white/50 px-6">
-          <div className="flex items-center gap-1.5">
+      {/* ===== Trust Signals Strip ===== */}
+      <section className="bg-black py-6 sm:py-8 md:py-10 border-t border-white/10">
+        <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-6 md:gap-8 text-[10px] sm:text-[12px] md:text-[13px] text-white/50 px-4 sm:px-6">
+          <div className="flex items-center gap-1 sm:gap-1.5">
             <span className="text-[#c6912c] font-medium">$2M+</span>
             <span>Client Savings</span>
           </div>
-          <div className="hidden sm:block w-px h-3 bg-white/20" />
-          <div className="flex items-center gap-1.5">
+          <div className="w-px h-2.5 sm:h-3 bg-white/20" />
+          <div className="flex items-center gap-1 sm:gap-1.5">
             <span className="text-[#c6912c] font-medium">100%</span>
             <span>Permit Success Rate</span>
           </div>
-          <div className="hidden sm:block w-px h-3 bg-white/20" />
-          <div className="flex items-center gap-1.5">
+          <div className="w-px h-2.5 sm:h-3 bg-white/20" />
+          <div className="flex items-center gap-1 sm:gap-1.5">
             <span className="text-[#c6912c] font-medium">30+</span>
             <span>Years Experience</span>
           </div>
@@ -361,11 +370,11 @@ export default function EngineeringConsultingPage() {
 
       {/* STATS SECTION */}
       <section id="services" ref={statsRef} className="bg-white">
-        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-12 sm:py-16 md:py-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-8 items-center">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 py-10 sm:py-16 md:py-24">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-8 items-center">
             {/* HEADLINE - Shows first on mobile, second on desktop */}
-            <div className="order-1 lg:order-2 border-l-2 border-[#c6912c] pl-6 sm:pl-8 lg:pl-12">
-              <h2 className="font-display tracking-tight leading-[0.95] text-[32px] sm:text-[48px] md:text-[64px]">
+            <div className="order-1 lg:order-2 border-l-2 border-[#c6912c] pl-5 sm:pl-8 lg:pl-12">
+              <h2 className="font-display tracking-tight leading-[0.95] text-[26px] sm:text-[48px] md:text-[64px]">
                 <span className="text-[#6b6b6b]">OUR TEAM IS</span>
                 <br />
                 <span className="text-[#c6912c]">ON YOUR SIDE.</span>
@@ -375,10 +384,10 @@ export default function EngineeringConsultingPage() {
             </div>
 
             {/* ANIMATED STATS - Shows second on mobile, first on desktop */}
-            <div className="order-2 lg:order-1 space-y-6 sm:space-y-8 md:space-y-10">
+            <div className="order-2 lg:order-1 space-y-5 sm:space-y-8 md:space-y-10">
               {STATS.map((stat, index) => (
-                <div key={index} className="flex items-center gap-4 sm:gap-6">
-                  <div className="font-display text-[#c6912c] leading-none text-[48px] sm:text-[72px] md:text-[90px]">
+                <div key={index} className="flex items-center gap-3 sm:gap-6">
+                  <div className="font-display text-[#c6912c] leading-none text-[42px] sm:text-[72px] md:text-[90px]">
                     <AnimatedCounter
                       end={stat.end}
                       prefix={stat.prefix}
@@ -388,7 +397,7 @@ export default function EngineeringConsultingPage() {
                     />
                   </div>
                   <div>
-                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.15em] sm:tracking-[0.2em] text-[10px] sm:text-[12px] md:text-[14px] uppercase whitespace-pre-line leading-relaxed">
+                    <p className="font-sans text-[#1a1a1a] font-bold tracking-[0.12em] sm:tracking-[0.2em] text-[9px] sm:text-[12px] md:text-[14px] uppercase whitespace-pre-line leading-relaxed">
                       {stat.label}
                     </p>
                   </div>
@@ -400,9 +409,9 @@ export default function EngineeringConsultingPage() {
       </section>
 
       {/* CONSULTING SERVICES */}
-      <section className="bg-black py-12 sm:py-20 md:py-32">
+      <section className="bg-black py-10 sm:py-20 md:py-32">
         <div className="mx-auto max-w-[1400px] px-4 sm:px-8">
-          <h2 className="font-display text-white text-center text-[28px] sm:text-[46px] md:text-[58px] tracking-tight mb-10 sm:mb-16 md:mb-24">
+          <h2 className="font-display text-white text-center text-[24px] sm:text-[46px] md:text-[58px] tracking-tight mb-8 sm:mb-16 md:mb-24">
             CONSULTING SERVICES
           </h2>
           
@@ -411,35 +420,35 @@ export default function EngineeringConsultingPage() {
             onScroll={(e) => {
               const container = e.currentTarget
               const scrollLeft = container.scrollLeft
-              const cardWidth = container.offsetWidth * 0.75 + 16 // 75vw + gap
+              const cardWidth = container.offsetWidth * 0.78 + 12 // card width + gap
               const newActive = Math.round(scrollLeft / cardWidth)
               setActiveCard(Math.min(newActive, SERVICES.length - 1))
             }}
-            className="flex gap-4 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8"
+            className="flex gap-3 sm:gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory lg:grid lg:grid-cols-3 lg:overflow-visible lg:gap-8"
           >
             {SERVICES.map((service, index) => (
               <div
                 key={index}
                 onClick={() => setSelectedService(index)}
-                className="group relative flex-shrink-0 w-[75vw] sm:w-[420px] lg:w-auto snap-start bg-[#141414] rounded-xl sm:rounded-2xl p-6 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
+                className="group relative flex-shrink-0 w-[78vw] sm:w-[420px] lg:w-auto snap-start bg-[#141414] rounded-xl sm:rounded-2xl p-5 sm:p-12 md:p-14 lg:p-16 transition-all duration-500 hover:shadow-[0_0_60px_-15px_rgba(198,145,44,0.3)] hover:-translate-y-1 cursor-pointer"
               >
                 {/* Gold accent line */}
-                <div className="absolute left-0 top-6 bottom-6 sm:top-10 sm:bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
+                <div className="absolute left-0 top-5 bottom-5 sm:top-10 sm:bottom-10 w-[3px] bg-gradient-to-b from-[#c6912c] via-[#c6912c]/50 to-transparent rounded-full" />
                 
                 {/* Expand icon - top right */}
-                <div className="absolute top-4 right-4 sm:top-6 sm:right-6 w-8 h-8 sm:w-9 sm:h-9 rounded-full border-2 border-[#c6912c]/50 group-hover:border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
-                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#c6912c]/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="absolute top-3 right-3 sm:top-6 sm:right-6 w-7 h-7 sm:w-9 sm:h-9 rounded-full border-2 border-[#c6912c]/50 group-hover:border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
+                  <svg className="w-3 h-3 sm:w-4 sm:h-4 text-[#c6912c]/70 group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                   </svg>
                 </div>
                 
-                <div className="font-display text-[#c6912c] text-[72px] sm:text-[120px] md:text-[140px] lg:text-[160px] leading-none mb-4 sm:mb-8 md:mb-10">
+                <div className="font-display text-[#c6912c] text-[60px] sm:text-[120px] md:text-[140px] lg:text-[160px] leading-none mb-3 sm:mb-8 md:mb-10">
                   {service.num}
                 </div>
-                <h3 className="font-display text-white text-lg sm:text-[28px] md:text-[32px] mb-2 sm:mb-4 md:mb-5 tracking-wide">
+                <h3 className="font-display text-white text-[15px] sm:text-[28px] md:text-[32px] mb-1.5 sm:mb-4 md:mb-5 tracking-wide">
                   {service.title}
                 </h3>
-                <p className="font-sans text-[#666] text-sm sm:text-lg md:text-[19px] leading-relaxed">
+                <p className="font-sans text-[#666] text-[13px] sm:text-lg md:text-[19px] leading-relaxed">
                   {service.shortDesc}
                 </p>
               </div>
@@ -447,14 +456,14 @@ export default function EngineeringConsultingPage() {
           </div>
 
           {/* Pagination dots - mobile only */}
-          <div className="flex lg:hidden justify-center gap-2 mt-6">
+          <div className="flex lg:hidden justify-center gap-2 mt-5 sm:mt-6">
             {SERVICES.map((_, index) => (
               <button
                 key={index}
                 onClick={() => {
                   const container = cardsContainerRef.current
                   if (container) {
-                    const cardWidth = container.offsetWidth * 0.75 + 16
+                    const cardWidth = container.offsetWidth * 0.78 + 12
                     container.scrollTo({ left: cardWidth * index, behavior: 'smooth' })
                   }
                 }}
@@ -473,7 +482,7 @@ export default function EngineeringConsultingPage() {
       {/* SERVICE MODAL */}
       {selectedService !== null && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/80 backdrop-blur-sm"
           onClick={() => setSelectedService(null)}
         >
           <div 
@@ -483,7 +492,7 @@ export default function EngineeringConsultingPage() {
             {/* Close button */}
             <button
               onClick={() => setSelectedService(null)}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
+              className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -491,21 +500,21 @@ export default function EngineeringConsultingPage() {
             </button>
 
             {/* Icon area */}
-            <div className="bg-[#f0f4f8] rounded-t-xl sm:rounded-t-2xl p-8 sm:p-12 flex items-center justify-center">
-              <div className="font-display text-[#c6912c]/30 text-[100px] sm:text-[180px] leading-none">
+            <div className="bg-[#f0f4f8] rounded-t-xl sm:rounded-t-2xl p-6 sm:p-12 flex items-center justify-center">
+              <div className="font-display text-[#c6912c]/30 text-[80px] sm:text-[180px] leading-none">
                 {SERVICES[selectedService].num}
               </div>
             </div>
 
             {/* Content */}
-            <div className="p-5 sm:p-10">
-              <p className="font-sans text-[#c6912c] text-xs sm:text-sm tracking-[0.2em] uppercase mb-1 sm:mb-2">
+            <div className="p-4 sm:p-10">
+              <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.2em] uppercase mb-1 sm:mb-2">
                 CONSULTING SERVICE
               </p>
-              <h3 className="font-display text-black text-2xl sm:text-4xl mb-4 sm:mb-6">
+              <h3 className="font-display text-black text-xl sm:text-4xl mb-3 sm:mb-6">
                 {SERVICES[selectedService].title}
               </h3>
-              <p className="font-sans text-[#555] text-sm sm:text-lg leading-relaxed mb-6 sm:mb-8">
+              <p className="font-sans text-[#555] text-[13px] sm:text-lg leading-relaxed mb-5 sm:mb-8">
                 {SERVICES[selectedService].fullDesc}
               </p>
               
@@ -514,7 +523,7 @@ export default function EngineeringConsultingPage() {
                 {SERVICES[selectedService].features.map((feature, idx) => (
                   <div key={idx} className="flex items-center gap-2">
                     <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-[#c6912c] rounded-full flex-shrink-0" />
-                    <span className="font-sans text-[#333] text-xs sm:text-sm">{feature}</span>
+                    <span className="font-sans text-[#333] text-[12px] sm:text-sm">{feature}</span>
                   </div>
                 ))}
               </div>
@@ -524,18 +533,18 @@ export default function EngineeringConsultingPage() {
       )}
 
       {/* DRIVING RESULTS */}
-      <section className="bg-[#f8f8f8] py-12 sm:py-20 md:py-32">
+      <section className="bg-[#f8f8f8] py-10 sm:py-20 md:py-32">
         <div className="mx-auto max-w-7xl px-4 sm:px-8">
           {/* Header - Centered */}
-          <div className="text-center mb-12 sm:mb-16 md:mb-20">
-            <div className="flex items-center justify-center gap-3 sm:gap-4 mb-3 sm:mb-4">
-              <div className="w-8 sm:w-12 h-[2px] bg-[#c6912c]" />
-              <p className="font-sans text-[#888] text-xs sm:text-sm tracking-[0.2em] sm:tracking-[0.25em] uppercase">
+          <div className="text-center mb-10 sm:mb-16 md:mb-20">
+            <div className="flex items-center justify-center gap-2 sm:gap-4 mb-2 sm:mb-4">
+              <div className="w-6 sm:w-12 h-[2px] bg-[#c6912c]" />
+              <p className="font-sans text-[#888] text-[10px] sm:text-sm tracking-[0.15em] sm:tracking-[0.25em] uppercase">
                 Our Results Speak For Us
               </p>
-              <div className="w-8 sm:w-12 h-[2px] bg-[#c6912c]" />
+              <div className="w-6 sm:w-12 h-[2px] bg-[#c6912c]" />
             </div>
-            <h2 className="font-display text-[28px] sm:text-[48px] md:text-[64px] leading-[0.95] tracking-tight">
+            <h2 className="font-display text-[24px] sm:text-[48px] md:text-[64px] leading-[0.95] tracking-tight">
               <span className="text-[#1a1a1a]">DRIVING RESULTS</span>
               <br />
               <span className="text-[#1a1a1a]">THROUGH </span>
@@ -551,42 +560,42 @@ export default function EngineeringConsultingPage() {
               <div
                 key={index}
                 onClick={() => setSelectedResult(index)}
-                className="group bg-[#f8f8f8] p-6 sm:p-10 md:p-12 cursor-pointer hover:bg-white transition-colors"
+                className="group bg-[#f8f8f8] p-5 sm:p-10 md:p-12 cursor-pointer hover:bg-white transition-colors"
               >
                 {/* Icon */}
-                <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center mb-4 sm:mb-6">
+                <div className="w-9 h-9 sm:w-12 sm:h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center mb-3 sm:mb-6">
                   {result.icon === "shield" && (
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                   )}
                   {result.icon === "clock" && (
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )}
                   {result.icon === "check" && (
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )}
                   {result.icon === "trending" && (
-                    <svg className="w-5 h-5 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-4 h-4 sm:w-6 sm:h-6 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
                     </svg>
                   )}
                 </div>
-                <p className={`font-display text-[#c6912c] leading-none mb-2 sm:mb-4 ${index === 1 ? 'text-[33px] sm:text-[43px] md:text-[50px] whitespace-pre-line' : 'text-[40px] sm:text-[56px] md:text-[64px]'}`}>
+                <p className={`font-display text-[#c6912c] leading-none mb-1.5 sm:mb-4 ${index === 1 ? 'text-[28px] sm:text-[43px] md:text-[50px] whitespace-pre-line' : 'text-[34px] sm:text-[56px] md:text-[64px]'}`}>
                   {result.stat}
                 </p>
-                <h3 className="font-display text-[#1a1a1a] text-base sm:text-2xl md:text-[26px] mb-2 sm:mb-3 tracking-wide">
+                <h3 className="font-display text-[#1a1a1a] text-[14px] sm:text-2xl md:text-[26px] mb-1.5 sm:mb-3 tracking-wide">
                   {result.title}
                 </h3>
-                <p className="font-sans text-[#777] text-sm sm:text-base mb-4 sm:mb-6">
+                <p className="font-sans text-[#777] text-[13px] sm:text-base mb-3 sm:mb-6">
                   {result.shortDesc}
                 </p>
-                <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full border-2 border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
-                  <svg className="w-4 h-4 sm:w-5 sm:h-5 text-[#c6912c] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <div className="w-8 h-8 sm:w-11 sm:h-11 rounded-full border-2 border-[#c6912c] group-hover:bg-[#c6912c] flex items-center justify-center transition-all duration-300">
+                  <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5 text-[#c6912c] group-hover:text-white transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </div>
@@ -596,94 +605,105 @@ export default function EngineeringConsultingPage() {
         </div>
       </section>
 
-      {/* ===== ADDED: Mid-page CTA section ===== */}
-      <section className="bg-[#f8f8f8] py-8 md:py-12">
-        <div className="max-w-3xl mx-auto px-6 md:px-12">
-          <div className="bg-white border border-gray-200 rounded-lg p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
-            <div>
-              <h3 className="text-xl md:text-2xl font-semibold text-black">
+      {/* ===== UPDATED: Mid-page CTA section with dual buttons ===== */}
+      <section className="bg-[#f8f8f8] py-6 sm:py-8 md:py-12">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12">
+          <div className="bg-white border border-gray-200 rounded-lg p-5 sm:p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-5 sm:gap-6">
+            <div className="text-center md:text-left">
+              <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-black">
                 Facing a construction challenge?
               </h3>
-              <p className="text-[14px] md:text-[15px] text-gray-500 mt-2">
+              <p className="text-[13px] sm:text-[14px] md:text-[15px] text-gray-500 mt-1.5 sm:mt-2">
                 Get expert guidance — free initial consultation, no obligation.
               </p>
             </div>
-            <Link 
-              href="/contact"
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-[11px] sm:text-[12px] tracking-[0.12em] uppercase font-semibold hover:bg-[#c6912c] transition-colors duration-300 whitespace-nowrap flex-shrink-0"
-            >
-              Get Consultation
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </Link>
+            <div className="flex flex-col sm:flex-row gap-2.5 sm:gap-3 w-full md:w-auto">
+              <Link 
+                href="/contact"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 sm:py-3 bg-black text-white text-[11px] sm:text-[12px] tracking-[0.12em] uppercase font-semibold hover:bg-[#c6912c] transition-colors duration-300 whitespace-nowrap"
+              >
+                Get Consultation
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <Link 
+                href="/cost-estimator?type=consulting"
+                className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 sm:py-3 bg-transparent text-black text-[11px] sm:text-[12px] tracking-[0.12em] uppercase font-semibold border-2 border-black hover:bg-black hover:text-white transition-colors duration-300 whitespace-nowrap"
+              >
+                Try Estimator
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+            </div>
           </div>
         </div>
       </section>
 
       {/* TESTIMONIAL */}
-      <section className="bg-black py-16 sm:py-20 md:py-28">
-        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+      <section className="bg-black py-12 sm:py-20 md:py-28">
+        <div className="mx-auto max-w-4xl px-4 sm:px-8 text-center">
           {/* Quote mark */}
-          <div className="text-[#c6912c] text-6xl sm:text-8xl font-serif leading-none mb-6">"</div>
+          <div className="text-[#c6912c] text-5xl sm:text-8xl font-serif leading-none mb-4 sm:mb-6">"</div>
           
-          <blockquote className="font-sans text-white text-lg sm:text-xl md:text-2xl leading-relaxed mb-8 sm:mb-10">
+          <blockquote className="font-sans text-white text-[15px] sm:text-xl md:text-2xl leading-relaxed mb-6 sm:mb-10">
             {TESTIMONIAL.quote}
           </blockquote>
           
           <div className="flex flex-col items-center">
-            <div className="w-12 h-[2px] bg-[#c6912c] mb-4" />
-            <p className="font-display text-white text-base sm:text-lg">{TESTIMONIAL.author}</p>
-            <p className="font-sans text-white/60 text-sm sm:text-base">{TESTIMONIAL.title}, {TESTIMONIAL.company}</p>
+            <div className="w-10 sm:w-12 h-[2px] bg-[#c6912c] mb-3 sm:mb-4" />
+            <p className="font-display text-white text-sm sm:text-lg">{TESTIMONIAL.author}</p>
+            <p className="font-sans text-white/60 text-[13px] sm:text-base">{TESTIMONIAL.title}, {TESTIMONIAL.company}</p>
           </div>
         </div>
       </section>
 
       {/* WHY CHOOSE US */}
-      <section ref={whyChooseRef} className="bg-white py-16 sm:py-20 md:py-28">
-        <div className="mx-auto max-w-7xl px-5 sm:px-8">
+      <section ref={whyChooseRef} className="bg-white py-12 sm:py-20 md:py-28">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8">
           {/* Header */}
-          <div className={`text-center mb-12 sm:mb-16 transition-all duration-700 ${whyChooseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <h2 className="font-display text-[28px] sm:text-[40px] md:text-[52px] tracking-tight text-[#1a1a1a]">
+          <div className={`text-center mb-10 sm:mb-16 transition-all duration-700 ${whyChooseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="font-display text-[24px] sm:text-[40px] md:text-[52px] tracking-tight text-[#1a1a1a]">
               WHY CHOOSE <span className="text-[#c6912c]">ANTOVA</span>
             </h2>
           </div>
 
           {/* Trust badges grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8">
             {WHY_CHOOSE.map((item, index) => (
               <div 
                 key={index} 
-                className={`text-center p-4 sm:p-6 transition-all duration-700 ${whyChooseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                className={`text-center p-3 sm:p-6 transition-all duration-700 ${whyChooseVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
                 style={{ transitionDelay: whyChooseVisible ? `${index * 150}ms` : '0ms' }}
               >
                 {/* Icon */}
-                <div className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-[#c6912c]/10 flex items-center justify-center mx-auto mb-4 sm:mb-5 transition-transform duration-500 ${whyChooseVisible ? 'scale-100' : 'scale-75'}`}
+                <div className={`w-12 h-12 sm:w-16 sm:h-16 rounded-full bg-[#c6912c]/10 flex items-center justify-center mx-auto mb-3 sm:mb-5 transition-transform duration-500 ${whyChooseVisible ? 'scale-100' : 'scale-75'}`}
                   style={{ transitionDelay: whyChooseVisible ? `${index * 150 + 200}ms` : '0ms' }}
                 >
                   {item.icon === "expertise" && (
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                     </svg>
                   )}
                   {item.icon === "track" && (
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
                     </svg>
                   )}
                   {item.icon === "savings" && (
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                     </svg>
                   )}
                   {item.icon === "speed" && (
-                    <svg className="w-7 h-7 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-6 h-6 sm:w-8 sm:h-8 text-[#c6912c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                     </svg>
                   )}
                 </div>
-                <h3 className="font-display text-[#1a1a1a] text-sm sm:text-lg mb-2">{item.title}</h3>
-                <p className="font-sans text-[#777] text-xs sm:text-sm leading-relaxed">{item.desc}</p>
+                <h3 className="font-display text-[#1a1a1a] text-[13px] sm:text-lg mb-1 sm:mb-2">{item.title}</h3>
+                <p className="font-sans text-[#777] text-[11px] sm:text-sm leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -693,7 +713,7 @@ export default function EngineeringConsultingPage() {
       {/* RESULT MODAL */}
       {selectedResult !== null && (
         <div 
-          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center p-2.5 sm:p-4 bg-black/80 backdrop-blur-sm"
           onClick={() => setSelectedResult(null)}
         >
           <div 
@@ -703,7 +723,7 @@ export default function EngineeringConsultingPage() {
             {/* Close button */}
             <button
               onClick={() => setSelectedResult(null)}
-              className="absolute top-3 right-3 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
+              className="absolute top-2.5 right-2.5 sm:top-4 sm:right-4 w-8 h-8 sm:w-10 sm:h-10 bg-black rounded-full flex items-center justify-center hover:bg-[#c6912c] transition-colors z-10"
             >
               <svg className="w-4 h-4 sm:w-5 sm:h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -711,42 +731,42 @@ export default function EngineeringConsultingPage() {
             </button>
 
             {/* Stat header area */}
-            <div className="bg-[#1a1a1a] rounded-t-xl sm:rounded-t-2xl p-6 sm:p-12">
-              <p className={`font-display text-[#c6912c] leading-none mb-1 sm:mb-2 ${selectedResult === 1 ? 'text-[43px] sm:text-[66px] whitespace-pre-line' : 'text-[56px] sm:text-[100px]'}`}>
+            <div className="bg-[#1a1a1a] rounded-t-xl sm:rounded-t-2xl p-5 sm:p-12">
+              <p className={`font-display text-[#c6912c] leading-none mb-1 sm:mb-2 ${selectedResult === 1 ? 'text-[36px] sm:text-[66px] whitespace-pre-line' : 'text-[48px] sm:text-[100px]'}`}>
                 {RESULTS[selectedResult].stat}
               </p>
-              <h3 className="font-display text-white text-lg sm:text-3xl tracking-wide">
+              <h3 className="font-display text-white text-base sm:text-3xl tracking-wide">
                 {RESULTS[selectedResult].title}
               </h3>
             </div>
 
             {/* Content */}
-            <div className="p-5 sm:p-10">
-              <p className="font-sans text-[#c6912c] text-xs sm:text-sm tracking-[0.2em] uppercase mb-1 sm:mb-2">
+            <div className="p-4 sm:p-10">
+              <p className="font-sans text-[#c6912c] text-[10px] sm:text-sm tracking-[0.2em] uppercase mb-1 sm:mb-2">
                 Case Study
               </p>
-              <p className="font-sans text-[#555] text-sm sm:text-lg leading-relaxed mb-6 sm:mb-8">
+              <p className="font-sans text-[#555] text-[13px] sm:text-lg leading-relaxed mb-5 sm:mb-8">
                 {RESULTS[selectedResult].fullDesc}
               </p>
               
               {/* Project Details */}
-              <div className="grid grid-cols-2 gap-4 sm:gap-6 mb-6 sm:mb-8">
+              <div className="grid grid-cols-2 gap-3 sm:gap-6 mb-5 sm:mb-8">
                 <div>
-                  <p className="font-sans text-[#999] text-[10px] sm:text-xs tracking-[0.15em] uppercase mb-1">Client</p>
-                  <p className="font-sans text-[#333] text-sm sm:text-base font-medium">{RESULTS[selectedResult].client}</p>
+                  <p className="font-sans text-[#999] text-[9px] sm:text-xs tracking-[0.15em] uppercase mb-0.5 sm:mb-1">Client</p>
+                  <p className="font-sans text-[#333] text-[13px] sm:text-base font-medium">{RESULTS[selectedResult].client}</p>
                 </div>
                 <div>
-                  <p className="font-sans text-[#999] text-[10px] sm:text-xs tracking-[0.15em] uppercase mb-1">Duration</p>
-                  <p className="font-sans text-[#333] text-sm sm:text-base font-medium">{RESULTS[selectedResult].duration}</p>
+                  <p className="font-sans text-[#999] text-[9px] sm:text-xs tracking-[0.15em] uppercase mb-0.5 sm:mb-1">Duration</p>
+                  <p className="font-sans text-[#333] text-[13px] sm:text-base font-medium">{RESULTS[selectedResult].duration}</p>
                 </div>
               </div>
               
               {/* Services Used */}
               <div>
-                <p className="font-sans text-[#999] text-[10px] sm:text-xs tracking-[0.15em] uppercase mb-2 sm:mb-3">Services Provided</p>
+                <p className="font-sans text-[#999] text-[9px] sm:text-xs tracking-[0.15em] uppercase mb-2 sm:mb-3">Services Provided</p>
                 <div className="flex flex-wrap gap-1.5 sm:gap-2">
                   {RESULTS[selectedResult].services.map((service, idx) => (
-                    <span key={idx} className="font-sans text-xs sm:text-sm bg-[#f5f5f5] text-[#555] px-2 sm:px-3 py-1 rounded-full">
+                    <span key={idx} className="font-sans text-[11px] sm:text-sm bg-[#f5f5f5] text-[#555] px-2 sm:px-3 py-1 rounded-full">
                       {service}
                     </span>
                   ))}
@@ -757,21 +777,21 @@ export default function EngineeringConsultingPage() {
         </div>
       )}
 
-      {/* ===== ADDED: FAQ Section ===== */}
-      <section className="bg-[#f8f8f8] py-12 md:py-16 lg:py-20">
-        <div className="max-w-3xl mx-auto px-6 md:px-12">
+      {/* ===== FAQ Section ===== */}
+      <section className="bg-[#f8f8f8] py-10 sm:py-12 md:py-16 lg:py-20">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12">
           {/* Section header */}
-          <div className="text-center mb-10 md:mb-12">
-            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.3em] mb-3">
+          <div className="text-center mb-8 sm:mb-10 md:mb-12">
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.25em] sm:tracking-[0.3em] mb-2 sm:mb-3">
               Common Questions
             </p>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-black">
+            <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold text-black">
               Before You Decide
             </h2>
           </div>
 
           {/* FAQ accordion */}
-          <div className="space-y-4">
+          <div className="space-y-3 sm:space-y-4">
             {faqs.map((faq, index) => (
               <div 
                 key={index}
@@ -779,13 +799,13 @@ export default function EngineeringConsultingPage() {
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === index ? null : index)}
-                  className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors"
+                  className="w-full flex items-center justify-between px-4 sm:px-6 py-4 sm:py-5 text-left hover:bg-gray-50 transition-colors"
                 >
-                  <span className="font-medium text-[15px] md:text-[16px] text-black pr-4">
+                  <span className="font-medium text-[13px] sm:text-[15px] md:text-[16px] text-black pr-3 sm:pr-4">
                     {faq.question}
                   </span>
                   <svg 
-                    className={`w-5 h-5 text-[#c6912c] flex-shrink-0 transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`}
+                    className={`w-4 h-4 sm:w-5 sm:h-5 text-[#c6912c] flex-shrink-0 transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`}
                     fill="none" 
                     stroke="currentColor" 
                     strokeWidth={2} 
@@ -795,8 +815,8 @@ export default function EngineeringConsultingPage() {
                   </svg>
                 </button>
                 {openFaq === index && (
-                  <div className="px-6 pb-5">
-                    <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed">
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-5">
+                    <p className="text-[12px] sm:text-[14px] md:text-[15px] text-gray-600 leading-relaxed">
                       {faq.answer}
                     </p>
                   </div>
@@ -807,27 +827,27 @@ export default function EngineeringConsultingPage() {
         </div>
       </section>
 
-      {/* CTA Section - ENHANCED */}
-      <section className="py-16 sm:py-20 md:py-24 lg:py-32 bg-black">
-        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
-          <p className="text-[12px] sm:text-[13px] md:text-sm text-white/40 uppercase tracking-[0.2em] mb-4 sm:mb-6">
+      {/* ===== UPDATED: Final CTA Section with fixed link ===== */}
+      <section className="py-12 sm:py-20 md:py-24 lg:py-32 bg-black">
+        <div className="mx-auto max-w-4xl px-4 sm:px-8 text-center">
+          <p className="text-[10px] sm:text-[13px] md:text-sm text-white/40 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-6">
             Engineering & Consulting
           </p>
           
-          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-5">
+          <h2 className="font-display text-xl sm:text-3xl md:text-5xl text-white mb-3 sm:mb-5">
             Let's Solve Your <span className="text-[#c6912c]">Construction Challenge</span>
           </h2>
           
-          {/* ===== ADDED: Capacity-based urgency ===== */}
-          <p className="text-[13px] sm:text-[14px] md:text-[15px] text-white/50 mb-8 sm:mb-10 md:mb-12">
+          {/* Capacity-based urgency */}
+          <p className="text-[12px] sm:text-[14px] md:text-[15px] text-white/50 mb-6 sm:mb-10 md:mb-12">
             From complex disputes to fast-track permitting, our team delivers results.
           </p>
 
-          {/* ===== ENHANCED: Dual CTA ===== */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+          {/* Dual CTA - FIXED link */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center items-center mb-5 sm:mb-6">
             <Link
               href="/contact"
-              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-8 bg-[#c6912c] hover:bg-[#b8830f] text-black font-semibold rounded-md transition-all flex items-center justify-center gap-2 text-[12px] sm:text-[13px] tracking-[0.1em] uppercase"
+              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-6 sm:px-8 bg-[#c6912c] hover:bg-[#b8830f] text-black font-semibold rounded-md transition-all flex items-center justify-center gap-2 text-[11px] sm:text-[13px] tracking-[0.1em] uppercase"
             >
               Get Expert Consultation
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -835,18 +855,18 @@ export default function EngineeringConsultingPage() {
               </svg>
             </Link>
             <Link
-              href="/ai-estimator"
-              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-8 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center gap-2 text-[12px] sm:text-[13px] tracking-[0.1em] uppercase"
+              href="/cost-estimator?type=consulting"
+              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-6 sm:px-8 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center gap-2 text-[11px] sm:text-[13px] tracking-[0.1em] uppercase"
             >
-              Try AI Estimator
+              See Investment Range
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </Link>
           </div>
 
-          {/* ===== ADDED: FUD-reducing microcopy ===== */}
-          <p className="text-[11px] sm:text-[12px] text-white/40">
+          {/* FUD-reducing microcopy */}
+          <p className="text-[10px] sm:text-[12px] text-white/40">
             Free initial consultation · No obligation · Fast response within 24 hours
           </p>
         </div>
