@@ -746,7 +746,18 @@ const ServiceOfferModal = ({
                 Get Quote
               </button>
             </Link>
-            <Link href="/cost-estimator" className="flex-1 sm:flex-none">
+            <Link 
+              href={`/cost-estimator?type=${
+                section.id === "signature-custom-design" ? "custom-home" :
+                section.id === "new-build" ? "new-build" :
+                section.id === "renovation" ? "renovation" :
+                section.id === "commercial" ? "commercial" :
+                section.id === "remote" ? "remote" :
+                section.id === "consulting-engineering" ? "consulting" :
+                section.id === "financing" ? "consulting" : ""
+              }`} 
+              className="flex-1 sm:flex-none"
+            >
               <button className="w-full px-5 md:px-6 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs md:text-sm font-medium rounded-lg border border-white/20 transition-all duration-300">
                 AI Estimator
               </button>
