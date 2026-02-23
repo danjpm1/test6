@@ -37,23 +37,54 @@ const OFFER_SECTIONS = [
       {
         icon: "star",
         title: "Complimentary Architectural Consultation — $1,500 Value",
-        link: "/contact",
+        shortDetails: "3-hour design consultation with our lead architect for custom home projects over $400,000.",
+        fullDetails: "This exclusive consultation gives you dedicated time with our principal architect to explore your vision, discuss site considerations, and understand the full scope of possibilities for your custom home. We'll analyze your property, review your inspiration materials, and provide preliminary concept sketches.",
+        includes: [
+          "3-hour one-on-one session with lead architect",
+          "Preliminary site analysis and feasibility review",
+          "Initial concept sketches (2-3 design directions)",
+          "Material and style recommendations",
+          "Budget framework discussion",
+          "Written summary of recommendations"
+        ],
+        terms: "Available for custom home projects with minimum budget of $400,000. Must schedule within 60 days of inquiry. One consultation per property.",
+        expires: "Ongoing offer",
         linkText: "Book Consultation",
-        details: "Receive a comprehensive 3-hour design consultation with our lead architect. Includes preliminary concept sketches and site analysis for custom home projects over $400,000.",
       },
       {
         icon: "gift",
         title: "Free Smart Home Integration Package",
-        link: "/contact",
+        shortDetails: "Complimentary $20,000 smart home package for signature homes over $600,000.",
+        fullDetails: "Transform your custom home into an intelligent living space with our premium smart home integration package. This comprehensive system seamlessly connects lighting, climate, security, and entertainment — all controllable from your smartphone or voice commands.",
+        includes: [
+          "Lutron RadioRA 3 whole-home lighting control",
+          "Nest or Ecobee smart thermostat system",
+          "Ring or similar video doorbell & entry system",
+          "Smart lock integration (3 entry points)",
+          "Whole-home Wi-Fi mesh network setup",
+          "Professional programming and configuration",
+          "Training session for homeowners"
+        ],
+        terms: "Available for signature custom homes with contract value over $600,000. Package value of $20,000 applied as credit. Cannot be exchanged for cash.",
+        expires: "Limited time — while slots available",
         linkText: "Learn More",
-        details: "Commission a signature home over $600,000 and receive a complimentary $20,000 smart home package including Lutron lighting, climate control, and security integration.",
       },
       {
         icon: "percent",
         title: "$10,000 Premium Material Upgrade Credit",
-        link: "/contact",
+        shortDetails: "Apply toward imported stone, custom millwork, or designer fixtures.",
+        fullDetails: "Elevate your custom home with premium materials at no additional cost. This credit allows you to upgrade key design elements — from Italian marble countertops to handcrafted millwork — giving your home the refined finishes that make a lasting impression.",
+        includes: [
+          "Imported natural stone (marble, quartzite, granite)",
+          "Custom hardwood millwork and cabinetry upgrades",
+          "Designer plumbing fixtures (Waterworks, Kallista)",
+          "Premium hardware and accessories",
+          "Specialty tile and mosaic work",
+          "Custom metalwork and railings"
+        ],
+        terms: "Credit applied at contract signing. Valid for contracts signed by March 31, 2025. Cannot be combined with other material promotions. Unused credit has no cash value.",
+        expires: "March 31, 2025",
         linkText: "Get Quote",
-        details: "Apply toward imported stone, custom millwork, or designer fixtures. Available on custom home contracts signed by March 31, 2025. Cannot be combined with other material promotions.",
       },
     ],
   },
@@ -67,24 +98,54 @@ const OFFER_SECTIONS = [
     offers: [
       {
         icon: "calendar",
-        title: "Ending January 31, 2025: $2,500 Credit on Premium Fixtures",
-        link: "/contact",
+        title: "Limited Time: $2,500 Credit on Premium Fixtures",
+        shortDetails: "Available for kitchen and bathroom renovations over $20,000. Ends January 31, 2025.",
+        fullDetails: "Upgrade your kitchen or bathroom with premium fixtures at a significant savings. This credit applies to high-end brands that elevate both function and aesthetics — from professional-grade faucets to designer cabinet hardware.",
+        includes: [
+          "Premium faucets (Brizo, Kohler, Grohe)",
+          "Designer cabinet hardware",
+          "Under-cabinet and accent lighting",
+          "High-end showerheads and fixtures",
+          "Quality towel bars and bath accessories",
+          "Upgraded outlet and switch covers"
+        ],
+        terms: "Minimum project value of $20,000. Credit applied at contract signing. Must complete consultation by January 31, 2025. One credit per project.",
+        expires: "January 31, 2025",
         linkText: "Get Quote",
-        details: "Available for kitchen and bathroom renovations over $20,000. Credit applied at signing. Must complete consultation by January 31, 2025.",
       },
       {
         icon: "percent",
-        title: "0% APR Available for 12 Months",
-        link: "/contact",
+        title: "0% APR Financing for 12 Months",
+        shortDetails: "Zero interest financing for renovation projects $15,000 to $150,000.",
+        fullDetails: "Make your renovation affordable with our zero-interest financing option. Pay over 12 months with no interest charges — giving you the flexibility to complete your dream renovation without the financial strain of paying everything upfront.",
+        includes: [
+          "No interest for 12 full months",
+          "Fixed monthly payments",
+          "No prepayment penalties",
+          "Quick approval process (24-48 hours)",
+          "Finance up to $150,000",
+          "Combine with other project incentives"
+        ],
+        terms: "Subject to credit approval through our lending partners. Available for projects from $15,000 to $150,000. Standard rates apply after promotional period if balance remains.",
+        expires: "Ongoing — subject to lender availability",
         linkText: "Get Prequalified",
-        details: "Available for qualified buyers on renovation projects from $15,000 to $150,000. Subject to credit approval.",
       },
       {
         icon: "star",
         title: "Free Design Consultation",
-        link: "/contact",
+        shortDetails: "Complimentary 2-hour design consultation with our interior specialists. $500 value.",
+        fullDetails: "Start your renovation journey with expert guidance. Our interior design specialists will help you clarify your vision, explore possibilities, and create a roadmap for your project — from material selections to layout optimization.",
+        includes: [
+          "2-hour in-home or virtual consultation",
+          "Style assessment and direction",
+          "Space planning recommendations",
+          "Material and finish suggestions",
+          "Preliminary budget discussion",
+          "Follow-up summary document"
+        ],
+        terms: "Available for new clients. One consultation per household. No purchase obligation.",
+        expires: "Ongoing offer",
         linkText: "Book Now",
-        details: "Complimentary 2-hour design consultation with our interior specialists. Valued at $500, now free for new clients.",
       },
     ],
   },
@@ -99,23 +160,54 @@ const OFFER_SECTIONS = [
       {
         icon: "calendar",
         title: "3.99% APR Construction Loan",
-        link: "/contact",
+        shortDetails: "Lock in rates as low as 3.99% APR for custom homes from $350,000.",
+        fullDetails: "Secure exceptional financing for your new build with our preferred lending partners. This competitive rate helps make your dream home more affordable while providing the flexibility of a construction-to-permanent loan structure.",
+        includes: [
+          "Rates as low as 3.99% APR",
+          "Construction-to-permanent loan option",
+          "Interest-only payments during construction",
+          "Single closing — saves on fees",
+          "Lock rate for up to 12 months",
+          "Dedicated loan officer support"
+        ],
+        terms: "Rate subject to credit approval and may vary based on creditworthiness. Available for primary residences. Minimum loan amount $350,000. Points may apply.",
+        expires: "Rate subject to market conditions",
         linkText: "Get Prequalified",
-        details: "Lock in rates as low as 3.99% APR for qualified buyers through our lending partners. Available on custom homes from $350,000.",
       },
       {
         icon: "star",
         title: "Free Smart Home Package on Luxury Estates",
-        link: "/contact",
+        shortDetails: "Complimentary $15,000 smart home package for estates over $750,000.",
+        fullDetails: "Your luxury estate deserves intelligent living. This comprehensive smart home package integrates lighting, climate, security, and entertainment into one seamless system — professionally installed and configured during construction for flawless integration.",
+        includes: [
+          "Whole-home lighting automation",
+          "Multi-zone climate control",
+          "Integrated security system with cameras",
+          "Video doorbell and smart locks",
+          "Distributed audio system (4 zones)",
+          "Centralized control panel",
+          "Mobile app setup and training"
+        ],
+        terms: "Available for new construction estates with contract value over $750,000. Installed during construction phase. Cannot be exchanged for cash value.",
+        expires: "Limited availability",
         linkText: "Schedule Consultation",
-        details: "Commission a luxury estate over $750,000 and receive a complimentary $15,000 smart home automation package including lighting, climate, and security.",
       },
       {
         icon: "gift",
         title: "Upgraded Appliance Package",
-        link: "/contact",
+        shortDetails: "Premium appliance brands at no additional cost. Valued at up to $10,000.",
+        fullDetails: "Outfit your new kitchen with top-tier appliances from brands known for performance, reliability, and design. Choose from our curated selection of premium packages that complement your home's style and your culinary aspirations.",
+        includes: [
+          "Professional-grade range or cooktop",
+          "Built-in refrigerator upgrade",
+          "Whisper-quiet dishwasher",
+          "Ventilation hood upgrade",
+          "Microwave drawer or built-in option",
+          "Brands: Sub-Zero, Wolf, Thermador, Miele"
+        ],
+        terms: "Package value up to $10,000 based on standard allowances. Selection from approved brands/models. Upgrades beyond package value available at additional cost.",
+        expires: "Ongoing offer",
         linkText: "Learn More",
-        details: "Select from premium appliance brands at no additional cost when you build with Antova. Valued at up to $10,000.",
       },
     ],
   },
@@ -130,23 +222,53 @@ const OFFER_SECTIONS = [
       {
         icon: "percent",
         title: "$5,000 Tenant Improvement Credit",
-        link: "/contact",
+        shortDetails: "Credit toward tenant improvements on commercial build-outs over $75,000.",
+        fullDetails: "Maximize your commercial space investment with this tenant improvement credit. Whether you're building out an office, retail location, or restaurant, this credit helps offset costs for the custom features that make your space unique.",
+        includes: [
+          "Custom millwork and built-ins",
+          "Specialty flooring upgrades",
+          "Accent lighting and fixtures",
+          "Branded signage integration",
+          "Break room or kitchenette upgrades",
+          "Reception area enhancements"
+        ],
+        terms: "Minimum project value of $75,000. Applicable to office, retail, or restaurant spaces. Valid for contracts signed by March 31, 2025. One credit per project.",
+        expires: "March 31, 2025",
         linkText: "Get Quote",
-        details: "Receive a $5,000 credit toward tenant improvements on commercial build-outs over $75,000. Applicable to office, retail, or restaurant spaces. Valid for contracts signed by March 31, 2025.",
       },
       {
         icon: "clock",
         title: "Fast-Track Permitting — 30% Faster Guaranteed",
-        link: "/contact",
+        shortDetails: "Accelerated permit approvals with money-back guarantee if we miss the timeline.",
+        fullDetails: "Time is money in commercial construction. Our permit expediting service leverages established relationships and expert knowledge to accelerate approvals significantly. We're so confident, we guarantee results or refund our expediting fee.",
+        includes: [
+          "Complete permit application preparation",
+          "Pre-submission review with authorities",
+          "Dedicated permit expeditor",
+          "ADA compliance review included",
+          "Regular status updates",
+          "Issue resolution and resubmission"
+        ],
+        terms: "30% faster compared to standard municipal timelines. Guarantee applies to expediting fee only. Timeline begins after complete documentation submitted.",
+        expires: "Ongoing service",
         linkText: "Learn More",
-        details: "Our commercial permit expediting service accelerates approvals by 30% or more. If we miss the timeline, your expediting fee is fully refunded. Includes ADA compliance review.",
       },
       {
         icon: "star",
         title: "Free Space Planning & Layout Consultation",
-        link: "/contact",
+        shortDetails: "Complimentary space planning session with our commercial design team. $750 value.",
+        fullDetails: "Optimize your commercial space before construction begins. Our commercial design specialists analyze workflow, code requirements, and brand needs to create a layout that maximizes efficiency and customer experience.",
+        includes: [
+          "On-site space assessment",
+          "Workflow and traffic flow analysis",
+          "Preliminary layout concepts (2-3 options)",
+          "Code compliance preliminary review",
+          "Furniture and fixture planning",
+          "Written recommendations report"
+        ],
+        terms: "Available for commercial projects. One consultation per project. No purchase obligation.",
+        expires: "Ongoing offer",
         linkText: "Book Now",
-        details: "Complimentary space planning session with our commercial design team. Includes workflow optimization, code compliance review, and preliminary layout — a $750 value.",
       },
     ],
   },
@@ -161,23 +283,54 @@ const OFFER_SECTIONS = [
       {
         icon: "star",
         title: "Free Site Assessment & Access Consultation",
-        link: "/contact",
+        shortDetails: "Complimentary on-site evaluation for remote build projects over $150,000. $1,200 value.",
+        fullDetails: "Building remotely requires specialized expertise. Our team will visit your property, assess terrain challenges, evaluate access options, and determine utility feasibility — giving you a clear picture of what's possible before you commit.",
+        includes: [
+          "On-site property visit by project manager",
+          "Terrain and soil analysis",
+          "Access road evaluation or creation options",
+          "Utility connection feasibility study",
+          "Helicopter or special access assessment if needed",
+          "Detailed written report with recommendations",
+          "Preliminary cost impact analysis"
+        ],
+        terms: "Available for remote build projects with minimum budget of $150,000. Travel expenses covered within 100 miles; additional mileage may apply.",
+        expires: "Ongoing offer",
         linkText: "Schedule Visit",
-        details: "Complimentary on-site evaluation including terrain analysis, access logistics planning, and utility feasibility study. A $1,200 value for remote build projects over $150,000.",
       },
       {
         icon: "gift",
         title: "$8,000 Solar & Battery Package Credit",
-        link: "/contact",
+        shortDetails: "Apply toward solar, battery storage, or hybrid power systems for off-grid homes.",
+        fullDetails: "Power your remote home sustainably with our solar and battery credit. Whether fully off-grid or hybrid, this credit helps offset the cost of renewable energy systems that provide reliable, independent power.",
+        includes: [
+          "Solar panel installation",
+          "Battery storage systems (Tesla Powerwall, etc.)",
+          "Hybrid inverter systems",
+          "Generator integration",
+          "Whole-home energy monitoring",
+          "System design and engineering"
+        ],
+        terms: "Available on projects contracted by March 31, 2025. Credit applied toward solar/battery components and installation. Cannot be combined with utility rebates we apply for on your behalf.",
+        expires: "March 31, 2025",
         linkText: "Get Quote",
-        details: "Apply toward solar panel installation, battery storage, or hybrid power systems on off-grid homes. Available on projects contracted by March 31, 2025.",
       },
       {
         icon: "percent",
         title: "Well & Septic System — 10% Off",
-        link: "/contact",
+        shortDetails: "Save 10% on well drilling and septic installation when bundled with your build.",
+        fullDetails: "Remote properties typically require independent water and waste systems. Bundle these essential services with your construction contract and save significantly while ensuring seamless coordination between all site work.",
+        includes: [
+          "Well drilling and pump installation",
+          "Water quality testing",
+          "Pressure tank and filtration system",
+          "Septic system design and engineering",
+          "Septic tank and drain field installation",
+          "All required permits and inspections"
+        ],
+        terms: "10% discount on combined well and septic package when bundled with construction contract. Discount applied to labor and materials.",
+        expires: "Ongoing offer",
         linkText: "Learn More",
-        details: "Save 10% on complete well drilling and septic system installation when bundled with your remote build contract. Includes permitting and county inspections.",
       },
     ],
   },
@@ -192,23 +345,55 @@ const OFFER_SECTIONS = [
       {
         icon: "star",
         title: "Free Structural Assessment",
-        link: "/services/engineering-consulting",
+        shortDetails: "Complimentary on-site structural assessment and preliminary engineering report. $500 value.",
+        fullDetails: "Whether you're planning a renovation, concerned about existing conditions, or need expert evaluation for a dispute, our structural engineers provide professional assessment and clear recommendations.",
+        includes: [
+          "On-site structural inspection",
+          "Foundation and framing evaluation",
+          "Load-bearing wall identification",
+          "Preliminary engineering opinion",
+          "Photo documentation",
+          "Written assessment report",
+          "Recommendations for next steps"
+        ],
+        terms: "Available for new clients. One assessment per property. Full engineering reports and stamped drawings available at standard rates if needed.",
+        expires: "Ongoing offer",
         linkText: "Book Now",
-        details: "Get a complimentary on-site structural assessment and preliminary engineering report. Valued at $500, now free for new clients.",
       },
       {
         icon: "clock",
         title: "50% Faster Permit Expediting — Guaranteed",
-        link: "/services/engineering-consulting",
+        shortDetails: "Get your project approved in half the typical time, or your expediting fee is refunded.",
+        fullDetails: "Don't let permit delays derail your project timeline. Our expediting service combines expert preparation, established relationships, and persistent follow-up to cut approval times dramatically.",
+        includes: [
+          "Complete application preparation",
+          "Drawing review for compliance issues",
+          "Pre-submission authority meetings",
+          "Dedicated expeditor assignment",
+          "Daily/weekly status tracking",
+          "Issue resolution and resubmission",
+          "Final permit pickup and delivery"
+        ],
+        terms: "50% faster compared to standard municipal processing times. Guarantee applies to expediting service fee. Timeline measured from complete submission.",
+        expires: "Ongoing service",
         linkText: "Get Details",
-        details: "Our permit expediting service gets your project approved in half the typical time. If we don't meet the timeline, your expediting fee is refunded.",
       },
       {
         icon: "percent",
         title: "Bundle & Save 15%",
-        link: "/contact",
+        shortDetails: "Combine engineering consultation with permit expediting and save 15% on total fees.",
+        fullDetails: "Get comprehensive support for your project at a reduced rate. When you need both engineering expertise and permit assistance, bundling these services saves money and ensures seamless coordination.",
+        includes: [
+          "Structural engineering consultation",
+          "Permit application preparation",
+          "Drawing review and markup",
+          "Expedited permit processing",
+          "Single point of contact",
+          "Coordinated timeline management"
+        ],
+        terms: "15% discount applies to combined service fees. Both services must be contracted together. Discount applied at invoicing.",
+        expires: "Ongoing offer",
         linkText: "Get Quote",
-        details: "Combine engineering consultation with permit expediting and save 15% on total service fees.",
       },
     ],
   },
@@ -223,27 +408,69 @@ const OFFER_SECTIONS = [
       {
         icon: "percent",
         title: "Home Equity Line from 5.99% APR",
-        link: "/contact",
+        shortDetails: "Tap into your home's equity with rates starting at 5.99% APR. Lines up to $500,000.",
+        fullDetails: "Leverage the equity you've built to fund your renovation or addition. Home equity lines offer flexibility — draw what you need, when you need it — with competitive rates and potential tax advantages.",
+        includes: [
+          "Rates starting at 5.99% APR",
+          "Credit lines up to $500,000",
+          "Draw period flexibility",
+          "Interest-only payment options",
+          "No prepayment penalties",
+          "Potential tax deductibility (consult tax advisor)"
+        ],
+        terms: "Rates based on creditworthiness and loan-to-value ratio. Property appraisal required. Offered through partner lenders. Your home serves as collateral.",
+        expires: "Rates subject to market conditions",
         linkText: "Check Eligibility",
-        details: "Tap into your home's equity for your renovation project. Competitive rates starting at 5.99% APR through our partner lenders. Credit lines up to $500,000.",
       },
       {
         icon: "star",
         title: "No Equity Required — Unsecured Renovation Loan",
-        link: "/contact",
+        shortDetails: "Finance up to $100,000 without using your home as collateral. Fixed rates from 7.99% APR.",
+        fullDetails: "Don't have sufficient equity or prefer not to use your home as collateral? Our unsecured renovation loans provide the funds you need with predictable fixed payments and no risk to your property.",
+        includes: [
+          "Fixed rates from 7.99% APR",
+          "Loan amounts up to $100,000",
+          "No home equity required",
+          "Fixed monthly payments",
+          "Terms from 3-12 years",
+          "No prepayment penalties",
+          "Funds disbursed quickly"
+        ],
+        terms: "Subject to credit approval. Rates vary based on creditworthiness, loan amount, and term. Personal guarantee required.",
+        expires: "Ongoing — subject to lender availability",
         linkText: "Apply Now",
-        details: "Finance your renovation without using your home as collateral. Fixed rates from 7.99% APR and predictable monthly payments for projects up to $100,000.",
       },
       {
         icon: "clock",
         title: "Fast Approval — Decision in 24 Hours",
-        link: "/contact",
+        shortDetails: "Streamlined application with financing decisions within 24 hours for qualified applicants.",
+        fullDetails: "Don't wait weeks to know if you're approved. Our streamlined process delivers fast decisions so you can move forward with your project confidently. Apply online in minutes and get your answer quickly.",
+        includes: [
+          "Simple online application",
+          "Soft credit pull for pre-qualification",
+          "Decision within 24 hours",
+          "Dedicated loan coordinator",
+          "Clear terms and documentation",
+          "Fast funding after approval"
+        ],
+        terms: "24-hour decision for complete applications submitted during business days. Complex applications may require additional time. Final approval subject to verification.",
+        expires: "Ongoing service",
         linkText: "Get Started",
-        details: "Our streamlined application process delivers financing decisions within 24 hours for qualified applicants.",
       },
     ],
   },
 ]
+
+interface Offer {
+  icon: string
+  title: string
+  shortDetails: string
+  fullDetails: string
+  includes: string[]
+  terms: string
+  expires: string
+  linkText: string
+}
 
 interface OfferSection {
   id: string
@@ -252,13 +479,7 @@ interface OfferSection {
   image: string
   tagline: string
   description: string
-  offers: {
-    icon: string
-    title: string
-    link: string
-    linkText: string
-    details: string
-  }[]
+  offers: Offer[]
 }
 
 function OfferIcon({ type, className = "w-5 h-5" }: { type: string; className?: string }) {
@@ -298,7 +519,7 @@ function OfferIcon({ type, className = "w-5 h-5" }: { type: string; className?: 
   }
 }
 
-// Premium Offer Modal Component - Compact & Mobile Optimized
+// Premium Offer Modal Component - With Expanded Details
 const ServiceOfferModal = ({
   section,
   isOpen,
@@ -309,6 +530,7 @@ const ServiceOfferModal = ({
   onClose: () => void
 }) => {
   const modalRef = useRef<HTMLDivElement>(null)
+  const [expandedOffer, setExpandedOffer] = useState<number | null>(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -316,6 +538,7 @@ const ServiceOfferModal = ({
       if (modalRef.current) {
         modalRef.current.scrollTop = 0
       }
+      setExpandedOffer(null)
     } else {
       document.body.style.overflow = ""
     }
@@ -364,17 +587,15 @@ const ServiceOfferModal = ({
       {/* Modal Content */}
       <div
         ref={modalRef}
-        className={`relative z-10 w-full max-w-xl bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${
+        className={`relative z-10 w-full max-w-2xl bg-white rounded-xl md:rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 max-h-[90vh] overflow-y-auto ${
           isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
         }`}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Premium Header - Compact & Elegant */}
+        {/* Premium Header */}
         <div className="relative bg-[#0a0a0a] px-5 md:px-8 py-6 md:py-8">
-          {/* Gold accent line at top */}
           <div className="absolute top-0 left-0 right-0 h-[3px] bg-[#c6912c]" />
           
-          {/* Category + Title Row */}
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
               <p className="text-[#c6912c] text-[10px] md:text-xs tracking-[0.25em] uppercase mb-1.5 font-medium">
@@ -384,7 +605,6 @@ const ServiceOfferModal = ({
                 {section.title}
               </h2>
             </div>
-            {/* Decorative element */}
             <div className="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full border border-[#c6912c]/30 flex items-center justify-center">
               <div className="w-6 h-6 md:w-7 md:h-7 rounded-full bg-[#c6912c]/20 flex items-center justify-center">
                 <div className="w-2 h-2 md:w-2.5 md:h-2.5 rounded-full bg-[#c6912c]" />
@@ -392,57 +612,131 @@ const ServiceOfferModal = ({
             </div>
           </div>
           
-          {/* Tagline */}
           <p className="mt-3 text-sm md:text-base text-white/50 font-light">
             {section.tagline}
           </p>
         </div>
 
-        {/* Description - Compact */}
+        {/* Description */}
         <div className="px-5 md:px-8 py-4 bg-[#fafafa] border-b border-gray-100">
           <p className="text-gray-600 text-sm leading-relaxed">
             {section.description}
           </p>
         </div>
 
-        {/* Offers List - Compact */}
+        {/* Offers List - Expandable */}
         <div className="px-5 md:px-8 py-5 md:py-6">
           <p className="text-[10px] md:text-xs tracking-[0.2em] uppercase text-gray-400 mb-4 font-medium">
-            Current Offers
+            Available Offers — Click to expand details
           </p>
           
           <div className="space-y-3">
             {section.offers.map((offer, index) => (
               <div
                 key={index}
-                className="group flex items-start gap-3 p-3 md:p-4 bg-gray-50 rounded-lg border border-gray-100 transition-all duration-200 hover:border-[#c6912c]/40 hover:bg-white"
+                className={`group border rounded-xl transition-all duration-300 ${
+                  expandedOffer === index 
+                    ? "border-[#c6912c] bg-[#fffdf9]" 
+                    : "border-gray-100 bg-gray-50 hover:border-[#c6912c]/40 hover:bg-white"
+                }`}
               >
-                {/* Number + Icon */}
-                <div className="flex-shrink-0 relative">
-                  <div className="w-9 h-9 md:w-10 md:h-10 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
-                    <OfferIcon type={offer.icon} className="w-4 h-4 md:w-5 md:h-5 text-[#c6912c]" />
+                {/* Offer Header - Always visible */}
+                <button
+                  onClick={() => setExpandedOffer(expandedOffer === index ? null : index)}
+                  className="w-full flex items-start gap-3 p-3 md:p-4 text-left"
+                >
+                  <div className="flex-shrink-0 relative">
+                    <div className={`w-9 h-9 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-colors ${
+                      expandedOffer === index ? "bg-[#c6912c]" : "bg-[#c6912c]/10"
+                    }`}>
+                      <OfferIcon 
+                        type={offer.icon} 
+                        className={`w-4 h-4 md:w-5 md:h-5 ${expandedOffer === index ? "text-white" : "text-[#c6912c]"}`} 
+                      />
+                    </div>
+                    <div className="absolute -top-1 -left-1 w-4 h-4 md:w-5 md:h-5 bg-[#c6912c] rounded-full flex items-center justify-center">
+                      <span className="text-white text-[9px] md:text-[10px] font-bold">{index + 1}</span>
+                    </div>
                   </div>
-                  <div className="absolute -top-1 -left-1 w-4 h-4 md:w-5 md:h-5 bg-[#c6912c] rounded-full flex items-center justify-center">
-                    <span className="text-white text-[9px] md:text-[10px] font-bold">{index + 1}</span>
+                  
+                  <div className="flex-1 min-w-0">
+                    <h4 className={`font-semibold text-sm leading-snug transition-colors ${
+                      expandedOffer === index ? "text-[#c6912c]" : "text-gray-900"
+                    }`}>
+                      {offer.title}
+                    </h4>
+                    {expandedOffer !== index && (
+                      <p className="text-gray-500 text-xs leading-relaxed mt-1">
+                        {offer.shortDetails}
+                      </p>
+                    )}
                   </div>
-                </div>
-                
-                {/* Content */}
-                <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-gray-900 text-sm leading-snug group-hover:text-[#c6912c] transition-colors">
-                    {offer.title}
-                  </h4>
-                  <p className="text-gray-500 text-xs leading-relaxed mt-1 line-clamp-2">
-                    {offer.details}
-                  </p>
-                </div>
+                  
+                  <div className={`flex-shrink-0 w-6 h-6 rounded-full border flex items-center justify-center transition-all ${
+                    expandedOffer === index 
+                      ? "border-[#c6912c] bg-[#c6912c]" 
+                      : "border-gray-300"
+                  }`}>
+                    <svg 
+                      className={`w-3 h-3 transition-transform ${
+                        expandedOffer === index ? "rotate-180 text-white" : "text-gray-400"
+                      }`}
+                      fill="none" 
+                      stroke="currentColor" 
+                      viewBox="0 0 24 24"
+                    >
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </div>
+                </button>
+
+                {/* Expanded Content */}
+                {expandedOffer === index && (
+                  <div className="px-3 md:px-4 pb-4 md:pb-5 pt-0">
+                    <div className="pl-12 md:pl-[52px] space-y-4">
+                      {/* Full Description */}
+                      <p className="text-gray-700 text-sm leading-relaxed">
+                        {offer.fullDetails}
+                      </p>
+
+                      {/* What's Included */}
+                      <div>
+                        <p className="text-[10px] tracking-[0.15em] uppercase text-[#c6912c] font-semibold mb-2">
+                          What's Included
+                        </p>
+                        <ul className="space-y-1.5">
+                          {offer.includes.map((item, i) => (
+                            <li key={i} className="flex items-start gap-2 text-sm text-gray-600">
+                              <svg className="w-4 h-4 text-[#c6912c] flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                              </svg>
+                              {item}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      {/* Terms & Expiration */}
+                      <div className="flex flex-col sm:flex-row gap-3 pt-2 border-t border-gray-200">
+                        <div className="flex-1">
+                          <p className="text-[9px] tracking-[0.1em] uppercase text-gray-400 font-medium mb-1">Terms</p>
+                          <p className="text-xs text-gray-500 leading-relaxed">{offer.terms}</p>
+                        </div>
+                        <div className="sm:w-32 sm:text-right">
+                          <p className="text-[9px] tracking-[0.1em] uppercase text-gray-400 font-medium mb-1">Expires</p>
+                          <p className="text-xs font-medium text-[#c6912c]">{offer.expires}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             ))}
           </div>
         </div>
 
-        {/* CTA Footer - Compact */}
-        <div className="px-5 md:px-8 py-4 md:py-5 bg-[#0a0a0a] flex flex-col sm:flex-row items-center justify-between gap-3">
+        {/* CTA Footer */}
+        <div className="sticky bottom-0 px-5 md:px-8 py-4 md:py-5 bg-[#0a0a0a] flex flex-col sm:flex-row items-center justify-between gap-3 border-t border-white/10">
           <p className="text-white/50 text-xs md:text-sm hidden sm:block">
             Ready to claim these offers?
           </p>
@@ -488,7 +782,7 @@ export default function OffersPage() {
       <Navbar />
 
       <main className="pt-20">
-        {/* Hero Section - Tesla Style */}
+        {/* Hero Section */}
         <section className="pt-16 pb-8 md:pt-24 md:pb-12 bg-white text-center">
           <div className="max-w-4xl mx-auto px-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-black tracking-tight mb-4">
@@ -503,10 +797,9 @@ export default function OffersPage() {
           </div>
         </section>
 
-        {/* Featured Offer - Large Image */}
+        {/* Featured Offer */}
         <section className="px-4 md:px-8 lg:px-12 pb-8 md:pb-12">
           <div className="max-w-[1200px] mx-auto">
-            {/* Smaller Image like Tesla */}
             <div className="relative w-full aspect-[16/6] md:aspect-[21/8] rounded-lg overflow-hidden mb-8">
               <img
                 src={FEATURED_OFFER.image}
@@ -515,7 +808,6 @@ export default function OffersPage() {
               />
             </div>
 
-            {/* Offer Details Below Image */}
             <div className="max-w-3xl">
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">
                 {FEATURED_OFFER.title}
@@ -552,7 +844,7 @@ export default function OffersPage() {
           </div>
         </section>
 
-        {/* Filter Tabs - Sticky */}
+        {/* Filter Tabs */}
         <section className="sticky top-16 md:top-20 z-40 bg-white border-y border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <div className="flex overflow-x-auto scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0 justify-center">
@@ -575,7 +867,7 @@ export default function OffersPage() {
           </div>
         </section>
 
-        {/* Offer Sections - Tesla Model Style */}
+        {/* Offer Sections */}
         {filteredSections.map((section, index) => (
           <section
             key={section.id}
@@ -591,7 +883,7 @@ export default function OffersPage() {
                     {section.title}
                   </h2>
 
-                  {/* CTA Buttons - Updated "Learn More" to open modal */}
+                  {/* CTA Buttons */}
                   <div className="flex gap-3 mb-8">
                     <Link href="/contact">
                       <button className="px-6 py-2.5 bg-[#3b5998] text-white text-sm font-medium rounded hover:bg-[#2d4373] transition-colors">
@@ -606,7 +898,7 @@ export default function OffersPage() {
                     </button>
                   </div>
 
-                  {/* Offers List - More compact */}
+                  {/* Offers List - Short version */}
                   <div className="space-y-5">
                     {section.offers.map((offer, offerIndex) => (
                       <div key={offerIndex}>
@@ -623,7 +915,7 @@ export default function OffersPage() {
                               {offer.linkText}
                             </button>
                             <p className="text-xs text-gray-500 mt-1 leading-relaxed">
-                              {offer.details}
+                              {offer.shortDetails}
                             </p>
                           </div>
                         </div>
@@ -632,7 +924,7 @@ export default function OffersPage() {
                   </div>
                 </div>
 
-                {/* Right: Image (taller to match content) */}
+                {/* Right: Image */}
                 <div className="rounded-lg overflow-hidden">
                   <img
                     src={section.image}
