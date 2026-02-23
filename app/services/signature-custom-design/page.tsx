@@ -1,237 +1,212 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useState, useRef } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
-const STEPS = [
-  {
-    number: "1",
-    title: "Design",
-    description: "We craft architectural visions that balance ambition with practicality — collaborating closely to shape every detail from the ground up.",
-    image: "/design.png",
-    alt: "Luxury home design",
-    type: "image",
-  },
-  {
-    number: "2",
-    title: "Build",
-    description: "Construction is creation — we bring your vision to life with precision craftsmanship, transparent timelines, and unwavering attention to quality.",
-    image: "/newbuilds-video.mp4",
-    alt: "New home construction",
-    type: "video",
-  },
-  {
-    number: "3",
-    title: "Live It",
-    description: "Move into the home you've always imagined — built for your life, your family, and your future. Not someone else's.",
-    image: "/live it.png",
-    alt: "Completed luxury home at night",
-    type: "image",
-  },
-]
-
-const ROTATION_INTERVAL = 8000
-const SWIPE_THRESHOLD = 50
-
-// FAQ data for new builds
+// FAQ data for signature custom design
 const faqs = [
   {
-    question: "How long does it take to build a new home?",
-    answer: "A typical new build takes 8–14 months from groundbreaking to final walkthrough, depending on size and complexity. This includes foundation, framing, systems installation, and finishing. We provide a detailed construction timeline during your free consultation and maintain a 98% on-time delivery rate."
+    question: "How is Signature Custom Design different from a standard new build?",
+    answer: "Signature Custom Design is our highest tier of service — fully bespoke architecture created from scratch around your vision, lifestyle, and site. Unlike spec homes or modified floor plans, every element is designed specifically for you. This includes custom architectural drawings, premium material selections, and hands-on collaboration throughout the entire process."
   },
   {
-    question: "Do I need to have land already, or can you help with that?",
-    answer: "Either works. If you already own land, we'll evaluate it during consultation for buildability and site considerations. If you're still searching, we can provide guidance on what to look for and connect you with trusted real estate partners in the Inland Northwest."
+    question: "How long does a custom design project typically take?",
+    answer: "From initial consultation to move-in, most Signature Custom Design projects take 14–24 months. The design phase typically runs 3–5 months, followed by 10–18 months of construction depending on size and complexity. We provide a detailed timeline during your consultation and maintain transparent communication throughout."
   },
   {
-    question: "What's included in the design phase?",
-    answer: "The design phase includes architectural planning, site evaluation, material selection, and detailed blueprints. You'll work directly with our design team through multiple revision rounds until every detail matches your vision. We don't break ground until you're completely satisfied with the plan."
+    question: "What is the investment range for a Signature Custom Design home?",
+    answer: "Our Signature Custom Design homes typically start at $800,000 and range upward based on size, site conditions, and finish selections. Use our AI estimator to get a personalized investment range in 60 seconds, or schedule a consultation for a detailed discussion of your specific vision."
   }
 ]
 
-function ScrollIndicator({ show }: { show: boolean }) {
-  const scrollToContent = () => {
-    window.scrollTo({ top: window.innerHeight, behavior: 'smooth' })
-  }
-
-  return (
-    <div 
-      className={`absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 cursor-pointer transition-all duration-1000 ease-out group ${
-        show ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      onClick={scrollToContent}
-    >
-      <div className="flex flex-col items-center gap-3 sm:gap-4">
-        {/* Mouse icon with animated wheel */}
-        <div className="relative w-7 h-11 sm:w-9 sm:h-14 border-2 border-white/70 rounded-full flex justify-center group-hover:border-[#c6912c] transition-colors duration-300">
-          {/* Animated scroll wheel */}
-          <div className="w-1 h-2 sm:w-1.5 sm:h-3 bg-[#c6912c] rounded-full mt-2 sm:mt-2.5 animate-scroll-wheel" />
-          {/* Glow effect on hover */}
-          <div className="absolute inset-0 rounded-full bg-[#c6912c]/0 group-hover:bg-[#c6912c]/10 transition-all duration-300" />
-        </div>
-        
-        {/* Animated chevrons */}
-        <div className="flex flex-col items-center -space-y-2">
-          <svg 
-            className="w-5 h-5 sm:w-7 sm:h-7 text-white/80 animate-chevron-1 group-hover:text-[#c6912c] transition-colors duration-300" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth={2.5}
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-          <svg 
-            className="w-5 h-5 sm:w-7 sm:h-7 text-white/50 animate-chevron-2 group-hover:text-[#c6912c]/70 transition-colors duration-300" 
-            fill="none" 
-            stroke="currentColor" 
-            strokeWidth={2.5}
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-export default function NewBuildsPage() {
-  const [activeStep, setActiveStep] = useState(0)
-  const [showScrollIndicator, setShowScrollIndicator] = useState(false)
+export default function SignatureCustomDesignPage() {
+  const [parallaxOffset, setParallaxOffset] = useState(0)
+  const [videoMargin, setVideoMargin] = useState(0)
+  const [isMobile, setIsMobile] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
-  const touchStartX = useRef(0)
+  const splitSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
+  // Check if mobile
   useEffect(() => {
-    const timer = setTimeout(() => setShowScrollIndicator(true), 1000)
-    return () => clearTimeout(timer)
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
+  // Calculate responsive video margin based on viewport - DESKTOP ONLY
   useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveStep((prev) => (prev + 1) % STEPS.length)
-    }, ROTATION_INTERVAL)
-
-    return () => clearInterval(interval)
+    const updateVideoMargin = () => {
+      const vh = window.innerHeight
+      const vw = window.innerWidth
+      
+      // Only calculate for desktop
+      if (vw >= 768) {
+        const margin = Math.min(vw * 0.25, vh * 0.45, 500)
+        setVideoMargin(margin)
+      }
+    }
+    
+    updateVideoMargin()
+    window.addEventListener('resize', updateVideoMargin)
+    return () => window.removeEventListener('resize', updateVideoMargin)
   }, [])
 
-  const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartX.current = e.touches[0].clientX
-  }
+  // Parallax effect
+  useEffect(() => {
+    const handleScroll = () => {
+      if (splitSectionRef.current) {
+        const rect = splitSectionRef.current.getBoundingClientRect()
+        const windowHeight = window.innerHeight
+        const windowWidth = window.innerWidth
+        
+        // Smaller parallax on mobile, larger on desktop
+        const maxOffset = windowWidth < 768 
+          ? Math.min(windowHeight * 0.08, 60) 
+          : Math.min(windowHeight * 0.2, windowWidth * 0.12, 200)
+        
+        if (rect.top < windowHeight && rect.bottom > 0) {
+          const progress = 1 - (rect.top / windowHeight)
+          const clampedProgress = Math.min(Math.max(progress, 0), 1)
+          const offset = clampedProgress * -maxOffset
+          setParallaxOffset(offset)
+        }
+      }
+    }
 
-  const handleTouchEnd = (e: React.TouchEvent) => {
-    const deltaX = touchStartX.current - e.changedTouches[0].clientX
-    if (Math.abs(deltaX) < SWIPE_THRESHOLD) return
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    handleScroll()
+    
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
-    const direction = deltaX > 0 ? 1 : -1
-    setActiveStep((prev) => (prev + direction + STEPS.length) % STEPS.length)
-  }
+  // Carousel arrow visibility based on scroll position
+  useEffect(() => {
+    const carousel = document.getElementById('highlights-carousel')
+    const leftArrow = document.getElementById('carousel-left-arrow')
+    const rightArrow = document.getElementById('carousel-right-arrow')
 
-  const currentStep = STEPS[activeStep]
+    const updateArrows = () => {
+      if (!carousel || !leftArrow || !rightArrow) return
+      
+      const scrollLeft = carousel.scrollLeft
+      const maxScroll = carousel.scrollWidth - carousel.clientWidth
+      
+      // Show left arrow if scrolled
+      if (scrollLeft > 50) {
+        leftArrow.style.opacity = '1'
+        leftArrow.style.pointerEvents = 'auto'
+      } else {
+        leftArrow.style.opacity = '0'
+        leftArrow.style.pointerEvents = 'none'
+      }
+      
+      // Hide right arrow if at end
+      if (scrollLeft >= maxScroll - 50) {
+        rightArrow.style.opacity = '0'
+        rightArrow.style.pointerEvents = 'none'
+      } else {
+        rightArrow.style.opacity = '1'
+        rightArrow.style.pointerEvents = 'auto'
+      }
+    }
+
+    if (carousel) {
+      carousel.addEventListener('scroll', updateArrows)
+      updateArrows()
+    }
+
+    return () => {
+      if (carousel) carousel.removeEventListener('scroll', updateArrows)
+    }
+  }, [])
+
+  // Carousel arrow visibility
+  useEffect(() => {
+    const carousel = document.getElementById('highlights-carousel')
+    const leftArrow = document.getElementById('carousel-left-arrow')
+    const rightArrow = document.getElementById('carousel-right-arrow')
+    
+    const handleCarouselScroll = () => {
+      if (carousel && leftArrow && rightArrow) {
+        // Show left arrow if scrolled
+        if (carousel.scrollLeft > 50) {
+          leftArrow.style.opacity = '1'
+          leftArrow.style.pointerEvents = 'auto'
+        } else {
+          leftArrow.style.opacity = '0'
+          leftArrow.style.pointerEvents = 'none'
+        }
+        
+        // Hide right arrow if at end
+        if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 50) {
+          rightArrow.style.opacity = '0'
+          rightArrow.style.pointerEvents = 'none'
+        } else {
+          rightArrow.style.opacity = '1'
+          rightArrow.style.pointerEvents = 'auto'
+        }
+      }
+    }
+    
+    if (carousel) {
+      carousel.addEventListener('scroll', handleCarouselScroll)
+      handleCarouselScroll() // Initial check
+    }
+    
+    return () => {
+      if (carousel) {
+        carousel.removeEventListener('scroll', handleCarouselScroll)
+      }
+    }
+  }, [])
 
   return (
-    <div className="w-full overflow-x-hidden bg-white">
-      {/* Custom animations for scroll indicator */}
+    <div className="w-full bg-white font-sans">
       <style jsx global>{`
-        @keyframes scroll-wheel {
-          0% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 0.5;
-            transform: translateY(10px);
-          }
-          100% {
-            opacity: 0;
-            transform: translateY(14px);
-          }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
         }
-        
-        @keyframes chevron-fade-1 {
-          0%, 100% {
-            opacity: 0.8;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 1;
-            transform: translateY(6px);
-          }
-        }
-        
-        @keyframes chevron-fade-2 {
-          0%, 100% {
-            opacity: 0.5;
-            transform: translateY(0);
-          }
-          50% {
-            opacity: 0.9;
-            transform: translateY(6px);
-          }
-        }
-        
-        .animate-scroll-wheel {
-          animation: scroll-wheel 1.5s ease-in-out infinite;
-        }
-        
-        .animate-chevron-1 {
-          animation: chevron-fade-1 1.5s ease-in-out infinite;
-        }
-        
-        .animate-chevron-2 {
-          animation: chevron-fade-2 1.5s ease-in-out infinite;
-          animation-delay: 0.2s;
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
         }
       `}</style>
 
       <Navbar />
 
-      {/* Hero Section - Tesla Style Full Bleed */}
-      <section className="relative w-full h-screen">
-        <Image
-          src="/new-builds.png"
-          alt="Modern luxury new build"
-          fill
-          className="object-cover object-center"
-          priority
-        />
+      {/* Porsche-style Editorial Layout */}
+      <section className="pt-24 md:pt-28 overflow-visible">
         
-        {/* Subtle gradient overlay */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: 'linear-gradient(135deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
-          }}
-        />
-        
-        {/* Title - centered on mobile, lower right on desktop */}
-        <div className="absolute inset-x-0 bottom-[28%] sm:bottom-[25%] md:bottom-[22%] md:inset-x-auto md:right-[8%] text-center md:text-right px-4 sm:px-5 md:px-0">
-          <h1 
-            className="text-[32px] sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight"
-            style={{ textShadow: '0 4px 40px rgba(0,0,0,0.5)' }}
-          >
-            NEW BUILDS
-          </h1>
-        </div>
+        {/* White background area with title */}
+        <div className="bg-white">
+          {/* Title - Luxury styled */}
+          <div className="pt-10 pb-6 md:pt-14 md:pb-8 lg:pt-16 lg:pb-10 flex flex-col items-center">
+            {/* Small overline */}
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.35em] mb-3 md:mb-4">
+              Antova Builders
+            </p>
+            
+            {/* Main title */}
+            <h1 className="font-bebas text-[2.25rem] sm:text-[3rem] md:text-[4rem] lg:text-[5rem] text-black uppercase tracking-[0.04em] text-center">
+              Signature Custom Design
+            </h1>
+            
+            {/* Gold accent line */}
+            <div className="mt-5 md:mt-6 lg:mt-7 w-[60px] md:w-[80px] h-[2px] bg-[#c6912c]" />
+          </div>
 
-        {/* Scroll Indicator */}
-        <ScrollIndicator show={showScrollIndicator} />
-      </section>
-
-      <div className="bg-white h-4 sm:h-6 md:h-12" />
-      <div className="w-full h-[2px] bg-[#D4A574]" />
-
-      <section className="bg-white text-black py-10 sm:py-12 md:py-32">
-        <div className="container mx-auto px-4 sm:px-5 md:px-6 max-w-7xl">
           {/* ===== Trust signals strip ===== */}
-          <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-8 text-[10px] sm:text-[11px] md:text-[13px] text-gray-500 mb-8 sm:mb-10 md:mb-16">
+          <div className="flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-8 text-[10px] sm:text-[11px] md:text-[13px] text-gray-500 pb-8 sm:pb-10 md:pb-12">
             <div className="flex items-center gap-1 sm:gap-1.5">
               <span className="text-[#c6912c] font-medium">150+</span>
               <span>Homes Built</span>
@@ -247,167 +222,171 @@ export default function NewBuildsPage() {
               <span>Years Experience</span>
             </div>
           </div>
+        </div>
 
-          <div className="grid lg:grid-cols-2 gap-5 sm:gap-6 md:gap-16 mb-8 sm:mb-10 md:mb-20">
-            <div>
-              <h2 className="text-[22px] sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-black mb-0.5 sm:mb-1 md:mb-4">
-                Your Vision.
-              </h2>
-              <p className="text-[22px] sm:text-2xl md:text-4xl lg:text-5xl xl:text-6xl font-light italic text-gray-500">
-                Built From the Ground Up.
-              </p>
-            </div>
-
-            <div className="space-y-3 sm:space-y-4 md:space-y-6 text-[14px] sm:text-[15px] md:text-lg text-gray-600 mt-3 sm:mt-4 lg:mt-0">
-              <p className="leading-[1.65] sm:leading-[1.7] md:leading-8">
-                <span className="font-semibold text-black">Antova Builder</span> excels in creating exceptional new custom homes — from sophisticated luxury builds to thoughtfully designed residences that suit a variety of lifestyles and budgets.
-              </p>
-              <p className="leading-[1.65] sm:leading-[1.7] md:leading-8">
-                We believe every client deserves a home that feels perfectly theirs. Through genuine collaboration, expert guidance, and superior craftsmanship, we bring your ideas to life — delivering outstanding quality and attention to detail whether you're seeking the height of luxury or a refined, well-executed home that fits your world.
-              </p>
-              <p className="font-semibold text-black pt-0.5 sm:pt-1 md:pt-2">Your dream. Our craftsmanship. Built for you.</p>
-              
-              {/* ===== CTA with FUD-reducing microcopy ===== */}
-              <div className="pt-3 sm:pt-4 md:pt-6">
-                <Link 
-                  href="/cost-estimator?type=new-build"
-                  className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-3 bg-[#c6912c] text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-[#b8830f] transition-colors duration-300 font-sans"
-                >
-                  See Your Investment Range
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                  </svg>
-                </Link>
-                <p className="mt-2.5 sm:mt-3 text-[10px] sm:text-[11px] md:text-[12px] text-gray-400 text-center sm:text-left">
-                  60-second results · No email required · No obligation
-                </p>
+        {/* Image that overlaps white and black sections */}
+        <div className="relative">
+          {/* White top portion - 70% of image height */}
+          <div className="absolute top-0 left-0 right-0 h-[70%] bg-white" />
+          {/* Black bottom portion - 30% of image height */}
+          <div className="absolute bottom-0 left-0 right-0 h-[30%] bg-black" />
+          
+          {/* The image itself - centered */}
+          <div className="relative flex justify-center py-0">
+            <div className="w-[92%] sm:w-[85%] md:w-[75%] lg:w-[70%] xl:w-[68%] relative z-10">
+              <div className="relative w-full" style={{ aspectRatio: '16/9' }}>
+                <Image
+                  src="/signature-showcase-1.png"
+                  alt="Breathtaking custom designed home"
+                  fill
+                  className="object-cover object-center rounded-[8px] md:rounded-[10px]"
+                />
               </div>
             </div>
           </div>
         </div>
 
-        {/* Mobile carousel */}
-        <div className="md:hidden w-full px-4 sm:px-5">
-          <div
-            onTouchStart={handleTouchStart}
-            onTouchEnd={handleTouchEnd}
-            className="relative overflow-hidden"
-          >
-            <div
-              className="flex transition-transform duration-500 ease-out"
-              style={{ transform: `translateX(-${activeStep * 100}%)` }}
-            >
-              {STEPS.map((step, i) => (
-                <div key={i} className="w-full flex-shrink-0">
-                  <div className="relative w-full aspect-[4/3] mb-5 sm:mb-6">
-                    {step.type === "video" ? (
-                      <video
-                        src={step.image}
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        className="absolute inset-0 w-full h-full object-cover object-center"
-                      />
-                    ) : (
-                      <Image src={step.image} alt={step.alt} fill className="object-cover object-center" />
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+        {/* === BLACK FRAME CONTAINER === */}
+        <div className="bg-black overflow-visible relative">
+          
+          {/* Small gap before content */}
+          <div className="h-[15px] sm:h-[20px] md:h-[25px] lg:h-[30px] xl:h-[40px]" />
 
-          <div className="grid grid-cols-3 gap-2 sm:gap-3 mb-3 sm:mb-4 w-full">
-            {STEPS.map((step, i) => {
-              const isActive = activeStep === i
-              return (
-                <button key={i} onClick={() => setActiveStep(i)} className="flex flex-col cursor-pointer">
-                  <div className={`h-[2px] w-full transition-colors duration-300 ${isActive ? "bg-black" : "bg-gray-300"}`} />
-                  <div className="flex items-center gap-1.5 sm:gap-2 mt-3 sm:mt-4">
-                    <span
-                      className={`flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-full text-[10px] sm:text-xs font-bold transition-all duration-300 ${
-                        isActive ? "bg-[#c6912c] text-white" : "bg-transparent border border-gray-400 text-gray-400"
-                      }`}
-                    >
-                      {step.number}
-                    </span>
-                    <h3 className={`text-[12px] sm:text-sm font-semibold transition-colors duration-300 ${isActive ? "text-black" : "text-gray-400"}`}>
-                      {step.title}
-                    </h3>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
+          {/* Split section */}
+          <div ref={splitSectionRef} className="flex justify-center overflow-visible">
+            <div className="w-[92%] sm:w-[88%] md:w-[82%] lg:w-[78%] xl:w-[75%] flex flex-col md:flex-row md:items-start overflow-visible">
+              
+              {/* Text block */}
+              <div className="w-full md:w-[48%] lg:w-[45%] py-6 sm:py-8 md:py-10 lg:py-12 px-2 md:pl-[2%] lg:pl-[3%] xl:pl-[4%] flex-shrink-0">
+                <h2 className="font-bebas text-[2rem] sm:text-[2.5rem] md:text-[2.25rem] lg:text-[3rem] xl:text-[3.75rem] text-white leading-[1.1] mb-6 sm:mb-8 md:mb-10 uppercase">
+                  More vision. For<br />
+                  extraordinary<br />
+                  homes.
+                </h2>
+                <p className="font-sans text-[15px] sm:text-[16px] md:text-[17px] lg:text-[18px] text-gray-200 leading-[1.9] md:leading-[2]">
+                  The reason most people never live in their true dream home isn't money, terrain, or logistics. It's a lack of bold imagination.
+                  <br /><br />
+                  We've built our reputation on proving the doubters wrong—transforming visionary sketches into breathtaking, one-of-a-kind realities that defy limits.
+                </p>
 
-          <div className="text-left pr-4 sm:pr-8 mt-1.5 sm:mt-2">
-            <p className="text-[13px] sm:text-sm text-gray-600 leading-relaxed">{currentStep.description}</p>
-          </div>
-        </div>
-
-        {/* Desktop carousel */}
-        <div className="hidden md:flex w-full justify-center px-6">
-          <div className="w-full max-w-[1400px]">
-            <div className="relative w-full aspect-[21/9]">
-              {currentStep.type === "video" ? (
-                <video
-                  key={activeStep}
-                  src={currentStep.image}
-                  autoPlay
-                  muted
-                  loop
-                  playsInline
-                  className="absolute inset-0 w-full h-full object-cover object-center transition-opacity duration-300"
-                />
-              ) : (
-                <Image
-                  src={currentStep.image}
-                  alt={currentStep.alt}
-                  fill
-                  className="object-cover object-center transition-opacity duration-300"
-                  key={activeStep}
-                />
-              )}
-            </div>
-
-            <div className="grid grid-cols-3 gap-8 pt-12">
-              {STEPS.map((step, i) => {
-                const isActive = activeStep === i
-                return (
-                  <button
-                    key={i}
-                    onClick={() => setActiveStep(i)}
-                    className="relative text-center cursor-pointer transition-all hover:opacity-80"
+                {/* ===== CTA with FUD-reducing microcopy ===== */}
+                <div className="pt-6 sm:pt-8 md:pt-10">
+                  <Link 
+                    href="/cost-estimator?type=custom-home"
+                    className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-8 py-3.5 sm:py-3 bg-[#c6912c] text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-[#b8830f] transition-colors duration-300 font-sans"
                   >
-                    <div className={`absolute top-0 left-0 right-0 h-[2px] transition-colors ${isActive ? "bg-[#c6912c]" : "bg-gray-300"}`} />
+                    See Your Investment Range
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </Link>
+                  <p className="mt-2.5 sm:mt-3 text-[10px] sm:text-[11px] md:text-[12px] text-gray-400 text-center sm:text-left">
+                    60-second results · No email required · No obligation
+                  </p>
+                </div>
+              </div>
 
-                    <div className="flex items-center justify-center gap-3 pt-6 pb-4">
-                      <span
-                        className={`flex items-center justify-center w-10 h-10 rounded-full text-lg font-bold transition-all duration-300 ${
-                          isActive ? "bg-[#c6912c] text-white" : "bg-transparent border-2 border-gray-300 text-gray-400"
-                        }`}
-                      >
-                        {step.number}
-                      </span>
-                      <h3 className={`text-xl font-semibold transition-colors duration-300 ${isActive ? "text-black" : "text-gray-400"}`}>
-                        {step.title}
-                      </h3>
-                    </div>
+              {/* ============ MOBILE ONLY: Video then Image ============ */}
+              
+              {/* Mobile Video - LEFT aligned, bigger */}
+              <div className="block md:hidden w-[70%] mr-auto mt-4">
+                <div className="relative w-full" style={{ aspectRatio: '16/10' }}>
+                  <video
+                    src="/renovation-showcase.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="absolute inset-0 w-full h-full object-cover rounded-r-[8px]"
+                  />
+                </div>
+              </div>
 
-                    <p className={`text-xs sm:text-sm leading-relaxed px-1 sm:px-0 transition-colors ${isActive ? "text-gray-700" : "text-gray-400"}`}>
-                      {step.description}
-                    </p>
-                  </button>
-                )
-              })}
+              {/* Mobile Second Image - RIGHT aligned, smaller, overlaps video */}
+              <div 
+                className="block md:hidden w-[55%] ml-auto -mt-16 relative z-20"
+                style={{ 
+                  transform: `translateY(${parallaxOffset}px)`,
+                  transition: 'transform 0.05s linear'
+                }}
+              >
+                <div className="relative w-full aspect-[3/4]">
+                  <Image
+                    src="/signature-showcase-2.png"
+                    alt="Custom home lifestyle"
+                    fill
+                    className="object-cover object-center rounded-l-[8px]"
+                  />
+                </div>
+              </div>
+
+              {/* ============ DESKTOP ONLY: Second Image ============ */}
+              <div 
+                className="hidden md:block md:w-[48%] lg:w-[50%] md:ml-auto md:-mr-[1%] lg:-mr-[2%] relative z-20"
+                style={{ 
+                  transform: `translateY(${parallaxOffset}px)`,
+                  transition: 'transform 0.05s linear'
+                }}
+              >
+                <div className="relative w-full md:aspect-[1/1] lg:aspect-[3/3.5] xl:aspect-[3/4]">
+                  <Image
+                    src="/signature-showcase-2.png"
+                    alt="Custom home lifestyle"
+                    fill
+                    className="object-cover object-center rounded-[10px]"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Thin black separator */}
+          <div className="h-[8px] md:h-[10px] lg:h-[12px]" />
+
+        </div>
+        {/* === END BLACK FRAME CONTAINER === */}
+
+      </section>
+
+      {/* ============ DESKTOP ONLY: Video Section with 50/50 split ============ */}
+      <section 
+        className="relative hidden md:block"
+        style={{ marginTop: `-${videoMargin}px` }}
+      >
+        {/* Split backgrounds - 50% black, 50% white */}
+        <div className="absolute inset-0 flex flex-col">
+          <div className="flex-1 bg-black" />
+          <div className="flex-1 bg-[#f9f8f6]" />
+        </div>
+        
+        {/* Video centered on the boundary */}
+        <div className="relative z-50 flex justify-center py-[60px] md:py-[80px] lg:py-[100px]">
+          <div className="w-[58%] md:w-[52%] lg:w-[50%] xl:w-[48%] relative mr-[5%] md:mr-[7%] lg:mr-[9%]">
+            <div className="relative w-full" style={{ aspectRatio: '1.78/1' }}>
+              <video
+                src="/renovation-showcase.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="absolute inset-0 w-full h-full object-cover rounded-[10px]"
+              />
             </div>
           </div>
         </div>
       </section>
 
+      {/* ============ MOBILE ONLY: 50/50 transition ============ */}
+      <section className="relative block md:hidden">
+        <div className="absolute inset-0 flex flex-col">
+          <div className="flex-1 bg-black" />
+          <div className="flex-1 bg-[#f9f8f6]" />
+        </div>
+        <div className="relative z-10 h-[60px]" />
+      </section>
+
       {/* ===== Testimonial Section ===== */}
-      <section className="bg-gray-50 py-12 sm:py-16 md:py-20 lg:py-24">
+      <section className="bg-[#f9f8f6] py-12 sm:py-16 md:py-20 lg:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12">
           <div className="bg-white border border-gray-100 rounded-lg p-5 sm:p-8 md:p-10 lg:p-12">
             {/* Quote icon */}
@@ -419,37 +398,152 @@ export default function NewBuildsPage() {
             
             {/* Quote */}
             <blockquote className="text-[15px] sm:text-[17px] md:text-[20px] lg:text-[22px] text-gray-800 leading-relaxed mb-6 sm:mb-8">
-              "From foundation to final walkthrough, Antova exceeded every expectation. Their transparent process and craftsmanship made building our custom home genuinely enjoyable. We knew exactly where we stood at every stage — no surprises, no stress."
+              "From first sketch to move-in day, Antova delivered a home that exceeded every expectation — on time and within budget. They transformed our wildest ideas into reality without ever saying 'that's not possible.'"
             </blockquote>
             
             {/* Author */}
             <div className="flex items-center gap-3 sm:gap-4">
               <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center text-[#c6912c] font-medium text-xs sm:text-sm">
-                JT
+                ST
               </div>
               <div>
-                <p className="font-medium text-black text-[14px] sm:text-[15px] md:text-[16px]">James Thornton</p>
-                <p className="text-gray-500 text-[12px] sm:text-[13px] md:text-[14px]">CEO, Thornton Capital · Custom New Build</p>
+                <p className="font-medium text-black text-[14px] sm:text-[15px] md:text-[16px]">Sarah & David Thompson</p>
+                <p className="text-gray-500 text-[12px] sm:text-[13px] md:text-[14px]">Coeur d'Alene, ID · Signature Custom Design</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* ============ Highlights Section ============ */}
+      <section className="bg-[#f9f8f6] pt-8 md:pt-12 lg:pt-16 pb-12 md:pb-16 lg:pb-20">
+        <div className="max-w-7xl mx-auto px-6 md:px-12">
+          {/* Title centered - Bebas Neue */}
+          <h2 className="font-bebas text-[2rem] sm:text-[2.5rem] md:text-[3rem] lg:text-[3.5rem] text-black text-center tracking-wide uppercase">
+            Antova Builders highlights.
+          </h2>
+        </div>
+
+        {/* Carousel */}
+        <div className="relative mt-10 md:mt-14">
+          {/* Carousel container */}
+          <div 
+            id="highlights-carousel"
+            className="flex gap-[18px] md:gap-[24px] lg:gap-[27px] overflow-x-auto scrollbar-hide scroll-smooth pl-6 md:pl-12 lg:pl-[10%] pr-6"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {/* Card 1 */}
+            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
+              <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
+                <Image
+                  src="/signature-showcase-1.png"
+                  alt="Premium Materials"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="font-bebas text-[1.5rem] md:text-[1.75rem] lg:text-[2rem] text-black mt-5 md:mt-7 uppercase tracking-wide">
+                Premium Materials
+              </h3>
+              <p className="font-sans text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+                We source only the finest materials from trusted suppliers worldwide. Every beam, stone, and fixture meets our exacting standards for quality and durability.
+              </p>
+            </div>
+
+            {/* Card 2 */}
+            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
+              <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
+                <Image
+                  src="/signature-showcase-1.png"
+                  alt="Expert Craftsmanship"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="font-bebas text-[1.5rem] md:text-[1.75rem] lg:text-[2rem] text-black mt-5 md:mt-7 uppercase tracking-wide">
+                Expert Craftsmanship
+              </h3>
+              <p className="font-sans text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+                Our master craftsmen bring decades of experience to every project. Their attention to detail transforms architectural visions into flawless reality.
+              </p>
+            </div>
+
+            {/* Card 3 */}
+            <div className="flex-shrink-0 w-[409px] sm:w-[512px] md:w-[615px] lg:w-[718px] xl:w-[793px]">
+              <div className="relative w-full aspect-[16/11.67] rounded-lg overflow-hidden">
+                <Image
+                  src="/signature-showcase-1.png"
+                  alt="Smart Home Integration"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <h3 className="font-bebas text-[1.5rem] md:text-[1.75rem] lg:text-[2rem] text-black mt-5 md:mt-7 uppercase tracking-wide">
+                Smart Home Integration
+              </h3>
+              <p className="font-sans text-[14px] md:text-[15px] lg:text-[16px] text-gray-600 leading-relaxed mt-2 md:mt-3">
+                Seamlessly integrated technology throughout your home. Control lighting, climate, security, and entertainment from anywhere with intuitive systems.
+              </p>
+            </div>
+            
+            {/* Spacer for end padding */}
+            <div className="flex-shrink-0 w-6"></div>
+          </div>
+
+          {/* Left arrow - hidden initially, shows after scrolling */}
+          <button 
+            id="carousel-left-arrow"
+            className="absolute left-0 top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 opacity-0 pointer-events-none"
+            aria-label="Previous"
+            onClick={() => {
+              const container = document.getElementById('highlights-carousel')
+              if (container) {
+                const firstCard = container.querySelector('div.flex-shrink-0') as HTMLElement
+                const scrollAmount = firstCard ? firstCard.offsetWidth + 27 : 820
+                container.scrollBy({ left: -scrollAmount, behavior: 'smooth' })
+              }
+            }}
+          >
+            <svg className="w-4 h-4 md:w-[18px] md:h-[18px] text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+            </svg>
+          </button>
+
+          {/* Right arrow */}
+          <button 
+            id="carousel-right-arrow"
+            className="absolute right-[2%] top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10"
+            aria-label="Next"
+            onClick={() => {
+              const container = document.getElementById('highlights-carousel')
+              if (container) {
+                const firstCard = container.querySelector('div.flex-shrink-0') as HTMLElement
+                const scrollAmount = firstCard ? firstCard.offsetWidth + 27 : 820
+                container.scrollBy({ left: scrollAmount, behavior: 'smooth' })
+              }
+            }}
+          >
+            <svg className="w-4 h-4 md:w-[18px] md:h-[18px] text-black" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+            </svg>
+          </button>
+        </div>
+      </section>
+
       {/* ===== Mid-page CTA section ===== */}
-      <section className="bg-gray-50 py-6 sm:py-8 md:py-12">
+      <section className="bg-[#f9f8f6] py-6 sm:py-8 md:py-12">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12">
           <div className="bg-white border border-gray-100 rounded-lg p-5 sm:p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-5 sm:gap-6">
             <div className="text-center md:text-left">
               <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-black">
-                Ready to build your dream home?
+                Ready to design your dream home?
               </h3>
               <p className="text-[13px] sm:text-[14px] md:text-[15px] text-gray-500 mt-1.5 sm:mt-2">
                 Get a realistic investment range in 60 seconds — no commitment required.
               </p>
             </div>
             <Link 
-              href="/cost-estimator?type=new-build"
+              href="/cost-estimator?type=custom-home"
               className="w-full md:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 sm:py-3 bg-black text-white text-[11px] sm:text-[12px] tracking-[0.12em] uppercase hover:bg-[#c6912c] transition-colors duration-300 font-sans whitespace-nowrap flex-shrink-0"
             >
               Try the Estimator
@@ -462,7 +556,7 @@ export default function NewBuildsPage() {
       </section>
 
       {/* ===== FAQ Section ===== */}
-      <section className="bg-gray-50 py-10 sm:py-12 md:py-16 lg:py-20">
+      <section className="bg-[#f9f8f6] py-10 sm:py-12 md:py-16 lg:py-20">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 md:px-12">
           {/* Section header */}
           <div className="text-center mb-8 sm:mb-10 md:mb-12">
@@ -515,21 +609,21 @@ export default function NewBuildsPage() {
       <section className="bg-white py-12 sm:py-16 md:py-20 lg:py-24 xl:py-32">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 md:px-12 text-center">
           <p className="text-[11px] sm:text-[12px] md:text-[13px] lg:text-sm text-gray-400 uppercase tracking-[0.15em] sm:tracking-[0.2em] mb-3 sm:mb-4 md:mb-6">
-            New Builds
+            Signature Custom Design
           </p>
-          <h2 className="text-[22px] sm:text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-black leading-tight mb-3 sm:mb-4 md:mb-5">
-            Let's Build Something Extraordinary.
+          <h2 className="font-bebas text-[1.75rem] sm:text-[2rem] md:text-[2.5rem] lg:text-[3rem] xl:text-[3.5rem] text-black leading-tight mb-3 sm:mb-4 md:mb-5 uppercase tracking-wide">
+            Imagination Isn't Limited. Neither Are We.
           </h2>
           
           {/* Capacity-based urgency */}
           <p className="text-[12px] sm:text-[13px] md:text-[14px] lg:text-[15px] text-gray-500 mb-6 sm:mb-8 md:mb-10 lg:mb-12">
-            Spring 2026 — 3 new build slots remaining
+            Spring 2026 — 2 custom design slots remaining
           </p>
 
           {/* Dual CTA */}
           <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 md:gap-5">
             <Link 
-              href="/cost-estimator?type=new-build"
+              href="/cost-estimator?type=custom-home"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-8 md:px-10 py-3.5 sm:py-3 md:py-4 bg-[#c6912c] text-white text-[11px] sm:text-[12px] md:text-[13px] tracking-[0.12em] sm:tracking-[0.15em] uppercase hover:bg-[#b8830f] transition-colors duration-300 font-sans"
             >
               See Your Investment Range
@@ -541,7 +635,7 @@ export default function NewBuildsPage() {
               href="/contact"
               className="w-full sm:w-auto inline-flex items-center justify-center gap-3 px-6 sm:px-8 md:px-10 py-3.5 sm:py-3 md:py-4 bg-black text-white text-[11px] sm:text-[12px] md:text-[13px] tracking-[0.12em] sm:tracking-[0.15em] uppercase hover:bg-gray-800 transition-colors duration-300 font-sans"
             >
-              Book a Consultation
+              Begin Your Vision
               <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
