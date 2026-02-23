@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import Image from "next/image"
+import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
@@ -155,12 +156,29 @@ const WHY_CHOOSE = [
   }
 ]
 
+// FAQ data for consulting
+const faqs = [
+  {
+    question: "What types of construction disputes can you help resolve?",
+    answer: "We handle all types of construction disputes — contractor disagreements, material specification conflicts, timeline delays, change order disputes, and code compliance issues. Our approach combines technical analysis, documentation review, and strategic mediation to resolve conflicts without costly litigation whenever possible."
+  },
+  {
+    question: "How much does a consultation cost?",
+    answer: "Initial consultations are complimentary. We'll review your situation, identify the core issues, and provide a clear scope of work with transparent pricing before any engagement begins. There's no obligation — you'll know exactly what's involved before committing."
+  },
+  {
+    question: "Can you help with a project that's already in trouble?",
+    answer: "Absolutely — that's often when clients call us. Whether you're facing permit delays, contractor disputes, code violations, or budget overruns, we specialize in stepping into complex situations and finding a path forward. The sooner we're involved, the more options we typically have."
+  }
+]
+
 export default function EngineeringConsultingPage() {
   const [selectedService, setSelectedService] = useState<number | null>(null)
   const [selectedResult, setSelectedResult] = useState<number | null>(null)
   const [statsVisible, setStatsVisible] = useState(false)
   const [whyChooseVisible, setWhyChooseVisible] = useState(false)
   const [activeCard, setActiveCard] = useState(0)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
   const statsRef = useRef<HTMLElement>(null)
   const whyChooseRef = useRef<HTMLElement>(null)
   const cardsContainerRef = useRef<HTMLDivElement>(null)
@@ -302,7 +320,7 @@ export default function EngineeringConsultingPage() {
             Expert engineering solutions, dispute resolution, and permitting services that save you time and money.
           </p>
 
-          {/* CTA Button */}
+          {/* CTA Button + FUD microcopy */}
           <div>
             <a
               href="/contact"
@@ -313,6 +331,30 @@ export default function EngineeringConsultingPage() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </a>
+            {/* ===== ADDED: FUD microcopy ===== */}
+            <p className="mt-3 text-[11px] sm:text-[12px] text-white/40">
+              Free initial consultation · No obligation · Fast response
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== ADDED: Trust Signals Strip ===== */}
+      <section className="bg-black py-8 md:py-10 border-t border-white/10">
+        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-[11px] sm:text-[12px] md:text-[13px] text-white/50 px-6">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">$2M+</span>
+            <span>Client Savings</span>
+          </div>
+          <div className="hidden sm:block w-px h-3 bg-white/20" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">100%</span>
+            <span>Permit Success Rate</span>
+          </div>
+          <div className="hidden sm:block w-px h-3 bg-white/20" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">30+</span>
+            <span>Years Experience</span>
           </div>
         </div>
       </section>
@@ -554,6 +596,31 @@ export default function EngineeringConsultingPage() {
         </div>
       </section>
 
+      {/* ===== ADDED: Mid-page CTA section ===== */}
+      <section className="bg-[#f8f8f8] py-8 md:py-12">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <div className="bg-white border border-gray-200 rounded-lg p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h3 className="text-xl md:text-2xl font-semibold text-black">
+                Facing a construction challenge?
+              </h3>
+              <p className="text-[14px] md:text-[15px] text-gray-500 mt-2">
+                Get expert guidance — free initial consultation, no obligation.
+              </p>
+            </div>
+            <Link 
+              href="/contact"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-[11px] sm:text-[12px] tracking-[0.12em] uppercase font-semibold hover:bg-[#c6912c] transition-colors duration-300 whitespace-nowrap flex-shrink-0"
+            >
+              Get Consultation
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* TESTIMONIAL */}
       <section className="bg-black py-16 sm:py-20 md:py-28">
         <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
@@ -690,30 +757,97 @@ export default function EngineeringConsultingPage() {
         </div>
       )}
 
-      {/* CTA Section */}
-      <section className="py-16 sm:py-20 bg-black">
-        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
-          {/* Two CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10 sm:mb-12">
-            <a
-              href="/contact"
-              className="h-11 min-w-[200px] px-6 bg-[#c6912c] hover:bg-[#a67923] text-black font-semibold rounded-md transition-all flex items-center justify-center"
-            >
-              Start Your New Build
-            </a>
-            <a
-              href="/estimator"
-              className="h-11 min-w-[200px] px-6 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center"
-            >
-              AI Estimator
-            </a>
+      {/* ===== ADDED: FAQ Section ===== */}
+      <section className="bg-[#f8f8f8] py-12 md:py-16 lg:py-20">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          {/* Section header */}
+          <div className="text-center mb-10 md:mb-12">
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.3em] mb-3">
+              Common Questions
+            </p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-black">
+              Before You Decide
+            </h2>
           </div>
 
-          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-6">
-            Let's Start Making Your <span className="text-[#c6912c]">Dream Home</span> a Reality
+          {/* FAQ accordion */}
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index}
+                className="bg-white border border-gray-200 rounded-lg overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-medium text-[15px] md:text-[16px] text-black pr-4">
+                    {faq.question}
+                  </span>
+                  <svg 
+                    className={`w-5 h-5 text-[#c6912c] flex-shrink-0 transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth={2} 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-5">
+                    <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section - ENHANCED */}
+      <section className="py-16 sm:py-20 md:py-24 lg:py-32 bg-black">
+        <div className="mx-auto max-w-4xl px-5 sm:px-8 text-center">
+          <p className="text-[12px] sm:text-[13px] md:text-sm text-white/40 uppercase tracking-[0.2em] mb-4 sm:mb-6">
+            Engineering & Consulting
+          </p>
+          
+          <h2 className="font-display text-2xl sm:text-3xl md:text-5xl text-white mb-4 sm:mb-5">
+            Let's Solve Your <span className="text-[#c6912c]">Construction Challenge</span>
           </h2>
-          <p className="font-sans text-base sm:text-lg md:text-xl text-white/70 max-w-2xl mx-auto">
-            From complex disputes to fast-track permitting, our team delivers results. Get in touch today.
+          
+          {/* ===== ADDED: Capacity-based urgency ===== */}
+          <p className="text-[13px] sm:text-[14px] md:text-[15px] text-white/50 mb-8 sm:mb-10 md:mb-12">
+            From complex disputes to fast-track permitting, our team delivers results.
+          </p>
+
+          {/* ===== ENHANCED: Dual CTA ===== */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
+            <Link
+              href="/contact"
+              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-8 bg-[#c6912c] hover:bg-[#b8830f] text-black font-semibold rounded-md transition-all flex items-center justify-center gap-2 text-[12px] sm:text-[13px] tracking-[0.1em] uppercase"
+            >
+              Get Expert Consultation
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <Link
+              href="/ai-estimator"
+              className="h-12 w-full sm:w-auto sm:min-w-[220px] px-8 bg-transparent hover:bg-[#c6912c] text-white hover:text-black font-semibold rounded-md border-2 border-[#c6912c] transition-all flex items-center justify-center gap-2 text-[12px] sm:text-[13px] tracking-[0.1em] uppercase"
+            >
+              Try AI Estimator
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* ===== ADDED: FUD-reducing microcopy ===== */}
+          <p className="text-[11px] sm:text-[12px] text-white/40">
+            Free initial consultation · No obligation · Fast response within 24 hours
           </p>
         </div>
       </section>
