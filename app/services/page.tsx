@@ -104,8 +104,8 @@ const services = [
   {
     number: "06",
     eyebrow: "EXPERT ANALYSIS",
-    title: "Engineering & Consulting",
-    titleBreak: <>Engineering &<br className="hidden md:block" /> Consulting</>,
+    title: "Consulting & Engineering",
+    titleBreak: <>Consulting &<br className="hidden md:block" /> Engineering</>,
     description: "Structural assessments, feasibility studies, permit support, and site analysis. The analytical foundation that makes every other service possible.",
     price: "From $2,500 per engagement",
     tags: ["Structural", "Feasibility", "Permits", "Site Analysis"],
