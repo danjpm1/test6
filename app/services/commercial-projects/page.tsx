@@ -13,16 +13,45 @@ const stats = [
   { value: '100%', unit: '', label: 'Customer Satisfaction' },
 ]
 
+// FAQ data for commercial projects
+const faqs = [
+  {
+    question: "What types of commercial projects do you handle?",
+    answer: "We build across all commercial categories — office spaces, retail, medical facilities, mixed-use developments, and light industrial. Over 50% of our projects are commercial, and we've delivered everything from clinic renovations to ground-up office headquarters."
+  },
+  {
+    question: "How do you minimize disruption to ongoing business operations?",
+    answer: "We plan construction in phases designed around your business needs. For occupied buildings, we coordinate work schedules, isolate construction zones, and maintain clear pathways. Many of our commercial clients continue full operations throughout the project — like the Pain Clinic renovation that never missed a patient day."
+  },
+  {
+    question: "What's your typical timeline for commercial construction?",
+    answer: "Timelines vary by scope — a tenant improvement might take 6–10 weeks, while a ground-up commercial build runs 8–14 months. We provide a detailed construction schedule during consultation and maintain over 99% on-time delivery across all commercial projects."
+  }
+]
+
 export default function CommercialPage() {
   const [isPaused, setIsPaused] = useState(false)
   const [isSecondVideoPaused, setIsSecondVideoPaused] = useState(false)
   const [statsVisible, setStatsVisible] = useState(false)
+  const [openFaq, setOpenFaq] = useState<number | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
   const secondVideoRef = useRef<HTMLVideoElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
+    
+    // Preload hero video with high priority
+    const link = document.createElement('link')
+    link.rel = 'preload'
+    link.as = 'video'
+    link.href = '/renovation-showcase.mp4'
+    link.type = 'video/mp4'
+    document.head.appendChild(link)
+    
+    return () => {
+      document.head.removeChild(link)
+    }
   }, [])
 
   useEffect(() => {
@@ -97,10 +126,11 @@ export default function CommercialPage() {
           loop
           playsInline
           preload="auto"
+          // @ts-ignore - fetchpriority is valid HTML but not typed in React
+          fetchpriority="high"
+          src="/renovation-showcase.mp4"
           className="absolute inset-0 w-full h-full object-cover"
-        >
-          <source src="/renovation-showcase.mp4" type="video/mp4" />
-        </video>
+        />
 
         {/* Hero Content - Top Center */}
         <div className="absolute top-32 left-1/2 -translate-x-1/2 z-10 text-center px-6">
@@ -131,10 +161,30 @@ export default function CommercialPage() {
         </button>
       </section>
 
+      {/* ===== Trust Signals Strip ===== */}
+      <section className="bg-white pt-10 md:pt-16 pb-4 md:pb-6">
+        <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 md:gap-8 text-[11px] sm:text-[12px] md:text-[13px] text-gray-500 px-6">
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">50+</span>
+            <span>Commercial Projects</span>
+          </div>
+          <div className="hidden sm:block w-px h-3 bg-gray-300" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">5.0</span>
+            <span>Google Rating</span>
+          </div>
+          <div className="hidden sm:block w-px h-3 bg-gray-300" />
+          <div className="flex items-center gap-1.5">
+            <span className="text-[#c6912c] font-medium">99%</span>
+            <span>On-Time Delivery</span>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Section */}
       <section 
         ref={statsRef}
-        className="flex items-center justify-center pt-16 md:pt-[120px] pb-10 md:pb-[60px] px-6 md:px-12 bg-white"
+        className="flex items-center justify-center pt-8 md:pt-[60px] pb-10 md:pb-[60px] px-6 md:px-12 bg-white"
       >
         <div className="flex items-center justify-center gap-6 md:gap-12 max-w-[1000px] w-full flex-col md:flex-row">
           {stats.map((stat, index) => (
@@ -190,12 +240,28 @@ export default function CommercialPage() {
         
         <div className="max-w-[1400px] mx-auto px-5 md:px-12">
           <div className="max-w-[1200px]">
-          <h2 className="text-[28px] md:text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.2] md:leading-[1.15]">
-            Your Success Is Our Success
-          </h2>
-          <p className="text-[15px] md:text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.8] md:leading-[1.75] text-[#393b3d]">
-            Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication to deliver spaces that elevate your business.
-          </p>
+            <h2 className="text-[28px] md:text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.2] md:leading-[1.15]">
+              Your Success Is Our Success
+            </h2>
+            <p className="text-[15px] md:text-[clamp(15px,1.5vw,17px)] font-normal leading-[1.8] md:leading-[1.75] text-[#393b3d] mb-8">
+              Our skilled team is driven to build the commercial project that you need in order for your business to succeed. Our principle is that your success is our success. In our building process we prioritize quality, efficiency, and transparent communication to deliver spaces that elevate your business.
+            </p>
+
+            {/* ===== CTA with FUD microcopy ===== */}
+            <div className="pt-2">
+              <Link 
+                href="/ai-estimator"
+                className="inline-flex items-center gap-3 px-6 sm:px-8 py-3 bg-[#c6912c] text-white text-[11px] sm:text-[12px] tracking-[0.15em] uppercase hover:bg-[#b8830f] transition-colors duration-300 font-sans"
+              >
+                See Your Investment Range
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
+              <p className="mt-3 text-[11px] sm:text-[12px] text-gray-400">
+                60-second results · No email required · No obligation
+              </p>
+            </div>
           </div>
         </div>
       </section>
@@ -274,38 +340,152 @@ export default function CommercialPage() {
         </div>
       </section>
 
-      {/* Call to Action Section */}
-      <section className="py-16 md:py-24 bg-[#f5f5f5]">
-        <div className="max-w-[1400px] mx-auto px-5 md:px-12">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-8 md:gap-16">
-            {/* Left Side - Text & Button */}
-            <div className="flex-1 text-center md:text-left max-w-[600px]">
-              <h2 className="text-[28px] md:text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-3 md:mb-4 leading-[1.15] md:leading-[1.1]">
-                Ready to Build?
-              </h2>
-              <p className="text-[15px] md:text-[clamp(15px,1.5vw,18px)] font-normal leading-[1.7] text-[#393b3d] mb-6 md:mb-8">
-                Let's discuss your commercial project and bring your vision to life.
-              </p>
-              <Link 
-                href="/contact" 
-                className="inline-flex items-center justify-center px-8 md:px-10 py-3.5 md:py-4 bg-[#171a20] text-white text-[15px] md:text-[15px] font-medium rounded hover:bg-[#333] transition-all hover:scale-[1.02]"
-              >
-                Schedule Consultation
-              </Link>
+      {/* ===== Testimonial Section ===== */}
+      <section className="bg-[#f5f5f5] py-16 md:py-20 lg:py-24">
+        <div className="max-w-4xl mx-auto px-6 md:px-12">
+          <div className="bg-white border border-gray-100 rounded-lg p-8 md:p-10 lg:p-12">
+            {/* Quote icon */}
+            <div className="text-[#c6912c] mb-6">
+              <svg className="w-8 h-8 md:w-10 md:h-10" fill="currentColor" viewBox="0 0 24 24">
+                <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
+              </svg>
             </div>
-
-            {/* Right Side - Logo */}
-            <div className="flex-shrink-0 flex justify-center md:justify-end mt-4 md:mt-0">
-              <Image
-                src="/antova-logo-gold.svg"
-                alt="Antova Builders"
-                width={280}
-                height={280}
-                className="w-[140px] md:w-[280px] h-auto object-contain opacity-90"
-                loading="lazy"
-              />
+            
+            {/* Quote */}
+            <blockquote className="text-[17px] sm:text-[18px] md:text-[20px] lg:text-[22px] text-gray-800 leading-relaxed mb-8">
+              "The AI-powered estimates saved us weeks of back-and-forth. Accurate, transparent, and the build quality speaks for itself. Our new office headquarters is a masterpiece — delivered on time and exactly as promised."
+            </blockquote>
+            
+            {/* Author */}
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center text-[#c6912c] font-medium text-sm">
+                RB
+              </div>
+              <div>
+                <p className="font-medium text-black text-[15px] md:text-[16px]">Robert Blackwood</p>
+                <p className="text-gray-500 text-[13px] md:text-[14px]">CEO · Office Headquarters Build</p>
+              </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ===== Mid-page CTA section ===== */}
+      <section className="bg-[#f5f5f5] py-8 md:py-12">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          <div className="bg-white border border-gray-100 rounded-lg p-8 md:p-10 lg:p-12 flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+            <div>
+              <h3 className="text-xl md:text-2xl font-semibold text-black">
+                Ready to discuss your project?
+              </h3>
+              <p className="text-[14px] md:text-[15px] text-gray-500 mt-2">
+                Get a realistic investment range in 60 seconds — no commitment required.
+              </p>
+            </div>
+            <Link 
+              href="/ai-estimator"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-black text-white text-[11px] sm:text-[12px] tracking-[0.12em] uppercase hover:bg-[#c6912c] transition-colors duration-300 font-sans whitespace-nowrap flex-shrink-0"
+            >
+              Try the Estimator
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== FAQ Section ===== */}
+      <section className="bg-[#f5f5f5] py-12 md:py-16 lg:py-20">
+        <div className="max-w-3xl mx-auto px-6 md:px-12">
+          {/* Section header */}
+          <div className="text-center mb-10 md:mb-12">
+            <p className="text-[10px] sm:text-[11px] md:text-[12px] text-[#c6912c] uppercase tracking-[0.3em] mb-3">
+              Common Questions
+            </p>
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-semibold text-black">
+              Before You Decide
+            </h2>
+          </div>
+
+          {/* FAQ accordion */}
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <div 
+                key={index}
+                className="bg-white border border-gray-100 rounded-lg overflow-hidden"
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                  className="w-full flex items-center justify-between px-6 py-5 text-left hover:bg-gray-50 transition-colors"
+                >
+                  <span className="font-medium text-[15px] md:text-[16px] text-black pr-4">
+                    {faq.question}
+                  </span>
+                  <svg 
+                    className={`w-5 h-5 text-[#c6912c] flex-shrink-0 transition-transform duration-200 ${openFaq === index ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    strokeWidth={2} 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {openFaq === index && (
+                  <div className="px-6 pb-5">
+                    <p className="text-[14px] md:text-[15px] text-gray-600 leading-relaxed">
+                      {faq.answer}
+                    </p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Call to Action Section - ENHANCED */}
+      <section className="py-16 md:py-24 lg:py-32 bg-white">
+        <div className="max-w-4xl mx-auto px-6 md:px-12 text-center">
+          <p className="text-[12px] sm:text-[13px] md:text-sm text-gray-400 uppercase tracking-[0.2em] mb-4 sm:mb-6">
+            Commercial Projects
+          </p>
+          <h2 className="text-[28px] md:text-[clamp(32px,4.5vw,48px)] font-semibold tracking-tight text-[#171a20] mb-4 leading-[1.15]">
+            Ready to Build Your Business?
+          </h2>
+          
+          {/* Capacity-based urgency */}
+          <p className="text-[13px] sm:text-[14px] md:text-[15px] text-gray-500 mb-8 sm:mb-10 md:mb-12">
+            Spring 2026 — Limited commercial slots available
+          </p>
+
+          {/* Dual CTA */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-5">
+            <Link 
+              href="/ai-estimator"
+              className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-[#c6912c] text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-[#b8830f] transition-colors duration-300 font-sans"
+            >
+              See Your Investment Range
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+            <Link 
+              href="/contact"
+              className="inline-flex items-center gap-3 px-8 sm:px-10 py-3 sm:py-4 bg-black text-white text-[12px] sm:text-[13px] tracking-[0.15em] uppercase hover:bg-gray-800 transition-colors duration-300 font-sans"
+            >
+              Schedule Consultation
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </Link>
+          </div>
+
+          {/* FUD-reducing microcopy */}
+          <p className="mt-5 sm:mt-6 text-[11px] sm:text-[12px] text-gray-400">
+            Free consultation · No commitment · Complimentary project scope included
+          </p>
         </div>
       </section>
 
