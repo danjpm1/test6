@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 import Link from "next/link"
@@ -31,6 +31,8 @@ const OFFER_SECTIONS = [
     category: "Signature Custom Design",
     title: "Custom Design",
     image: "/luxury-custom-home-interior-design-modern-architec.jpg",
+    tagline: "Where Vision Meets Craftsmanship",
+    description: "Create a one-of-a-kind residence that reflects your lifestyle, taste, and aspirations. Our signature custom design service combines architectural excellence with uncompromising attention to detail.",
     offers: [
       {
         icon: "star",
@@ -60,6 +62,8 @@ const OFFER_SECTIONS = [
     category: "Renovation",
     title: "Renovation",
     image: "/modern-luxury-home-at-night-with-warm-interior-lig.jpg",
+    tagline: "Transform Your Space, Elevate Your Life",
+    description: "Breathe new life into your existing home with renovations that blend modern luxury with timeless design. From kitchens to whole-home transformations, we deliver excellence.",
     offers: [
       {
         icon: "calendar",
@@ -89,6 +93,8 @@ const OFFER_SECTIONS = [
     category: "New Construction",
     title: "New Builds",
     image: "/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg",
+    tagline: "Build Your Dream From the Ground Up",
+    description: "Start fresh with a custom-built home designed and constructed to your exact specifications. Experience the journey from blueprint to reality with Antova's expert team.",
     offers: [
       {
         icon: "calendar",
@@ -118,6 +124,8 @@ const OFFER_SECTIONS = [
     category: "Commercial Projects",
     title: "Commercial",
     image: "/modern-commercial-building-exterior-glass-facade.jpg",
+    tagline: "Spaces That Mean Business",
+    description: "From office headquarters to retail spaces, we deliver commercial construction that elevates your brand and optimizes your operations. Your success is our blueprint.",
     offers: [
       {
         icon: "percent",
@@ -147,6 +155,8 @@ const OFFER_SECTIONS = [
     category: "Remote & Off-Grid",
     title: "Remote",
     image: "/luxury-modern-cabin-interior-with-large-windows-wo1.jpg",
+    tagline: "Build Your Dream Anywhere",
+    description: "No location is too remote for Antova. We specialize in building exceptional homes in challenging locations — mountaintops, valleys, islands, and everywhere in between.",
     offers: [
       {
         icon: "star",
@@ -176,6 +186,8 @@ const OFFER_SECTIONS = [
     category: "Consulting & Engineering",
     title: "Consulting",
     image: "/images/engineering-blueprints.png",
+    tagline: "Expert Solutions, Proven Results",
+    description: "Navigate complex construction challenges with confidence. Our engineering and consulting services protect your investment through expert dispute resolution, permitting, and technical guidance.",
     offers: [
       {
         icon: "star",
@@ -205,6 +217,8 @@ const OFFER_SECTIONS = [
     category: "Financing Options",
     title: "Financing",
     image: "/luxury-custom-home-interior-design-modern-architec.jpg",
+    tagline: "Make Your Vision Affordable",
+    description: "Don't let budget constraints hold back your dream project. Our flexible financing options through trusted lending partners make luxury construction accessible.",
     offers: [
       {
         icon: "percent",
@@ -231,35 +245,51 @@ const OFFER_SECTIONS = [
   },
 ]
 
-function OfferIcon({ type }: { type: string }) {
+interface OfferSection {
+  id: string
+  category: string
+  title: string
+  image: string
+  tagline: string
+  description: string
+  offers: {
+    icon: string
+    title: string
+    link: string
+    linkText: string
+    details: string
+  }[]
+}
+
+function OfferIcon({ type, className = "w-5 h-5" }: { type: string; className?: string }) {
   switch (type) {
     case "calendar":
       return (
-        <svg className="w-5 h-5 text-[#5c5c5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
       )
     case "percent":
       return (
-        <svg className="w-5 h-5 text-[#5c5c5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
         </svg>
       )
     case "star":
       return (
-        <svg className="w-5 h-5 text-[#5c5c5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
         </svg>
       )
     case "gift":
       return (
-        <svg className="w-5 h-5 text-[#5c5c5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
         </svg>
       )
     case "clock":
       return (
-        <svg className="w-5 h-5 text-[#5c5c5c]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
         </svg>
       )
@@ -268,12 +298,197 @@ function OfferIcon({ type }: { type: string }) {
   }
 }
 
+// Premium Offer Modal Component
+const ServiceOfferModal = ({
+  section,
+  isOpen,
+  onClose,
+}: {
+  section: OfferSection | null
+  isOpen: boolean
+  onClose: () => void
+}) => {
+  const modalRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden"
+      if (modalRef.current) {
+        modalRef.current.scrollTop = 0
+      }
+    } else {
+      document.body.style.overflow = ""
+    }
+    return () => {
+      document.body.style.overflow = ""
+    }
+  }, [isOpen])
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") onClose()
+    }
+    window.addEventListener("keydown", handleEscape)
+    return () => window.removeEventListener("keydown", handleEscape)
+  }, [onClose])
+
+  if (!section) return null
+
+  return (
+    <div
+      className={`fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto transition-all duration-500 ${
+        isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+      }`}
+      onClick={onClose}
+    >
+      {/* Backdrop */}
+      <div className="fixed inset-0 bg-black/70 backdrop-blur-sm" />
+
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="fixed top-4 right-4 md:top-6 md:right-6 z-20 w-11 h-11 md:w-12 md:h-12 flex items-center justify-center bg-white rounded-full shadow-lg transition-all duration-300 hover:scale-110 hover:bg-[#c6912c] group"
+        aria-label="Close modal"
+      >
+        <svg
+          className="w-5 h-5 text-black group-hover:text-white transition-colors"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+      {/* Modal Content */}
+      <div
+        ref={modalRef}
+        className={`relative z-10 w-full max-w-2xl mx-4 my-8 bg-white rounded-2xl overflow-hidden shadow-2xl transition-all duration-500 ${
+          isOpen ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
+        }`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Premium Header - No Image, Just Design */}
+        <div className="relative bg-[#0a0a0a] px-8 md:px-12 pt-12 pb-10 md:pt-16 md:pb-12">
+          {/* Decorative gold line at top */}
+          <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[#c6912c] to-transparent" />
+          
+          {/* Decorative corner accents */}
+          <div className="absolute top-6 left-6 w-8 h-8 border-l-2 border-t-2 border-[#c6912c]/40" />
+          <div className="absolute top-6 right-6 w-8 h-8 border-r-2 border-t-2 border-[#c6912c]/40" />
+          
+          {/* Category label */}
+          <p className="text-[#c6912c] text-xs md:text-sm tracking-[0.3em] uppercase mb-3 font-medium">
+            {section.category}
+          </p>
+          
+          {/* Title */}
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white tracking-tight mb-4">
+            {section.title}
+          </h2>
+          
+          {/* Tagline */}
+          <p className="text-lg md:text-xl text-white/60 font-light italic">
+            {section.tagline}
+          </p>
+          
+          {/* Gold accent line */}
+          <div className="mt-8 w-16 h-[2px] bg-[#c6912c]" />
+        </div>
+
+        {/* Description */}
+        <div className="px-8 md:px-12 py-6 md:py-8 bg-[#f8f8f8] border-b border-gray-200">
+          <p className="text-gray-600 text-base md:text-lg leading-relaxed">
+            {section.description}
+          </p>
+        </div>
+
+        {/* Offers List */}
+        <div className="px-8 md:px-12 py-8 md:py-10">
+          <h3 className="text-xs md:text-sm tracking-[0.2em] uppercase text-gray-400 mb-6 font-medium">
+            Current Offers
+          </h3>
+          
+          <div className="space-y-6">
+            {section.offers.map((offer, index) => (
+              <div
+                key={index}
+                className="group relative bg-white border border-gray-100 rounded-xl p-5 md:p-6 transition-all duration-300 hover:border-[#c6912c]/30 hover:shadow-lg"
+              >
+                {/* Offer number badge */}
+                <div className="absolute -top-3 -left-3 w-7 h-7 bg-[#c6912c] rounded-full flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">{index + 1}</span>
+                </div>
+                
+                <div className="flex items-start gap-4">
+                  {/* Icon */}
+                  <div className="flex-shrink-0 w-10 h-10 md:w-12 md:h-12 rounded-full bg-[#c6912c]/10 flex items-center justify-center">
+                    <OfferIcon type={offer.icon} className="w-5 h-5 md:w-6 md:h-6 text-[#c6912c]" />
+                  </div>
+                  
+                  {/* Content */}
+                  <div className="flex-1 min-w-0">
+                    <h4 className="font-semibold text-gray-900 text-base md:text-lg leading-snug mb-2 group-hover:text-[#c6912c] transition-colors">
+                      {offer.title}
+                    </h4>
+                    <p className="text-gray-500 text-sm md:text-base leading-relaxed">
+                      {offer.details}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* CTA Footer */}
+        <div className="px-8 md:px-12 py-8 md:py-10 bg-[#0a0a0a]">
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-between">
+            <p className="text-white/60 text-sm md:text-base">
+              Ready to take advantage of these offers?
+            </p>
+            <div className="flex gap-3">
+              <Link href="/contact">
+                <button className="px-6 py-3 bg-[#c6912c] hover:bg-[#b8830f] text-white text-sm font-medium rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#c6912c]/20">
+                  Get Quote
+                </button>
+              </Link>
+              <Link href="/ai-estimator">
+                <button className="px-6 py-3 bg-white/10 hover:bg-white/20 text-white text-sm font-medium rounded-lg border border-white/20 transition-all duration-300">
+                  AI Estimator
+                </button>
+              </Link>
+            </div>
+          </div>
+          
+          {/* Trust signal */}
+          <p className="mt-4 text-center text-white/40 text-xs">
+            Free consultation · No obligation · Offers subject to availability
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function OffersPage() {
   const [activeCategory, setActiveCategory] = useState("all")
+  const [selectedSection, setSelectedSection] = useState<OfferSection | null>(null)
+  const [isModalOpen, setIsModalOpen] = useState(false)
 
-  const filteredSections = activeCategory === "all" 
-    ? OFFER_SECTIONS 
-    : OFFER_SECTIONS.filter(section => section.id === activeCategory)
+  const filteredSections = activeCategory === "all"
+    ? OFFER_SECTIONS
+    : OFFER_SECTIONS.filter((section) => section.id === activeCategory)
+
+  const handleOpenModal = (section: OfferSection) => {
+    setSelectedSection(section)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setTimeout(() => setSelectedSection(null), 300)
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -312,16 +527,29 @@ export default function OffersPage() {
               <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">
                 {FEATURED_OFFER.title}
               </h2>
-              
+
               <div className="space-y-4">
                 <div className="flex items-start gap-3">
-                  <svg className="w-5 h-5 text-[#5c5c5c] mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                  <svg
+                    className="w-5 h-5 text-[#5c5c5c] mt-0.5 flex-shrink-0"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={1.5}
+                      d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
                   </svg>
                   <div>
                     <p className="font-semibold text-black">{FEATURED_OFFER.highlight}</p>
                     <p className="text-gray-600 text-sm mt-1">{FEATURED_OFFER.description}</p>
-                    <Link href={FEATURED_OFFER.ctaLink} className="text-black text-sm font-medium underline underline-offset-4 hover:text-[#c6912c] transition-colors mt-2 inline-block">
+                    <Link
+                      href={FEATURED_OFFER.ctaLink}
+                      className="text-black text-sm font-medium underline underline-offset-4 hover:text-[#c6912c] transition-colors mt-2 inline-block"
+                    >
                       {FEATURED_OFFER.cta}
                     </Link>
                   </div>
@@ -356,7 +584,11 @@ export default function OffersPage() {
 
         {/* Offer Sections - Tesla Model Style */}
         {filteredSections.map((section, index) => (
-          <section key={section.id} id={section.id} className={`py-12 md:py-20 ${index % 2 === 0 ? 'bg-[#f4f4f4]' : 'bg-white'}`}>
+          <section
+            key={section.id}
+            id={section.id}
+            className={`py-12 md:py-20 ${index % 2 === 0 ? "bg-[#f4f4f4]" : "bg-white"}`}
+          >
             <div className="max-w-[1400px] mx-auto px-4 md:px-8 lg:px-12">
               <div className="grid lg:grid-cols-2 gap-6 lg:gap-8">
                 {/* Left: Content */}
@@ -365,19 +597,20 @@ export default function OffersPage() {
                   <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-black mb-5">
                     {section.title}
                   </h2>
-                  
-                  {/* CTA Buttons */}
+
+                  {/* CTA Buttons - Updated "Learn More" to open modal */}
                   <div className="flex gap-3 mb-8">
                     <Link href="/contact">
                       <button className="px-6 py-2.5 bg-[#3b5998] text-white text-sm font-medium rounded hover:bg-[#2d4373] transition-colors">
                         Get Quote
                       </button>
                     </Link>
-                    <Link href={`/services/${section.id === 'consulting-engineering' ? 'engineering-consulting' : section.id === 'financing' ? 'engineering-consulting' : section.id === 'new-build' ? 'new-builds' : section.id === 'remote' ? 'remote-work' : section.id === 'commercial' ? 'commercial-projects' : section.id}`}>
-                      <button className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-gray-400 transition-colors">
-                        Learn More
-                      </button>
-                    </Link>
+                    <button
+                      onClick={() => handleOpenModal(section)}
+                      className="px-6 py-2.5 bg-white text-black text-sm font-medium rounded border border-gray-300 hover:border-[#c6912c] hover:text-[#c6912c] transition-colors"
+                    >
+                      Learn More
+                    </button>
                   </div>
 
                   {/* Offers List - More compact */}
@@ -385,13 +618,20 @@ export default function OffersPage() {
                     {section.offers.map((offer, offerIndex) => (
                       <div key={offerIndex}>
                         <div className="flex items-start gap-3">
-                          <OfferIcon type={offer.icon} />
+                          <OfferIcon type={offer.icon} className="w-5 h-5 text-[#5c5c5c]" />
                           <div>
-                            <h3 className="font-semibold text-black text-sm md:text-base leading-snug">{offer.title}</h3>
-                            <Link href={offer.link} className="text-sm text-gray-500 underline underline-offset-4 hover:text-black transition-colors">
+                            <h3 className="font-semibold text-black text-sm md:text-base leading-snug">
+                              {offer.title}
+                            </h3>
+                            <button
+                              onClick={() => handleOpenModal(section)}
+                              className="text-sm text-gray-500 underline underline-offset-4 hover:text-[#c6912c] transition-colors"
+                            >
                               {offer.linkText}
-                            </Link>
-                            <p className="text-xs text-gray-500 mt-1 leading-relaxed">{offer.details}</p>
+                            </button>
+                            <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                              {offer.details}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -427,7 +667,7 @@ export default function OffersPage() {
                   Contact Us
                 </button>
               </Link>
-              <Link href="/cost-estimator">
+              <Link href="/ai-estimator">
                 <button className="px-8 py-3 bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-medium rounded transition-colors">
                   AI Estimator
                 </button>
@@ -440,13 +680,25 @@ export default function OffersPage() {
         <section className="py-8 bg-white border-t border-gray-200">
           <div className="max-w-7xl mx-auto px-4 sm:px-6">
             <p className="text-xs text-gray-400 leading-relaxed">
-              * All offers are subject to credit approval and may vary based on creditworthiness. Financing offers are provided through third-party lending partners. APR rates shown are for illustrative purposes and may differ based on individual qualifications. Offers valid for projects contracted by March 31, 2025. Cannot be combined with other promotions unless otherwise stated. Antova Builders reserves the right to modify or discontinue offers at any time. Contact us for complete terms and conditions.
+              * All offers are subject to credit approval and may vary based on creditworthiness.
+              Financing offers are provided through third-party lending partners. APR rates shown
+              are for illustrative purposes and may differ based on individual qualifications. Offers
+              valid for projects contracted by March 31, 2025. Cannot be combined with other
+              promotions unless otherwise stated. Antova Builders reserves the right to modify or
+              discontinue offers at any time. Contact us for complete terms and conditions.
             </p>
           </div>
         </section>
       </main>
 
       <Footer />
+
+      {/* Service Offer Modal */}
+      <ServiceOfferModal
+        section={selectedSection}
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+      />
     </div>
   )
 }
