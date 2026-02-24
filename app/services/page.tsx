@@ -210,7 +210,8 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
     <section className="grid grid-cols-1 md:grid-cols-2 min-h-screen relative overflow-hidden">
       {/* Image - Now clickable with hover overlay */}
       <Link 
-        href={service.learnMoreLink} 
+        href={service.learnMoreLink}
+        scroll={true}
         className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group block ${isEven ? "md:order-2" : ""}`}
       >
         <img
@@ -320,7 +321,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
         </Reveal>
 
         <Reveal delay={0.1}>
-          <Link href={service.learnMoreLink}>
+          <Link href={service.learnMoreLink} scroll={true}>
             <h2
               className="text-3xl md:text-4xl lg:text-[48px] font-bold text-white mb-4 leading-[1.08] cursor-pointer transition-colors duration-300 hover:text-[#c6912c]"
               style={{ fontFamily: "'Playfair Display', serif", letterSpacing: "-0.02em" }}
@@ -368,6 +369,7 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
             </Link>
             <Link
               href={service.learnMoreLink}
+              scroll={true}
               className="px-7 py-3.5 text-[13px] font-semibold text-white tracking-wide border border-white/[0.15] transition-all duration-300 hover:border-[#c6912c] hover:text-[#c6912c]"
             >
               See Your Offer
