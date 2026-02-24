@@ -233,46 +233,72 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
         {/* Mobile: bottom fade */}
         <div className="absolute inset-0 md:hidden bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
 
-        {/* ═══ HOVER OVERLAY - Makes clickability obvious ═══ */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out">
-          {/* Dark overlay */}
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+        {/* ═══ HOVER OVERLAY - Premium Luxury Design ═══ */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 ease-out">
+          {/* Dark gradient overlay - more cinematic */}
+          <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/60 to-black/40 backdrop-blur-[3px]" />
           
           {/* Content */}
-          <div className="relative z-10 flex flex-col items-center gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
-            {/* Circle with arrow */}
-            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-white/80 flex items-center justify-center bg-white/10 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500">
-              <svg 
-                className="w-6 h-6 md:w-7 md:h-7 text-white transform group-hover:translate-x-1 transition-transform duration-300" 
-                fill="none" 
-                stroke="currentColor" 
-                strokeWidth="2" 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                viewBox="0 0 24 24"
+          <div className="relative z-10 flex flex-col items-center gap-5 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-700 ease-out">
+            
+            {/* Elegant circle with gold accent */}
+            <div className="relative">
+              {/* Outer glow ring */}
+              <div className="absolute -inset-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-1000 delay-200"
+                style={{ 
+                  background: 'radial-gradient(circle, rgba(198,145,44,0.15) 0%, transparent 70%)',
+                }}
+              />
+              
+              {/* Main circle */}
+              <div className="relative w-[72px] h-[72px] md:w-[88px] md:h-[88px] rounded-full flex items-center justify-center transition-all duration-700 group-hover:scale-105"
+                style={{
+                  border: '1px solid rgba(198,145,44,0.6)',
+                  background: 'rgba(10,10,10,0.4)',
+                  backdropFilter: 'blur(8px)',
+                  boxShadow: '0 0 40px rgba(198,145,44,0.1)',
+                }}
               >
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
+                {/* Arrow icon - refined */}
+                <svg 
+                  className="w-5 h-5 md:w-6 md:h-6 text-[#c6912c] transform group-hover:translate-x-1.5 transition-transform duration-500 ease-out" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  strokeWidth="1.5" 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M5 12h14M12 5l7 7-7 7" />
+                </svg>
+              </div>
             </div>
             
-            {/* Text */}
+            {/* Text content - editorial luxury style */}
             <div className="text-center">
-              <p className="text-white text-sm md:text-base font-semibold tracking-wide">
-                View Service
+              {/* Gold accent line */}
+              <div className="w-8 h-[1px] bg-[#c6912c]/50 mx-auto mb-4" />
+              
+              {/* "Explore" - luxury language with tracking */}
+              <p className="text-[11px] md:text-[12px] text-[#c6912c] font-medium tracking-[0.25em] uppercase mb-1.5">
+                Explore
               </p>
-              <p className="text-white/60 text-xs md:text-sm mt-1">
+              
+              {/* Service name - elegant serif */}
+              <p 
+                className="text-white text-base md:text-lg font-light tracking-wide"
+                style={{ fontFamily: "'Playfair Display', serif" }}
+              >
                 {service.title}
               </p>
             </div>
           </div>
         </div>
 
-        {/* ═══ Subtle corner indicator (always visible) ═══ */}
-        <div className={`absolute bottom-6 ${isEven ? 'left-6' : 'right-6'} hidden md:flex items-center gap-2 opacity-40 group-hover:opacity-0 transition-opacity duration-300`}>
-          <span className="text-[11px] text-white font-medium tracking-wide">Click to explore</span>
-          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
+        {/* ═══ Subtle corner indicator (always visible, premium style) ═══ */}
+        <div className={`absolute bottom-8 ${isEven ? 'left-8' : 'right-8'} hidden md:flex items-center gap-3 opacity-30 group-hover:opacity-0 transition-opacity duration-500`}>
+          <span className="w-6 h-[1px] bg-[#c6912c]" />
+          <span className="text-[10px] text-white/80 font-light tracking-[0.2em] uppercase">Explore</span>
         </div>
       </Link>
 
