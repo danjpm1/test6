@@ -58,7 +58,8 @@ export default function SignatureCustomDesignPage() {
   const splitSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    window.scrollTo(0, 0)
+    // Instant scroll to top on page load (no animation to avoid glitching)
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [])
 
   // ━━━ FIXED: Combined resize handler for mobile check AND video margin ━━━
