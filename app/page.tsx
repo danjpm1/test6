@@ -2,7 +2,7 @@
 
 import type React from "react"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
@@ -149,6 +149,32 @@ const GOOGLE_REVIEWS = [
     image: null,
   },
 ]
+
+// ━━━ THROTTLE UTILITY (fixes scroll jank) ━━━
+function throttle<T extends (...args: any[]) => void>(fn: T, wait: number): T {
+  let lastTime = 0
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
+  
+  return ((...args: Parameters<T>) => {
+    const now = Date.now()
+    const remaining = wait - (now - lastTime)
+    
+    if (remaining <= 0) {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+        timeoutId = null
+      }
+      lastTime = now
+      fn(...args)
+    } else if (!timeoutId) {
+      timeoutId = setTimeout(() => {
+        lastTime = Date.now()
+        timeoutId = null
+        fn(...args)
+      }, remaining)
+    }
+  }) as T
+}
 
 function getInitials(name: string): string {
   return name
@@ -361,19 +387,24 @@ function GoogleReviewsSection() {
   )
 }
 
+// ━━━ FIXED: Throttled scroll threshold hook ━━━
 function useScrollThreshold(ref: React.RefObject<HTMLElement | null>, threshold: number) {
   const [isPastThreshold, setIsPastThreshold] = useState(false)
+  
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       if (ref.current) {
         const rect = ref.current.getBoundingClientRect()
-        setIsPastThreshold(rect.top <= window.innerHeight * threshold)
+        const newValue = rect.top <= window.innerHeight * threshold
+        setIsPastThreshold(prev => prev !== newValue ? newValue : prev)
       }
-    }
+    }, 50)
+    
     handleScroll()
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [ref, threshold])
+  
   return isPastThreshold
 }
 
@@ -388,6 +419,8 @@ export default function AntovaBuilders() {
   const [formEmail, setFormEmail] = useState("")
   const [formProjectType, setFormProjectType] = useState("")
   const [formSubmitted, setFormSubmitted] = useState(false)
+  const [showLeftArrow, setShowLeftArrow] = useState(false)
+  const [showRightArrow, setShowRightArrow] = useState(true)
   const router = useRouter()
   const serviceCardsRef = useRef<HTMLElement>(null)
   const testimonialsRef = useRef<HTMLElement>(null)
@@ -401,43 +434,32 @@ export default function AntovaBuilders() {
     return () => { clearTimeout(titleTimer); clearTimeout(subtitleTimer); clearTimeout(navbarTimer) }
   }, [])
 
+  // ━━━ FIXED: Throttled scroll handler ━━━
   useEffect(() => {
-    const handleScroll = () => { setIsScrolled(window.scrollY > SCROLL_THRESHOLD) }
+    const handleScroll = throttle(() => {
+      setIsScrolled(window.scrollY > SCROLL_THRESHOLD)
+    }, 50)
+    
     handleScroll()
-    window.addEventListener("scroll", handleScroll)
+    window.addEventListener("scroll", handleScroll, { passive: true })
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Projects carousel arrow visibility
+  // ━━━ FIXED: Carousel arrows using React state instead of direct DOM manipulation ━━━
   useEffect(() => {
     const carousel = document.getElementById('projects-carousel')
-    const leftArrow = document.getElementById('projects-carousel-left')
-    const rightArrow = document.getElementById('projects-carousel-right')
 
-    const updateArrows = () => {
-      if (!carousel || !leftArrow || !rightArrow) return
+    const updateArrows = throttle(() => {
+      if (!carousel) return
       const scrollLeft = carousel.scrollLeft
       const maxScroll = carousel.scrollWidth - carousel.clientWidth
 
-      if (scrollLeft > 50) {
-        leftArrow.style.opacity = '1'
-        leftArrow.style.pointerEvents = 'auto'
-      } else {
-        leftArrow.style.opacity = '0'
-        leftArrow.style.pointerEvents = 'none'
-      }
-
-      if (scrollLeft >= maxScroll - 50) {
-        rightArrow.style.opacity = '0'
-        rightArrow.style.pointerEvents = 'none'
-      } else {
-        rightArrow.style.opacity = '1'
-        rightArrow.style.pointerEvents = 'auto'
-      }
-    }
+      setShowLeftArrow(scrollLeft > 50)
+      setShowRightArrow(scrollLeft < maxScroll - 50)
+    }, 100)
 
     if (carousel) {
-      carousel.addEventListener('scroll', updateArrows)
+      carousel.addEventListener('scroll', updateArrows, { passive: true })
       updateArrows()
     }
     return () => { if (carousel) carousel.removeEventListener('scroll', updateArrows) }
@@ -843,10 +865,12 @@ export default function AntovaBuilders() {
             <div className="flex-shrink-0 w-6" />
           </div>
 
-          {/* Left arrow */}
+          {/* Left arrow - FIXED: Using React state */}
           <button
             id="projects-carousel-left"
-            className="absolute left-0 top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 opacity-0 pointer-events-none"
+            className={`absolute left-0 top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 ${
+              showLeftArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
             aria-label="Previous project"
             onClick={() => {
               const c = document.getElementById('projects-carousel')
@@ -862,10 +886,12 @@ export default function AntovaBuilders() {
             </svg>
           </button>
 
-          {/* Right arrow */}
+          {/* Right arrow - FIXED: Using React state */}
           <button
             id="projects-carousel-right"
-            className="absolute right-[2%] top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10"
+            className={`absolute right-[2%] top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 ${
+              showRightArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
             aria-label="Next project"
             onClick={() => {
               const c = document.getElementById('projects-carousel')
