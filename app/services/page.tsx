@@ -5,6 +5,32 @@ import { Footer } from "@/components/footer"
 import Link from "next/link"
 import { useEffect, useRef, useState } from "react"
 
+/* ─── Throttle Utility (prevents scroll jank) ─────────────────── */
+function throttle<T extends (...args: any[]) => void>(fn: T, wait: number): T {
+  let lastTime = 0
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
+  
+  return ((...args: Parameters<T>) => {
+    const now = Date.now()
+    const remaining = wait - (now - lastTime)
+    
+    if (remaining <= 0) {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+        timeoutId = null
+      }
+      lastTime = now
+      fn(...args)
+    } else if (!timeoutId) {
+      timeoutId = setTimeout(() => {
+        lastTime = Date.now()
+        timeoutId = null
+        fn(...args)
+      }, remaining)
+    }
+  }) as T
+}
+
 /* ─── Scroll-Reveal Hook ─────────────────────────────────────── */
 function useReveal(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null)
@@ -124,11 +150,16 @@ const phases = [
 /* ─── Floating Estimate Pill ─────────────────────────────────── */
 function FloatingPill() {
   const [show, setShow] = useState(false)
+  
   useEffect(() => {
-    const h = () => setShow(window.scrollY > window.innerHeight * 0.7)
-    window.addEventListener("scroll", h, { passive: true })
-    return () => window.removeEventListener("scroll", h)
+    const handleScroll = throttle(() => {
+      setShow(window.scrollY > window.innerHeight * 0.7)
+    }, 100)
+    
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+  
   return (
     <Link
       href="/cost-estimator"
@@ -153,14 +184,17 @@ function FloatingPill() {
 /* ─── Scroll Progress ────────────────────────────────────────── */
 function ScrollProgress() {
   const [pct, setPct] = useState(0)
+  
   useEffect(() => {
-    const h = () => {
+    const handleScroll = throttle(() => {
       const max = document.body.scrollHeight - window.innerHeight
       setPct(max > 0 ? (window.scrollY / max) * 100 : 0)
-    }
-    window.addEventListener("scroll", h, { passive: true })
-    return () => window.removeEventListener("scroll", h)
+    }, 50)
+    
+    window.addEventListener("scroll", handleScroll, { passive: true })
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+  
   return (
     <div className="fixed top-0 left-0 right-0 z-[101] h-[2px]">
       <div className="h-full transition-[width] duration-150 ease-linear" style={{ width: `${pct}%`, background: "#c6912c" }} />
@@ -174,25 +208,72 @@ function ServiceSection({ service, index }: { service: typeof services[0]; index
 
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 min-h-screen relative overflow-hidden">
-      {/* Image - Now clickable */}
-      <Link href={service.learnMoreLink} className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group block ${isEven ? "md:order-2" : ""}`}>
+      {/* Image - Now clickable with hover overlay */}
+      <Link 
+        href={service.learnMoreLink} 
+        className={`relative overflow-hidden min-h-[50vh] md:min-h-screen group block ${isEven ? "md:order-2" : ""}`}
+      >
         <img
           src={service.image}
           alt={service.title}
           className="absolute inset-0 w-full h-full object-cover transition-transform duration-[8s] ease-out group-hover:scale-105"
           loading="lazy"
         />
+        
         {/* Desktop: gradient fades toward content side */}
         <div
-          className="absolute inset-0 hidden md:block"
+          className="absolute inset-0 hidden md:block transition-opacity duration-500"
           style={{
             background: isEven
               ? "linear-gradient(-90deg, transparent 40%, #0a0a0a 100%)"
               : "linear-gradient(90deg, transparent 40%, #0a0a0a 100%)",
           }}
         />
+        
         {/* Mobile: bottom fade */}
         <div className="absolute inset-0 md:hidden bg-gradient-to-b from-transparent via-transparent to-[#0a0a0a]" />
+
+        {/* ═══ HOVER OVERLAY - Makes clickability obvious ═══ */}
+        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out">
+          {/* Dark overlay */}
+          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
+          
+          {/* Content */}
+          <div className="relative z-10 flex flex-col items-center gap-4 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500 ease-out">
+            {/* Circle with arrow */}
+            <div className="w-16 h-16 md:w-20 md:h-20 rounded-full border-2 border-white/80 flex items-center justify-center bg-white/10 backdrop-blur-sm group-hover:scale-110 transition-transform duration-500">
+              <svg 
+                className="w-6 h-6 md:w-7 md:h-7 text-white transform group-hover:translate-x-1 transition-transform duration-300" 
+                fill="none" 
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                viewBox="0 0 24 24"
+              >
+                <path d="M5 12h14M12 5l7 7-7 7" />
+              </svg>
+            </div>
+            
+            {/* Text */}
+            <div className="text-center">
+              <p className="text-white text-sm md:text-base font-semibold tracking-wide">
+                View Service
+              </p>
+              <p className="text-white/60 text-xs md:text-sm mt-1">
+                {service.title}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ═══ Subtle corner indicator (always visible) ═══ */}
+        <div className={`absolute bottom-6 ${isEven ? 'left-6' : 'right-6'} hidden md:flex items-center gap-2 opacity-40 group-hover:opacity-0 transition-opacity duration-300`}>
+          <span className="text-[11px] text-white font-medium tracking-wide">Click to explore</span>
+          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
+        </div>
       </Link>
 
       {/* Content */}
@@ -456,7 +537,7 @@ export default function ServicesPage() {
             </Reveal>
             <Reveal delay={0.34}>
               <p className="text-[13px] text-white/20 mt-5 tracking-wide">
-                Or call us: <a href="tel:+15095551234" className="text-white/40 hover:text-[#c6912c] transition-colors">(509) 555-1234</a>
+                Or call us: <a href="tel:+12086258342" className="text-white/40 hover:text-[#c6912c] transition-colors">(208) 625-8342</a>
               </p>
             </Reveal>
           </div>
