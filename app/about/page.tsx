@@ -146,7 +146,7 @@ const teamMembers = [
     name: "Daniel Anghel", 
     title: "IT & AI Systems Support",
     image: "/images/team/daniel-anghel.jpg",
-    bio: "Daniel drives our technological innovation, integrating cutting-edge AI systems and IT infrastructure to streamline operations. His expertise ensures Antova Builders stays at the forefront of construction technology."
+    bio: "Daniel drives Antova Builders' technological innovation, integrating cutting-edge AI systems and IT infrastructure to streamline operations. He believes technology is a powerful way to reshape how we live—using AI and smart design to adapt homes to human needs while remaining deeply connected to nature. His expertise ensures Antova Builders stays at the forefront of modern construction technology."
   },
 ]
 
@@ -413,7 +413,7 @@ const TeamMemberCard = ({
 }
 
 export default function AboutPage() {
-  const [scrollY, setScrollY] = useState(0)
+  // ━━━ FIXED: Removed unused scrollY state that was causing unnecessary re-renders ━━━
   const [activeCard, setActiveCard] = useState(1)
   const [showIntro, setShowIntro] = useState(true)
   const [selectedMember, setSelectedMember] = useState<TeamMember | null>(null)
@@ -425,12 +425,8 @@ export default function AboutPage() {
     useRef<HTMLDivElement>(null),
   ]
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
-    handleScroll()
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
+  // ━━━ FIXED: Removed unnecessary scroll listener that was never used ━━━
+  // The IntersectionObserver below handles scroll-based visibility correctly
 
   useEffect(() => {
     const observer = new IntersectionObserver(
