@@ -6,6 +6,32 @@ import Link from "next/link"
 import { Navbar } from "@/components/navbar"
 import { Footer } from "@/components/footer"
 
+// ━━━ THROTTLE UTILITY (fixes scroll jank) ━━━
+function throttle<T extends (...args: any[]) => void>(fn: T, wait: number): T {
+  let lastTime = 0
+  let timeoutId: ReturnType<typeof setTimeout> | null = null
+  
+  return ((...args: Parameters<T>) => {
+    const now = Date.now()
+    const remaining = wait - (now - lastTime)
+    
+    if (remaining <= 0) {
+      if (timeoutId) {
+        clearTimeout(timeoutId)
+        timeoutId = null
+      }
+      lastTime = now
+      fn(...args)
+    } else if (!timeoutId) {
+      timeoutId = setTimeout(() => {
+        lastTime = Date.now()
+        timeoutId = null
+        fn(...args)
+      }, remaining)
+    }
+  }) as T
+}
+
 // FAQ data for signature custom design
 const faqs = [
   {
@@ -27,43 +53,38 @@ export default function SignatureCustomDesignPage() {
   const [videoMargin, setVideoMargin] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
+  const [showLeftArrow, setShowLeftArrow] = useState(false)
+  const [showRightArrow, setShowRightArrow] = useState(true)
   const splitSectionRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     window.scrollTo(0, 0)
   }, [])
 
-  // Check if mobile
+  // ━━━ FIXED: Combined resize handler for mobile check AND video margin ━━━
   useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768)
-    }
-    checkMobile()
-    window.addEventListener('resize', checkMobile)
-    return () => window.removeEventListener('resize', checkMobile)
-  }, [])
-
-  // Calculate responsive video margin based on viewport - DESKTOP ONLY
-  useEffect(() => {
-    const updateVideoMargin = () => {
-      const vh = window.innerHeight
+    const handleResize = () => {
       const vw = window.innerWidth
+      const vh = window.innerHeight
       
-      // Only calculate for desktop
+      // Mobile check
+      setIsMobile(vw < 768)
+      
+      // Video margin (desktop only)
       if (vw >= 768) {
         const margin = Math.min(vw * 0.25, vh * 0.45, 500)
         setVideoMargin(margin)
       }
     }
     
-    updateVideoMargin()
-    window.addEventListener('resize', updateVideoMargin)
-    return () => window.removeEventListener('resize', updateVideoMargin)
+    handleResize()
+    window.addEventListener('resize', handleResize)
+    return () => window.removeEventListener('resize', handleResize)
   }, [])
 
-  // Parallax effect
+  // ━━━ FIXED: Throttled parallax effect ━━━
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = throttle(() => {
       if (splitSectionRef.current) {
         const rect = splitSectionRef.current.getBoundingClientRect()
         const windowHeight = window.innerHeight
@@ -81,7 +102,7 @@ export default function SignatureCustomDesignPage() {
           setParallaxOffset(offset)
         }
       }
-    }
+    }, 16) // ~60fps throttle for smooth parallax
 
     window.addEventListener('scroll', handleScroll, { passive: true })
     handleScroll()
@@ -89,84 +110,27 @@ export default function SignatureCustomDesignPage() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Carousel arrow visibility based on scroll position
+  // ━━━ FIXED: Single carousel arrow handler using React state (removed duplicate) ━━━
   useEffect(() => {
     const carousel = document.getElementById('highlights-carousel')
-    const leftArrow = document.getElementById('carousel-left-arrow')
-    const rightArrow = document.getElementById('carousel-right-arrow')
 
-    const updateArrows = () => {
-      if (!carousel || !leftArrow || !rightArrow) return
+    const updateArrows = throttle(() => {
+      if (!carousel) return
       
       const scrollLeft = carousel.scrollLeft
       const maxScroll = carousel.scrollWidth - carousel.clientWidth
       
-      // Show left arrow if scrolled
-      if (scrollLeft > 50) {
-        leftArrow.style.opacity = '1'
-        leftArrow.style.pointerEvents = 'auto'
-      } else {
-        leftArrow.style.opacity = '0'
-        leftArrow.style.pointerEvents = 'none'
-      }
-      
-      // Hide right arrow if at end
-      if (scrollLeft >= maxScroll - 50) {
-        rightArrow.style.opacity = '0'
-        rightArrow.style.pointerEvents = 'none'
-      } else {
-        rightArrow.style.opacity = '1'
-        rightArrow.style.pointerEvents = 'auto'
-      }
-    }
+      setShowLeftArrow(scrollLeft > 50)
+      setShowRightArrow(scrollLeft < maxScroll - 50)
+    }, 100)
 
     if (carousel) {
-      carousel.addEventListener('scroll', updateArrows)
+      carousel.addEventListener('scroll', updateArrows, { passive: true })
       updateArrows()
     }
 
     return () => {
       if (carousel) carousel.removeEventListener('scroll', updateArrows)
-    }
-  }, [])
-
-  // Carousel arrow visibility
-  useEffect(() => {
-    const carousel = document.getElementById('highlights-carousel')
-    const leftArrow = document.getElementById('carousel-left-arrow')
-    const rightArrow = document.getElementById('carousel-right-arrow')
-    
-    const handleCarouselScroll = () => {
-      if (carousel && leftArrow && rightArrow) {
-        // Show left arrow if scrolled
-        if (carousel.scrollLeft > 50) {
-          leftArrow.style.opacity = '1'
-          leftArrow.style.pointerEvents = 'auto'
-        } else {
-          leftArrow.style.opacity = '0'
-          leftArrow.style.pointerEvents = 'none'
-        }
-        
-        // Hide right arrow if at end
-        if (carousel.scrollLeft + carousel.clientWidth >= carousel.scrollWidth - 50) {
-          rightArrow.style.opacity = '0'
-          rightArrow.style.pointerEvents = 'none'
-        } else {
-          rightArrow.style.opacity = '1'
-          rightArrow.style.pointerEvents = 'auto'
-        }
-      }
-    }
-    
-    if (carousel) {
-      carousel.addEventListener('scroll', handleCarouselScroll)
-      handleCarouselScroll() // Initial check
-    }
-    
-    return () => {
-      if (carousel) {
-        carousel.removeEventListener('scroll', handleCarouselScroll)
-      }
     }
   }, [])
 
@@ -490,10 +454,12 @@ export default function SignatureCustomDesignPage() {
             <div className="flex-shrink-0 w-6"></div>
           </div>
 
-          {/* Left arrow - hidden initially, shows after scrolling */}
+          {/* Left arrow - FIXED: Using React state */}
           <button 
             id="carousel-left-arrow"
-            className="absolute left-0 top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 opacity-0 pointer-events-none"
+            className={`absolute left-0 top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 ${
+              showLeftArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
             aria-label="Previous"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
@@ -509,10 +475,12 @@ export default function SignatureCustomDesignPage() {
             </svg>
           </button>
 
-          {/* Right arrow */}
+          {/* Right arrow - FIXED: Using React state */}
           <button 
             id="carousel-right-arrow"
-            className="absolute right-[2%] top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10"
+            className={`absolute right-[2%] top-[36%] -translate-y-1/2 w-[40px] h-[37px] md:w-[44px] md:h-[44px] bg-white/60 backdrop-blur-sm flex items-center justify-center hover:bg-white/90 transition-all duration-300 z-10 ${
+              showRightArrow ? 'opacity-100' : 'opacity-0 pointer-events-none'
+            }`}
             aria-label="Next"
             onClick={() => {
               const container = document.getElementById('highlights-carousel')
