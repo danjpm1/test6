@@ -31,11 +31,9 @@ const faqs = [
 
 export default function CommercialPage() {
   const [isPaused, setIsPaused] = useState(false)
-  const [isSecondVideoPaused, setIsSecondVideoPaused] = useState(false)
   const [statsVisible, setStatsVisible] = useState(false)
   const [openFaq, setOpenFaq] = useState<number | null>(null)
   const videoRef = useRef<HTMLVideoElement>(null)
-  const secondVideoRef = useRef<HTMLVideoElement>(null)
   const statsRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -71,26 +69,6 @@ export default function CommercialPage() {
     }
   }, [])
 
-  // Lazy load second video when it comes into view
-  useEffect(() => {
-    const video = secondVideoRef.current
-    if (!video) return
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          video.preload = 'auto'
-          video.load()
-          video.play().catch(() => {})
-          observer.disconnect()
-        }
-      },
-      { threshold: 0.1, rootMargin: '200px' }
-    )
-    observer.observe(video)
-    return () => observer.disconnect()
-  }, [])
-
   const toggleVideo = useCallback(() => {
     if (videoRef.current) {
       if (isPaused) {
@@ -101,17 +79,6 @@ export default function CommercialPage() {
       setIsPaused(!isPaused)
     }
   }, [isPaused])
-
-  const toggleSecondVideo = useCallback(() => {
-    if (secondVideoRef.current) {
-      if (isSecondVideoPaused) {
-        secondVideoRef.current.play()
-      } else {
-        secondVideoRef.current.pause()
-      }
-      setIsSecondVideoPaused(!isSecondVideoPaused)
-    }
-  }, [isSecondVideoPaused])
 
   return (
     <div className="w-full overflow-x-hidden bg-white">
@@ -268,37 +235,6 @@ export default function CommercialPage() {
 
       {/* Video Section */}
       <section className="pt-10 sm:pt-12 md:pt-[106px] pb-10 sm:pb-12 md:pb-20 bg-white">
-        <div className="max-w-[1915px] mx-auto px-0 md:px-6">
-          <div className="relative w-full aspect-[16/10] md:aspect-[3/1.045] overflow-hidden md:rounded-lg">
-            <video
-              ref={secondVideoRef}
-              muted
-              loop
-              playsInline
-              preload="none"
-              className="w-full h-full object-cover"
-            >
-              <source src="/renovation-showcase.mp4" type="video/mp4" />
-            </video>
-            <button
-              onClick={toggleSecondVideo}
-              aria-label={isSecondVideoPaused ? "Play video" : "Pause video"}
-              className="absolute bottom-3 left-3 sm:bottom-4 sm:left-4 md:bottom-6 md:left-6 w-9 h-9 md:w-10 md:h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center transition-all hover:bg-white/20 hover:scale-105"
-            >
-              {isSecondVideoPaused ? (
-                <svg width="12" height="12" className="sm:w-[14px] sm:h-[14px]" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-                  <polygon points="5 3 19 12 5 21 5 3"/>
-                </svg>
-              ) : (
-                <svg width="12" height="12" className="sm:w-[14px] sm:h-[14px]" viewBox="0 0 24 24" fill="white" aria-hidden="true">
-                  <rect x="6" y="4" width="4" height="16"/>
-                  <rect x="14" y="4" width="4" height="16"/>
-                </svg>
-              )}
-            </button>
-          </div>
-        </div>
-
         {/* Title + Description + 3 Columns */}
         <div className="max-w-[1400px] mx-auto px-4 sm:px-5 md:px-12 mt-8 sm:mt-10 md:mt-16">
           <h2 className="text-[22px] sm:text-[26px] md:text-[clamp(32px,4.5vw,52px)] font-semibold tracking-tight text-[#171a20] mb-2 sm:mb-3 leading-[1.2] sm:leading-[1.15] md:leading-[1.1]">
