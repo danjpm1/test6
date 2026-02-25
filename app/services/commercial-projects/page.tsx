@@ -233,8 +233,21 @@ export default function CommercialPage() {
         </div>
       </section>
 
-      {/* Video Section */}
-      <section className="pt-10 sm:pt-12 md:pt-[106px] pb-10 sm:pb-12 md:pb-20 bg-white">
+      {/* Image Section */}
+      <section className="pt-10 sm:pt-12 md:pt-16 pb-10 sm:pb-12 md:pb-20 bg-white">
+        <div className="max-w-[1915px] mx-auto px-0 md:px-6">
+          <div className="relative w-full aspect-[16/10] md:aspect-[3/1.045] overflow-hidden md:rounded-lg">
+            <Image
+              src="/commercial_wide1.png"
+              alt="Commercial construction project"
+              fill
+              sizes="100vw"
+              className="object-cover"
+              quality={80}
+            />
+          </div>
+        </div>
+
         {/* Title + Description + 3 Columns */}
         <div className="max-w-[1400px] mx-auto px-4 sm:px-5 md:px-12 mt-8 sm:mt-10 md:mt-16">
           <h2 className="text-[22px] sm:text-[26px] md:text-[clamp(32px,4.5vw,52px)] font-semibold tracking-tight text-[#171a20] mb-2 sm:mb-3 leading-[1.2] sm:leading-[1.15] md:leading-[1.1]">
