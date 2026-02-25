@@ -203,6 +203,13 @@ const globalStyles = `
   .fade-up-d4 { animation: fadeUp 0.6s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
   .fade-up-d5 { animation: fadeUp 0.6s 0.5s cubic-bezier(0.22, 1, 0.36, 1) both; }
   .fade-in { animation: fadeIn 0.5s ease both; }
+  @keyframes toastSlideIn { 0% { transform: translateX(120%); opacity: 0; } 60% { transform: translateX(-6px); } 100% { transform: translateX(0); opacity: 1; } }
+  @keyframes toastFadeOut { from { transform: translateX(0); opacity: 1; } to { transform: translateX(120%); opacity: 0; } }
+  @keyframes checkPop { 0% { transform: scale(0); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+  @keyframes promoCodeReveal { from { width: 0; opacity: 0; } to { width: 100%; opacity: 1; } }
+  .toast-enter { animation: toastSlideIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+  .toast-exit { animation: toastFadeOut 0.4s ease both; }
+  .check-pop { animation: checkPop 0.4s 0.3s cubic-bezier(0.22, 1, 0.36, 1) both; }
   input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 28px; height: 28px; border-radius: 50%; background: ${dark}; border: 3px solid ${gold}; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2); transition: all 0.2s; }
   input[type="range"]::-webkit-slider-thumb:hover { background: ${gold}; transform: scale(1.15); }
   input[type="range"]::-moz-range-thumb { width: 28px; height: 28px; border-radius: 50%; background: ${dark}; border: 3px solid ${gold}; cursor: pointer; }
@@ -1341,6 +1348,9 @@ function CostEstimatorInner() {
   const [displayedTotal, setDisplayedTotal] = useState(0);
   const hasAnimated = useRef(false);
   const hasReadUrl = useRef(false);
+  const [showToast, setShowToast] = useState(false);
+  const [toastExiting, setToastExiting] = useState(false);
+  const [promoUnlocked, setPromoUnlocked] = useState(false);
   const update = (u: Partial<FormState>) => setState((p) => ({ ...p, ...u }));
 
   useEffect(() => {
@@ -1358,6 +1368,18 @@ function CostEstimatorInner() {
   const handleZipSubmit = () => { if (!getZipTier(state.zipCode)) update({ step: "outside-area" }); else nextStep(); };
   const estimate = state.step === "results" ? calcEstimate(state) : null;
 
+  // Toast trigger when project type is selected
+  useEffect(() => {
+    if (state.projectType && !promoUnlocked) {
+      setPromoUnlocked(true);
+      setShowToast(true);
+      setToastExiting(false);
+      const exitTimer = setTimeout(() => setToastExiting(true), 4500);
+      const hideTimer = setTimeout(() => setShowToast(false), 5000);
+      return () => { clearTimeout(exitTimer); clearTimeout(hideTimer); };
+    }
+  }, [state.projectType, promoUnlocked]);
+
   useEffect(() => { if (state.step === "analyzing") { hasAnimated.current = false; const t = setTimeout(() => update({ step: "results" }), 3000); return () => clearTimeout(t); } }, [state.step]);
   useEffect(() => {
     if (state.step === "results" && estimate && !hasAnimated.current) {
@@ -1368,7 +1390,7 @@ function CostEstimatorInner() {
     }
   }, [state.step, estimate]);
 
-  const reset = () => setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", renoFeatures: [], consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "", homeStyle: "", homeFeatures: [], commercialType: "", commercialFinish: "standard", remoteType: "", remoteAccess: "", remoteFeatures: [] });
+  const reset = () => { setPromoUnlocked(false); setShowToast(false); setToastExiting(false); setState({ step: "type-select", projectType: "", zipCode: "", sqft: 2000, exteriorQuality: "standard", bedrooms: 3, bathrooms: 2, interiorFinish: "standard", stories: 2, garageSpaces: 2, renoScope: "", renoArea: 500, renoCondition: "", renoFinish: "standard", renoFeatures: [], consultType: "", consultComplexity: "", consultTimeline: "standard", consultPropertyType: "", consultProjectValue: "", homeStyle: "", homeFeatures: [], commercialType: "", commercialFinish: "standard", remoteType: "", remoteAccess: "", remoteFeatures: [] }); };
 
   const isTypeSelect = state.step === "type-select";
   const isOutside = state.step === "outside-area";
@@ -1425,20 +1447,85 @@ function CostEstimatorInner() {
 
       {showBanners && (
         <div style={{ borderTop: "1px solid #f0f0f0", padding: "20px 24px 24px", background: "#fafafa", textAlign: "center", flexShrink: 0 }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 10, padding: "12px 24px", background: `${gold}0c`, border: `1.5px solid ${gold}40`, borderRadius: 8, marginBottom: 14 }}>
-            <div style={{ width: 22, height: 22, borderRadius: "50%", background: gold, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
-            </div>
-            <div style={{ textAlign: "left" }}>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: gold, fontWeight: 700, letterSpacing: "0.02em", display: "block" }}>Applied: Free Design Consultation + Priority Spring Scheduling</span>
-              <span style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: "#999", display: "block", marginTop: 2 }}>Included automatically with your estimate</span>
+          {/* HelloFresh-style promo code field */}
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 10, marginBottom: 14, flexWrap: "wrap" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 0 }}>
+              {/* Promo code input (read-only, pre-filled) */}
+              <div style={{ position: "relative", display: "flex", alignItems: "center" }}>
+                <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600, color: dark, letterSpacing: "0.06em", padding: "12px 44px 12px 16px", border: `2px solid #16a34a`, borderRight: "none", background: "#fff", minWidth: 200, textAlign: "left" }}>
+                  ANTOVA-SPRING25
+                </div>
+                {/* Green checkmark inside field */}
+                <div className="check-pop" style={{ position: "absolute", right: 12, top: "50%", transform: "translateY(-50%)" }}>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#16a34a" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                </div>
+              </div>
+              {/* Applied button */}
+              <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 14, fontWeight: 600, color: "#fff", background: "#16a34a", padding: "12px 24px", border: "2px solid #16a34a", cursor: "default", letterSpacing: "0.02em" }}>
+                Applied
+              </div>
             </div>
           </div>
+
+          {/* Green confirmation text */}
+          <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 13, color: "#16a34a", fontWeight: 600, marginBottom: 12 }}>
+            ✓ 3 offers successfully applied to your estimate
+          </p>
+
+          {/* Stacked value items */}
+          <div style={{ display: "flex", justifyContent: "center", gap: 16, flexWrap: "wrap", marginBottom: 14 }}>
+            {[
+              { text: "Free Consultation", value: "$500 value" },
+              { text: "Priority Scheduling", value: "" },
+              { text: "30-Day Price Lock", value: "" },
+            ].map((item) => (
+              <span key={item.text} style={{ display: "inline-flex", alignItems: "center", gap: 5, fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#666" }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                <span>{item.text}</span>
+                {item.value && <span style={{ color: gold, fontWeight: 700, fontSize: 11 }}>{item.value}</span>}
+              </span>
+            ))}
+          </div>
+
+          {/* Trust points */}
           <div style={{ display: "flex", justifyContent: "center", gap: 20, flexWrap: "wrap", fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#bbb" }}>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>No commitment</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>No sales calls</span>
             <span style={{ display: "flex", alignItems: "center", gap: 4 }}><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>150+ projects</span>
           </div>
+        </div>
+      )}
+
+      {/* Toast notification - appears when project type selected */}
+      {showToast && (
+        <div className={toastExiting ? "toast-exit" : "toast-enter"} style={{
+          position: "fixed", bottom: 32, right: 24, zIndex: 9999,
+          background: "#fff", border: "1px solid #e5e5e5",
+          boxShadow: "0 20px 60px rgba(0,0,0,0.15)", padding: "20px 24px",
+          maxWidth: 360, display: "flex", gap: 14, alignItems: "flex-start",
+        }}>
+          <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, #16a34a, #22c55e)` }} />
+          <div className="check-pop" style={{
+            flexShrink: 0, width: 36, height: 36, borderRadius: "50%",
+            background: "linear-gradient(135deg, #16a34a, #22c55e)",
+            display: "flex", alignItems: "center", justifyContent: "center",
+            boxShadow: "0 4px 12px rgba(34,197,94,0.3)",
+          }}>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+          </div>
+          <div style={{ flex: 1 }}>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontWeight: 700, fontSize: 14, color: dark, marginBottom: 4 }}>3 offers unlocked!</div>
+            <div style={{ fontFamily: "'DM Sans', sans-serif", fontSize: 12, color: "#666", lineHeight: 1.5, marginBottom: 8 }}>Exclusive perks applied to your estimate.</div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+              {["Free Consultation ($500)", "Priority Scheduling", "30-Day Price Lock"].map((t) => (
+                <span key={t} style={{ display: "flex", alignItems: "center", gap: 5, fontFamily: "'DM Sans', sans-serif", fontSize: 11, color: dark, fontWeight: 500 }}>
+                  <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke={gold} strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 13l4 4L19 7" /></svg>
+                  {t}
+                </span>
+              ))}
+            </div>
+          </div>
+          <button onClick={() => { setToastExiting(true); setTimeout(() => setShowToast(false), 400); }} style={{ position: "absolute", top: 8, right: 8, background: "none", border: "none", cursor: "pointer", padding: 4, color: "#ccc", fontSize: 16, lineHeight: 1 }}>✕</button>
         </div>
       )}
     </div>
