@@ -25,8 +25,26 @@ export default function ProjectsPage() {
   const [scrollY, setScrollY] = useState(0)
   const [isMobile, setIsMobile] = useState(false)
 
-  const visibleProjects = projects.slice(0, visibleCount)
-  const hasMore = visibleCount < projects.length
+  // Filter projects based on active filter
+  const filteredProjects = projects.filter((project) => {
+    if (activeFilter === "All") return true
+    
+    const projectType = projectTypes[project.slug]?.label
+    
+    switch (activeFilter) {
+      case "New Builds":
+        return projectType === "New Build"
+      case "Remodels":
+        return projectType === "Remodel" || projectType === "Renovation"
+      case "Cabins":
+        return projectType === "Cabin"
+      default:
+        return true
+    }
+  })
+  
+  const visibleProjects = filteredProjects.slice(0, visibleCount)
+  const hasMore = visibleCount < filteredProjects.length
   
   // Get first 3 projects for hero preview
   const previewProjects = projects.slice(0, 3)
@@ -60,7 +78,12 @@ export default function ProjectsPage() {
   }, [])
 
   const handleLoadMore = useCallback(() => {
-    setVisibleCount((prev) => Math.min(prev + 4, projects.length))
+    setVisibleCount((prev) => Math.min(prev + 4, filteredProjects.length))
+  }, [filteredProjects.length])
+
+  const handleFilterChange = useCallback((filter: FilterType) => {
+    setActiveFilter(filter)
+    setVisibleCount(6) // Reset to initial count when filter changes
   }, [])
 
   return (
@@ -228,13 +251,16 @@ export default function ProjectsPage() {
         ═══════════════════════════════════════════════════════════════ */}
         <section id="projects-grid" className="bg-white/95 backdrop-blur-sm border-b border-black/5 sticky top-16 md:top-20 z-40">
           <div className="max-w-[1800px] mx-auto px-5 md:px-16 lg:px-24 py-3 md:py-4 flex items-center justify-between gap-4">
-            <h2 className="text-black/80 font-medium text-sm md:text-lg shrink-0">All Projects</h2>
+            <h2 className="text-black/80 font-medium text-sm md:text-lg shrink-0">
+              {activeFilter === "All" ? "All Projects" : activeFilter}
+              <span className="text-black/30 font-normal ml-2">({filteredProjects.length})</span>
+            </h2>
             
             <div className="flex gap-1 overflow-x-auto scrollbar-hide -mr-5 pr-5 md:mr-0 md:pr-0">
               {filters.map((filter) => (
                 <button
                   key={filter}
-                  onClick={() => setActiveFilter(filter)}
+                  onClick={() => handleFilterChange(filter)}
                   className={`shrink-0 px-4 md:px-5 py-2.5 md:py-2 text-sm rounded-lg md:rounded-md transition-all duration-300 min-h-[44px] md:min-h-0 ${
                     activeFilter === filter
                       ? "text-[#c6912c] bg-[#c6912c]/10 font-medium"
@@ -254,7 +280,26 @@ export default function ProjectsPage() {
         <section className="bg-white py-8 md:py-16 px-5 md:px-16 lg:px-24">
           <div className="max-w-[1800px] mx-auto">
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+            {/* No Results State */}
+            {filteredProjects.length === 0 ? (
+              <div className="text-center py-16 md:py-24">
+                <div className="w-16 h-16 bg-black/5 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <svg className="w-8 h-8 text-black/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                  </svg>
+                </div>
+                <h3 className="text-xl font-semibold text-black/80 mb-2">No {activeFilter} Found</h3>
+                <p className="text-black/50 mb-6">We don't have any {activeFilter.toLowerCase()} projects to show yet.</p>
+                <button
+                  onClick={() => handleFilterChange("All")}
+                  className="text-[#c6912c] font-medium hover:text-[#b8822a] transition-colors"
+                >
+                  View all projects →
+                </button>
+              </div>
+            ) : (
+              <>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
               {visibleProjects.map((project, index) => (
                 <div key={project.slug}>
                   {/* Project Card */}
@@ -346,6 +391,8 @@ export default function ProjectsPage() {
                   </svg>
                 </button>
               </div>
+            )}
+              </>
             )}
           </div>
         </section>
