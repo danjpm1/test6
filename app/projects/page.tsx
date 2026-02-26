@@ -27,10 +27,11 @@ export default function ProjectsPage() {
 
   const visibleProjects = projects.slice(0, visibleCount)
   const hasMore = visibleCount < projects.length
+  
+  // Get first 3 projects for hero preview
+  const previewProjects = projects.slice(0, 3)
 
-  // Throttled scroll handler for performance
   useEffect(() => {
-    // Check if mobile
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
     checkMobile()
     window.addEventListener("resize", checkMobile)
@@ -39,7 +40,6 @@ export default function ProjectsPage() {
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {
-          // Only update parallax on desktop
           if (window.innerWidth >= 768) {
             setScrollY(window.scrollY)
           }
@@ -70,114 +70,152 @@ export default function ProjectsPage() {
       <main>
         
         {/* ═══════════════════════════════════════════════════════════════
-            HERO - Optimized with conditional parallax
+            HERO - With clear page identification
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="relative h-[100svh] md:h-[90vh] w-full overflow-hidden bg-[#030303]">
-          {/* Background Image - Parallax only on desktop */}
+        <section className="relative min-h-[100svh] md:min-h-[90vh] w-full overflow-hidden bg-[#030303]">
+          
+          {/* Background Image - Multiple fallback sources */}
           <div 
             className="absolute inset-0 will-change-transform"
             style={!isMobile ? { transform: `translateY(${scrollY * 0.2}px)` } : undefined}
           >
-            <Image
-              src="/modern-luxury-home-at-night-with-warm-interior-lig.jpg"
+            {/* Try multiple image paths for reliability */}
+            <img
+              src={projects[0]?.cover || "/modern-luxury-home-at-night-with-warm-interior-lig.jpg"}
               alt="Antova Builders - Premium Custom Home"
-              fill
-              priority
-              quality={85}
-              sizes="100vw"
-              className={`object-cover transition-opacity duration-700 ${
+              className={`w-full h-full object-cover transition-opacity duration-700 ${
                 heroLoaded ? "opacity-100" : "opacity-0"
               }`}
               onLoad={() => setHeroLoaded(true)}
+              onError={(e) => {
+                // Fallback if image fails
+                const target = e.target as HTMLImageElement
+                target.src = "/hero-winter-mountain-home.png"
+              }}
             />
           </div>
           
           {/* Gradient Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/50 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/70 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/60 to-[#030303]/30" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/80 via-[#030303]/40 to-transparent" />
 
           {/* Hero Content */}
-          <div className="relative z-10 h-full flex flex-col justify-end px-5 md:px-16 lg:px-24 pb-8 md:pb-24 max-w-[1800px] mx-auto">
+          <div className="relative z-10 h-full flex flex-col justify-end px-5 md:px-16 lg:px-24 pb-10 md:pb-20 pt-24 md:pt-32 max-w-[1800px] mx-auto">
             
-            <div className={`transition-all duration-700 ${
-              heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
-            }`}>
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10 lg:gap-16">
               
-              {/* Availability Badge */}
-              <div className="mb-5 md:mb-8">
-                <span className="inline-flex items-center gap-2.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-full px-3.5 py-2">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#c6912c] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#c6912c]"></span>
+              {/* Left Side - Text Content */}
+              <div className={`flex-1 transition-all duration-700 ${
+                heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}>
+                
+                {/* PAGE IDENTIFIER - Clear label */}
+                <div className="mb-4 md:mb-6">
+                  <span className="text-[#c6912c] text-xs md:text-sm font-semibold uppercase tracking-[0.2em]">
+                    Our Projects
                   </span>
-                  <span className="text-white/90 text-xs md:text-sm font-medium tracking-wide">
-                    Now Accepting 2025 Projects
-                  </span>
-                </span>
+                </div>
+
+                {/* Main Headline */}
+                <h1 className="text-[2rem] sm:text-[2.5rem] md:text-[3.5rem] lg:text-[4.5rem] font-semibold text-white leading-[1.1] tracking-[-0.02em] mb-4 md:mb-6 max-w-2xl">
+                  Where Vision
+                  <br />
+                  <span className="text-[#c6912c]">Becomes Legacy</span>
+                </h1>
+
+                {/* Subheadline */}
+                <p className="text-white/60 text-base md:text-lg lg:text-xl max-w-lg mb-6 md:mb-8 font-light leading-relaxed">
+                  47 exceptional residences across the Inland Northwest. 
+                  Each one built without compromise.
+                </p>
+
+                {/* CTA Buttons */}
+                <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-8 md:mb-12">
+                  <Link href="/cost-estimator" className="w-full sm:w-auto">
+                    <button className="group w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 bg-[#c6912c] hover:bg-[#d4a43d] active:bg-[#b8822a] text-black font-semibold rounded-lg md:rounded-md transition-all duration-300 text-sm md:text-base flex items-center justify-center gap-2.5">
+                      Get Your Estimate
+                      <svg 
+                        className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-1" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                      </svg>
+                    </button>
+                  </Link>
+                  <Link href="/contact" className="w-full sm:w-auto">
+                    <button className="w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 bg-white/10 border border-white/20 hover:border-white/40 hover:bg-white/15 active:bg-white/20 text-white font-medium rounded-lg md:rounded-md transition-all duration-300 text-sm md:text-base">
+                      Book Consultation
+                    </button>
+                  </Link>
+                </div>
+
+                {/* Stats */}
+                <div className="flex items-center gap-6 sm:gap-8 md:gap-12">
+                  <div>
+                    <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight">
+                      47<span className="text-[#c6912c]">+</span>
+                    </p>
+                    <p className="text-white/40 text-xs sm:text-sm mt-0.5">Projects</p>
+                  </div>
+                  <div className="w-px h-8 sm:h-10 bg-white/15" />
+                  <div>
+                    <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight">
+                      100<span className="text-[#c6912c]">%</span>
+                    </p>
+                    <p className="text-white/40 text-xs sm:text-sm mt-0.5">On-Time</p>
+                  </div>
+                  <div className="w-px h-8 sm:h-10 bg-white/15" />
+                  <div>
+                    <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight">
+                      15<span className="text-[#c6912c]">+</span>
+                    </p>
+                    <p className="text-white/40 text-xs sm:text-sm mt-0.5">Years</p>
+                  </div>
+                </div>
               </div>
 
-              {/* Main Headline */}
-              <h1 className="text-[2rem] sm:text-[2.5rem] md:text-[4rem] lg:text-[5rem] font-semibold text-white leading-[1.1] tracking-[-0.02em] mb-4 md:mb-6 max-w-4xl">
-                Where Vision
-                <br />
-                <span className="text-[#c6912c]">Becomes Legacy</span>
-              </h1>
-
-              {/* Subheadline */}
-              <p className="text-white/60 text-base md:text-xl max-w-xl mb-6 md:mb-10 font-light leading-relaxed">
-                47 exceptional residences across the Inland Northwest. 
-                Each one built without compromise.
-              </p>
-
-              {/* CTA Buttons - Full width on mobile */}
-              <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-8 md:mb-16">
-                <Link href="/cost-estimator" className="w-full sm:w-auto">
-                  <button className="group w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 bg-[#c6912c] hover:bg-[#d4a43d] active:bg-[#b8822a] text-black font-semibold rounded-lg md:rounded-md transition-all duration-300 text-sm md:text-base flex items-center justify-center gap-2.5">
-                    Get Your Estimate
-                    <svg 
-                      className="w-4 h-4 md:w-5 md:h-5 transition-transform duration-300 group-hover:translate-x-1" 
-                      fill="none" 
-                      stroke="currentColor" 
-                      viewBox="0 0 24 24"
+              {/* Right Side - Project Preview Thumbnails */}
+              <div className={`hidden lg:block transition-all duration-700 delay-200 ${
+                heroLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+              }`}>
+                <p className="text-white/40 text-sm mb-4 font-medium">Featured Work</p>
+                <div className="flex gap-3">
+                  {previewProjects.map((project, index) => (
+                    <Link 
+                      key={project.slug}
+                      href={`/projects/${project.slug}`}
+                      className="group relative block"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </button>
+                      <div className="w-32 xl:w-40 aspect-[4/3] rounded-lg overflow-hidden border-2 border-white/10 hover:border-[#c6912c]/50 transition-all duration-300">
+                        <img
+                          src={project.cover || "/placeholder.svg"}
+                          alt={project.title}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
+                        <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300" />
+                      </div>
+                      <p className="text-white/60 text-xs mt-2 group-hover:text-white transition-colors truncate max-w-32 xl:max-w-40">
+                        {project.title}
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+                <Link 
+                  href="#projects-grid" 
+                  className="inline-flex items-center gap-2 text-[#c6912c] text-sm mt-4 hover:text-[#d4a43d] transition-colors"
+                >
+                  View all projects
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                  </svg>
                 </Link>
-                <Link href="/contact" className="w-full sm:w-auto">
-                  <button className="w-full sm:w-auto h-12 md:h-14 px-8 md:px-10 bg-white/10 border border-white/20 hover:border-white/40 hover:bg-white/15 active:bg-white/20 text-white font-medium rounded-lg md:rounded-md transition-all duration-300 text-sm md:text-base">
-                    Book Consultation
-                  </button>
-                </Link>
-              </div>
-
-              {/* Stats - Responsive layout */}
-              <div className="flex items-center gap-6 sm:gap-8 md:gap-14">
-                <div>
-                  <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight">
-                    47<span className="text-[#c6912c]">+</span>
-                  </p>
-                  <p className="text-white/40 text-xs sm:text-sm mt-0.5">Homes Built</p>
-                </div>
-                <div className="w-px h-8 sm:h-10 bg-white/15" />
-                <div>
-                  <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight">
-                    100<span className="text-[#c6912c]">%</span>
-                  </p>
-                  <p className="text-white/40 text-xs sm:text-sm mt-0.5">On Schedule</p>
-                </div>
-                <div className="w-px h-8 sm:h-10 bg-white/15" />
-                <div>
-                  <p className="text-2xl sm:text-3xl md:text-4xl font-semibold text-white tracking-tight">
-                    15<span className="text-[#c6912c]">+</span>
-                  </p>
-                  <p className="text-white/40 text-xs sm:text-sm mt-0.5">Years</p>
-                </div>
               </div>
             </div>
           </div>
 
-          {/* Scroll Indicator - Hidden on mobile */}
+          {/* Scroll Indicator - Desktop only */}
           <div className={`absolute bottom-6 left-1/2 -translate-x-1/2 z-10 hidden md:block transition-opacity duration-700 ${
             heroLoaded ? "opacity-100" : "opacity-0"
           }`}>
@@ -186,13 +224,12 @@ export default function ProjectsPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
-            FILTER BAR - Horizontally scrollable on mobile
+            FILTER BAR
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="bg-white/95 backdrop-blur-sm border-b border-black/5 sticky top-16 md:top-20 z-40">
+        <section id="projects-grid" className="bg-white/95 backdrop-blur-sm border-b border-black/5 sticky top-16 md:top-20 z-40">
           <div className="max-w-[1800px] mx-auto px-5 md:px-16 lg:px-24 py-3 md:py-4 flex items-center justify-between gap-4">
-            <h2 className="text-black/80 font-medium text-sm md:text-lg shrink-0">Portfolio</h2>
+            <h2 className="text-black/80 font-medium text-sm md:text-lg shrink-0">All Projects</h2>
             
-            {/* Scrollable filter container on mobile */}
             <div className="flex gap-1 overflow-x-auto scrollbar-hide -mr-5 pr-5 md:mr-0 md:pr-0">
               {filters.map((filter) => (
                 <button
@@ -214,7 +251,7 @@ export default function ProjectsPage() {
         {/* ═══════════════════════════════════════════════════════════════
             PROJECTS GRID
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="bg-white py-8 md:py-20 px-5 md:px-16 lg:px-24">
+        <section className="bg-white py-8 md:py-16 px-5 md:px-16 lg:px-24">
           <div className="max-w-[1800px] mx-auto">
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
@@ -226,7 +263,6 @@ export default function ProjectsPage() {
                     className="group relative block"
                   >
                     <div className="relative overflow-hidden rounded-xl shadow-sm md:hover:shadow-xl transition-shadow duration-500">
-                      {/* Image with Next.js optimization */}
                       <div className="aspect-[16/10] relative">
                         <Image
                           src={project.cover || "/placeholder.svg"}
@@ -238,24 +274,20 @@ export default function ProjectsPage() {
                         />
                       </div>
                       
-                      {/* Overlay Gradient */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent opacity-70 md:opacity-60 md:group-hover:opacity-80 transition-opacity duration-500" />
                       
-                      {/* Project Type Badge */}
                       {projectTypes[project.slug] && (
                         <span className={`absolute top-3 md:top-5 left-3 md:left-5 ${projectTypes[project.slug].color} text-white text-xs font-medium px-2.5 md:px-3 py-1 md:py-1.5 rounded-full shadow-lg`}>
                           {projectTypes[project.slug].label}
                         </span>
                       )}
                       
-                      {/* Content Overlay */}
                       <div className="absolute bottom-0 left-0 right-0 p-4 md:p-6">
                         <h3 className="text-lg md:text-2xl font-semibold text-white mb-0.5 md:mb-1 md:group-hover:text-[#c6912c] transition-colors duration-300">
                           {project.title}
                         </h3>
                         <p className="text-white/60 text-sm">{project.location}</p>
                         
-                        {/* View Project Link - Desktop only */}
                         <div className="hidden md:flex mt-4 items-center gap-2 text-white/0 group-hover:text-white transition-all duration-300 transform translate-y-2 group-hover:translate-y-0">
                           <span className="text-sm font-medium">View Project</span>
                           <svg className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -269,13 +301,10 @@ export default function ProjectsPage() {
               ))}
             </div>
 
-            {/* ═══════════════════════════════════════════════════════════
-                MID-PAGE CTA - Moved outside grid for proper layout
-            ═══════════════════════════════════════════════════════════ */}
+            {/* Mid-Page CTA */}
             {visibleCount >= 3 && (
               <div className="my-8 md:my-14">
                 <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-[#0a0a0a] to-[#1a1a1a]">
-                  {/* Decorative Accent - Simplified on mobile */}
                   <div className="absolute top-0 right-0 w-40 md:w-80 h-40 md:h-80 bg-[#c6912c]/10 rounded-full blur-2xl md:blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
                   
                   <div className="relative z-10 p-6 md:p-12 lg:p-16 flex flex-col md:flex-row items-start md:items-center justify-between gap-6 md:gap-8">
@@ -306,7 +335,7 @@ export default function ProjectsPage() {
 
             {/* Load More */}
             {hasMore && (
-              <div className="flex justify-center pt-8 md:pt-16">
+              <div className="flex justify-center pt-8 md:pt-12">
                 <button
                   onClick={handleLoadMore}
                   className="group px-8 md:px-10 py-3.5 md:py-4 text-sm uppercase tracking-[0.12em] md:tracking-[0.15em] text-black/50 border border-black/10 hover:border-[#c6912c] hover:text-[#c6912c] active:bg-[#c6912c]/5 transition-all duration-300 rounded-lg md:rounded-md flex items-center gap-3 md:gap-4 min-h-[48px]"
@@ -322,7 +351,7 @@ export default function ProjectsPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
-            TESTIMONIAL SECTION
+            TESTIMONIAL
         ═══════════════════════════════════════════════════════════════ */}
         <section className="bg-[#f8f8f8] py-12 md:py-24 px-5 md:px-16 lg:px-24">
           <div className="max-w-4xl mx-auto text-center">
@@ -347,10 +376,9 @@ export default function ProjectsPage() {
         </section>
 
         {/* ═══════════════════════════════════════════════════════════════
-            FINAL CTA SECTION
+            FINAL CTA
         ═══════════════════════════════════════════════════════════════ */}
         <section className="relative bg-white py-16 md:py-28 px-5 md:px-16 lg:px-24 overflow-hidden">
-          {/* Subtle Background - Smaller on mobile */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <div className="w-[300px] md:w-[600px] h-[300px] md:h-[600px] bg-[#c6912c]/5 rounded-full blur-2xl md:blur-3xl" />
           </div>
@@ -385,9 +413,7 @@ export default function ProjectsPage() {
         </section>
       </main>
 
-      {/* ═══════════════════════════════════════════════════════════════
-          STICKY CTA - Safe area aware
-      ═══════════════════════════════════════════════════════════════ */}
+      {/* Sticky CTA */}
       <div 
         className={`fixed bottom-4 md:bottom-6 right-4 md:right-6 z-50 transition-all duration-500 pb-safe ${
           showStickyCta ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8 pointer-events-none"
