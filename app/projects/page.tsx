@@ -95,32 +95,21 @@ export default function ProjectsPage() {
         {/* ═══════════════════════════════════════════════════════════════
             HERO - With clear page identification
         ═══════════════════════════════════════════════════════════════ */}
-        <section className="relative min-h-[100svh] md:min-h-[90vh] w-full overflow-hidden bg-[#030303]">
+        <section className="relative h-[100svh] min-h-[600px] md:min-h-[90vh] w-full overflow-hidden bg-[#030303]">
           
-          {/* Background Image - Multiple fallback sources */}
-          <div 
-            className="absolute inset-0 will-change-transform"
-            style={!isMobile ? { transform: `translateY(${scrollY * 0.2}px)` } : undefined}
-          >
-            {/* Try multiple image paths for reliability */}
+          {/* Background Image - Hillside House */}
+          <div className="absolute inset-0">
             <img
-              src={projects[0]?.cover || "/modern-luxury-home-at-night-with-warm-interior-lig.jpg"}
-              alt="Antova Builders - Premium Custom Home"
-              className={`w-full h-full object-cover transition-opacity duration-700 ${
-                heroLoaded ? "opacity-100" : "opacity-0"
-              }`}
-              onLoad={() => setHeroLoaded(true)}
-              onError={(e) => {
-                // Fallback if image fails
-                const target = e.target as HTMLImageElement
-                target.src = "/hero-winter-mountain-home.png"
-              }}
+              src="/modern-glass-house-reflecting-in-lake-at-sunset-wi.jpg"
+              alt="Antova Builders - Hillside House"
+              className="w-full h-full object-cover"
+              style={!isMobile ? { transform: `translateY(${scrollY * 0.2}px)` } : undefined}
             />
           </div>
           
-          {/* Gradient Overlays - Lighter to show image */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/30 to-transparent" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/70 via-[#030303]/20 to-transparent" />
+          {/* Gradient Overlays - Mobile-optimized */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/40 to-[#030303]/10 md:via-[#030303]/30 md:to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/70 to-transparent md:from-[#030303]/60 md:via-[#030303]/20 md:to-transparent" />
 
           {/* Hero Content */}
           <div className="relative z-10 h-full flex flex-col justify-end px-5 md:px-16 lg:px-24 pb-10 md:pb-20 pt-24 md:pt-32 max-w-[1800px] mx-auto">
