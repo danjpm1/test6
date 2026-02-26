@@ -118,9 +118,9 @@ export default function ProjectsPage() {
             />
           </div>
           
-          {/* Gradient Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/60 to-[#030303]/30" />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/80 via-[#030303]/40 to-transparent" />
+          {/* Gradient Overlays - Lighter to show image */}
+          <div className="absolute inset-0 bg-gradient-to-t from-[#030303] via-[#030303]/30 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#030303]/70 via-[#030303]/20 to-transparent" />
 
           {/* Hero Content */}
           <div className="relative z-10 h-full flex flex-col justify-end px-5 md:px-16 lg:px-24 pb-10 md:pb-20 pt-24 md:pt-32 max-w-[1800px] mx-auto">
